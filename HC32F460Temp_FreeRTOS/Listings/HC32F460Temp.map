@@ -392,7 +392,7 @@ Memory Map of the image
     0x00007294   0x00000020   Data   RO        10015    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Base: 0x1fff8000, Size: 0x00004470, Max: 0x0002f000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Base: 0x1fff8000, Size: 0x00005070, Max: 0x0002f000, ABSOLUTE)
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -423,7 +423,7 @@ Memory Map of the image
     0x1fff837c   0x000000f0   Zero   RW         8351    .bss                tasks.o
     0x1fff846c   0x00003c00   Zero   RW         8622    .bss                heap_4.o
     0x1fffc06c   0x00000004   PAD
-    0x1fffc070   0x00000400   Zero   RW         6242    STACK               startup_hc32f46x.o
+    0x1fffc070   0x00001000   Zero   RW         6242    STACK               startup_hc32f46x.o
 
 
     Execution Region RW_IRAM2 (Base: 0x200f0000, Size: 0x00000000, Max: 0x00001000, ABSOLUTE)

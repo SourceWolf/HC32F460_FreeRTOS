@@ -620,11 +620,6 @@
               <FilePath>.\common\system_hc32f46x.c</FilePath>
             </File>
             <File>
-              <FileName>startup_hc32f46x.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\common\startup_hc32f46x.s</FilePath>
-            </File>
-            <File>
               <FileName>ddl_config.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\common\ddl_config.h</FilePath>
@@ -648,6 +643,11 @@
               <FileName>system_hc32f46x.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\common\system_hc32f46x.h</FilePath>
+            </File>
+            <File>
+              <FileName>startup_hc32f46x.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\common\MDK\startup_hc32f46x.s</FilePath>
             </File>
           </Files>
         </Group>
