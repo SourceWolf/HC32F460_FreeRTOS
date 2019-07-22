@@ -139,10 +139,10 @@
 //Enable MPLL
 #define MPLL_CLK_ENABLE  ENABLE
 //MPLL Source Clock Divider HRC 16MHZ DIV2 8MHZ
-#define MPLL_CLK_M_DIV   PLL_DIV2
+#define MPLL_CLK_M_DIV   PLL_DIV2+1
 //----------------倍频系数，最低倍频数20，最高80-----------------//
 //MPLL 倍频系数 21x8MHZ = 168MHZ
-#define MPLL_CLK_NUM        21u//75u//
+#define MPLL_CLK_NUM        42u//75u//
 //MPLL_P,Q,R分频
 #define MPLL_CLK_P_DIV      PLL_DIV2+1//MPLL 预分频数
 #define MPLL_CLK_Q_DIV      PLL_DIV2+1
@@ -152,9 +152,9 @@
 //------------------Configure UPLL CLK------------------------//
 #define UPLL_CLK_ENABLE  Enable
 #define UPLL_CLK_SOURCE  PLL_CLK_SOURCE//必须与MPLL相同
-#define UPLL_CLK_M_DIV   PLL_DIV2
+#define UPLL_CLK_M_DIV   PLL_DIV2+1
 //倍频系数，最低倍频数20，最高80/
-#define UPLL_CLK_NUM      21u
+#define UPLL_CLK_NUM      42u
 
 #define UPLL_CLK_P_DIV      PLL_DIV2+1//UPLL 预分频数
 #define UPLL_CLK_Q_DIV      PLL_DIV2+1
