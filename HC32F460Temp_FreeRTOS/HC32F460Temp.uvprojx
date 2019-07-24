@@ -800,11 +800,6 @@
               <FilePath>.\PeripheralDriver\User_TRNG.c</FilePath>
             </File>
             <File>
-              <FileName>User_Uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\PeripheralDriver\User_Uart.c</FilePath>
-            </File>
-            <File>
               <FileName>User_SDIO.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\PeripheralDriver\User_SDIO.c</FilePath>
@@ -818,6 +813,16 @@
               <FileName>User_QSPI.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\PeripheralDriver\User_QSPI.h</FilePath>
+            </File>
+            <File>
+              <FileName>Uart_DMA.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\PeripheralDriver\Uart_DMA.c</FilePath>
+            </File>
+            <File>
+              <FileName>FPU_Enable.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\PeripheralDriver\FPU_Enable.c</FilePath>
             </File>
           </Files>
         </Group>

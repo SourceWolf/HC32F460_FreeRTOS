@@ -22,6 +22,7 @@
 #define USART4_ERROR_IRQn       Int018_IRQn
 #define USART4_RX_IRQn          Int019_IRQn
 #define USART2_RTO_IRQn         Int020_IRQn
+#define DMA2_CH0_IRQn           Int021_IRQn
 //#define CAN_ERROR_IRQn          Int018_IRQn
 
 

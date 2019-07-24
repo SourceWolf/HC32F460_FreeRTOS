@@ -21,7 +21,8 @@
 #include "User_PWC.h"
 #include "User_CAN.h"
 #include "User_QSPI.h"
-#include "User_UART.h"
+//#include "User_UART.h"
+#include "Uart_DMA.h"
 uint8_t displaydata[4][128];
 TaskHandle_t Hd_Task_LED, Hd_Task_ADC,Hd_Task_Sleep;
 void Task_ADC(void *param);
@@ -54,7 +55,7 @@ void Task_LED(void *param)
     User_Gpio_Init();
     OLED_Init();
     User_OTS_Init();
-//    User_SPI_Init();
+    User_SPI_Init();
     Ddl_UartInit();
     taskENTER_CRITICAL();
     OLED_ShowString(48,0,(uint8_t *)"HDSC");
@@ -62,8 +63,8 @@ void Task_LED(void *param)
     printf("system Initailed!\r\n");
     Print_CPU_Temperature();
     taskEXIT_CRITICAL();
-    User_SPI_Init();
-    User_USART_Init();
+//    User_SPI_Init();
+//    User_USART_Init();
     xTaskCreate(Task_ADC,(const char *)"ADC", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+4, &Hd_Task_ADC );
     while(1)
     {        
@@ -77,12 +78,11 @@ void Task_ADC(void *param)
     User_ADC_Init();
     User_DMA_Init();
 //    User_CAN_Init();
-    User_QSPI_Flash_Init();
-    Test_QSPI();
-    
-//    taskENTER_CRITICAL();
-//    printf("AIN10 data:%d\r\n",Get_DCU1_Result());
-//    taskEXIT_CRITICAL();    
+//    User_QSPI_Flash_Init();
+//    Test_QSPI();
+    taskENTER_CRITICAL();
+    printf("AIN10 data:%d\r\n",Get_DCU1_Result());
+    taskEXIT_CRITICAL();    
     while(1)
     {      
  //       User_CAN_Test(); 
