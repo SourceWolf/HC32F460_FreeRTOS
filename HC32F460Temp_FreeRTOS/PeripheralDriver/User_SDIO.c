@@ -74,7 +74,7 @@ static en_result_t SdiocInitPins(void)
     return Ok;
 }
 
-void SD_CARD_Init(void)
+en_result_t SD_CARD_Init(void)
 {
     en_result_t enTestResult = Ok;
     SdiocInitPins();
@@ -82,8 +82,17 @@ void SD_CARD_Init(void)
     if(Ok != SDCARD_Init(&m_stcSdhandle, &m_stcCardInitCfg))
     {
         enTestResult = Error;
-    }    
-}    
+    }
+        return enTestResult;
+}
+en_result_t FS_SD_ReadBlocks(const uint8_t* buff, uint16_t BlockAddr, uint8_t BlockCnt)
+{
+    return SDCARD_ReadBlocks(&m_stcSdhandle, BlockAddr,BlockCnt,(uint8_t *)buff,2000);
+}
+en_result_t FS_SD_WriteBlocks(const uint8_t* buff, uint16_t BlockAddr, uint8_t BlockCnt)
+{
+    return SDCARD_WriteBlocks(&m_stcSdhandle, BlockAddr,BlockCnt,(uint8_t *)buff,2000);
+}  
 void SD_CARD_TEST(void)
 {
     en_result_t enTestResult = Ok;

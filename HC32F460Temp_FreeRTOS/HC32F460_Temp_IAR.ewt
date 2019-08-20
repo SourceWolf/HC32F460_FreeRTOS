@@ -2524,6 +2524,18 @@
         </file>
     </group>
     <group>
+        <name>FileSystem</name>
+        <file>
+            <name>$PROJ_DIR$\FileSystem\src\diskio.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\FileSystem\src\fattime.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\FileSystem\src\ff.c</name>
+        </file>
+    </group>
+    <group>
         <name>FreeRTOS</name>
         <file>
             <name>$PROJ_DIR$\FreeRTOS\CMSIS_RTOS\cmsis_os.c</name>

@@ -23,9 +23,15 @@
 #include "User_QSPI.h"
 //#include "User_UART.h"
 #include "Uart_DMA.h"
+#include "ff.h"
+#include "diskio.h"
 uint8_t displaydata[4][128];
 TaskHandle_t Hd_Task_LED, Hd_Task_ADC,Hd_Task_Sleep;
 void Task_ADC(void *param);
+char line[82];
+FATFS FatFs;
+FRESULT fr;
+FIL Myfile; 
 void Sleep_init(void)
 {
     stc_pwc_pwr_mode_cfg_t  stcPwcPwrMdCfg;
@@ -63,6 +69,12 @@ void Task_LED(void *param)
     printf("system Initailed!\r\n");
     Print_CPU_Temperature();
     taskEXIT_CRITICAL();
+    disk_initialize(SD_Card);
+    f_mount(SD_Card,&FatFs);//Çý¶¯Æ÷0
+    fr = f_open(&Myfile,"myfile.txt",FA_READ);
+    f_gets(line, sizeof line, &Myfile);
+        printf("%s\r\n",line);
+    f_close(&Myfile);
 //    User_SPI_Init();
 //    User_USART_Init();
     xTaskCreate(Task_ADC,(const char *)"ADC", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+4, &Hd_Task_ADC );

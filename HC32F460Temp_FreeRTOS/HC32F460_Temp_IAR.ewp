@@ -382,6 +382,7 @@
                     <state>$PROJ_DIR$\FreeRTOS\portable\RVDS</state>
                     <state>$PROJ_DIR$\FreeRTOS\portable\RVDS\ARM_CM4F</state>
                     <state>$TOOLKIT_DIR$\CMSIS\Core\Include</state>
+                    <state>$PROJ_DIR$\FileSystem\inc</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -2241,6 +2242,18 @@
         </file>
         <file>
             <name>$PROJ_DIR$\driver\src\hc32f46x_wdt.c</name>
+        </file>
+    </group>
+    <group>
+        <name>FileSystem</name>
+        <file>
+            <name>$PROJ_DIR$\FileSystem\src\diskio.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\FileSystem\src\fattime.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\FileSystem\src\ff.c</name>
         </file>
     </group>
     <group>

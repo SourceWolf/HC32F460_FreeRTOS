@@ -10,7 +10,8 @@
       <TargetName>HC32F460</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060422::V5.06 update 4 (build 422)::ARMCC</pCCUsed>
+      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>HC32F460PETB</Device>
@@ -183,6 +184,7 @@
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
             <RvdsVP>2</RvdsVP>
+            <RvdsMve>0</RvdsMve>
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -323,6 +325,7 @@
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
+            <uGnu>0</uGnu>
             <useXO>0</useXO>
             <v6Lang>1</v6Lang>
             <v6LangP>1</v6LangP>
@@ -335,7 +338,7 @@
               <MiscControls>--diag_suppress=186,66</MiscControls>
               <Define>HC32F46x,USE_DEVICE_DRIVER_LIB,__TARGET_FPU_VFP,__FPU_PRESENT=1,ARM_MATH_CM4,__CC_ARM,ARM_MATH_MATRIX_CHECK,ARM_MATH_ROUNDING</Define>
               <Undefine></Undefine>
-              <IncludePath>.\common;.\driver\src;.\driver\inc;.\driver;.\usb_lib\ctl_drv;.\usb_lib\device_class\hid;.\usb_lib\device_core;.\App;.\FreeRTOS;.\FreeRTOS\include;.\FreeRTOS\CMSIS_RTOS;.\FreeRTOS\portable\MemMang;.\FreeRTOS\portable\RVDS;.\PeripheralDriver;.\midware\OLED;.\midware\OLED;.\midware\sd_card\inc;.\midware\sd_card\src;.\midware\sd_card;.\midware\wm8731;.\midware\wm8731\inc;.\midware\wm8731\src;.\FreeRTOS\portable\MDK</IncludePath>
+              <IncludePath>.\common;.\driver\src;.\driver\inc;.\driver;.\usb_lib\ctl_drv;.\usb_lib\device_class\hid;.\usb_lib\device_core;.\App;.\FreeRTOS;.\FreeRTOS\include;.\FreeRTOS\CMSIS_RTOS;.\FreeRTOS\portable\MemMang;.\FreeRTOS\portable\RVDS;.\PeripheralDriver;.\midware\OLED;.\midware\OLED;.\midware\sd_card\inc;.\midware\sd_card\src;.\midware\sd_card;.\midware\wm8731;.\midware\wm8731\inc;.\midware\wm8731\src;.\FreeRTOS\portable\MDK;.\FileSystem\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -908,6 +911,26 @@
               <FileName>sd_card.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\midware\sd_card\src\sd_card.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>FileSystem</GroupName>
+          <Files>
+            <File>
+              <FileName>diskio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FileSystem\src\diskio.c</FilePath>
+            </File>
+            <File>
+              <FileName>fattime.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FileSystem\src\fattime.c</FilePath>
+            </File>
+            <File>
+              <FileName>ff.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\FileSystem\src\ff.c</FilePath>
             </File>
           </Files>
         </Group>
