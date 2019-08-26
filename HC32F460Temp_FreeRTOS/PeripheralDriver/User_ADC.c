@@ -7,7 +7,7 @@ uint16_t Get_AIN10Data(void)
 }
 void Get_ADC1_Data(uint16_t *data)
 {
-    *data = M4_ADC1->DR10;
+    *data = M4_ADC1->DR1;
 }
 void Set_ADC_Data(uint16_t data)
 {
@@ -25,7 +25,7 @@ void ADC1_Start_convert(void)
 
 void User_ADC_Init(void)
 {
-	uint8_t au8Adc1SaSampTime = 0x60;
+	uint8_t au8Adc1SaSampTime = 0xFF;
 	stc_adc_init_t stcAdcInit;
     stc_adc_ch_cfg_t  stcAdcBaseCFG;
     stc_irq_regi_conf_t stcIrqRegiConf;
@@ -39,27 +39,31 @@ void User_ADC_Init(void)
     MEM_ZERO_STRUCT(ADC_PGA_CFG);
     
 //    CLK_SetPeriClkSource(ClkAdcSrcMpllp);//MPLLP 3分频56MHz
-    PWC_Fcg3PeriphClockCmd(PWC_FCG3_PERIPH_ADC1 | PWC_FCG3_PERIPH_ADC2, Enable);
+    PWC_Fcg3PeriphClockCmd(PWC_FCG3_PERIPH_ADC1, Enable);
     stcAdcInit.enScanMode = AdcMode_SAOnce;
     stcAdcInit.enDataAlign = AdcDataAlign_Right;
     stcAdcInit.enResolution = AdcResolution_12Bit;
     stcAdcInit.enAutoClear = AdcClren_Enable;
+    
 //    stcAdcInit.enAverageCount = AdcAvcnt_4;
     
     
     ADC_Init(M4_ADC1, &stcAdcInit);//配置ADC
-    ADC_Init(M4_ADC2, &stcAdcInit);
+//    ADC_Init(M4_ADC2, &stcAdcInit);
 
-    ADC_PGA_CFG.enCtl = AdcPgaCtl_NoAmplification;
-    ADC_ConfigPga(&ADC_PGA_CFG);
-
+    ADC_PGA_CFG.enCtl = AdcPgaCtl_Amplify;//功能打开，使能PGA
+    ADC_PGA_CFG.enFactor = AdcPgaFactor_2;//放大倍数2倍
+    ADC_PGA_CFG.enNegativeIn = AdcPgaNegative_VSSA;//PGA负端输入接模拟地
+    ADC_ConfigPga(&ADC_PGA_CFG);//配置PGA
+    ADC_AddPgaChannel(PGA_CH1);//配置PGA通道为AN1;
+    ADC_PgaCmd(Disable);//PGA使能
     Port_CFG.enPinMode = Pin_Mode_Ana;
-    PORT_Init(PortC, Pin00, &Port_CFG);//config PC00 As ADC_IN10
+    PORT_Init(PortA, Pin01, &Port_CFG);//config PC00 As ADC_IN10
     
-    stcAdcBaseCFG.u32Channel = ADC1_CH10;
+    stcAdcBaseCFG.u32Channel = ADC1_CH1;
 //    stcAdcBaseCFG.enAvgEnable = true;
     stcAdcBaseCFG.pu8SampTime = &au8Adc1SaSampTime;
-    stcAdcBaseCFG.u8Sequence = AdcSequence_A;//Must be setting, Default can nog convert data
+    stcAdcBaseCFG.u8Sequence = AdcSequence_A;//Must be setting, Default can not convert data
     ADC_AddAdcChannel(M4_ADC1, &stcAdcBaseCFG);
 
   stcIrqRegiConf.enIntSrc = INT_ADC1_EOCA;

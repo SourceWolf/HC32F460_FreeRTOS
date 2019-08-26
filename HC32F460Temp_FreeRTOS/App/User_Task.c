@@ -61,7 +61,7 @@ void Task_LED(void *param)
     User_Gpio_Init();
     OLED_Init();
     User_OTS_Init();
-    User_SPI_Init();
+//    User_SPI_Init();
     Ddl_UartInit();
     taskENTER_CRITICAL();
     OLED_ShowString(48,0,(uint8_t *)"HDSC");
@@ -93,7 +93,7 @@ void Task_ADC(void *param)
 //    User_QSPI_Flash_Init();
 //    Test_QSPI();
     taskENTER_CRITICAL();
-    printf("AIN10 data:%d\r\n",Get_DCU1_Result());
+    printf("AIN10 data:%d\r\n",Get_DCU1_Result()-1000);
     taskEXIT_CRITICAL();    
     while(1)
     {      
@@ -105,7 +105,7 @@ void Task_ADC(void *param)
 //            printf("DCU_INT occur!\r\n");
         } 
         taskENTER_CRITICAL();
-        printf("AIN10 data:%d\r\n",Get_DCU1_Result());
+        printf("AIN10 data:%d\r\n",Get_DCU1_Result()-1000);
         taskEXIT_CRITICAL();   
         vTaskDelay(1000/portTICK_PERIOD_MS);
     }
