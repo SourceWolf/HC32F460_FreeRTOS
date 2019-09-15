@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -138,10 +138,10 @@
     (OcoOcfHold == (x)))
 
 /*!< Get the specified register address of the specified Timer4 unit */
-#define TMR4_OCCRx(__TMR4x__, __CH__)       ((uint32_t)&__TMR4x__->OCCRUH + ((uint32_t)__CH__)*4)
-#define TMR4_OCMRx(__TMR4x__, __CH__)       ((uint32_t)&__TMR4x__->OCMRUH + ((uint32_t)__CH__)*4)
-#define TMR4_OCERx(__TMR4x__, __CH__)       ((uint32_t)&__TMR4x__->OCERU + (((uint32_t)__CH__)/2u)*4u)
-#define TMR4_OCSRx(__TMR4x__, __CH__)       ((uint32_t)&__TMR4x__->OCSRU + (((uint32_t)__CH__)/2u)*4u)
+#define TMR4_OCCRx(__TMR4x__, __CH__)       ((uint32_t)&(__TMR4x__)->OCCRUH + ((uint32_t)(__CH__))*4ul)
+#define TMR4_OCMRx(__TMR4x__, __CH__)       ((uint32_t)&(__TMR4x__)->OCMRHUH + ((uint32_t)(__CH__))*4ul)
+#define TMR4_OCERx(__TMR4x__, __CH__)       ((uint32_t)&(__TMR4x__)->OCERU + (((uint32_t)(__CH__))/2ul)*4ul)
+#define TMR4_OCSRx(__TMR4x__, __CH__)       ((uint32_t)&(__TMR4x__)->OCSRU + (((uint32_t)(__CH__))/2ul)*4ul)
 
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
@@ -189,203 +189,210 @@ en_result_t TIMER4_OCO_Init(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_oco_ch_t enCh,
                                 const stc_timer4_oco_init_t* pstcInitCfg)
 {
-    __IO stc_tmr4_ocsru_field_t* pstcOCSR;
-    __IO stc_tmr4_oceru_field_t* pstcOCER;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_OCO_CH(enCh));
-    DDL_ASSERT(IS_VALID_TIMER4(TMR4x));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enOcoIntCmd));
-    DDL_ASSERT(IS_VALID_OP_PORT_LEVEL(pstcInitCfg->enPortLevel));
-    DDL_ASSERT(IS_VALID_OCMR_BUF_MODE(pstcInitCfg->enOcmrBufMode));
-    DDL_ASSERT(IS_VALID_OCCR_BUF_MODE(pstcInitCfg->enOccrBufMode));
+    __IO stc_tmr4_ocsr_field_t* pstcOCSR = NULL;
+    __IO stc_tmr4_ocer_field_t* pstcOCER = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x && pstcInitCfg pointer */
-    if ((!IS_VALID_TIMER4(TMR4x)) || (NULL == pstcInitCfg))
+    if ((IS_VALID_TIMER4(TMR4x)) && (NULL != pstcInitCfg))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_OCO_CH(enCh));
+        DDL_ASSERT(IS_VALID_TIMER4(TMR4x));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enOcoIntCmd));
+        DDL_ASSERT(IS_VALID_OP_PORT_LEVEL(pstcInitCfg->enPortLevel));
+        DDL_ASSERT(IS_VALID_OCMR_BUF_MODE(pstcInitCfg->enOcmrBufMode));
+        DDL_ASSERT(IS_VALID_OCCR_BUF_MODE(pstcInitCfg->enOccrBufMode));
 
-    /* Get pointer of current channel OCO register address */
-    pstcOCER = (__IO stc_tmr4_oceru_field_t*)TMR4_OCERx(TMR4x,enCh);
-    pstcOCSR = (__IO stc_tmr4_ocsru_field_t*)TMR4_OCSRx(TMR4x,enCh);
+        enRet = Ok;
+        /* Get pointer of current channel OCO register address */
+        pstcOCER = (__IO stc_tmr4_ocer_field_t*)TMR4_OCERx(TMR4x,enCh);
+        pstcOCSR = (__IO stc_tmr4_ocsr_field_t*)TMR4_OCSRx(TMR4x,enCh);
 
-    /* Set OCMR and OCCR buffer mode */
-    if (IS_VALID_OCO_HIGH_CH(enCh)) /* channel: Timer4OcoOuh, Timer4OcoOvh, Timer4OcoOwh */
-    {
-        pstcOCSR->OCEHU = 0u;
-        pstcOCSR->OCFHU = 0u;
-
-        /* OCMR buffer */
-        switch (pstcInitCfg->enOcmrBufMode)
+        /* Set OCMR and OCCR buffer mode */
+        if (IS_VALID_OCO_HIGH_CH(enCh)) /* channel: Timer4OcoOuh, Timer4OcoOvh, Timer4OcoOwh */
         {
-            case OcmrBufDisable:
-                pstcOCER->LMMHU = 0u;
-                pstcOCER->MHBUFENU = 0u;
-                break;
-            case OcmrBufTrsfByCntZero:
-                pstcOCER->LMMHU = 0u;
-                pstcOCER->MHBUFENU = 1u;
-                break;
-            case OcmrBufTrsfByCntPeak:
-                pstcOCER->LMMHU = 0u;
-                pstcOCER->MHBUFENU = 2u;
-                break;
-            case OcmrBufTrsfByCntZeroOrCntPeak:
-                pstcOCER->LMMHU = 0u;
-                pstcOCER->MHBUFENU = 3u;
-                break;
-            case OcmrBufTrsfByCntZeroZicZero:
-                pstcOCER->LMMHU = 1u;
-                pstcOCER->MHBUFENU = 1u;
-                break;
-            case OcmrBufTrsfByCntPeakPicZero:
-                pstcOCER->LMMHU = 1u;
-                pstcOCER->MHBUFENU = 2u;
-                break;
-            case OcmrBufTrsfByCntZeroZicZeroOrCntPeakPicZero:
-                pstcOCER->LMMHU = 1u;
-                pstcOCER->MHBUFENU = 3u;
-                break;
-            default:
-                return ErrorInvalidParameter;
-        }
+            pstcOCSR->OCEH = (uint16_t)0u;
+            pstcOCSR->OCFH = (uint16_t)0u;
 
-        /* OCCR buffer */
-        switch (pstcInitCfg->enOccrBufMode)
+            /* OCMR buffer */
+            switch (pstcInitCfg->enOcmrBufMode)
+            {
+                case OcmrBufDisable:
+                    pstcOCER->LMMH = (uint16_t)0u;
+                    pstcOCER->MHBUFEN = (uint16_t)0u;
+                    break;
+                case OcmrBufTrsfByCntZero:
+                    pstcOCER->LMMH = (uint16_t)0u;
+                    pstcOCER->MHBUFEN = (uint16_t)1u;
+                    break;
+                case OcmrBufTrsfByCntPeak:
+                    pstcOCER->LMMH = (uint16_t)0u;
+                    pstcOCER->MHBUFEN = (uint16_t)2u;
+                    break;
+                case OcmrBufTrsfByCntZeroOrCntPeak:
+                    pstcOCER->LMMH = (uint16_t)0u;
+                    pstcOCER->MHBUFEN = (uint16_t)3u;
+                    break;
+                case OcmrBufTrsfByCntZeroZicZero:
+                    pstcOCER->LMMH = (uint16_t)1u;
+                    pstcOCER->MHBUFEN = (uint16_t)1u;
+                    break;
+                case OcmrBufTrsfByCntPeakPicZero:
+                    pstcOCER->LMMH = (uint16_t)1u;
+                    pstcOCER->MHBUFEN = (uint16_t)2u;
+                    break;
+                case OcmrBufTrsfByCntZeroZicZeroOrCntPeakPicZero:
+                    pstcOCER->LMMH = (uint16_t)1u;
+                    pstcOCER->MHBUFEN = (uint16_t)3u;
+                    break;
+                default:
+                    enRet = ErrorInvalidParameter;
+                    break;
+            }
+
+            if (enRet == Ok)
+            {
+                /* OCCR buffer */
+                switch (pstcInitCfg->enOccrBufMode)
+                {
+                    case OccrBufDisable:
+                        pstcOCER->LMCH = (uint16_t)0u;
+                        pstcOCER->CHBUFEN = (uint16_t)0u;
+                        break;
+                    case OccrBufTrsfByCntZero:
+                        pstcOCER->LMCH = (uint16_t)0u;
+                        pstcOCER->CHBUFEN = (uint16_t)1u;
+                        break;
+                    case OccrBufTrsfByCntPeak:
+                        pstcOCER->LMCH = (uint16_t)0u;
+                        pstcOCER->CHBUFEN = (uint16_t)2u;
+                        break;
+                    case OccrBufTrsfByCntZeroOrCntPeak:
+                        pstcOCER->LMCH = (uint16_t)0u;
+                        pstcOCER->CHBUFEN = (uint16_t)3u;
+                        break;
+                    case OccrBufTrsfByCntZeroZicZero:
+                        pstcOCER->LMCH = (uint16_t)1u;
+                        pstcOCER->CHBUFEN = (uint16_t)1u;
+                        break;
+                    case OccrBufTrsfByCntPeakPicZero:
+                        pstcOCER->LMCH = (uint16_t)1u;
+                        pstcOCER->CHBUFEN = (uint16_t)2u;
+                        break;
+                    case OccrBufTrsfByCntZeroZicZeroOrCntPeakPicZero:
+                        pstcOCER->LMCH = (uint16_t)1u;
+                        pstcOCER->CHBUFEN = (uint16_t)3u;
+                        break;
+                    default:
+                        enRet = ErrorInvalidParameter;
+                        break;
+                }
+            }
+
+            if (enRet == Ok)
+            {
+                /* Set initial OP level */
+                pstcOCSR->OCPH = (uint16_t)(pstcInitCfg->enPortLevel);
+                /* set interrupt enable */
+                pstcOCSR->OCIEH = (uint16_t)(pstcInitCfg->enOcoIntCmd);
+            }
+        }
+        else if (IS_VALID_OCO_LOW_CH(enCh)) /* channel: Timer4OcoOul, Timer4OcoOvl, Timer4OcoOwl */
         {
-            case OccrBufDisable:
-                pstcOCER->LMCHU = 0u;
-                pstcOCER->CHBUFENU = 0u;
-                break;
-            case OccrBufTrsfByCntZero:
-                pstcOCER->LMCHU = 0u;
-                pstcOCER->CHBUFENU = 1u;
-                break;
-            case OccrBufTrsfByCntPeak:
-                pstcOCER->LMCHU = 0u;
-                pstcOCER->CHBUFENU = 2u;
-                break;
-            case OccrBufTrsfByCntZeroOrCntPeak:
-                pstcOCER->LMCHU = 0u;
-                pstcOCER->CHBUFENU = 3u;
-                break;
-            case OccrBufTrsfByCntZeroZicZero:
-                pstcOCER->LMCHU = 1u;
-                pstcOCER->CHBUFENU = 1u;
-                break;
-            case OccrBufTrsfByCntPeakPicZero:
-                pstcOCER->LMCHU = 1u;
-                pstcOCER->CHBUFENU = 2u;
-                break;
-            case OccrBufTrsfByCntZeroZicZeroOrCntPeakPicZero:
-                pstcOCER->LMCHU = 1u;
-                pstcOCER->CHBUFENU = 3u;
-                break;
-            default:
-                return ErrorInvalidParameter;
+            pstcOCSR->OCEL = (uint16_t)0u;
+            pstcOCSR->OCFL = (uint16_t)0u;
+
+            /* OCMR buffer */
+            switch (pstcInitCfg->enOcmrBufMode)
+            {
+                case OcmrBufDisable:
+                    pstcOCER->LMML = (uint16_t)0u;
+                    pstcOCER->MLBUFEN = (uint16_t)0u;
+                    break;
+                case OcmrBufTrsfByCntZero:
+                    pstcOCER->LMML = (uint16_t)0u;
+                    pstcOCER->MLBUFEN = (uint16_t)1u;
+                    break;
+                case OcmrBufTrsfByCntPeak:
+                    pstcOCER->LMML = (uint16_t)0u;
+                    pstcOCER->MLBUFEN = (uint16_t)2u;
+                    break;
+                case OcmrBufTrsfByCntZeroOrCntPeak:
+                    pstcOCER->LMML = (uint16_t)0u;
+                    pstcOCER->MLBUFEN = (uint16_t)3u;
+                    break;
+                case OcmrBufTrsfByCntZeroZicZero:
+                    pstcOCER->LMML = (uint16_t)1u;
+                    pstcOCER->MLBUFEN = (uint16_t)1u;
+                    break;
+                case OcmrBufTrsfByCntPeakPicZero:
+                    pstcOCER->LMML = (uint16_t)1u;
+                    pstcOCER->MLBUFEN = (uint16_t)2u;
+                    break;
+                case OcmrBufTrsfByCntZeroZicZeroOrCntPeakPicZero:
+                    pstcOCER->LMML = (uint16_t)1u;
+                    pstcOCER->MLBUFEN = (uint16_t)3u;
+                    break;
+                default:
+                    enRet = ErrorInvalidParameter;
+                    break;
+            }
+
+            if (enRet == Ok)
+            {
+                /* OCCR buffer */
+                switch (pstcInitCfg->enOccrBufMode)
+                {
+                    case OccrBufDisable:
+                        pstcOCER->LMCL = (uint16_t)0u;
+                        pstcOCER->CLBUFEN = (uint16_t)0u;
+                        break;
+                    case OccrBufTrsfByCntZero:
+                        pstcOCER->LMCL = (uint16_t)0u;
+                        pstcOCER->CLBUFEN = (uint16_t)1u;
+                        break;
+                    case OccrBufTrsfByCntPeak:
+                        pstcOCER->LMCL = (uint16_t)0u;
+                        pstcOCER->CLBUFEN = (uint16_t)2u;
+                        break;
+                    case OccrBufTrsfByCntZeroOrCntPeak:
+                        pstcOCER->LMCL = (uint16_t)0u;
+                        pstcOCER->CLBUFEN = (uint16_t)3u;
+                        break;
+                    case OccrBufTrsfByCntZeroZicZero:
+                        pstcOCER->LMCL = (uint16_t)1u;
+                        pstcOCER->CLBUFEN = (uint16_t)1u;
+                        break;
+                    case OccrBufTrsfByCntPeakPicZero:
+                        pstcOCER->LMCL = (uint16_t)1u;
+                        pstcOCER->CLBUFEN = (uint16_t)2u;
+                        break;
+                    case OccrBufTrsfByCntZeroZicZeroOrCntPeakPicZero:
+                        pstcOCER->LMCL = (uint16_t)1u;
+                        pstcOCER->CLBUFEN = (uint16_t)3u;
+                        break;
+                    default:
+                        enRet = ErrorInvalidParameter;
+                        break;
+                }
+            }
+
+            if (enRet == Ok)
+            {
+                /* Set initial OP level */
+                pstcOCSR->OCPL = (uint16_t)(pstcInitCfg->enPortLevel);
+                /* set interrupt enable */
+                pstcOCSR->OCIEL = (uint16_t)(pstcInitCfg->enOcoIntCmd);
+            }
         }
-
-        /* Set initial OP level */
-        pstcOCSR->OCPHU = ((pstcInitCfg->enPortLevel == OcPortLevelHigh) ? 1u : 0u);
-    }
-    else if (IS_VALID_OCO_LOW_CH(enCh)) /* channel: Timer4OcoOul, Timer4OcoOvl, Timer4OcoOwl */
-    {
-        pstcOCSR->OCELU = 0u;
-        pstcOCSR->OCFLU = 0u;
-
-        /* OCMR buffer */
-        switch (pstcInitCfg->enOcmrBufMode)
+        else
         {
-            case OcmrBufDisable:
-                pstcOCER->LMMLU = 0u;
-                pstcOCER->MLBUFENU = 0u;
-                break;
-            case OcmrBufTrsfByCntZero:
-                pstcOCER->LMMLU = 0u;
-                pstcOCER->MLBUFENU = 1u;
-                break;
-            case OcmrBufTrsfByCntPeak:
-                pstcOCER->LMMLU = 0u;
-                pstcOCER->MLBUFENU = 2u;
-                break;
-            case OcmrBufTrsfByCntZeroOrCntPeak:
-                pstcOCER->LMMLU = 0u;
-                pstcOCER->MLBUFENU = 3u;
-                break;
-            case OcmrBufTrsfByCntZeroZicZero:
-                pstcOCER->LMMLU = 1u;
-                pstcOCER->MLBUFENU = 1u;
-                break;
-            case OcmrBufTrsfByCntPeakPicZero:
-                pstcOCER->LMMLU = 1u;
-                pstcOCER->MLBUFENU = 2u;
-                break;
-            case OcmrBufTrsfByCntZeroZicZeroOrCntPeakPicZero:
-                pstcOCER->LMMLU = 1u;
-                pstcOCER->MLBUFENU = 3u;
-                break;
-            default:
-                return ErrorInvalidParameter ;
+            enRet = ErrorInvalidParameter;
         }
-
-        /* OCCR buffer */
-        switch (pstcInitCfg->enOccrBufMode)
-        {
-            case OccrBufDisable:
-                pstcOCER->LMCLU = 0u;
-                pstcOCER->CLBUFENU = 0u;
-                break;
-            case OccrBufTrsfByCntZero:
-                pstcOCER->LMCLU = 0u;
-                pstcOCER->CLBUFENU = 1u;
-                break;
-            case OccrBufTrsfByCntPeak:
-                pstcOCER->LMCLU = 0u;
-                pstcOCER->CLBUFENU = 2u;
-                break;
-            case OccrBufTrsfByCntZeroOrCntPeak:
-                pstcOCER->LMCLU = 0u;
-                pstcOCER->CLBUFENU = 3u;
-                break;
-            case OccrBufTrsfByCntZeroZicZero:
-                pstcOCER->LMCLU = 1u;
-                pstcOCER->CLBUFENU = 1u;
-                break;
-            case OccrBufTrsfByCntPeakPicZero:
-                pstcOCER->LMCLU = 1u;
-                pstcOCER->CLBUFENU = 2u;
-                break;
-            case OccrBufTrsfByCntZeroZicZeroOrCntPeakPicZero:
-                pstcOCER->LMCLU = 1u;
-                pstcOCER->CLBUFENU = 3u;
-                break;
-            default:
-                return ErrorInvalidParameter;
-        }
-
-        /* Set initial OP level */
-        pstcOCSR->OCPLU = ((OcPortLevelHigh == pstcInitCfg->enPortLevel) ? 1u : 0u);
-    }
-    else
-    {
-        return ErrorInvalidParameter;
     }
 
-    /* set interrupt enable */
-    if (0u == ((uint32_t)enCh & 1u)) /* channel: Timer4OcoOuh, Timer4OcoOvh, Timer4OcoOwh */
-    {
-        pstcOCSR->OCIEHU = (Enable == pstcInitCfg->enOcoIntCmd) ? 1u:0u;
-    }
-    else /* channel: Timer4OcoOul, Timer4OcoOvl, Timer4OcoOwl */
-    {
-        pstcOCSR->OCIELU = (Enable == pstcInitCfg->enOcoIntCmd) ? 1u:0u;
-    }
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -413,62 +420,60 @@ en_result_t TIMER4_OCO_Init(M4_TMR4_TypeDef *TMR4x,
 en_result_t TIMER4_OCO_DeInit(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_oco_ch_t enCh)
 {
-    __IO uint16_t* pu16OCCR;
-    __IO uint32_t* pu32OCMR;
-    __IO stc_tmr4_ocsru_field_t* pstcOCSR;
-    __IO stc_tmr4_oceru_field_t* pstcOCER;
+    __IO uint16_t* pu16OCCR = NULL;
+    __IO uint32_t u32OCMR = 0ul;
+    __IO stc_tmr4_ocsr_field_t* pstcOCSR = NULL;
+    __IO stc_tmr4_ocer_field_t* pstcOCER = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
     DDL_ASSERT(IS_VALID_OCO_CH(enCh));
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        enRet = Ok;
+        u32OCMR = TMR4_OCMRx(TMR4x, enCh);
+        pu16OCCR = (__IO uint16_t*)TMR4_OCCRx(TMR4x, enCh);
+        pstcOCSR = (__IO stc_tmr4_ocsr_field_t*)TMR4_OCSRx(TMR4x, enCh);
+        pstcOCER = (__IO stc_tmr4_ocer_field_t*)TMR4_OCERx(TMR4x, enCh);
+
+        /* Set default value */
+        if (IS_VALID_OCO_HIGH_CH(enCh)) /* channel: Timer4OcoOuh, Timer4OcoOvh, Timer4OcoOwh */
+        {
+            pstcOCSR->OCEH = (uint16_t)0u;
+            pstcOCSR->OCFH = (uint16_t)0u;
+            pstcOCSR->OCIEH = (uint16_t)0u;
+            pstcOCSR->OCPH = (uint16_t)0u;
+            pstcOCER->LMMH = (uint16_t)0u;
+            pstcOCER->MHBUFEN = (uint16_t)0u;
+            pstcOCER->LMCH = (uint16_t)0u;
+            pstcOCER->CHBUFEN = (uint16_t)0u;
+            pstcOCER->MCECH = (uint16_t)0u;
+            *pu16OCCR = (uint16_t)0u;
+            *(__IO uint16_t*)u32OCMR = (uint16_t)0u;
+        }
+        else if (IS_VALID_OCO_LOW_CH(enCh)) /* channel: Timer4OcoOul, Timer4OcoOvl, Timer4OcoOwl */
+        {
+            pstcOCSR->OCEL = (uint16_t)0u;
+            pstcOCSR->OCFL = (uint16_t)0u;
+            pstcOCSR->OCIEL = (uint16_t)0u;
+            pstcOCSR->OCPL = (uint16_t)0u;
+            pstcOCER->LMML = (uint16_t)0u;
+            pstcOCER->MLBUFEN = (uint16_t)0u;
+            pstcOCER->LMCL = (uint16_t)0u;
+            pstcOCER->CLBUFEN = (uint16_t)0u;
+            pstcOCER->MCECL = (uint16_t)0u;
+            *pu16OCCR = (uint16_t)0u;
+            *(__IO uint32_t*)u32OCMR = (uint32_t)0ul;
+        }
+        else
+        {
+            enRet = ErrorInvalidParameter;
+        }
     }
 
-    pu16OCCR = (__IO uint16_t*)TMR4_OCCRx(TMR4x, enCh);
-    pu32OCMR = (__IO uint32_t*)TMR4_OCMRx(TMR4x, enCh);
-    pstcOCSR = (__IO stc_tmr4_ocsru_field_t*)TMR4_OCSRx(TMR4x, enCh);
-    pstcOCER = (__IO stc_tmr4_oceru_field_t*)TMR4_OCERx(TMR4x, enCh);
-
-    /* Set default value */
-    if (IS_VALID_OCO_HIGH_CH(enCh)) /* channel: Timer4OcoOuh, Timer4OcoOvh, Timer4OcoOwh */
-    {
-        pstcOCSR->OCEHU = 0u;
-        pstcOCSR->OCFHU = 0u;
-        pstcOCSR->OCIEHU = 0u;
-        pstcOCSR->OCPHU = 0u;
-        pstcOCER->LMMHU = 0u;
-        pstcOCER->MHBUFENU = 0u;
-        pstcOCER->LMCHU = 0u;
-        pstcOCER->CHBUFENU = 0u;
-        pstcOCER->MCECHU = 0u;
-    }
-    else if (IS_VALID_OCO_LOW_CH(enCh)) /* channel: Timer4OcoOul, Timer4OcoOvl, Timer4OcoOwl */
-    {
-        pstcOCSR->OCELU = 0u;
-        pstcOCSR->OCFLU = 0u;
-        pstcOCSR->OCIELU = 0u;
-        pstcOCSR->OCPLU = 0u;
-        pstcOCER->LMMLU = 0u;
-        pstcOCER->MLBUFENU = 0u;
-        pstcOCER->LMCLU = 0u;
-        pstcOCER->CLBUFENU = 0u;
-        pstcOCER->MCECLU = 0u;
-    }
-    else
-    {
-        return ErrorInvalidParameter;
-    }
-
-    *pu16OCCR = 0u;
-    *pu32OCMR = 0u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -506,105 +511,101 @@ en_result_t TIMER4_OCO_SetOccrBufMode(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_oco_ch_t enCh,
                                 en_timer4_oco_occr_buf_t enOccrBufMode)
 {
-    en_result_t enRet = Ok;
-    __IO stc_tmr4_oceru_field_t *pstcOCER;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_OCO_CH(enCh));
-    DDL_ASSERT(IS_VALID_OCCR_BUF_MODE(enOccrBufMode));
+    __IO stc_tmr4_ocer_field_t *pstcOCER = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_OCO_CH(enCh));
+        DDL_ASSERT(IS_VALID_OCCR_BUF_MODE(enOccrBufMode));
 
-    /* Get pointer of current channel OCO register address */
-    pstcOCER = (__IO stc_tmr4_oceru_field_t*)TMR4_OCERx(TMR4x, enCh);
+        enRet = Ok;
+        /* Get pointer of current channel OCO register address */
+        pstcOCER = (__IO stc_tmr4_ocer_field_t*)TMR4_OCERx(TMR4x, enCh);
 
-    /* Set OCCR buffer mode */
-    if (IS_VALID_OCO_HIGH_CH(enCh)) /* channel: Timer4OcoOuh, Timer4OcoOvh, Timer4OcoOwh */
-    {
-        /* OCCR buffer */
-        switch (enOccrBufMode)
+        /* Set OCCR buffer mode */
+        if (IS_VALID_OCO_HIGH_CH(enCh)) /* channel: Timer4OcoOuh, Timer4OcoOvh, Timer4OcoOwh */
         {
-            case OccrBufDisable:
-                pstcOCER->LMCHU = 0u;
-                pstcOCER->CHBUFENU = 0u;
-                break;
-            case OccrBufTrsfByCntZero:
-                pstcOCER->LMCHU = 0u;
-                pstcOCER->CHBUFENU = 1u;
-                break;
-            case OccrBufTrsfByCntPeak:
-                pstcOCER->LMCHU = 0u;
-                pstcOCER->CHBUFENU = 2u;
-                break;
-            case OccrBufTrsfByCntZeroOrCntPeak:
-                pstcOCER->LMCHU = 0u;
-                pstcOCER->CHBUFENU = 3u;
-                break;
-            case OccrBufTrsfByCntZeroZicZero:
-                pstcOCER->LMCHU = 1u;
-                pstcOCER->CHBUFENU = 1u;
-                break;
-            case OccrBufTrsfByCntPeakPicZero:
-                pstcOCER->LMCHU = 1u;
-                pstcOCER->CHBUFENU = 2u;
-                break;
-            case OccrBufTrsfByCntZeroZicZeroOrCntPeakPicZero:
-                pstcOCER->LMCHU = 1u;
-                pstcOCER->CHBUFENU = 3u;
-                break;
-            default:
-                enRet = ErrorInvalidParameter;
-                break;
+            /* OCCR buffer */
+            switch (enOccrBufMode)
+            {
+                case OccrBufDisable:
+                    pstcOCER->LMCH = (uint16_t)0u;
+                    pstcOCER->CHBUFEN = (uint16_t)0u;
+                    break;
+                case OccrBufTrsfByCntZero:
+                    pstcOCER->LMCH = (uint16_t)0u;
+                    pstcOCER->CHBUFEN = (uint16_t)1u;
+                    break;
+                case OccrBufTrsfByCntPeak:
+                    pstcOCER->LMCH = (uint16_t)0u;
+                    pstcOCER->CHBUFEN = (uint16_t)2u;
+                    break;
+                case OccrBufTrsfByCntZeroOrCntPeak:
+                    pstcOCER->LMCH = (uint16_t)0u;
+                    pstcOCER->CHBUFEN = (uint16_t)3u;
+                    break;
+                case OccrBufTrsfByCntZeroZicZero:
+                    pstcOCER->LMCH = (uint16_t)1u;
+                    pstcOCER->CHBUFEN = (uint16_t)1u;
+                    break;
+                case OccrBufTrsfByCntPeakPicZero:
+                    pstcOCER->LMCH = (uint16_t)1u;
+                    pstcOCER->CHBUFEN = (uint16_t)2u;
+                    break;
+                case OccrBufTrsfByCntZeroZicZeroOrCntPeakPicZero:
+                    pstcOCER->LMCH = (uint16_t)1u;
+                    pstcOCER->CHBUFEN = (uint16_t)3u;
+                    break;
+                default:
+                    enRet = ErrorInvalidParameter;
+                    break;
+            }
         }
-    }
-    else if (IS_VALID_OCO_LOW_CH(enCh)) /* channel: Timer4OcoOul, Timer4OcoOvl, Timer4OcoOwl */
-    {
-        /* OCCR buffer */
-        switch (enOccrBufMode)
+        else if (IS_VALID_OCO_LOW_CH(enCh)) /* channel: Timer4OcoOul, Timer4OcoOvl, Timer4OcoOwl */
         {
-            case OccrBufDisable:
-                pstcOCER->LMCLU = 0u;
-                pstcOCER->CLBUFENU = 0u;
-                break;
-            case OccrBufTrsfByCntZero:
-                pstcOCER->LMCLU = 0u;
-                pstcOCER->CLBUFENU = 1u;
-                break;
-            case OccrBufTrsfByCntPeak:
-                pstcOCER->LMCLU = 0u;
-                pstcOCER->CLBUFENU = 2u;
-                break;
-            case OccrBufTrsfByCntZeroOrCntPeak:
-                pstcOCER->LMCLU = 0u;
-                pstcOCER->CLBUFENU = 3u;
-                break;
-            case OccrBufTrsfByCntZeroZicZero:
-                pstcOCER->LMCLU = 1u;
-                pstcOCER->CLBUFENU = 1u;
-                break;
-            case OccrBufTrsfByCntPeakPicZero:
-                pstcOCER->LMCLU = 1u;
-                pstcOCER->CLBUFENU = 2u;
-                break;
-            case OccrBufTrsfByCntZeroZicZeroOrCntPeakPicZero:
-                pstcOCER->LMCLU = 1u;
-                pstcOCER->CLBUFENU = 3u;
-                break;
-            default:
-                enRet = ErrorInvalidParameter;
-                break;
+            /* OCCR buffer */
+            switch (enOccrBufMode)
+            {
+                case OccrBufDisable:
+                    pstcOCER->LMCL = (uint16_t)0u;
+                    pstcOCER->CLBUFEN = (uint16_t)0u;
+                    break;
+                case OccrBufTrsfByCntZero:
+                    pstcOCER->LMCL = (uint16_t)0u;
+                    pstcOCER->CLBUFEN = (uint16_t)1u;
+                    break;
+                case OccrBufTrsfByCntPeak:
+                    pstcOCER->LMCL = (uint16_t)0u;
+                    pstcOCER->CLBUFEN = (uint16_t)2u;
+                    break;
+                case OccrBufTrsfByCntZeroOrCntPeak:
+                    pstcOCER->LMCL = (uint16_t)0u;
+                    pstcOCER->CLBUFEN = (uint16_t)3u;
+                    break;
+                case OccrBufTrsfByCntZeroZicZero:
+                    pstcOCER->LMCL = (uint16_t)1u;
+                    pstcOCER->CLBUFEN = (uint16_t)1u;
+                    break;
+                case OccrBufTrsfByCntPeakPicZero:
+                    pstcOCER->LMCL = (uint16_t)1u;
+                    pstcOCER->CLBUFEN = (uint16_t)2u;
+                    break;
+                case OccrBufTrsfByCntZeroZicZeroOrCntPeakPicZero:
+                    pstcOCER->LMCL = (uint16_t)1u;
+                    pstcOCER->CLBUFEN = (uint16_t)3u;
+                    break;
+                default:
+                    enRet = ErrorInvalidParameter;
+                    break;
+            }
         }
-    }
-    else
-    {
-        enRet = ErrorInvalidParameter;
+        else
+        {
+            enRet = ErrorInvalidParameter;
+        }
     }
 
     return enRet;
@@ -646,105 +647,101 @@ en_result_t TIMER4_OCO_SetOcmrBufMode(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_oco_ch_t enCh,
                                 en_timer4_oco_ocmr_buf_t enOcmrBufMode)
 {
-    en_result_t enRet = Ok;
-    __IO stc_tmr4_oceru_field_t *pstcOCER;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_OCO_CH(enCh));
-    DDL_ASSERT(IS_VALID_OCMR_BUF_MODE(enOcmrBufMode));
+    __IO stc_tmr4_ocer_field_t *pstcOCER = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_OCO_CH(enCh));
+        DDL_ASSERT(IS_VALID_OCMR_BUF_MODE(enOcmrBufMode));
 
-    /* Get pointer of current channel OCO register address */
-    pstcOCER = (__IO stc_tmr4_oceru_field_t*)TMR4_OCERx(TMR4x, enCh);
+        enRet = Ok;
+        /* Get pointer of current channel OCO register address */
+        pstcOCER = (__IO stc_tmr4_ocer_field_t*)TMR4_OCERx(TMR4x, enCh);
 
-    /* Set OCMR buffer mode */
-    if (IS_VALID_OCO_HIGH_CH(enCh)) /* channel: Timer4OcoOuh, Timer4OcoOvh, Timer4OcoOwh */
-    {
-        /* OCMR buffer */
-        switch (enOcmrBufMode)
+        /* Set OCMR buffer mode */
+        if (IS_VALID_OCO_HIGH_CH(enCh)) /* channel: Timer4OcoOuh, Timer4OcoOvh, Timer4OcoOwh */
         {
-            case OcmrBufDisable:
-                pstcOCER->LMMHU = 0u;
-                pstcOCER->MHBUFENU = 0u;
-                break;
-            case OcmrBufTrsfByCntZero:
-                pstcOCER->LMMHU = 0u;
-                pstcOCER->MHBUFENU = 1u;
-                break;
-            case OcmrBufTrsfByCntPeak:
-                pstcOCER->LMMHU = 0u;
-                pstcOCER->MHBUFENU = 2u;
-                break;
-            case OcmrBufTrsfByCntZeroOrCntPeak:
-                pstcOCER->LMMHU = 0u;
-                pstcOCER->MHBUFENU = 3u;
-                break;
-            case OcmrBufTrsfByCntZeroZicZero:
-                pstcOCER->LMMHU = 1u;
-                pstcOCER->MHBUFENU = 1u;
-                break;
-            case OcmrBufTrsfByCntPeakPicZero:
-                pstcOCER->LMMHU = 1u;
-                pstcOCER->MHBUFENU = 2u;
-                break;
-            case OcmrBufTrsfByCntZeroZicZeroOrCntPeakPicZero:
-                pstcOCER->LMMHU = 1u;
-                pstcOCER->MHBUFENU = 3u;
-                break;
-            default:
-                enRet = ErrorInvalidParameter;
-                break;
+            /* OCMR buffer */
+            switch (enOcmrBufMode)
+            {
+                case OcmrBufDisable:
+                    pstcOCER->LMMH = (uint16_t)0u;
+                    pstcOCER->MHBUFEN = (uint16_t)0u;
+                    break;
+                case OcmrBufTrsfByCntZero:
+                    pstcOCER->LMMH = (uint16_t)0u;
+                    pstcOCER->MHBUFEN = (uint16_t)1u;
+                    break;
+                case OcmrBufTrsfByCntPeak:
+                    pstcOCER->LMMH = (uint16_t)0u;
+                    pstcOCER->MHBUFEN = (uint16_t)2u;
+                    break;
+                case OcmrBufTrsfByCntZeroOrCntPeak:
+                    pstcOCER->LMMH = (uint16_t)0u;
+                    pstcOCER->MHBUFEN = (uint16_t)3u;
+                    break;
+                case OcmrBufTrsfByCntZeroZicZero:
+                    pstcOCER->LMMH = (uint16_t)1u;
+                    pstcOCER->MHBUFEN = (uint16_t)1u;
+                    break;
+                case OcmrBufTrsfByCntPeakPicZero:
+                    pstcOCER->LMMH = (uint16_t)1u;
+                    pstcOCER->MHBUFEN = (uint16_t)2u;
+                    break;
+                case OcmrBufTrsfByCntZeroZicZeroOrCntPeakPicZero:
+                    pstcOCER->LMMH = (uint16_t)1u;
+                    pstcOCER->MHBUFEN = (uint16_t)3u;
+                    break;
+                default:
+                    enRet = ErrorInvalidParameter;
+                    break;
+            }
         }
-    }
-    else if (IS_VALID_OCO_LOW_CH(enCh)) /* channel: Timer4OcoOul, Timer4OcoOvl, Timer4OcoOwl */
-    {
-       /* OCMR buffer */
-        switch (enOcmrBufMode)
+        else if (IS_VALID_OCO_LOW_CH(enCh)) /* channel: Timer4OcoOul, Timer4OcoOvl, Timer4OcoOwl */
         {
-            case OcmrBufDisable:
-                pstcOCER->LMMLU = 0u;
-                pstcOCER->MLBUFENU = 0u;
-                break;
-            case OcmrBufTrsfByCntZero:
-                pstcOCER->LMMLU = 0u;
-                pstcOCER->MLBUFENU = 1u;
-                break;
-            case OcmrBufTrsfByCntPeak:
-                pstcOCER->LMMLU = 0u;
-                pstcOCER->MLBUFENU = 2u;
-                break;
-            case OcmrBufTrsfByCntZeroOrCntPeak:
-                pstcOCER->LMMLU = 0u;
-                pstcOCER->MLBUFENU = 3u;
-                break;
-            case OcmrBufTrsfByCntZeroZicZero:
-                pstcOCER->LMMLU = 1u;
-                pstcOCER->MLBUFENU = 1u;
-                break;
-            case OcmrBufTrsfByCntPeakPicZero:
-                pstcOCER->LMMLU = 1u;
-                pstcOCER->MLBUFENU = 2u;
-                break;
-            case OcmrBufTrsfByCntZeroZicZeroOrCntPeakPicZero:
-                pstcOCER->LMMLU = 1u;
-                pstcOCER->MLBUFENU = 3u;
-                break;
-            default:
-                enRet = ErrorInvalidParameter;
-                break;
+           /* OCMR buffer */
+            switch (enOcmrBufMode)
+            {
+                case OcmrBufDisable:
+                    pstcOCER->LMML = (uint16_t)0u;
+                    pstcOCER->MLBUFEN = (uint16_t)0u;
+                    break;
+                case OcmrBufTrsfByCntZero:
+                    pstcOCER->LMML = (uint16_t)0u;
+                    pstcOCER->MLBUFEN = (uint16_t)1u;
+                    break;
+                case OcmrBufTrsfByCntPeak:
+                    pstcOCER->LMML = (uint16_t)0u;
+                    pstcOCER->MLBUFEN = (uint16_t)2u;
+                    break;
+                case OcmrBufTrsfByCntZeroOrCntPeak:
+                    pstcOCER->LMML = (uint16_t)0u;
+                    pstcOCER->MLBUFEN = (uint16_t)3u;
+                    break;
+                case OcmrBufTrsfByCntZeroZicZero:
+                    pstcOCER->LMML = (uint16_t)1u;
+                    pstcOCER->MLBUFEN = (uint16_t)1u;
+                    break;
+                case OcmrBufTrsfByCntPeakPicZero:
+                    pstcOCER->LMML = (uint16_t)1u;
+                    pstcOCER->MLBUFEN = (uint16_t)2u;
+                    break;
+                case OcmrBufTrsfByCntZeroZicZeroOrCntPeakPicZero:
+                    pstcOCER->LMML = (uint16_t)1u;
+                    pstcOCER->MLBUFEN = (uint16_t)3u;
+                    break;
+                default:
+                    enRet = ErrorInvalidParameter;
+                    break;
+            }
         }
-    }
-    else
-    {
-        enRet = ErrorInvalidParameter;
+        else
+        {
+            enRet = ErrorInvalidParameter;
+        }
     }
 
     return enRet;
@@ -777,28 +774,24 @@ en_result_t TIMER4_OCO_ExtMatchCondCmd(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_oco_ch_t enCh,
                                 en_functional_state_t enCmd)
 {
-    uint32_t u32Cmd = (uint32_t)enCmd;
-    __IO stc_tmr4_oceru_field_t *pstcOCER;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_OCO_CH(enCh));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+    __IO stc_tmr4_ocer_field_t *pstcOCER = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_OCO_CH(enCh));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+
+        /* Get pointer of current channel OCO register address  */
+        pstcOCER = (__IO stc_tmr4_ocer_field_t*)TMR4_OCERx(TMR4x, enCh);
+        IS_VALID_OCO_HIGH_CH(enCh) ? (pstcOCER->MCECH = (uint16_t)enCmd) : (pstcOCER->MCECL = (uint16_t)enCmd);
+
+        enRet = Ok;
     }
-    else
-    {
-    }
 
-    /* Get pointer of current channel OCO register address  */
-    pstcOCER = (__IO stc_tmr4_oceru_field_t*)TMR4_OCERx(TMR4x, enCh);
-
-    IS_VALID_OCO_HIGH_CH(enCh) ? (pstcOCER->MCECHU = u32Cmd) : (pstcOCER->MCECLU = u32Cmd);
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -829,52 +822,49 @@ en_result_t TIMER4_OCO_SetHighChCompareMode(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_oco_ch_t enCh,
                                 const stc_oco_high_ch_compare_mode_t *pstcMode)
 {
-    uint16_t u16OCMR = 0;
-    __IO uint16_t *pu16OCMR;
-    __IO stc_tmr4_oceru_field_t *pstcOCER;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_OCO_HIGH_CH(enCh));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntZeroMatchOpState));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntZeroNotMatchOpState));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntUpCntMatchOpState));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntPeakMatchOpState));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntPeakNotMatchOpState));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntDownCntMatchOpState));
-    DDL_ASSERT(IS_VALID_OCF_STATE(pstcMode->enCntZeroMatchOcfState));
-    DDL_ASSERT(IS_VALID_OCF_STATE(pstcMode->enCntUpCntMatchOcfState));
-    DDL_ASSERT(IS_VALID_OCF_STATE(pstcMode->enCntPeakMatchOcfState));
-    DDL_ASSERT(IS_VALID_OCF_STATE(pstcMode->enCntDownCntMatchOcfState));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcMode->enMatchConditionExtendCmd));
+    uint16_t u16OCMR = 0u;
+    __IO uint16_t *pu16OCMR = NULL;
+    __IO stc_tmr4_ocer_field_t *pstcOCER = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x && pstcMode pointer */
-    if ((!IS_VALID_TIMER4(TMR4x)) || (NULL == pstcMode))
+    if ((IS_VALID_TIMER4(TMR4x)) && (NULL != pstcMode))
     {
-        return ErrorInvalidParameter;
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_OCO_HIGH_CH(enCh));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntZeroMatchOpState));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntZeroNotMatchOpState));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntUpCntMatchOpState));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntPeakMatchOpState));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntPeakNotMatchOpState));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntDownCntMatchOpState));
+        DDL_ASSERT(IS_VALID_OCF_STATE(pstcMode->enCntZeroMatchOcfState));
+        DDL_ASSERT(IS_VALID_OCF_STATE(pstcMode->enCntUpCntMatchOcfState));
+        DDL_ASSERT(IS_VALID_OCF_STATE(pstcMode->enCntPeakMatchOcfState));
+        DDL_ASSERT(IS_VALID_OCF_STATE(pstcMode->enCntDownCntMatchOcfState));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcMode->enMatchConditionExtendCmd));
+
+        /* Get pointer of current channel OCO register address */
+        pu16OCMR = (__IO uint16_t*)TMR4_OCMRx(TMR4x, enCh);
+        pstcOCER = (__IO stc_tmr4_ocer_field_t*)TMR4_OCERx(TMR4x, enCh);
+
+        pstcOCER->MCECH = (uint16_t)(pstcMode->enMatchConditionExtendCmd);
+        u16OCMR |= (uint16_t)((uint16_t)pstcMode->enCntZeroMatchOpState    << 10u);
+        u16OCMR |= (uint16_t)((uint16_t)pstcMode->enCntZeroNotMatchOpState << 14u);
+        u16OCMR |= (uint16_t)((uint16_t)pstcMode->enCntUpCntMatchOpState   << 8u);
+        u16OCMR |= (uint16_t)((uint16_t)pstcMode->enCntPeakMatchOpState    << 6u);
+        u16OCMR |= (uint16_t)((uint16_t)pstcMode->enCntPeakNotMatchOpState << 12u);
+        u16OCMR |= (uint16_t)((uint16_t)pstcMode->enCntDownCntMatchOpState << 4u);
+        u16OCMR |= (uint16_t)((uint16_t)pstcMode->enCntZeroMatchOcfState    << 3u);
+        u16OCMR |= (uint16_t)((uint16_t)pstcMode->enCntUpCntMatchOcfState   << 2u);
+        u16OCMR |= (uint16_t)((uint16_t)pstcMode->enCntPeakMatchOcfState    << 1u);
+        u16OCMR |= (uint16_t)((uint16_t)pstcMode->enCntDownCntMatchOcfState << 0u);
+
+        *pu16OCMR = u16OCMR;
+        enRet = Ok;
     }
-    else
-    {
-    }
 
-    /* Get pointer of current channel OCO register address */
-    pu16OCMR = (__IO uint16_t*)TMR4_OCMRx(TMR4x, enCh);
-    pstcOCER = (__IO stc_tmr4_oceru_field_t*)TMR4_OCERx(TMR4x, enCh);
-
-    pstcOCER->MCECHU = (pstcMode->enMatchConditionExtendCmd == Enable) ? 1u : 0u;
-    u16OCMR |= ((uint16_t)pstcMode->enCntZeroMatchOpState    << 10u);
-    u16OCMR |= ((uint16_t)pstcMode->enCntZeroNotMatchOpState << 14u);
-    u16OCMR |= ((uint16_t)pstcMode->enCntUpCntMatchOpState   << 8u);
-    u16OCMR |= ((uint16_t)pstcMode->enCntPeakMatchOpState    << 6u);
-    u16OCMR |= ((uint16_t)pstcMode->enCntPeakNotMatchOpState << 12u);
-    u16OCMR |= ((uint16_t)pstcMode->enCntDownCntMatchOpState << 4u);
-    u16OCMR |= ((uint16_t)pstcMode->enCntZeroMatchOcfState    << 3u);
-    u16OCMR |= ((uint16_t)pstcMode->enCntUpCntMatchOcfState   << 2u);
-    u16OCMR |= ((uint16_t)pstcMode->enCntPeakMatchOcfState    << 1u);
-    u16OCMR |= ((uint16_t)pstcMode->enCntDownCntMatchOcfState << 0u);
-
-    *pu16OCMR = u16OCMR;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -905,67 +895,65 @@ en_result_t TIMER4_OCO_SetLowChCompareMode(M4_TMR4_TypeDef *TMR4x,
                                  en_timer4_oco_ch_t enCh,
                                  const stc_oco_low_ch_compare_mode_t *pstcMode)
 {
-    uint32_t u32OCMR = 0;
-    __IO uint32_t *pu32OCMR;
-    __IO stc_tmr4_oceru_field_t *pstcOCER;
+    uint32_t u32OCMR = 0ul;
+    __IO uint32_t *pu32OCMR = NULL;
+    __IO stc_tmr4_ocer_field_t *pstcOCER = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_OCO_LOW_CH(enCh));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntZeroLowMatchHighMatchLowChOpState));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntZeroLowMatchHighNotMatchLowChOpState));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntZeroLowNotMatchHighMatchLowChOpState));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntZeroLowNotMatchHighNotMatchLowChOpState));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntUpCntLowMatchHighMatchLowChOpState));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntUpCntLowMatchHighNotMatchLowChOpState));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntUpCntLowNotMatchHighMatchLowChOpState));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntPeakLowMatchHighMatchLowChOpState));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntPeakLowMatchHighNotMatchLowChOpState));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntPeakLowNotMatchHighMatchLowChOpState));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntPeakLowNotMatchHighNotMatchLowChOpState));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntDownLowMatchHighMatchLowChOpState));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntDownLowMatchHighNotMatchLowChOpState));
-    DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntDownLowNotMatchHighMatchLowChOpState));
-    DDL_ASSERT(IS_VALID_OCF_STATE(pstcMode->enCntZeroMatchOcfState));
-    DDL_ASSERT(IS_VALID_OCF_STATE(pstcMode->enCntUpCntMatchOcfState));
-    DDL_ASSERT(IS_VALID_OCF_STATE(pstcMode->enCntPeakMatchOcfState));
-    DDL_ASSERT(IS_VALID_OCF_STATE(pstcMode->enCntDownCntMatchOcfState));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcMode->enMatchConditionExtendCmd));
-
-    if ((!IS_VALID_TIMER4(TMR4x)) || (NULL == pstcMode))
+    /* Check TMR4x pointer and pstcMode pointer */
+    if ((IS_VALID_TIMER4(TMR4x)) && (NULL != pstcMode))
     {
-        return ErrorInvalidParameter;
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_OCO_LOW_CH(enCh));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntZeroLowMatchHighMatchLowChOpState));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntZeroLowMatchHighNotMatchLowChOpState));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntZeroLowNotMatchHighMatchLowChOpState));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntZeroLowNotMatchHighNotMatchLowChOpState));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntUpCntLowMatchHighMatchLowChOpState));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntUpCntLowMatchHighNotMatchLowChOpState));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntUpCntLowNotMatchHighMatchLowChOpState));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntPeakLowMatchHighMatchLowChOpState));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntPeakLowMatchHighNotMatchLowChOpState));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntPeakLowNotMatchHighMatchLowChOpState));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntPeakLowNotMatchHighNotMatchLowChOpState));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntDownLowMatchHighMatchLowChOpState));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntDownLowMatchHighNotMatchLowChOpState));
+        DDL_ASSERT(IS_VALID_OP_STATE(pstcMode->enCntDownLowNotMatchHighMatchLowChOpState));
+        DDL_ASSERT(IS_VALID_OCF_STATE(pstcMode->enCntZeroMatchOcfState));
+        DDL_ASSERT(IS_VALID_OCF_STATE(pstcMode->enCntUpCntMatchOcfState));
+        DDL_ASSERT(IS_VALID_OCF_STATE(pstcMode->enCntPeakMatchOcfState));
+        DDL_ASSERT(IS_VALID_OCF_STATE(pstcMode->enCntDownCntMatchOcfState));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcMode->enMatchConditionExtendCmd));
+
+        /* Get pointer of current channel OCO register address */
+        pu32OCMR = (__IO uint32_t*)TMR4_OCMRx(TMR4x, enCh);
+        pstcOCER = (__IO stc_tmr4_ocer_field_t*)TMR4_OCERx(TMR4x, enCh);;
+
+        pstcOCER->MCECL = (uint16_t)(pstcMode->enMatchConditionExtendCmd);
+        u32OCMR |= (uint32_t)((uint32_t)pstcMode->enCntZeroLowMatchHighMatchLowChOpState        << 26u);
+        u32OCMR |= (uint32_t)((uint32_t)pstcMode->enCntZeroLowMatchHighNotMatchLowChOpState     << 10u);
+        u32OCMR |= (uint32_t)((uint32_t)pstcMode->enCntZeroLowNotMatchHighMatchLowChOpState     << 30u);
+        u32OCMR |= (uint32_t)((uint32_t)pstcMode->enCntZeroLowNotMatchHighNotMatchLowChOpState  << 14u);
+        u32OCMR |= (uint32_t)((uint32_t)pstcMode->enCntUpCntLowMatchHighMatchLowChOpState       << 24u);
+        u32OCMR |= (uint32_t)((uint32_t)pstcMode->enCntUpCntLowMatchHighNotMatchLowChOpState    << 8u);
+        u32OCMR |= (uint32_t)((uint32_t)pstcMode->enCntUpCntLowNotMatchHighMatchLowChOpState    << 18u);
+        u32OCMR |= (uint32_t)((uint32_t)pstcMode->enCntPeakLowMatchHighMatchLowChOpState        << 22u);
+        u32OCMR |= (uint32_t)((uint32_t)pstcMode->enCntPeakLowMatchHighNotMatchLowChOpState     << 6u) ;
+        u32OCMR |= (uint32_t)((uint32_t)pstcMode->enCntPeakLowNotMatchHighMatchLowChOpState     << 28u);
+        u32OCMR |= (uint32_t)((uint32_t)pstcMode->enCntPeakLowNotMatchHighNotMatchLowChOpState  << 12u);
+        u32OCMR |= (uint32_t)((uint32_t)pstcMode->enCntDownLowMatchHighMatchLowChOpState        << 20u);
+        u32OCMR |= (uint32_t)((uint32_t)pstcMode->enCntDownLowMatchHighNotMatchLowChOpState     << 4u);
+        u32OCMR |= (uint32_t)((uint32_t)pstcMode->enCntDownLowNotMatchHighMatchLowChOpState     << 16u);
+        u32OCMR |= (uint32_t)((uint32_t)pstcMode->enCntZeroMatchOcfState     << 3u);
+        u32OCMR |= (uint32_t)((uint32_t)pstcMode->enCntUpCntMatchOcfState    << 2u);
+        u32OCMR |= (uint32_t)((uint32_t)pstcMode->enCntPeakMatchOcfState     << 1u);
+        u32OCMR |= (uint32_t)((uint32_t)pstcMode->enCntDownCntMatchOcfState  << 0u);
+
+        *pu32OCMR = u32OCMR;
+        enRet = Ok;
     }
-    else
-    {
-    }
 
-    /* Get pointer of current channel OCO register address */
-    pu32OCMR = (__IO uint32_t*)TMR4_OCMRx(TMR4x, enCh);
-    pstcOCER = (__IO stc_tmr4_oceru_field_t*)TMR4_OCERx(TMR4x, enCh);;
-
-    pstcOCER->MCECLU = (pstcMode->enMatchConditionExtendCmd == Enable) ? 1u : 0u;
-    u32OCMR |= ((uint32_t)pstcMode->enCntZeroLowMatchHighMatchLowChOpState        << 26u);
-    u32OCMR |= ((uint32_t)pstcMode->enCntZeroLowMatchHighNotMatchLowChOpState     << 10u);
-    u32OCMR |= ((uint32_t)pstcMode->enCntZeroLowNotMatchHighMatchLowChOpState     << 30u);
-    u32OCMR |= ((uint32_t)pstcMode->enCntZeroLowNotMatchHighNotMatchLowChOpState  << 14u);
-    u32OCMR |= ((uint32_t)pstcMode->enCntUpCntLowMatchHighMatchLowChOpState       << 24u);
-    u32OCMR |= ((uint32_t)pstcMode->enCntUpCntLowMatchHighNotMatchLowChOpState    << 8u);
-    u32OCMR |= ((uint32_t)pstcMode->enCntUpCntLowNotMatchHighMatchLowChOpState    << 18u);
-    u32OCMR |= ((uint32_t)pstcMode->enCntPeakLowMatchHighMatchLowChOpState        << 22u);
-    u32OCMR |= ((uint32_t)pstcMode->enCntPeakLowMatchHighNotMatchLowChOpState     << 6u) ;
-    u32OCMR |= ((uint32_t)pstcMode->enCntPeakLowNotMatchHighMatchLowChOpState     << 28u);
-    u32OCMR |= ((uint32_t)pstcMode->enCntPeakLowNotMatchHighNotMatchLowChOpState  << 12u);
-    u32OCMR |= ((uint32_t)pstcMode->enCntDownLowMatchHighMatchLowChOpState        << 20u);
-    u32OCMR |= ((uint32_t)pstcMode->enCntDownLowMatchHighNotMatchLowChOpState     << 4u);
-    u32OCMR |= ((uint32_t)pstcMode->enCntDownLowNotMatchHighMatchLowChOpState     << 16u);
-    u32OCMR |= ((uint32_t)pstcMode->enCntZeroMatchOcfState     << 3u);
-    u32OCMR |= ((uint32_t)pstcMode->enCntUpCntMatchOcfState    << 2u);
-    u32OCMR |= ((uint32_t)pstcMode->enCntPeakMatchOcfState     << 1u);
-    u32OCMR |= ((uint32_t)pstcMode->enCntDownCntMatchOcfState  << 0u);
-
-    *pu32OCMR = u32OCMR;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -995,29 +983,25 @@ en_result_t TIMER4_OCO_OutputCompareCmd(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_oco_ch_t enCh,
                                 en_functional_state_t enCmd)
 {
-    uint32_t u32Cmd = (uint32_t)enCmd;
-    __IO stc_tmr4_ocsru_field_t *pstcOCSR;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_OCO_CH(enCh));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+    __IO stc_tmr4_ocsr_field_t *pstcOCSR = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_OCO_CH(enCh));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+
+        /* Get pointer of current channel OCO register address */
+        pstcOCSR = (__IO stc_tmr4_ocsr_field_t*)TMR4_OCSRx(TMR4x, enCh);
+
+        /* set register */
+        IS_VALID_OCO_HIGH_CH(enCh) ? (pstcOCSR->OCEH = (uint16_t)enCmd) : (pstcOCSR->OCEL = (uint16_t)enCmd);
+        enRet = Ok;
     }
-    else
-    {
-    }
 
-    /* Get pointer of current channel OCO register address */
-    pstcOCSR = (__IO stc_tmr4_ocsru_field_t*)TMR4_OCSRx(TMR4x, enCh);
-
-    /* set register */
-    IS_VALID_OCO_HIGH_CH(enCh) ? (pstcOCSR->OCEHU = u32Cmd) : (pstcOCSR->OCELU = u32Cmd);
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1047,29 +1031,25 @@ en_result_t TIMER4_OCO_IrqCmd(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_oco_ch_t enCh,
                                 en_functional_state_t enCmd)
 {
-    uint32_t u32Cmd = (uint32_t)enCmd;
-    __IO stc_tmr4_ocsru_field_t *pstcOCSR;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_OCO_CH(enCh));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+    __IO stc_tmr4_ocsr_field_t *pstcOCSR = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_OCO_CH(enCh));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+
+        /* Get pointer of current channel OCO register address */
+        pstcOCSR = (__IO stc_tmr4_ocsr_field_t*)TMR4_OCSRx(TMR4x, enCh);
+        /* set register */
+        IS_VALID_OCO_HIGH_CH(enCh) ? (pstcOCSR->OCIEH = (uint16_t)enCmd) : (pstcOCSR->OCIEL = (uint16_t)enCmd);
+
+        enRet = Ok;
     }
-    else
-    {
-    }
 
-    /* Get pointer of current channel OCO register address */
-    pstcOCSR = (__IO stc_tmr4_ocsru_field_t*)TMR4_OCSRx(TMR4x, enCh);
-
-    /* set register */
-    IS_VALID_OCO_HIGH_CH(enCh) ? (pstcOCSR->OCIEHU = u32Cmd) : (pstcOCSR->OCIELU = u32Cmd);
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1096,26 +1076,27 @@ en_flag_status_t TIMER4_OCO_GetIrqFlag(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_oco_ch_t enCh)
 {
     en_flag_status_t enFlag = Reset;
-    __IO stc_tmr4_ocsru_field_t *pstcOCSR;
+    __IO stc_tmr4_ocsr_field_t *pstcOCSR = NULL;
 
     /* Check parameters */
     DDL_ASSERT(IS_VALID_OCO_CH(enCh));
     DDL_ASSERT(IS_VALID_TIMER4(TMR4x));
 
     /* Get pointer of current channel OCO register address */
-    pstcOCSR = (__IO stc_tmr4_ocsru_field_t*)TMR4_OCSRx(TMR4x, enCh);
+    pstcOCSR = (__IO stc_tmr4_ocsr_field_t*)TMR4_OCSRx(TMR4x, enCh);
 
     /* set return value */
     if (IS_VALID_OCO_HIGH_CH(enCh)) /* channel: Timer4OcoOuh, Timer4OcoOvh, Timer4OcoOwh */
     {
-        enFlag = ((1u == pstcOCSR->OCFHU) ? Set: Reset);
+        enFlag = (en_flag_status_t)(pstcOCSR->OCFH);
     }
     else if (IS_VALID_OCO_LOW_CH(enCh)) /* channel: Timer4OcoOul, Timer4OcoOvl, Timer4OcoOwl */
     {
-        enFlag = ((1u == pstcOCSR->OCFLU) ? Set: Reset);
+        enFlag = (en_flag_status_t)(pstcOCSR->OCFL);
     }
     else
     {
+        /* Do nothing: only avoid MISRA warning */
     }
 
     return enFlag;
@@ -1144,27 +1125,24 @@ en_flag_status_t TIMER4_OCO_GetIrqFlag(M4_TMR4_TypeDef *TMR4x,
 en_result_t TIMER4_OCO_ClearIrqFlag(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_oco_ch_t enCh)
 {
-    __IO stc_tmr4_ocsru_field_t *pstcOCSR;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_OCO_CH(enCh));
+    __IO stc_tmr4_ocsr_field_t *pstcOCSR = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_OCO_CH(enCh));
+
+        /* Get pointer of current channel OCO register address */
+        pstcOCSR = (__IO stc_tmr4_ocsr_field_t*)TMR4_OCSRx(TMR4x, enCh);
+        /* set return value */
+        IS_VALID_OCO_HIGH_CH(enCh) ? (pstcOCSR->OCFH = 0u) : (pstcOCSR->OCFL = 0u);
+
+        enRet = Ok;
     }
-    else
-    {
-    }
 
-    /* Get pointer of current channel OCO register address */
-    pstcOCSR = (__IO stc_tmr4_ocsru_field_t*)TMR4_OCSRx(TMR4x, enCh);
-
-    /* set return value */
-    IS_VALID_OCO_HIGH_CH(enCh) ? (pstcOCSR->OCFHU = 0u) : (pstcOCSR->OCFLU = 0u);
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1194,28 +1172,23 @@ en_result_t TIMER4_OCO_SetOpPortLevel(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_oco_ch_t enCh,
                                 en_timer4_oco_port_level_t enLevel)
 {
-    __IO stc_tmr4_ocsru_field_t *pstcOCSR;
-    uint32_t u32Level = (OcPortLevelHigh == enLevel) ? 1u:0u;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_OCO_CH(enCh));
-    DDL_ASSERT(IS_VALID_OP_PORT_LEVEL(enLevel));
+    __IO stc_tmr4_ocsr_field_t *pstcOCSR = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_OCO_CH(enCh));
+        DDL_ASSERT(IS_VALID_OP_PORT_LEVEL(enLevel));
+
+        /* Get pointer of current channel OCO register address */
+        pstcOCSR = (__IO stc_tmr4_ocsr_field_t*)TMR4_OCSRx(TMR4x, enCh);
+        IS_VALID_OCO_HIGH_CH(enCh) ? (pstcOCSR->OCFH = (uint16_t)enLevel) : (pstcOCSR->OCFL = (uint16_t)enLevel);
+        enRet = Ok;
     }
-    else
-    {
-    }
 
-    /* Get pointer of current channel OCO register address */
-    pstcOCSR = (__IO stc_tmr4_ocsru_field_t*)TMR4_OCSRx(TMR4x, enCh);
-
-    IS_VALID_OCO_HIGH_CH(enCh) ? (pstcOCSR->OCFHU = u32Level) : (pstcOCSR->OCFLU = u32Level);
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1241,26 +1214,27 @@ en_result_t TIMER4_OCO_SetOpPortLevel(M4_TMR4_TypeDef *TMR4x,
 en_timer4_oco_port_level_t TIMER4_OCO_GetOpPinLevel(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_oco_ch_t enCh)
 {
-    __IO stc_tmr4_ocsru_field_t *pstcOCSR;
-    en_timer4_oco_port_level_t enLevel = OcPortLevelHigh;
+    __IO stc_tmr4_ocsr_field_t *pstcOCSR = NULL;
+    en_timer4_oco_port_level_t enLevel = OcPortLevelLow;
 
     /* Check parameters */
     DDL_ASSERT(IS_VALID_OCO_CH(enCh));
     DDL_ASSERT(IS_VALID_TIMER4(TMR4x));
 
     /* Get pointer of current channel OCO register address */
-    pstcOCSR = (__IO stc_tmr4_ocsru_field_t*)TMR4_OCSRx(TMR4x, enCh);
+    pstcOCSR = (__IO stc_tmr4_ocsr_field_t*)TMR4_OCSRx(TMR4x, enCh);
 
     if (IS_VALID_OCO_HIGH_CH(enCh)) /* channel: Timer4OcoOuh, Timer4OcoOvh, Timer4OcoOwh */
     {
-        enLevel = ((1u == pstcOCSR->OCPHU) ? OcPortLevelHigh:OcPortLevelLow);
+        enLevel = (en_timer4_oco_port_level_t)(pstcOCSR->OCPH);
     }
     else if (IS_VALID_OCO_LOW_CH(enCh)) /* channel: Timer4OcoOul, Timer4OcoOvl, Timer4OcoOwl */
     {
-        enLevel = ((1u == pstcOCSR->OCPLU) ? OcPortLevelHigh:OcPortLevelLow);
+        enLevel = (en_timer4_oco_port_level_t)(pstcOCSR->OCPL);
     }
     else
     {
+        /* Do nothing: only avoid MISRA warning */
     }
 
     return enLevel;
@@ -1292,27 +1266,24 @@ en_result_t TIMER4_OCO_WriteOccr(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_oco_ch_t enCh,
                                 uint16_t u16Occr)
 {
-    __IO uint16_t *pu16OCCR;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_OCO_CH(enCh));
+    __IO uint16_t *pu16OCCR = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_OCO_CH(enCh));
+
+        /* Get pointer of current channel OCO register address */
+        pu16OCCR = (__IO uint16_t*)TMR4_OCCRx(TMR4x, enCh);
+        /* set register */
+        *pu16OCCR = u16Occr;
+
+        enRet = Ok;
     }
-    else
-    {
-    }
 
-    /* Get pointer of current channel OCO register address */
-    pu16OCCR = (__IO uint16_t*)TMR4_OCCRx(TMR4x, enCh);
-
-    /* set register */
-    *pu16OCCR = u16Occr;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1334,22 +1305,14 @@ en_result_t TIMER4_OCO_WriteOccr(M4_TMR4_TypeDef *TMR4x,
  ** \retval OCCR register value
  **
  ******************************************************************************/
-uint16_t TIMER4_OCO_ReadOccr(M4_TMR4_TypeDef *TMR4x,
+uint16_t TIMER4_OCO_ReadOccr(const M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_oco_ch_t enCh)
 {
-    __IO uint16_t* pu16OCCR;
+    __IO uint16_t* pu16OCCR = NULL;
 
     /* Check parameters */
+    DDL_ASSERT(IS_VALID_TIMER4(TMR4x));
     DDL_ASSERT(IS_VALID_OCO_CH(enCh));
-
-    /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
-    {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
 
     /* Get pointer of current channel OCO register address */
     pu16OCCR = (__IO uint16_t*)TMR4_OCCRx(TMR4x, enCh);

@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -186,37 +186,35 @@
  ******************************************************************************/
 en_result_t CMP_Init(M4_CMP_TypeDef *CMPx, const stc_cmp_init_t *pstcInitCfg)
 {
-    /* Check parameter */
-    DDL_ASSERT(IS_VALID_EDGESEL(pstcInitCfg->enEdgeSel));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enCmpIntEN));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enCmpInvEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enCmpOutputEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enCmpVcoutOutputEn));
-    DDL_ASSERT(IS_VALID_FLTCLK_DIVISION(pstcInitCfg->enFltClkDiv));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check CMPx && pstcInitCfg pointer */
-    if ((!IS_VALID_CMP(CMPx)) && (NULL == pstcInitCfg))
+    if ((IS_VALID_CMP(CMPx)) && (NULL != pstcInitCfg))
     {
-        return ErrorInvalidParameter;
+        /* Check parameter */
+        DDL_ASSERT(IS_VALID_EDGESEL(pstcInitCfg->enEdgeSel));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enCmpIntEN));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enCmpInvEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enCmpOutputEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enCmpVcoutOutputEn));
+        DDL_ASSERT(IS_VALID_FLTCLK_DIVISION(pstcInitCfg->enFltClkDiv));
+
+        /* De-Initialize CMP */
+        CMPx->CTRL = (uint16_t)0x0000u;
+        CMPx->VLTSEL = (uint16_t)0x0000u;
+        CMPx->CVSSTB = (uint16_t)0x0005u;
+        CMPx->CVSPRD = (uint16_t)0x000Fu;
+
+        CMPx->CTRL_f.IEN = (uint16_t)pstcInitCfg->enCmpIntEN;
+        CMPx->CTRL_f.INV = (uint16_t)pstcInitCfg->enCmpInvEn;
+        CMPx->CTRL_f.EDGSL = (uint16_t)pstcInitCfg->enEdgeSel;
+        CMPx->CTRL_f.FLTSL = (uint16_t)pstcInitCfg->enFltClkDiv;
+        CMPx->CTRL_f.CMPOE = (uint16_t)pstcInitCfg->enCmpOutputEn;
+        CMPx->CTRL_f.OUTEN = (uint16_t)pstcInitCfg->enCmpVcoutOutputEn;
+        enRet = Ok;
     }
-    else
-    {
-    }
 
-    /* De-Initialize CMP */
-    CMPx->CTRL = 0x0000u;
-    CMPx->VLTSEL = 0x0000u;
-    CMPx->CVSSTB = 0x0005u;
-    CMPx->CVSPRD = 0x000Fu;
-
-    CMPx->CTRL_f.IEN = pstcInitCfg->enCmpIntEN;
-    CMPx->CTRL_f.INV = pstcInitCfg->enCmpInvEn;
-    CMPx->CTRL_f.EDGSL = pstcInitCfg->enEdgeSel;
-    CMPx->CTRL_f.FLTSL = pstcInitCfg->enFltClkDiv;
-    CMPx->CTRL_f.CMPOE = pstcInitCfg->enCmpOutputEn;
-    CMPx->CTRL_f.OUTEN = pstcInitCfg->enCmpVcoutOutputEn;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -234,21 +232,19 @@ en_result_t CMP_Init(M4_CMP_TypeDef *CMPx, const stc_cmp_init_t *pstcInitCfg)
  ******************************************************************************/
 en_result_t CMP_DeInit(M4_CMP_TypeDef *CMPx)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check CMPx pointer */
-    if (!IS_VALID_CMP(CMPx))
+    if (IS_VALID_CMP(CMPx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        CMPx->CTRL = (uint16_t)0x0000u;
+        CMPx->VLTSEL = (uint16_t)0x0000u;
+        CMPx->CVSSTB = (uint16_t)0x0005u;
+        CMPx->CVSPRD = (uint16_t)0x000Fu;
+        enRet = Ok;
     }
 
-    CMPx->CTRL = 0x0000u;
-    CMPx->VLTSEL = 0x0000u;
-    CMPx->CVSSTB = 0x0005u;
-    CMPx->CVSPRD = 0x000Fu;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -269,21 +265,19 @@ en_result_t CMP_DeInit(M4_CMP_TypeDef *CMPx)
  ******************************************************************************/
 en_result_t CMP_Cmd(M4_CMP_TypeDef *CMPx, en_functional_state_t enCmd)
 {
-    /* Check parameter */
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check CMPx pointer */
-    if (!IS_VALID_CMP(CMPx))
+    if (IS_VALID_CMP(CMPx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check parameter */
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+
+        CMPx->CTRL_f.CMPON = (uint16_t)(enCmd);
+        enRet = Ok;
     }
 
-    CMPx->CTRL_f.CMPON = (Enable == enCmd) ? 1u : 0u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -304,18 +298,16 @@ en_result_t CMP_Cmd(M4_CMP_TypeDef *CMPx, en_functional_state_t enCmd)
  ******************************************************************************/
 en_result_t CMP_IrqCmd(M4_CMP_TypeDef *CMPx, en_functional_state_t enCmd)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check CMPx pointer */
-    if (!IS_VALID_CMP(CMPx))
+    if (IS_VALID_CMP(CMPx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        CMPx->CTRL_f.IEN = (uint16_t)(enCmd);
+        enRet = Ok;
     }
 
-    CMPx->CTRL_f.IEN = (Enable == enCmd) ? 1u : 0u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -342,34 +334,33 @@ en_result_t CMP_SetScanTime(M4_CMP_TypeDef *CMPx,
                                 uint8_t u8ScanStable,
                                 uint8_t u8ScanPeriod)
 {
-    uint8_t u8Flts;
-    uint8_t u8FltslDiv;
+    uint16_t u16Flts;
+    uint16_t u16FltslDiv;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check CMPx pointer */
-    if ((!IS_VALID_CMP(CMPx)) || (u8ScanStable & 0xF0))
+    if ((!IS_VALID_CMP(CMPx)) || (u8ScanStable & 0xF0u))
     {
-        return ErrorInvalidParameter;
+        enRet = ErrorInvalidParameter;
     }
     else
     {
+        u16Flts = CMPx->CTRL_f.FLTSL;
+        u16FltslDiv = ((uint16_t)1u << (u16Flts - 1u));
+
+        if ((0u != u16Flts) &&
+             (u8ScanPeriod <= (u8ScanStable + u16FltslDiv * 4u + 5u)))
+        {
+            enRet = ErrorInvalidParameter;
+        }
+        else
+        {
+            CMPx->CVSSTB_f.STB = u8ScanStable;
+            CMPx->CVSPRD_f.PRD = u8ScanPeriod;
+        }
     }
 
-    u8Flts = CMPx->CTRL_f.FLTSL;
-    u8FltslDiv = (1 << (u8Flts - 1));
-
-    if ((0u != u8Flts) &&
-         (u8ScanPeriod <= (u8ScanStable + u8FltslDiv * 4 + 5)))
-    {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
-
-    CMPx->CVSSTB_f.STB = u8ScanStable;
-    CMPx->CVSPRD_f.PRD = u8ScanPeriod;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -396,29 +387,27 @@ en_result_t CMP_FuncCmd(M4_CMP_TypeDef *CMPx,
                     en_cmp_func_t enFunc,
                     en_functional_state_t enCmd)
 {
-    /* Check parameter */
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
-    DDL_ASSERT(IS_VALID_CMP_FUNCTION(enFunc));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check CMPx pointer */
-    if (!IS_VALID_CMP(CMPx))
+    if (IS_VALID_CMP(CMPx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check parameter */
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+        DDL_ASSERT(IS_VALID_CMP_FUNCTION(enFunc));
+
+        if (Enable == enCmd)
+        {
+            CMPx->CTRL |= (uint16_t)enFunc;
+        }
+        else
+        {
+            CMPx->CTRL &= (uint16_t)(~((uint16_t)enFunc));
+        }
+        enRet = Ok;
     }
 
-    if (Enable == enCmd)
-    {
-        CMPx->CTRL |= enFunc;
-    }
-    else
-    {
-        CMPx->CTRL &= ~enFunc;
-    }
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -436,18 +425,16 @@ en_result_t CMP_FuncCmd(M4_CMP_TypeDef *CMPx,
  ******************************************************************************/
 en_result_t CMP_StartScan(M4_CMP_TypeDef *CMPx)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check CMPx pointer */
-    if (!IS_VALID_CMP(CMPx))
+    if (IS_VALID_CMP(CMPx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        CMPx->CTRL_f.CVSEN = (uint16_t)1u;
+        enRet = Ok;
     }
 
-    CMPx->CTRL_f.CVSEN = 1u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -465,18 +452,16 @@ en_result_t CMP_StartScan(M4_CMP_TypeDef *CMPx)
  ******************************************************************************/
 en_result_t CMP_StopScan(M4_CMP_TypeDef *CMPx)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check CMPx pointer */
-    if (!IS_VALID_CMP(CMPx))
+    if (IS_VALID_CMP(CMPx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        CMPx->CTRL_f.CVSEN = (uint16_t)0u;
+        enRet = Ok;
     }
 
-    CMPx->CTRL_f.CVSEN = 0u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -504,21 +489,18 @@ en_result_t CMP_StopScan(M4_CMP_TypeDef *CMPx)
 en_result_t CMP_SetFilterClkDiv(M4_CMP_TypeDef *CMPx,
                                         en_cmp_fltclk_div_t enFltClkDiv)
 {
-    /* Check parameter */
-    DDL_ASSERT(IS_VALID_FLTCLK_DIVISION(enFltClkDiv));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check CMPx pointer */
-    if (!IS_VALID_CMP(CMPx))
+    if (IS_VALID_CMP(CMPx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check parameter */
+        DDL_ASSERT(IS_VALID_FLTCLK_DIVISION(enFltClkDiv));
+        CMPx->CTRL_f.FLTSL = (uint16_t)enFltClkDiv;
+        enRet = Ok;
     }
 
-    CMPx->CTRL_f.FLTSL = enFltClkDiv;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -569,21 +551,18 @@ en_cmp_fltclk_div_t CMP_GetFilterClkDiv(M4_CMP_TypeDef *CMPx)
 en_result_t CMP_SetEdgeSel(M4_CMP_TypeDef *CMPx,
                                 en_cmp_edge_sel_t enEdgeSel)
 {
-    /* Check parameter */
-    DDL_ASSERT(IS_VALID_EDGESEL(enEdgeSel));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check CMPx pointer */
-    if (!IS_VALID_CMP(CMPx))
+    if (IS_VALID_CMP(CMPx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check parameter */
+        DDL_ASSERT(IS_VALID_EDGESEL(enEdgeSel));
+        CMPx->CTRL_f.EDGSL = (uint16_t)enEdgeSel;
+        enRet = Ok;
     }
 
-    CMPx->CTRL_f.EDGSL = enEdgeSel;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -627,51 +606,45 @@ en_cmp_edge_sel_t CMP_GetEdgeSel(M4_CMP_TypeDef *CMPx)
 en_result_t CMP_InputSel(M4_CMP_TypeDef *CMPx,
                             const stc_cmp_input_sel_t *pstcInputSel)
 {
-    /* Check parameter */
-    DDL_ASSERT(NULL != pstcInputSel);
-    DDL_ASSERT(IS_VALID_INMSEL(pstcInputSel->enInmSel));
-    DDL_ASSERT(IS_VALID_INPSEL(pstcInputSel->enInpSel));
-    DDL_ASSERT(IS_VALID_INP4SEL(pstcInputSel->enInp4Sel));
+    en_result_t enRet = ErrorInvalidParameter;
 
-    /* Check CMPx pointer */
-    if (!IS_VALID_CMP(CMPx))
+    /* Check CMPx && pstcInputSel pointer */
+    if ((IS_VALID_CMP(CMPx)) && (NULL != pstcInputSel))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
+        /* Check parameter */
+        DDL_ASSERT(IS_VALID_INMSEL(pstcInputSel->enInmSel));
+        DDL_ASSERT(IS_VALID_INPSEL(pstcInputSel->enInpSel));
+        DDL_ASSERT(IS_VALID_INP4SEL(pstcInputSel->enInp4Sel));
 
-    if ((CmpInp4PGAO == pstcInputSel->enInp4Sel) ||
-        (CmpInp4PGAO_BP == pstcInputSel->enInp4Sel))
-    {
-        if (M4_CMP3 == CMPx)
+        if ((CmpInp4PGAO == pstcInputSel->enInp4Sel) ||
+            (CmpInp4PGAO_BP == pstcInputSel->enInp4Sel))
         {
-            return ErrorInvalidParameter;
+            if (M4_CMP3 != CMPx)
+            {
+                enRet = Ok;
+            }
+        }
+        else if (CmpInp4CMP1_INP4 == pstcInputSel->enInp4Sel)
+        {
+            if (M4_CMP1 == CMPx)
+            {
+                enRet = Ok;
+            }
         }
         else
         {
+            enRet = Ok;
         }
-    }
-    else if (CmpInp4CMP1_INP4 == pstcInputSel->enInp4Sel)
-    {
-        if (M4_CMP1 != CMPx)
+
+        if (enRet == Ok)
         {
-            return ErrorInvalidParameter;
+            CMPx->VLTSEL_f.CVSL = (uint16_t)pstcInputSel->enInpSel;
+            CMPx->VLTSEL_f.RVSL = (uint16_t)pstcInputSel->enInmSel;
+            CMPx->VLTSEL_f.C4SL = (uint16_t)pstcInputSel->enInp4Sel;
         }
-        else
-        {
-        }
-    }
-    else
-    {
     }
 
-    CMPx->VLTSEL_f.CVSL = pstcInputSel->enInpSel;
-    CMPx->VLTSEL_f.RVSL = pstcInputSel->enInmSel;
-    CMPx->VLTSEL_f.C4SL = pstcInputSel->enInp4Sel;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -706,21 +679,18 @@ en_result_t CMP_InputSel(M4_CMP_TypeDef *CMPx,
  ******************************************************************************/
 en_result_t CMP_SetInp(M4_CMP_TypeDef *CMPx, en_cmp_inp_sel_t enInputSel)
 {
-    /* Check parameter */
-    DDL_ASSERT(IS_VALID_INPSEL(enInputSel));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check CMPx pointer */
-    if (!IS_VALID_CMP(CMPx))
+    if (IS_VALID_CMP(CMPx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check parameter */
+        DDL_ASSERT(IS_VALID_INPSEL(enInputSel));
+        CMPx->VLTSEL_f.CVSL = (uint16_t)enInputSel;
+        enRet = Ok;
     }
 
-    CMPx->VLTSEL_f.CVSL = enInputSel;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -779,21 +749,18 @@ en_cmp_inp_sel_t CMP_GetInp(M4_CMP_TypeDef *CMPx)
  ******************************************************************************/
 en_result_t CMP_SetInm(M4_CMP_TypeDef *CMPx, en_cmp_inm_sel_t enInputSel)
 {
-    /* Check parameter */
-    DDL_ASSERT(IS_VALID_INMSEL(enInputSel));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check CMPx pointer */
-    if (!IS_VALID_CMP(CMPx))
+    if (IS_VALID_CMP(CMPx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check parameter */
+        DDL_ASSERT(IS_VALID_INMSEL(enInputSel));
+        CMPx->VLTSEL_f.RVSL = (uint16_t)enInputSel;
+        enRet = Ok;
     }
 
-    CMPx->VLTSEL_f.RVSL = enInputSel;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -843,22 +810,20 @@ en_cmp_inm_sel_t CMP_GetInm(M4_CMP_TypeDef *CMPx)
  ******************************************************************************/
 en_result_t CMP_SetInp4(M4_CMP_TypeDef *CMPx,en_cmp_inp4_sel_t enInputSel)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check parameter */
     DDL_ASSERT(M4_CMP3 != CMPx);
     DDL_ASSERT(IS_VALID_INP4SEL(enInputSel));
 
     /* Check CMPx pointer */
-    if (!IS_VALID_CMP(CMPx))
+    if (IS_VALID_CMP(CMPx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        CMPx->VLTSEL_f.C4SL = (uint16_t)enInputSel;
+        enRet = Ok;
     }
 
-    CMPx->VLTSEL_f.C4SL = enInputSel;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -946,32 +911,24 @@ en_cmp_inp_state_t CMP_GetInpState(M4_CMP_TypeDef *CMPx)
 en_result_t CMP_DAC_Init(en_cmp_dac_ch_t enCh,
                             const stc_cmp_dac_init_t *pstcInitCfg)
 {
-    /* Check parameter */
-    DDL_ASSERT(pstcInitCfg != NULL);
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enCmpDacEN));
+    en_result_t enRet = ErrorInvalidParameter;
 
-    /* Check parameter */
-    if (!IS_VALID_CMP_CR_CH(enCh))
+    if ((IS_VALID_CMP_CR_CH(enCh)) && (pstcInitCfg != NULL))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
+        /* Check parameter */
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enCmpDacEN));
 
-    M4_CMP_CR->DACR &= ~(1 << enCh);    /* Disable DAC */
+        M4_CMP_CR->DACR &= (uint16_t)(~(1ul << enCh));    /* Disable DAC */
 
-    *(__IO uint8_t *)CMP_CR_DADRx(enCh) = pstcInitCfg->u8DacData; /* Set DAC data */
+        *(__IO uint8_t *)CMP_CR_DADRx(enCh) = pstcInitCfg->u8DacData; /* Set DAC data */
 
-    if (Enable == pstcInitCfg->enCmpDacEN)
-    {
-        M4_CMP_CR->DACR |= (1 << enCh); /* Enable DAC */
-    }
-    else
-    {
+        if (Enable == pstcInitCfg->enCmpDacEN)
+        {
+            M4_CMP_CR->DACR |= (uint16_t)(1ul << enCh); /* Enable DAC */
+        }
     }
 
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -988,19 +945,17 @@ en_result_t CMP_DAC_Init(en_cmp_dac_ch_t enCh,
  ******************************************************************************/
 en_result_t CMP_DAC_DeInit(en_cmp_dac_ch_t enCh)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check parameter */
-    if (!IS_VALID_CMP_CR_CH(enCh))
+    if (IS_VALID_CMP_CR_CH(enCh))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        M4_CMP_CR->DACR &= (uint16_t)(~(1ul << enCh));
+        *(__IO uint8_t *)CMP_CR_DADRx(enCh) = 0u;
+        enRet = Ok;
     }
 
-    M4_CMP_CR->DACR &= ~(1 << enCh);
-    *(__IO uint8_t *)CMP_CR_DADRx(enCh) = 0u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1020,25 +975,24 @@ en_result_t CMP_DAC_DeInit(en_cmp_dac_ch_t enCh)
  ******************************************************************************/
 en_result_t CMP_DAC_Cmd(en_cmp_dac_ch_t enCh, en_functional_state_t enCmd)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check parameter */
-    if (!IS_VALID_CMP_CR_CH(enCh))
+    if (IS_VALID_CMP_CR_CH(enCh))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        if(Enable == enCmd)
+        {
+            M4_CMP_CR->DACR |= (uint16_t)(1ul << enCh);
+        }
+        else
+        {
+            M4_CMP_CR->DACR &= (uint16_t)(~(1ul << enCh));
+        }
+
+        enRet = Ok;
     }
 
-    if(Enable == enCmd)
-    {
-        M4_CMP_CR->DACR |= (1 << enCh);
-    }
-    else
-    {
-        M4_CMP_CR->DACR &= ~(1 << enCh);
-    }
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1056,18 +1010,16 @@ en_result_t CMP_DAC_Cmd(en_cmp_dac_ch_t enCh, en_functional_state_t enCmd)
  ******************************************************************************/
 en_result_t CMP_DAC_SetData(en_cmp_dac_ch_t enCh, uint8_t u8DacData)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check parameter */
-    if (!IS_VALID_CMP_CR_CH(enCh))
+    if (IS_VALID_CMP_CR_CH(enCh))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        *(__IO uint8_t *)CMP_CR_DADRx(enCh) = u8DacData;
+        enRet = Ok;
     }
 
-    *(__IO uint8_t *)CMP_CR_DADRx(enCh) = u8DacData;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1104,19 +1056,17 @@ uint8_t CMP_DAC_GetData(en_cmp_dac_ch_t enCh)
  ******************************************************************************/
 en_result_t CMP_ADC_SetRefVoltPath(en_cmp_adc_int_ref_volt_path_t enRefVoltPath)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check parameter */
     if (!IS_VALID_ADC_REF_VOLT_PATH(enRefVoltPath))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        M4_CMP_CR->RVADC = RVADC_WRITE_PROT_KEY;  /* Release write protection */
+        M4_CMP_CR->RVADC =  enRefVoltPath;        /* Set reference voltage path */
+        enRet = Ok;
     }
 
-    M4_CMP_CR->RVADC = RVADC_WRITE_PROT_KEY;  /* Release write protection */
-    M4_CMP_CR->RVADC =  enRefVoltPath;        /* Set reference voltage path */
-
-    return Ok;
+    return enRet;
 }
 
 //@} // CmpGroup

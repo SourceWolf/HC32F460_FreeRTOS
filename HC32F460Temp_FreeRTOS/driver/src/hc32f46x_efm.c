@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -70,34 +70,34 @@
 /*******************************************************************************
  * Local pre-processor symbols/macros ('#define')
  ******************************************************************************/
-#define EFM_LOCK                            0x00000000
-#define EFM_UNLOCK                          0x00000001
-#define EFM_KEY1                            0x0123
-#define EFM_KEY2                            0x3210
+#define EFM_LOCK                            (0x00000000u)
+#define EFM_UNLOCK                          (0x00000001u)
+#define EFM_KEY1                            (0x0123ul)
+#define EFM_KEY2                            (0x3210ul)
 
-#define EFM_PROTECT_ADDR_MSK                0x0007FFFF
+#define EFM_PROTECT_ADDR_MSK                (0x0007FFFFu)
 
 /*  Parameter validity check for pointer. */
 #define IS_VALID_POINTER(x)                 (NULL != (x))
 
 /*  Parameter validity check for flash latency. */
-#define IS_VALID_FLASH_LATENCY(LATENCY)                                        \
-(   ((LATENCY) == EFM_LATENCY_0)                ||                             \
-    ((LATENCY) == EFM_LATENCY_1)                ||                             \
-    ((LATENCY) == EFM_LATENCY_2)                ||                             \
-    ((LATENCY) == EFM_LATENCY_3)                ||                             \
-    ((LATENCY) == EFM_LATENCY_4)                ||                             \
-    ((LATENCY) == EFM_LATENCY_5)                ||                             \
-    ((LATENCY) == EFM_LATENCY_6)                ||                             \
-    ((LATENCY) == EFM_LATENCY_7)                ||                             \
-    ((LATENCY) == EFM_LATENCY_8)                ||                             \
-    ((LATENCY) == EFM_LATENCY_9)                ||                             \
-    ((LATENCY) == EFM_LATENCY_10)               ||                             \
-    ((LATENCY) == EFM_LATENCY_11)               ||                             \
-    ((LATENCY) == EFM_LATENCY_12)               ||                             \
-    ((LATENCY) == EFM_LATENCY_13)               ||                             \
-    ((LATENCY) == EFM_LATENCY_14)               ||                             \
-    ((LATENCY) == EFM_LATENCY_15))
+#define IS_VALID_FLASH_LATENCY(x)                                              \
+(   ((x) == EFM_LATENCY_0)                      ||                             \
+    ((x) == EFM_LATENCY_1)                      ||                             \
+    ((x) == EFM_LATENCY_2)                      ||                             \
+    ((x) == EFM_LATENCY_3)                      ||                             \
+    ((x) == EFM_LATENCY_4)                      ||                             \
+    ((x) == EFM_LATENCY_5)                      ||                             \
+    ((x) == EFM_LATENCY_6)                      ||                             \
+    ((x) == EFM_LATENCY_7)                      ||                             \
+    ((x) == EFM_LATENCY_8)                      ||                             \
+    ((x) == EFM_LATENCY_9)                      ||                             \
+    ((x) == EFM_LATENCY_10)                     ||                             \
+    ((x) == EFM_LATENCY_11)                     ||                             \
+    ((x) == EFM_LATENCY_12)                     ||                             \
+    ((x) == EFM_LATENCY_13)                     ||                             \
+    ((x) == EFM_LATENCY_14)                     ||                             \
+    ((x) == EFM_LATENCY_15))
 
 /*  Parameter validity check for read mode. */
 #define IS_VALID_READ_MD(MD)                                                   \
@@ -142,10 +142,14 @@
 
 /*  Parameter validity check for flash address. */
 #define IS_VALID_FLASH_ADDR(addr)                                              \
-(   ((addr) == 0x00000000)                      ||                             \
-    ((addr) >= 0x00000001)                      ||                             \
-    ((addr) <= 0x0007DFFF))
+(   ((addr) == 0x00000000u)                      ||                            \
+    (((addr) >= 0x00000001u)                     &&                            \
+    ((addr) <= 0x0007FFDFu)))
 
+/*  Parameter validity check for flash address. */
+#define IS_VALID_OTP_LOCK_ADDR(addr)                                           \
+(   ((addr) >= 0x03000FC0u)                      ||                            \
+    ((addr) <= 0x03000FF8u))
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
  ******************************************************************************/
@@ -215,7 +219,7 @@ void EFM_FlashCmd(en_functional_state_t enNewState)
 {
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewState));
 
-    M4_EFM->FSTP_f.FSTP = ((Enable == enNewState) ? 0 : 1);
+    M4_EFM->FSTP_f.FSTP = ((Enable == enNewState) ? 0ul : 1ul);
 }
 /**
  *******************************************************************************
@@ -268,27 +272,7 @@ void EFM_InstructionCacheCmd(en_functional_state_t enNewState)
 {
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewState));
 
-    M4_EFM->FRMC_f.CACHE = ((Enable == enNewState) ? 1 : 0);
-}
-
-/**
- *******************************************************************************
- ** \brief Enable or disable the prefetch buffer.
- **
- ** \param  [in] enNewState             The new state of the prefetch buffer.
- ** \arg    Enable                      Enable prefetch buffer.
- ** \arg    Disable                     Disable prefetch buffer.
- **
- ** \retval None
- **
- ** \note   None
- **
- ******************************************************************************/
-void EFM_PrefetchBufferCmd(en_functional_state_t enNewState)
-{
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewState));
-
-    M4_EFM->FRMC_f.PREFETE = ((Enable == enNewState) ? 1 : 0);
+    M4_EFM->FRMC_f.CACHE = enNewState;
 }
 
 /**
@@ -308,7 +292,7 @@ void EFM_DataCacheRstCmd(en_functional_state_t enNewState)
 {
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewState));
 
-    M4_EFM->FRMC_f.CRST = ((Enable == enNewState) ? 1 : 0);
+    M4_EFM->FRMC_f.CRST = enNewState;
 }
 
 /**
@@ -347,7 +331,7 @@ void EFM_ErasePgmCmd(en_functional_state_t enNewState)
 {
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewState));
 
-    M4_EFM->FWMC_f.PEMODE = ((Enable == enNewState) ? 1 : 0);
+    M4_EFM->FWMC_f.PEMODE = enNewState;
 }
 
 /**
@@ -394,23 +378,22 @@ void EFM_SetErasePgmMode(en_efm_erase_pgm_md_t enReadMD)
  ******************************************************************************/
 void EFM_InterruptCmd(en_efm_int_sel_t enInt, en_functional_state_t enNewState)
 {
-    uint8_t u8state;
-
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewState));
     DDL_ASSERT(IS_VALID_EFM_INT_SEL(enInt));
-
-    u8state = ((Enable == enNewState) ? 1 : 0);
 
     switch(enInt)
     {
         case PgmErsErrInt:
-            M4_EFM->FITE_f.PEERRITE = u8state;
+            M4_EFM->FITE_f.PEERRITE = enNewState;
             break;
         case EndPgmInt:
-            M4_EFM->FITE_f.OPTENDITE = u8state;
+            M4_EFM->FITE_f.OPTENDITE = enNewState;
             break;
         case ReadErrInt:
-            M4_EFM->FITE_f.RDCOLERRITE = u8state;
+            M4_EFM->FITE_f.RDCOLERRITE = enNewState;
+            break;
+        default:
+            break;
     }
 }
 
@@ -419,8 +402,8 @@ void EFM_InterruptCmd(en_efm_int_sel_t enInt, en_functional_state_t enNewState)
  ** \brief Checks whether the specified FLASH flag is set or not..
  **
  ** \param [in] u32flag                 Specifies the FLASH flag to check.
- ** \arg   EFM_FLAG_WRPERR              Flash wirte protect error flag.
- ** \arg   EFM_FLAG_PEPRTERR            Flash program protect erea error flag.
+ ** \arg   EFM_FLAG_WRPERR              Flash write protect error flag.
+ ** \arg   EFM_FLAG_PEPRTERR            Flash program protect area error flag.
  ** \arg   EFM_FLAG_PGSZERR             Flash program size error flag.
  ** \arg   EFM_FLAG_PGMISMTCH           Flash program miss match flag.
  ** \arg   EFM_FLAG_EOP                 Flash end of program flag.
@@ -436,16 +419,16 @@ en_flag_status_t EFM_GetFlagStatus(uint32_t u32flag)
 {
     DDL_ASSERT(IS_VALID_FLASH_FLAG(u32flag));
 
-    return ((0 == (M4_EFM->FSR & u32flag)) ? Reset :Set);
+    return ((0ul == (M4_EFM->FSR & u32flag)) ? Reset :Set);
 }
 
 /**
  *******************************************************************************
  ** \brief Checks whether the specified FLASH flag is set or not..
  **
- ** \param [in] u32flag                 Specifies the FLASH flag to check.
- ** \arg   EFM_FLAG_WRPERR              Flash wirte protect error flag.
- ** \arg   EFM_FLAG_PEPRTERR            Flash program protect erea error flag.
+ ** \param [in] u32flag                 Specifies the FLASH flag to clear.
+ ** \arg   EFM_FLAG_WRPERR              Flash write protect error flag.
+ ** \arg   EFM_FLAG_PEPRTERR            Flash program protect area error flag.
  ** \arg   EFM_FLAG_PGSZERR             Flash program size error flag.
  ** \arg   EFM_FLAG_PGMISMTCH           Flash program miss match flag.
  ** \arg   EFM_FLAG_EOP                 Flash end of program flag.
@@ -458,7 +441,7 @@ en_flag_status_t EFM_GetFlagStatus(uint32_t u32flag)
  ******************************************************************************/
 void EFM_ClearFlag(uint32_t u32flag)
 {
-    DDL_ASSERT(IS_VALID_CLEAR_FLASH_FLAG(u32flag));
+    //DDL_ASSERT(IS_VALID_CLEAR_FLASH_FLAG(u32flag));
 
     M4_EFM->FSCLR = u32flag;
 }
@@ -477,33 +460,37 @@ en_efm_flash_status_t EFM_GetStatus(void)
 {
     en_efm_flash_status_t enFlashStatus = FlashEOP;
 
-    if(1 == M4_EFM->FSR_f.RDY )
+    if(1ul == M4_EFM->FSR_f.RDY )
     {
         enFlashStatus = FlashReady;
     }
-    else if(1 == M4_EFM->FSR_f.RDCOLERR)
+    else if(1ul == M4_EFM->FSR_f.RDCOLERR)
     {
         enFlashStatus = FlashRWErr;
     }
-    else if(1 == M4_EFM->FSR_f.OPTEND)
+    else if(1ul == M4_EFM->FSR_f.OPTEND)
     {
         enFlashStatus = FlashEOP;
     }
-    else if(1 == M4_EFM->FSR_f.PGMISMTCH)
+    else if(1ul == M4_EFM->FSR_f.PGMISMTCH)
     {
         enFlashStatus = FlashPgMissMatch;
     }
-    else if(1 == M4_EFM->FSR_f.PGSZERR)
+    else if(1ul == M4_EFM->FSR_f.PGSZERR)
     {
         enFlashStatus = FlashPgSizeErr;
     }
-    else if(1 == M4_EFM->FSR_f.PEPRTERR)
+    else if(1ul == M4_EFM->FSR_f.PEPRTERR)
     {
-        enFlashStatus = FlashPgEreaPErr;
+        enFlashStatus = FlashPgareaPErr;
     }
-    else if(1 == M4_EFM->FSR_f.PEWERR)
+    else if(1ul == M4_EFM->FSR_f.PEWERR)
     {
         enFlashStatus = FlashWRPErr;
+    }
+    else
+    {
+        //else
     }
 
     return enFlashStatus;
@@ -548,7 +535,7 @@ void EFM_SetBusState(en_efm_bus_sta_t enState)
 
 /**
  *******************************************************************************
- ** \brief Flash single program withour read back.
+ ** \brief Flash single program without read back.
  **
  ** \param  [in] u32Addr                The specified program address.
  ** \param  [in] u32Data                The specified program data.
@@ -561,17 +548,35 @@ void EFM_SetBusState(en_efm_bus_sta_t enState)
 en_result_t EFM_SingleProgram(uint32_t u32Addr, uint32_t u32Data)
 {
     en_result_t enRet = Ok;
+    uint8_t u8tmp;
+    uint16_t u16Timeout = 0u;
 
     DDL_ASSERT(IS_VALID_FLASH_ADDR(u32Addr));
 
-    /* Enable prgram. */
+    /* CLear the error flag. */
+    EFM_ClearFlag(EFM_FLAG_WRPERR | EFM_FLAG_PEPRTERR | EFM_FLAG_PGSZERR |
+                  EFM_FLAG_PGMISMTCH | EFM_FLAG_EOP | EFM_FLAG_RWERR);
+
+    /* read back CACHE */
+    u8tmp = (uint8_t)M4_EFM->FRMC_f.CACHE;
+
+    M4_EFM->FRMC_f.CACHE = Disable;
+
+    /* Enable program. */
     EFM_ErasePgmCmd(Enable);
     /* Set single program mode. */
     EFM_SetErasePgmMode(SingleProgram);
     /* program data. */
     *(uint32_t*)u32Addr = u32Data;
 
-    while(1 != M4_EFM->FSR_f.RDY);
+    while(1ul != M4_EFM->FSR_f.RDY)
+    {
+        u16Timeout++;
+        if(u16Timeout > 0x1000u)
+        {
+            enRet = ErrorTimeout; 
+        }
+    }
 
     if(u32Data != *(uint32_t*)u32Addr)
     {
@@ -579,7 +584,12 @@ en_result_t EFM_SingleProgram(uint32_t u32Addr, uint32_t u32Data)
     }
 
     EFM_ClearFlag(EFM_FLAG_EOP);
+    /* Set read only mode. */
+    EFM_SetErasePgmMode(ReadOnly1);
     EFM_ErasePgmCmd(Disable);
+
+    /* recover CACHE */
+    M4_EFM->FRMC_f.CACHE = u8tmp;
 
     return enRet;
 }
@@ -599,41 +609,59 @@ en_result_t EFM_SingleProgram(uint32_t u32Addr, uint32_t u32Data)
 en_result_t EFM_SingleProgramRB(uint32_t u32Addr, uint32_t u32Data)
 {
     en_result_t enRet = Ok;
+    uint8_t u8tmp = 0u;
+    uint16_t u16Timeout = 0u;
 
     DDL_ASSERT(IS_VALID_FLASH_ADDR(u32Addr));
 
-    /* Enable prgram. */
+    /* CLear the error flag. */
+    EFM_ClearFlag(EFM_FLAG_WRPERR | EFM_FLAG_PEPRTERR | EFM_FLAG_PGSZERR |
+                  EFM_FLAG_PGMISMTCH | EFM_FLAG_EOP | EFM_FLAG_RWERR);
+
+    /* read back CACHE */
+    u8tmp = (uint8_t)M4_EFM->FRMC_f.CACHE;
+
+    M4_EFM->FRMC_f.CACHE = Disable;
+
+    /* Enable program. */
     EFM_ErasePgmCmd(Enable);
     /* Set single program with read back mode. */
     EFM_SetErasePgmMode(SingleProgramRB);
     /* program data. */
     *(uint32_t*)u32Addr = u32Data;
 
-    while(1 != M4_EFM->FSR_f.RDY);
+    while(1ul != M4_EFM->FSR_f.RDY)
+    {
+        u16Timeout++;
+        if(u16Timeout > 0x1000u)
+        {
+            enRet = ErrorTimeout; 
+        }
+    }
 
-    if(1 == M4_EFM->FSR_f.PGMISMTCH)
+    if(1ul == M4_EFM->FSR_f.PGMISMTCH)
     {
         enRet = Error;
     }
 
     EFM_ClearFlag(EFM_FLAG_EOP);
+    /* Set read only mode. */
+    EFM_SetErasePgmMode(ReadOnly1);
     EFM_ErasePgmCmd(Disable);
+
+    /* recover CACHE */
+    M4_EFM->FRMC_f.CACHE = u8tmp;
 
     return enRet;
 }
 
-static void *EFM_Memcpy(void *pvDst, const void *pvSrc, uint32_t u32Count)
+static void *EFM_Memcpy(void *pvDst, void *pvSrc, uint32_t u32Count)
 {
     uint8_t *u8TmpDst = (uint8_t *)pvDst;
     uint8_t *u8TmpSrc = (uint8_t *)pvSrc;
 
     DDL_ASSERT(IS_VALID_POINTER(pvDst));
     DDL_ASSERT(IS_VALID_POINTER(pvSrc));
-
-    if(!u32Count)
-    {
-        return NULL;
-    }
 
     while (u32Count--)
     {
@@ -658,17 +686,28 @@ static void *EFM_Memcpy(void *pvDst, const void *pvSrc, uint32_t u32Count)
 en_result_t EFM_SequenceProgram(uint32_t u32Addr, uint32_t u32Len, void *pBuf)
 {
     en_result_t enRet = Ok;
+    uint8_t u8tmp;
     uint32_t i;
-    uint32_t u32Tmp = 0xFFFFFFFF;
+    uint16_t u16Timeout = 0u;
+    uint32_t u32Tmp = 0xFFFFFFFFul;
     uint32_t *u32pSrc = pBuf;
     uint32_t *u32pDest = (uint32_t *)u32Addr;
-    uint32_t u32LoopWords = u32Len >> 2;
-    uint32_t u32RemainBytes = u32Len % 4;
+    uint32_t u32LoopWords = u32Len >> 2ul;
+    uint32_t u32RemainBytes = u32Len % 4ul;
 
     DDL_ASSERT(IS_VALID_FLASH_ADDR(u32Addr));
     DDL_ASSERT(IS_VALID_POINTER(pBuf));
 
-    /* Enable prgram. */
+    /* CLear the error flag. */
+    EFM_ClearFlag(EFM_FLAG_WRPERR | EFM_FLAG_PEPRTERR | EFM_FLAG_PGSZERR |
+                  EFM_FLAG_PGMISMTCH | EFM_FLAG_EOP | EFM_FLAG_RWERR);
+
+    /* read back CACHE */
+    u8tmp = (uint8_t)M4_EFM->FRMC_f.CACHE;
+
+    M4_EFM->FRMC_f.CACHE = Disable;
+
+    /* Enable program. */
     EFM_ErasePgmCmd(Enable);
     /* Set sequence program mode. */
     EFM_SetErasePgmMode(SequenceProgram);
@@ -677,27 +716,45 @@ en_result_t EFM_SequenceProgram(uint32_t u32Addr, uint32_t u32Len, void *pBuf)
     EFM_ClearFlag(EFM_FLAG_WRPERR);
 
     /* program data. */
-    for(i = 0; i < u32LoopWords; i++)
+    for(i = 0ul; i < u32LoopWords; i++)
     {
         *u32pDest++ = *u32pSrc++;
         /* wait operate end. */
-        while(1 != M4_EFM->FSR_f.OPTEND);
+        while(1ul != M4_EFM->FSR_f.OPTEND)
+        {
+            u16Timeout++;
+            if(u16Timeout > 0x1000u)
+            {
+                enRet = ErrorTimeout; 
+            }
+        }
         /* clear end flag. */
         EFM_ClearFlag(EFM_FLAG_EOP);
     }
     if(u32RemainBytes)
     {
         EFM_Memcpy(&u32Tmp, u32pSrc, u32RemainBytes);
-        *u32pDest++ = *u32pSrc++;
+        *u32pDest++ = u32Tmp;
     }
 
-    /* Modified program mode as not sequence program. */
+    /* Set read only mode. */
     EFM_SetErasePgmMode(ReadOnly1);
 
-    while(1 != M4_EFM->FSR_f.RDY);
+    u16Timeout = 0u;
+    while(1ul != M4_EFM->FSR_f.RDY)
+    {
+        u16Timeout++;
+        if(u16Timeout > 0x1000u)
+        {
+            enRet = ErrorTimeout; 
+        }
+    }
 
     EFM_ClearFlag(EFM_FLAG_EOP);
     EFM_ErasePgmCmd(Disable);
+
+    /* recover CACHE */
+    M4_EFM->FRMC_f.CACHE = u8tmp;
 
     return enRet;
 }
@@ -706,62 +763,153 @@ en_result_t EFM_SequenceProgram(uint32_t u32Addr, uint32_t u32Len, void *pBuf)
  *******************************************************************************
  ** \brief Flash sector erase.
  **
- ** \param  [in] u32Addr                The uncetain(radom) address in the specified sector.
+ ** \param  [in] u32Addr                The uncertain(random) address in the specified sector.
  **
- ** \retval None
+ ** \retval en_result_t
  **
  ** \note   The address should be word align.
  **
  ******************************************************************************/
-void EFM_SectorErase(uint32_t u32Addr)
+en_result_t EFM_SectorErase(uint32_t u32Addr)
 {
+    uint8_t u8tmp;
+    uint16_t u16Timeout = 0u;
+    en_result_t enRet = Ok;
+
     DDL_ASSERT(IS_VALID_FLASH_ADDR(u32Addr));
+
+    /* CLear the error flag. */
+    EFM_ClearFlag(EFM_FLAG_WRPERR | EFM_FLAG_PEPRTERR | EFM_FLAG_PGSZERR |
+                  EFM_FLAG_PGMISMTCH | EFM_FLAG_EOP | EFM_FLAG_RWERR);
+
+    /* read back CACHE */
+    u8tmp = (uint8_t)M4_EFM->FRMC_f.CACHE;
+
+    M4_EFM->FRMC_f.CACHE = Disable;
 
     /* Enable erase. */
     EFM_ErasePgmCmd(Enable);
     /* Set sector erase mode. */
     EFM_SetErasePgmMode(SectorErase);
 
-    *(uint32_t*)u32Addr = 0x12345678;
+    *(uint32_t*)u32Addr = 0x12345678u;
 
-    while(1 != M4_EFM->FSR_f.RDY);
+    while(1ul != M4_EFM->FSR_f.RDY)
+    {
+        u16Timeout++;
+        if(u16Timeout > 0x1000u)
+        {
+            enRet = ErrorTimeout; 
+        }
+    }
 
     EFM_ClearFlag(EFM_FLAG_EOP);
     /* Set read only mode. */
     EFM_SetErasePgmMode(ReadOnly1);
     EFM_ErasePgmCmd(Disable);
+
+    /* recover CACHE */
+    M4_EFM->FRMC_f.CACHE = u8tmp;
+
+    return enRet;
 }
 
 /**
  *******************************************************************************
  ** \brief Flash mass erase.
  **
- ** \param  [in] u32Addr                The uncetain(radom) address in the flash.
+ ** \param  [in] u32Addr                The uncertain(random) address in the flash.
  **
- ** \retval None
+ ** \retval en_result_t
  **
  ** \note   The address should be word align.
  **
  ******************************************************************************/
-void EFM_MassErase(uint32_t u32Addr)
+en_result_t EFM_MassErase(uint32_t u32Addr)
 {
+    uint8_t u8tmp;
+    uint16_t u16Timeout = 0u;
+    en_result_t enRet = Ok;
+
     DDL_ASSERT(IS_VALID_FLASH_ADDR(u32Addr));
+
+    /* CLear the error flag. */
+    EFM_ClearFlag(EFM_FLAG_WRPERR | EFM_FLAG_PEPRTERR | EFM_FLAG_PGSZERR |
+                  EFM_FLAG_PGMISMTCH | EFM_FLAG_EOP | EFM_FLAG_RWERR);
+
+    /* read back CACHE */
+    u8tmp = (uint8_t)M4_EFM->FRMC_f.CACHE;
+
+    M4_EFM->FRMC_f.CACHE = Disable;
 
     /* Enable erase. */
     EFM_ErasePgmCmd(Enable);
     /* Set sector erase mode. */
     EFM_SetErasePgmMode(MassErase);
 
-    *(uint32_t*)u32Addr = 0x12345678;
+    *(uint32_t*)u32Addr = 0x12345678u;
 
-    while(1 != M4_EFM->FSR_f.RDY);
+    while(1ul != M4_EFM->FSR_f.RDY)
+    {
+        u16Timeout++;
+        if(u16Timeout > 0x1000u)
+        {
+            enRet = ErrorTimeout; 
+        }
+    }
 
     EFM_ClearFlag(EFM_FLAG_EOP);
     /* Set read only mode. */
     EFM_SetErasePgmMode(ReadOnly1);
     EFM_ErasePgmCmd(Disable);
+
+    /* recover CACHE */
+    M4_EFM->FRMC_f.CACHE = u8tmp;
+
+    return enRet;
 }
 
+/**
+ *******************************************************************************
+ ** \brief  Lock OTP data block.
+ **
+ ** \param  u32Addr                     The addr to lock.
+ **
+ ** \retval en_result_t
+ **
+ ** \note   None
+ **
+ ******************************************************************************/
+en_result_t EFM_OtpLock(uint32_t u32Addr)
+{
+    DDL_ASSERT(IS_VALID_OTP_LOCK_ADDR(u32Addr));
+    uint16_t u16Timeout = 0u;
+    en_result_t enRet = Ok;
+
+    /* Enable program. */
+    EFM_ErasePgmCmd(Enable);
+    /* Set single program mode. */
+    EFM_SetErasePgmMode(SingleProgram);
+
+    /* Lock the otp block. */
+    *(uint32_t*)u32Addr = 0ul;
+
+    while(1ul != M4_EFM->FSR_f.RDY)
+    {
+        u16Timeout++;
+        if(u16Timeout > 0x1000u)
+        {
+            enRet = ErrorTimeout; 
+        }
+    }
+
+    EFM_ClearFlag(EFM_FLAG_EOP);
+    /* Set read only mode. */
+    EFM_SetErasePgmMode(ReadOnly1);
+    EFM_ErasePgmCmd(Disable);
+
+    return enRet;
+}
 /**
  *******************************************************************************
  ** \brief read unique ID.

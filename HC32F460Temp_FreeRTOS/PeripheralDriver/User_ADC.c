@@ -1,4 +1,6 @@
 #include "hc32_ddl.h"
+#include "System_InterruptCFG_Def.h"
+
 uint16_t ADC1_AIN10_Data;
 
 uint16_t Get_AIN10Data(void)
@@ -30,13 +32,13 @@ void User_ADC_Init(void)
     stc_adc_ch_cfg_t  stcAdcBaseCFG;
     stc_irq_regi_conf_t stcIrqRegiConf;
     stc_port_init_t Port_CFG;
-    stc_adc_pga_cfg_t ADC_PGA_CFG;
+//    stc_adc_pga_cfg_t ADC_PGA_CFG;
     
     MEM_ZERO_STRUCT(stcAdcInit);
     MEM_ZERO_STRUCT(stcAdcBaseCFG);
     MEM_ZERO_STRUCT(stcIrqRegiConf);
     MEM_ZERO_STRUCT(Port_CFG);
-    MEM_ZERO_STRUCT(ADC_PGA_CFG);
+//    MEM_ZERO_STRUCT(ADC_PGA_CFG);
     
 //    CLK_SetPeriClkSource(ClkAdcSrcMpllp);//MPLLP 3分频56MHz
     PWC_Fcg3PeriphClockCmd(PWC_FCG3_PERIPH_ADC1, Enable);
@@ -51,10 +53,11 @@ void User_ADC_Init(void)
     ADC_Init(M4_ADC1, &stcAdcInit);//配置ADC
 //    ADC_Init(M4_ADC2, &stcAdcInit);
 
-    ADC_PGA_CFG.enCtl = AdcPgaCtl_Amplify;//功能打开，使能PGA
-    ADC_PGA_CFG.enFactor = AdcPgaFactor_2;//放大倍数2倍
-    ADC_PGA_CFG.enNegativeIn = AdcPgaNegative_VSSA;//PGA负端输入接模拟地
-    ADC_ConfigPga(&ADC_PGA_CFG);//配置PGA
+//ADC_PGA_CFG.enCtl = AdcPgaCtl_Amplify;//功能打开，使能PGA
+//ADC_PGA_CFG.enFactor = AdcPgaFactor_2;//放大倍数2倍
+//ADC_PGA_CFG.enNegativeIn = AdcPgaNegative_VSSA;//PGA负端输入接模拟地
+    ADC_PgaCmd(Enable);
+    ADC_ConfigPga(AdcPgaFactor_2,AdcPgaNegative_VSSA);//配置PGA
     ADC_AddPgaChannel(PGA_CH1);//配置PGA通道为AN1;
     ADC_PgaCmd(Disable);//PGA使能
     Port_CFG.enPinMode = Pin_Mode_Ana;
@@ -63,7 +66,7 @@ void User_ADC_Init(void)
     stcAdcBaseCFG.u32Channel = ADC1_CH1;
 //    stcAdcBaseCFG.enAvgEnable = true;
     stcAdcBaseCFG.pu8SampTime = &au8Adc1SaSampTime;
-    stcAdcBaseCFG.u8Sequence = AdcSequence_A;//Must be setting, Default can not convert data
+    stcAdcBaseCFG.u8Sequence = ADC_SEQ_A;//Must be setting, Default can not convert data
     ADC_AddAdcChannel(M4_ADC1, &stcAdcBaseCFG);
 
   stcIrqRegiConf.enIntSrc = INT_ADC1_EOCA;

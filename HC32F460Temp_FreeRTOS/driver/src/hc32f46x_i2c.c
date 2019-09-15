@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -54,7 +54,6 @@
  ******************************************************************************/
 #include "hc32f46x_i2c.h"
 #include "hc32f46x_utility.h"
-#include "hc32f46x_clk.h"
 
 #if (DDL_I2C_ENABLE == DDL_ON)
 
@@ -71,10 +70,7 @@
 /*******************************************************************************
  * Local pre-processor symbols/macros ('#define')
  ******************************************************************************/
-#define I2C_BAUDRATE_MAX                400000ul
-
-/*! Parameter valid check for peripheral Instances. */
-#define IS_VALID_POINTER(x)           (NULL != (x))
+#define I2C_BAUDRATE_MAX                (400000ul)
 
 /*! Parameter validity check for unit. */
 #define IS_VALID_UNIT(x)                                                       \
@@ -83,8 +79,11 @@
     ((x) == M4_I2C3))
 
 /*! Parameter check for I2C baudrate value !*/
-#define IS_VALID_SPEED(speed)           (speed <= (I2C_BAUDRATE_MAX))
+#define IS_VALID_SPEED(speed)           ((speed) <= (I2C_BAUDRATE_MAX))
 
+/*! Parameter check for I2C baudrate calculate prccess !*/
+#define IS_VALID_FDIV(fdiv)             ((fdiv) <= 128.0f)
+#define IS_VALID_BAUDWIDTH(result)      ((result) == true)
 /*! Parameter check for Function state !*/
 #define IS_VALID_FUNCTION_STATE(x)                                             \
 (   ((x) == Disable)                               ||                          \
@@ -110,7 +109,7 @@
     ((x) == BothTimeOutOn))
 
 /*! Parameter check for I2C 7 bit address range !*/
-#define IS_VALID_7BIT_ADR(x)           (x <= 0x7F)
+#define IS_VALID_7BIT_ADR(x)           ((x) <= 0x7F)
 
 /*! Parameter check for readable I2C status bit !*/
 #define IS_VALID_RD_STATUS_BIT(x)                                              \
@@ -173,15 +172,17 @@ static uint8_t u8FreqDiv[8] = {1,2,4,8,16,32,64,128};
  ******************************************************************************/
 static uint8_t GetFreqReg(float fDiv)
 {
-    uint8_t u8Reg = 7;
-    for(uint8_t i=0; i<8; i++)
+    uint8_t u8Reg = 0u;
+
+    for(uint8_t i=7u; i>0u; i--)
     {
-        if(fDiv <= u8FreqDiv[i])
+        if(fDiv >= (float)u8FreqDiv[i-1u])
         {
             u8Reg = i;
             break;
         }
     }
+
     return u8Reg;
 }
 
@@ -192,35 +193,63 @@ static uint8_t GetFreqReg(float fDiv)
  ** \param [in] pstcI2Cx           Pointer to the I2C peripheral register, can
  **                                be M4_I2C1,M4_I2C2 or M4_I2C3.
  ** \param [in] u32Baudrate        The value of baudrate.
+ ** \param [in] u32SclTime         The SCL Rise and Falling timer(Number of period of pclk3)
+ ** \param [in] u32Pclk3           Frequency of pclk3
  **
  ** \retval None
  **
  ******************************************************************************/
-void I2C_BaudrateConfig(M4_I2C_TypeDef* pstcI2Cx, uint32_t u32Baudrate)
+void I2C_BaudrateConfig(M4_I2C_TypeDef* pstcI2Cx, uint32_t u32Baudrate, uint32_t u32SclTime, uint32_t u32Pclk3)
 {
-    stc_clk_freq_t stcClkFreq;
-    uint32_t u32Pclk3;
-    float fDivIndex = 0;
+    float fDivIndex = 0.0f;
     uint8_t u8DivIndex;
-    uint32_t width = 0;
+    uint32_t width = 0ul;
+    uint32_t dnfsum = 0ul, divsum = 0ul;
+    uint32_t tmp = 0ul;
 
     /* Check parameters */
     DDL_ASSERT(IS_VALID_UNIT(pstcI2Cx));
     DDL_ASSERT(IS_VALID_SPEED(u32Baudrate));
 
-    /* Get Pclk3*/
-    CLK_GetClockFreq(&stcClkFreq);
-    u32Pclk3 = stcClkFreq.pclk3Freq;
+    /* Judge digitial filter status*/
+    if(1u == pstcI2Cx->FLTR_f.DNFEN)
+    {
+        dnfsum = pstcI2Cx->FLTR_f.DNF+1ul;
+    }
+    else
+    {
+        dnfsum = 0ul;
+    }
+    divsum = 2ul;  //default
+
+    if (0ul != u32Baudrate)
+    {
+        tmp = u32Pclk3/u32Baudrate - u32SclTime;
+    }
 
     /* Calculate the pclk3 div */
-    fDivIndex = u32Pclk3/(u32Baudrate*32*2);
+    fDivIndex = (float)tmp / ((32.0f + (float)dnfsum + (float)divsum) * 2.0f);
+
+    DDL_ASSERT(IS_VALID_FDIV(fDivIndex));
+
     u8DivIndex = GetFreqReg(fDivIndex);
-    width =  u32Pclk3 / (u8FreqDiv[u8DivIndex] * u32Baudrate);
+
+    /* Judge if clock divider on*/
+    if(0u == u8DivIndex)
+    {
+        divsum = 3ul;
+    }
+    else
+    {
+        divsum = 2ul;
+    }
+    width =  tmp / u8FreqDiv[u8DivIndex];
+    DDL_ASSERT(IS_VALID_BAUDWIDTH((width/2ul) >= (dnfsum + divsum)));
 
     /* Write register */
     pstcI2Cx->CCR_f.FREQ = u8DivIndex;
-    pstcI2Cx->CCR_f.SLOWW = width / 2;
-    pstcI2Cx->CCR_f.SHIGHW = width - width / 2;
+    pstcI2Cx->CCR_f.SLOWW = width / 2ul - dnfsum - divsum;
+    pstcI2Cx->CCR_f.SHIGHW = width - width / 2ul - dnfsum - divsum;
 }
 
 /**
@@ -230,16 +259,17 @@ void I2C_BaudrateConfig(M4_I2C_TypeDef* pstcI2Cx, uint32_t u32Baudrate)
  ** \param [in] pstcI2Cx            Pointer to the I2C peripheral register, can
  ** \                               be M4_I2C1,M4_I2C2 or M4_I2C3.
  **
- ** \retval None
+ ** \retval Ok                      Process finished.
  **
  ******************************************************************************/
-void I2C_DeInit(M4_I2C_TypeDef* pstcI2Cx)
+en_result_t I2C_DeInit(M4_I2C_TypeDef* pstcI2Cx)
 {
     DDL_ASSERT(IS_VALID_UNIT(pstcI2Cx));
 
     /* Reset peripheral register and internal status*/
-    pstcI2Cx->CR1_f.PE = 0;
-    pstcI2Cx->CR1_f.SWRST = 1;
+    pstcI2Cx->CR1_f.PE = 0u;
+    pstcI2Cx->CR1_f.SWRST = 1u;
+    return Ok;
 }
 
 /**
@@ -250,27 +280,39 @@ void I2C_DeInit(M4_I2C_TypeDef* pstcI2Cx)
  ** \                               be M4_I2C1,M4_I2C2 or M4_I2C3.
  ** \param [in] pstcI2C_InitStruct  Pointer to I2C configuration structure
  **
- ** \retval None
+ ** \retval Ok                      Process finished.
+ ** \retval ErrorInvalidParameter   Parameter error.
  **
  ******************************************************************************/
-void I2C_Init(M4_I2C_TypeDef* pstcI2Cx, const stc_i2c_init_t* pstcI2C_InitStruct)
+en_result_t I2C_Init(M4_I2C_TypeDef* pstcI2Cx, const stc_i2c_init_t* pstcI2C_InitStruct)
 {
-    DDL_ASSERT(IS_VALID_UNIT(pstcI2Cx));
-    DDL_ASSERT(IS_VALID_POINTER(pstcI2C_InitStruct));
-    DDL_ASSERT(IS_VALID_I2C_MODE(pstcI2C_InitStruct->enI2cMode));
-    DDL_ASSERT(IS_VALID_SPEED(pstcI2C_InitStruct->u32Baudrate));
+    en_result_t enRes = Ok;
+    if((NULL == pstcI2C_InitStruct) || (NULL == pstcI2Cx))
+    {
+        enRes = ErrorInvalidParameter;
+    }
+    else
+    {
+        DDL_ASSERT(IS_VALID_UNIT(pstcI2Cx));
+        DDL_ASSERT(IS_VALID_I2C_MODE(pstcI2C_InitStruct->enI2cMode));
+        DDL_ASSERT(IS_VALID_SPEED(pstcI2C_InitStruct->u32Baudrate));
 
-    /* Register and internal status reset */
-    pstcI2Cx->CR1_f.PE = 0;
-    pstcI2Cx->CR1_f.SWRST = 1;
+        /* Register and internal status reset */
+        pstcI2Cx->CR1_f.PE = 0u;
+        pstcI2Cx->CR1_f.SWRST = 1u;
 
-    pstcI2Cx->CR1_f.PE = 1;
+        pstcI2Cx->CR1_f.PE = 1u;
 
-    I2C_BaudrateConfig(pstcI2Cx, pstcI2C_InitStruct->u32Baudrate);
+        I2C_BaudrateConfig(pstcI2Cx,
+                           pstcI2C_InitStruct->u32Baudrate,
+                           pstcI2C_InitStruct->u32SclTime,
+                           pstcI2C_InitStruct->u32Pclk3);
 
-    pstcI2Cx->CR1_f.ENGC = 0;
-    pstcI2Cx->CR1_f.SWRST = 0;
-    pstcI2Cx->CR1_f.PE = 0;
+        pstcI2Cx->CR1_f.ENGC = 0u;
+        pstcI2Cx->CR1_f.SWRST = 0u;
+        pstcI2Cx->CR1_f.PE = 0u;
+    }
+    return enRes;
 }
 
 /**
@@ -302,20 +344,30 @@ void I2C_Cmd(M4_I2C_TypeDef* pstcI2Cx, en_functional_state_t enNewState)
  ** \param [in] pstcI2C_SmbusInitStruct
  **                                 Pointer to I2C SMBUS configuration structure
  **
- ** \retval None
+ ** \retval Ok                      Process finished.
+ ** \retval ErrorInvalidParameter   Parameter error.
  **
  ******************************************************************************/
-void I2C_SmbusConfig(M4_I2C_TypeDef* pstcI2Cx, const stc_i2c_smbus_init_t* pstcI2C_SmbusInitStruct)
+en_result_t I2C_SmbusConfig(M4_I2C_TypeDef* pstcI2Cx, const stc_i2c_smbus_init_t* pstcI2C_SmbusInitStruct)
 {
-    DDL_ASSERT(IS_VALID_UNIT(pstcI2Cx));
-    DDL_ASSERT(IS_VALID_POINTER(pstcI2C_SmbusInitStruct));
-    DDL_ASSERT(IS_VALID_FUNCTION_STATE(pstcI2C_SmbusInitStruct->enHostAdrMatchFunc));
-    DDL_ASSERT(IS_VALID_FUNCTION_STATE(pstcI2C_SmbusInitStruct->enDefaultAdrMatchFunc));
-    DDL_ASSERT(IS_VALID_FUNCTION_STATE(pstcI2C_SmbusInitStruct->enAlarmAdrMatchFunc));
+    en_result_t enRet = Ok;
+    if(NULL != pstcI2C_SmbusInitStruct)
+    {
+        DDL_ASSERT(IS_VALID_UNIT(pstcI2Cx));
+        DDL_ASSERT(IS_VALID_FUNCTION_STATE(pstcI2C_SmbusInitStruct->enHostAdrMatchFunc));
+        DDL_ASSERT(IS_VALID_FUNCTION_STATE(pstcI2C_SmbusInitStruct->enDefaultAdrMatchFunc));
+        DDL_ASSERT(IS_VALID_FUNCTION_STATE(pstcI2C_SmbusInitStruct->enAlarmAdrMatchFunc));
 
-    pstcI2Cx->CR1_f.SMBHOSTEN = pstcI2C_SmbusInitStruct->enHostAdrMatchFunc;
-    pstcI2Cx->CR1_f.SMBDEFAULTEN = pstcI2C_SmbusInitStruct->enDefaultAdrMatchFunc;
-    pstcI2Cx->CR1_f.SMBALRTEN = pstcI2C_SmbusInitStruct->enAlarmAdrMatchFunc;
+        pstcI2Cx->CR1_f.SMBHOSTEN = pstcI2C_SmbusInitStruct->enHostAdrMatchFunc;
+        pstcI2Cx->CR1_f.SMBDEFAULTEN = pstcI2C_SmbusInitStruct->enDefaultAdrMatchFunc;
+        pstcI2Cx->CR1_f.SMBALRTEN = pstcI2C_SmbusInitStruct->enAlarmAdrMatchFunc;
+    }
+    else
+    {
+        enRet = ErrorInvalidParameter;
+    }
+
+    return enRet;
 }
 
 /**
@@ -466,11 +518,11 @@ void I2C_SlaveAdr0Config(M4_I2C_TypeDef* pstcI2Cx, en_functional_state_t enNewSt
     pstcI2Cx->SLR0_f.ADDRMOD0 = enAdrMode;
     if(Adr7bit == enAdrMode)
     {
-        pstcI2Cx->SLR0_f.SLADDR0 = (u8Adr & 0x7F) << 1;
+        pstcI2Cx->SLR0_f.SLADDR0 = ((uint32_t)u8Adr & 0x7Ful) << 1ul;
     }
     else
     {
-        pstcI2Cx->SLR0_f.SLADDR0 = u8Adr;
+        pstcI2Cx->SLR0_f.SLADDR0 = (uint32_t)u8Adr;
     }
 }
 
@@ -528,20 +580,30 @@ void I2C_FastAckConfig(M4_I2C_TypeDef* pstcI2Cx, en_functional_state_t enNewStat
  ** \                               be M4_I2C1,M4_I2C2 or M4_I2C3.
  ** \param [in] pstcTimoutInit      Pointer to I2C timeout function structure
  **
- ** \retval None
+ ** \retval Ok                      Process finished.
+ ** \retval ErrorInvalidParameter   Parameter error.
  **
  ******************************************************************************/
-void I2C_ClkTimeOutConfig(M4_I2C_TypeDef* pstcI2Cx, const stc_clock_timeout_init_t* pstcTimoutInit)
+en_result_t I2C_ClkTimeOutConfig(M4_I2C_TypeDef* pstcI2Cx, const stc_clock_timeout_init_t* pstcTimoutInit)
 {
-    DDL_ASSERT(IS_VALID_UNIT(pstcI2Cx));
-    DDL_ASSERT(IS_VALID_POINTER(pstcTimoutInit));
-    DDL_ASSERT(IS_VALID_TIMOUT_SWITCH(pstcTimoutInit->enClkTimeOutSwitch));
+    en_result_t enRet = Ok;
+    if(NULL != pstcTimoutInit)
+    {
+        DDL_ASSERT(IS_VALID_UNIT(pstcI2Cx));
+        DDL_ASSERT(IS_VALID_TIMOUT_SWITCH(pstcTimoutInit->enClkTimeOutSwitch));
 
-    pstcI2Cx->SLTR_f.TOUTHIGH = pstcTimoutInit->u16TimeOutHigh;
-    pstcI2Cx->SLTR_f.TOUTLOW = pstcTimoutInit->u16TimeOutLow;
+        pstcI2Cx->SLTR_f.TOUTHIGH = pstcTimoutInit->u16TimeOutHigh;
+        pstcI2Cx->SLTR_f.TOUTLOW = pstcTimoutInit->u16TimeOutLow;
 
-    pstcI2Cx->CR3 &= ~0x00000007;
-    pstcI2Cx->CR3 |= pstcTimoutInit->enClkTimeOutSwitch;
+        pstcI2Cx->CR3 &= ~0x00000007ul;
+        pstcI2Cx->CR3 |= pstcTimoutInit->enClkTimeOutSwitch;
+    }
+    else
+    {
+        enRet = ErrorInvalidParameter;
+    }
+
+    return enRet;
 }
 
 /**
@@ -583,7 +645,7 @@ void I2C_IntCmd(M4_I2C_TypeDef* pstcI2Cx, uint32_t u32IntEn, en_functional_state
     }
     else
     {
-        pstcI2Cx->CR2 &= (uint32_t)~u32IntEn;
+        pstcI2Cx->CR2 &= ~u32IntEn;
     }
 }
 
@@ -680,7 +742,7 @@ uint8_t I2C_ReadData(M4_I2C_TypeDef* pstcI2Cx)
 {
     DDL_ASSERT(IS_VALID_UNIT(pstcI2Cx));
 
-    return pstcI2Cx->DRR;
+    return (uint8_t)pstcI2Cx->DRR;
 }
 
 /**
@@ -735,17 +797,21 @@ void I2C_NackConfig(M4_I2C_TypeDef* pstcI2Cx, en_functional_state_t enNewState)
  ******************************************************************************/
 en_flag_status_t I2C_GetStatus(M4_I2C_TypeDef* pstcI2Cx, uint32_t u32StatusBit)
 {
+    en_flag_status_t enRet = Reset;
+
     DDL_ASSERT(IS_VALID_UNIT(pstcI2Cx));
     DDL_ASSERT(IS_VALID_RD_STATUS_BIT(u32StatusBit));
 
-    if(0 != (pstcI2Cx->SR & u32StatusBit))
+    if(0ul != (pstcI2Cx->SR & u32StatusBit))
     {
-        return Set;
+        enRet = Set;
     }
     else
     {
-        return Reset;
+        enRet = Reset;
     }
+
+    return enRet;
 }
 
 /**

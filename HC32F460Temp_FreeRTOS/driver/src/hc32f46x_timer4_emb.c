@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -93,7 +93,8 @@
 
 /*!< Timer4x ECER register address. */
 #define TMR4_ECERx(__TMRx__)                                                   \
-( (M4_TMR41 == (__TMRx__)) ? &M4_TMR4_CR->ECER1 : ((M4_TMR42 == (__TMRx__)) ? &M4_TMR4_CR->ECER2 : &M4_TMR4_CR->ECER3))
+( (M4_TMR41 == (__TMRx__)) ? &M4_TMR4_CR->ECER1 :                              \
+         ((M4_TMR42 == (__TMRx__)) ? &M4_TMR4_CR->ECER2 : &M4_TMR4_CR->ECER3))
 
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
@@ -131,26 +132,25 @@
 en_result_t TIMER4_EMB_Init(M4_TMR4_TypeDef *TMR4x,
                                 const stc_timer4_emb_init_t *pstcInitCfg)
 {
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_EMB_STATE(pstcInitCfg->enEmbState));
-    DDL_ASSERT(IS_VALID_EMB_HOLD_MODE(pstcInitCfg->enPwmHold));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x && pstcInitCfg pointer */
-    if ((!IS_VALID_TIMER4(TMR4x)) || (NULL == pstcInitCfg))
+    if ((IS_VALID_TIMER4(TMR4x)) && (NULL != pstcInitCfg))
     {
-        return ErrorInvalidParameter;
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_EMB_STATE(pstcInitCfg->enEmbState));
+        DDL_ASSERT(IS_VALID_EMB_HOLD_MODE(pstcInitCfg->enPwmHold));
+
+        /* Set EMB HOLD mode */
+        TMR4x->ECSR_f.HOLD = (uint16_t)(pstcInitCfg->enPwmHold);
+
+        /* Set EMB state */
+        *(__IO uint32_t *)TMR4_ECERx(TMR4x) = (uint32_t)(pstcInitCfg->enEmbState);
+
+        enRet = Ok;
     }
-    else
-    {
-    }
 
-    /* Set EMB HOLD mode */
-    TMR4x->ECSR_f.HOLD = pstcInitCfg->enPwmHold;
-
-    /* Set EMB state */
-    *(__IO uint32_t *)TMR4_ECERx(TMR4x) = pstcInitCfg->enEmbState;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -168,22 +168,21 @@ en_result_t TIMER4_EMB_Init(M4_TMR4_TypeDef *TMR4x,
  ******************************************************************************/
 en_result_t TIMER4_EMB_DeInit(M4_TMR4_TypeDef *TMR4x)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
+        /* Set reset value(0x0000) to register ESCR */
+        TMR4x->ECSR = 0u;
+
+        /* Set reset value(0x0000) to register ECER */
+        *(__IO uint32_t *)TMR4_ECERx(TMR4x) = (uint32_t)0ul;
+
+        enRet = Ok;
     }
-    else
-    {
-    }
 
-    /* Set reset value(0x0000) to register ESCR */
-    TMR4x->ECSR = 0u;
-
-    /* Set reset value(0x0000) to register ECER */
-    *(__IO uint32_t *)TMR4_ECERx(TMR4x) = 0u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -205,22 +204,21 @@ en_result_t TIMER4_EMB_DeInit(M4_TMR4_TypeDef *TMR4x)
 en_result_t TIMER4_EMB_SetHoldMode(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_emb_hold_mode_t enHoldMode)
 {
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_EMB_HOLD_MODE(enHoldMode));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_EMB_HOLD_MODE(enHoldMode));
+
+        /* Set EMB HOLD mode */
+        TMR4x->ECSR_f.HOLD = (uint16_t)enHoldMode;
+
+        enRet = Ok;
     }
 
-    /* Set EMB HOLD mode */
-    TMR4x->ECSR_f.HOLD = enHoldMode;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -262,25 +260,24 @@ en_timer4_emb_hold_mode_t TIMER4_EMB_GetHoldMode(M4_TMR4_TypeDef *TMR4x)
  ** \retval ErrorInvalidParameter       TMR4x is invalid
  **
  ******************************************************************************/
-en_result_t TIMER4_EMB_SetState(M4_TMR4_TypeDef *TMR4x,
+en_result_t TIMER4_EMB_SetState(const M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_emb_state_t enEmbState)
 {
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_EMB_STATE(enEmbState));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_EMB_STATE(enEmbState));
+
+        /* Set EMB state */
+        *(__IO uint32_t *)TMR4_ECERx(TMR4x) = (uint32_t)enEmbState;
+
+        enRet = Ok;
     }
 
-    /* Set EMB state */
-    *(__IO uint32_t *)TMR4_ECERx(TMR4x) = enEmbState;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -298,7 +295,7 @@ en_result_t TIMER4_EMB_SetState(M4_TMR4_TypeDef *TMR4x,
  ** \retval EmbTrigPwmOutputHighLevel   PWM output high level signal.
  **
  ******************************************************************************/
-en_timer4_emb_state_t TIMER4_EMB_GetState(M4_TMR4_TypeDef *TMR4x)
+en_timer4_emb_state_t TIMER4_EMB_GetState(const M4_TMR4_TypeDef *TMR4x)
 {
     /* Check parameters */
     DDL_ASSERT(IS_VALID_TIMER4(TMR4x));

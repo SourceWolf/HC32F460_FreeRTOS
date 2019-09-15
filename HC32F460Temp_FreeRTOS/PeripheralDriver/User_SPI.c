@@ -1,4 +1,6 @@
 #include "hc32_ddl.h"
+#include "System_InterruptCFG_Def.h"
+
 unsigned char SPI_DATA;
 /* Choose SPI master or slave mode */
 //#define SPI_MASTER_MODE

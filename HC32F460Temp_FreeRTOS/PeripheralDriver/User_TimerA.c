@@ -1,4 +1,5 @@
 #include "hc32_ddl.h"
+#include "System_InterruptCFG_Def.h"
 
 /*******************************************************************************
  * Local pre-processor symbols/macros ('#define')

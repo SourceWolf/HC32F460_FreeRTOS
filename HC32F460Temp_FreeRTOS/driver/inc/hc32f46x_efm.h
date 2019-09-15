@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -82,12 +82,12 @@ extern "C"
  ******************************************************************************/
 typedef enum en_efm_flash_status
 {
-    FlashReady                  = 1u,   ///< The flash ready falg.
+    FlashReady                  = 1u,   ///< The flash ready flag.
     FlashRWErr                  = 2u,   ///< The flash read/write error flag.
     FlashEOP                    = 3u,   ///< The flash end of operation flag.
     FlashPgMissMatch            = 4u,   ///< The flash program miss match flag.
     FlashPgSizeErr              = 5u,   ///< The flash program size error flag.
-    FlashPgEreaPErr             = 6u,   ///< The flash program protect erea error flag.
+    FlashPgareaPErr             = 6u,   ///< The flash program protect area error flag.
     FlashWRPErr                 = 7u,   ///< The flash write protect error flag.
 }en_efm_flash_status_t;
 
@@ -127,7 +127,7 @@ typedef enum en_efm_erase_pgm_md
 typedef enum en_efm_int_sel
 {
     PgmErsErrInt                = 0u,   ///< The flash program / erase error interrupt.
-    EndPgmInt                   = 1u,   ///< The flash end of prpgram interrupt.
+    EndPgmInt                   = 1u,   ///< The flash end of program interrupt.
     ReadErrInt                  = 2u,   ///< The flash read collided error interrupt.
 }en_efm_int_sel_t;
 
@@ -164,39 +164,39 @@ typedef struct stc_efm_win_protect_addr
  ******************************************************************************/
 typedef struct stc_efm_unique_id
 {
-    uint32_t            uniqueID1;      ///< Enable fast start up or not.
-    uint32_t            uniqueID2;      ///< Select xtal32 drive capability.
-    uint32_t            uniqueID3;      ///< The filter mode of xtal32.
+    uint32_t            uniqueID1;      ///< unique ID 1.
+    uint32_t            uniqueID2;      ///< unique ID 2.
+    uint32_t            uniqueID3;      ///< unique ID 3.
 }stc_efm_unique_id_t;
 /*******************************************************************************
  * Global pre-processor symbols/macros ('#define')
  ******************************************************************************/
  /* Flach latency cycle (0~15) */
-#define EFM_LATENCY_0                   0u
-#define EFM_LATENCY_1                   1u
-#define EFM_LATENCY_2                   2u
-#define EFM_LATENCY_3                   3u
-#define EFM_LATENCY_4                   4u
-#define EFM_LATENCY_5                   5u
-#define EFM_LATENCY_6                   6u
-#define EFM_LATENCY_7                   7u
-#define EFM_LATENCY_8                   8u
-#define EFM_LATENCY_9                   9u
-#define EFM_LATENCY_10                  10u
-#define EFM_LATENCY_11                  11u
-#define EFM_LATENCY_12                  12u
-#define EFM_LATENCY_13                  13u
-#define EFM_LATENCY_14                  14u
-#define EFM_LATENCY_15                  15u
+#define EFM_LATENCY_0                   (0ul)
+#define EFM_LATENCY_1                   (1ul)
+#define EFM_LATENCY_2                   (2ul)
+#define EFM_LATENCY_3                   (3ul)
+#define EFM_LATENCY_4                   (4ul)
+#define EFM_LATENCY_5                   (5ul)
+#define EFM_LATENCY_6                   (6ul)
+#define EFM_LATENCY_7                   (7ul)
+#define EFM_LATENCY_8                   (8ul)
+#define EFM_LATENCY_9                   (9ul)
+#define EFM_LATENCY_10                  (10ul)
+#define EFM_LATENCY_11                  (11ul)
+#define EFM_LATENCY_12                  (12ul)
+#define EFM_LATENCY_13                  (13ul)
+#define EFM_LATENCY_14                  (14ul)
+#define EFM_LATENCY_15                  (15ul)
 
 /* Flash flag */
-#define EFM_FLAG_WRPERR                 0x00000001
-#define EFM_FLAG_PEPRTERR               0x00000002
-#define EFM_FLAG_PGSZERR                0x00000004
-#define EFM_FLAG_PGMISMTCH              0x00000008
-#define EFM_FLAG_EOP                    0x00000010
-#define EFM_FLAG_RWERR                  0x00000020
-#define EFM_FLAG_RDY                    0x00000100
+#define EFM_FLAG_WRPERR                 (0x00000001ul)
+#define EFM_FLAG_PEPRTERR               (0x00000002ul)
+#define EFM_FLAG_PGSZERR                (0x00000004ul)
+#define EFM_FLAG_PGMISMTCH              (0x00000008ul)
+#define EFM_FLAG_EOP                    (0x00000010ul)
+#define EFM_FLAG_RWERR                  (0x00000020ul)
+#define EFM_FLAG_RDY                    (0x00000100ul)
 
 /*******************************************************************************
  * Global variable definitions ('extern')
@@ -210,7 +210,6 @@ void EFM_Lock(void);
 void EFM_FlashCmd(en_functional_state_t enNewState);
 void EFM_SetLatency(uint32_t u32Latency);
 void EFM_InstructionCacheCmd(en_functional_state_t enNewState);
-void EFM_PrefetchBufferCmd(en_functional_state_t enNewState);
 void EFM_DataCacheRstCmd(en_functional_state_t enNewState);
 void EFM_SetReadMode(en_efm_read_md_t enReadMD);
 void EFM_ErasePgmCmd(en_functional_state_t enNewState);
@@ -223,10 +222,10 @@ void EFM_SetWinProtectAddr(stc_efm_win_protect_addr_t stcAddr);
 void EFM_SetBusState(en_efm_bus_sta_t enState);
 en_result_t EFM_SingleProgram(uint32_t u32Addr, uint32_t u32Data);
 en_result_t EFM_SingleProgramRB(uint32_t u32Addr, uint32_t u32Data);
-static void *EFM_Memcpy(void *pvDst, const void *pvSrc, uint32_t u32Count);
 en_result_t EFM_SequenceProgram(uint32_t u32Addr, uint32_t u32Len, void *pBuf);
-void EFM_SectorErase(uint32_t u32Addr);
-void EFM_MassErase(uint32_t u32Addr);
+en_result_t EFM_SectorErase(uint32_t u32Addr);
+en_result_t EFM_MassErase(uint32_t u32Addr);
+en_result_t EFM_OtpLock(uint32_t u32Addr);
 stc_efm_unique_id_t EFM_ReadUID(void);
 
 

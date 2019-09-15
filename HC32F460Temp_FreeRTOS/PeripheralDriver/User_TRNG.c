@@ -10,7 +10,7 @@ void User_TRNG_Init(void)
 
 void Get_TRNG_Number(uint32_t *p_data)
 {
-    TRNG_Generate(p_data, 10);
+    TRNG_Generate(p_data, 10, 100);
 }
 
 uint32_t TRNG_GetRandData(void)

@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -163,63 +163,60 @@
 en_result_t TIMER4_CNT_Init(M4_TMR4_TypeDef *TMR4x,
                                 const stc_timer4_cnt_init_t *pstcInitCfg)
 {
+    en_result_t enRet = ErrorInvalidParameter;
     stc_tmr4_ccsr_field_t CCSR_f = {0};
     stc_tmr4_cvpr_field_t CVPR_f = {0};
 
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_CNT_CLK(pstcInitCfg->enClk));
-    DDL_ASSERT(IS_VALID_CNT_MODE(pstcInitCfg->enCntMode));
-    DDL_ASSERT(IS_VALID_CNT_CLK_DIV(pstcInitCfg->enClkDiv));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enBufferCmd));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enZeroIntCmd));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enPeakIntCmd));
-    DDL_ASSERT(IS_VALID_CNT_INT_MSK(pstcInitCfg->enZeroIntMsk));
-    DDL_ASSERT(IS_VALID_CNT_INT_MSK(pstcInitCfg->enPeakIntMsk));
-
     /* Check for TMR4x && pstcInitCfg pointer */
-    if ((!IS_VALID_TIMER4(TMR4x)) || (NULL == pstcInitCfg))
+    if ((IS_VALID_TIMER4(TMR4x)) && (NULL != pstcInitCfg))
     {
-        return ErrorInvalidParameter;
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_CNT_CLK(pstcInitCfg->enClk));
+        DDL_ASSERT(IS_VALID_CNT_MODE(pstcInitCfg->enCntMode));
+        DDL_ASSERT(IS_VALID_CNT_CLK_DIV(pstcInitCfg->enClkDiv));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enBufferCmd));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enZeroIntCmd));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enPeakIntCmd));
+        DDL_ASSERT(IS_VALID_CNT_INT_MSK(pstcInitCfg->enZeroIntMsk));
+        DDL_ASSERT(IS_VALID_CNT_INT_MSK(pstcInitCfg->enPeakIntMsk));
+
+        /* Set default value */
+        TMR4x->CCSR = (uint16_t)0x0050u;
+        TMR4x->CNTR = (uint16_t)0x0000u;
+        TMR4x->CPSR = (uint16_t)0xFFFFu;
+        TMR4x->CVPR = (uint16_t)0x0000u;
+
+        /* stop count of CNT */
+        CCSR_f.STOP = 1u;
+
+        /* set count clock div of CNT */
+        CCSR_f.CKDIV = pstcInitCfg->enClkDiv;
+
+        /* set cnt mode */
+        CCSR_f.MODE = pstcInitCfg->enCntMode;
+
+        /* set buffer enable bit */
+        CCSR_f.BUFEN = (uint16_t)(pstcInitCfg->enBufferCmd);
+
+        /* set external clock enable bit */
+        CCSR_f.ECKEN = (Timer4CntExtclk == pstcInitCfg->enClk) ? ((uint16_t)1u) : ((uint16_t)0u);
+
+        /* Set interrupt enable */
+        CCSR_f.IRQZEN = (uint16_t)(pstcInitCfg->enZeroIntCmd);
+        CCSR_f.IRQPEN = (uint16_t)(pstcInitCfg->enPeakIntCmd);
+
+        /* set intterrupt mask times */
+        CVPR_f.ZIM = (uint16_t)(pstcInitCfg->enZeroIntMsk);
+        CVPR_f.PIM = (uint16_t)(pstcInitCfg->enPeakIntMsk);
+
+        /* Set Timer4 register */
+        TMR4x->CVPR_f = CVPR_f;
+        TMR4x->CCSR_f = CCSR_f;
+        TMR4x->CPSR = pstcInitCfg->u16Cycle;
+        enRet = Ok;
     }
-    else
-    {
-    }
 
-    /* Set default value */
-    TMR4x->CCSR = 0x0050;
-    TMR4x->CNTR = 0x0000;
-    TMR4x->CPSR = 0xFFFF;
-    TMR4x->CVPR = 0x0000;
-
-    /* stop count of CNT */
-    CCSR_f.STOP = 1u;
-
-    /* set count clock div of CNT */
-    CCSR_f.CKDIV = pstcInitCfg->enClkDiv;
-
-    /* set cnt mode */
-    CCSR_f.MODE = pstcInitCfg->enCntMode;
-
-    /* set buffer enable bit */
-    CCSR_f.BUFEN = (Enable == pstcInitCfg->enBufferCmd) ? 1u : 0u;
-
-    /* set external clock enable bit */
-    CCSR_f.ECKEN = (Timer4CntExtclk == pstcInitCfg->enClk) ? 1u : 0u;
-
-    /* Set interrupt enable */
-    CCSR_f.IRQZEN = (Enable == pstcInitCfg->enZeroIntCmd) ? 1u : 0u;
-    CCSR_f.IRQPEN = (Enable == pstcInitCfg->enPeakIntCmd) ? 1u : 0u;
-
-    /* set intterrupt mask times */
-    CVPR_f.ZIM = pstcInitCfg->enZeroIntMsk;
-    CVPR_f.PIM = pstcInitCfg->enPeakIntMsk;
-
-    /* Set Timer4 register */
-    TMR4x->CVPR_f = CVPR_f;
-    TMR4x->CCSR_f = CCSR_f;
-    TMR4x->CPSR = pstcInitCfg->u16Cycle;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -237,22 +234,20 @@ en_result_t TIMER4_CNT_Init(M4_TMR4_TypeDef *TMR4x,
  ******************************************************************************/
 en_result_t TIMER4_CNT_DeInit(M4_TMR4_TypeDef *TMR4x)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Set default value */
+        TMR4x->CCSR = (uint16_t)0x0050u;
+        TMR4x->CNTR = (uint16_t)0x0000u;
+        TMR4x->CPSR = (uint16_t)0xFFFFu;
+        TMR4x->CVPR = (uint16_t)0x0000u;
+        enRet = Ok;
     }
 
-    /* Set default value */
-    TMR4x->CCSR = 0x0050;
-    TMR4x->CNTR = 0x0000;
-    TMR4x->CPSR = 0xFFFF;
-    TMR4x->CVPR = 0x0000;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -274,22 +269,19 @@ en_result_t TIMER4_CNT_DeInit(M4_TMR4_TypeDef *TMR4x)
 en_result_t TIMER4_CNT_SetClock(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_cnt_clk_t enCntClk)
 {
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_CNT_CLK(enCntClk));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_CNT_CLK(enCntClk));
+        /* set external clock enable bit */
+        TMR4x->CCSR_f.ECKEN = (uint16_t)(enCntClk);
+        enRet = Ok;
     }
 
-    /* set external clock enable bit */
-    TMR4x->CCSR_f.ECKEN = (Timer4CntExtclk == enCntClk) ? 1u : 0u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -341,21 +333,18 @@ en_timer4_cnt_clk_t TIMER4_CNT_GetClock(M4_TMR4_TypeDef *TMR4x)
 en_result_t TIMER4_CNT_SetClockDiv(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_cnt_clk_div_t enClkDiv)
 {
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_CNT_CLK_DIV(enClkDiv));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_CNT_CLK_DIV(enClkDiv));
+        TMR4x->CCSR_f.CKDIV = (uint16_t)enClkDiv;
+        enRet = Ok;
     }
 
-    TMR4x->CCSR_f.CKDIV = (uint8_t)enClkDiv;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -407,21 +396,18 @@ en_timer4_cnt_clk_div_t TIMER4_CNT_GetClockDiv(M4_TMR4_TypeDef *TMR4x)
 en_result_t TIMER4_CNT_SetMode(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_cnt_mode_t enMode)
 {
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_CNT_MODE(enMode));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_CNT_MODE(enMode));
+        TMR4x->CCSR_f.MODE = (uint16_t)enMode;
+        enRet = Ok;
     }
 
-    TMR4x->CCSR_f.MODE = enMode;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -460,18 +446,16 @@ en_timer4_cnt_mode_t TIMER4_CNT_GetMode(M4_TMR4_TypeDef *TMR4x)
  ******************************************************************************/
 en_result_t TIMER4_CNT_Start(M4_TMR4_TypeDef *TMR4x)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        TMR4x->CCSR_f.STOP = (uint16_t)0u;
+        enRet = Ok;
     }
 
-    TMR4x->CCSR_f.STOP = 0u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -489,18 +473,16 @@ en_result_t TIMER4_CNT_Start(M4_TMR4_TypeDef *TMR4x)
  ******************************************************************************/
 en_result_t TIMER4_CNT_Stop(M4_TMR4_TypeDef *TMR4x)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        TMR4x->CCSR_f.STOP = (uint16_t)1u;
+        enRet = Ok;
     }
 
-    TMR4x->CCSR_f.STOP = 1u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -528,32 +510,28 @@ en_result_t TIMER4_CNT_IrqCmd(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_cnt_int_t enIntType,
                                 en_functional_state_t enCmd)
 {
-    en_result_t enRet = Ok;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
-    DDL_ASSERT(IS_VALID_CNT_INT_TYPE(enIntType));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
+        /* Check parameters */
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+        DDL_ASSERT(IS_VALID_CNT_INT_TYPE(enIntType));
 
-    switch (enIntType)
-    {
-        case Timer4CntZeroMatchInt:
-            TMR4x->CCSR_f.IRQZEN = enCmd;
-            break;
-        case Timer4CntPeakMatchInt:
-            TMR4x->CCSR_f.IRQPEN = enCmd;
-            break;
-        default:
-            enRet = ErrorInvalidParameter;
-            break;
+        enRet = Ok;
+        switch (enIntType)
+        {
+            case Timer4CntZeroMatchInt:
+                TMR4x->CCSR_f.IRQZEN = (uint16_t)enCmd;
+                break;
+            case Timer4CntPeakMatchInt:
+                TMR4x->CCSR_f.IRQPEN = (uint16_t)enCmd;
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
     }
 
     return enRet;
@@ -578,7 +556,7 @@ en_result_t TIMER4_CNT_IrqCmd(M4_TMR4_TypeDef *TMR4x,
 en_flag_status_t TIMER4_CNT_GetIrqFlag(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_cnt_int_t enIntType)
 {
-    uint8_t u8Flag = 0;
+    uint16_t u16Flag = 0u;
 
     /* Check parameters */
     DDL_ASSERT(IS_VALID_TIMER4(TMR4x));
@@ -587,16 +565,16 @@ en_flag_status_t TIMER4_CNT_GetIrqFlag(M4_TMR4_TypeDef *TMR4x,
     switch (enIntType)
     {
         case Timer4CntZeroMatchInt:
-            u8Flag = TMR4x->CCSR_f.IRQZF;
+            u16Flag = TMR4x->CCSR_f.IRQZF;
             break;
         case Timer4CntPeakMatchInt:
-            u8Flag = TMR4x->CCSR_f.IRQPF;
+            u16Flag = TMR4x->CCSR_f.IRQPF;
             break;
         default:
             break;
     }
 
-    return (u8Flag ? Set : Reset);
+    return (en_flag_status_t)u16Flag;
 }
 
 /**
@@ -620,31 +598,27 @@ en_flag_status_t TIMER4_CNT_GetIrqFlag(M4_TMR4_TypeDef *TMR4x,
 en_result_t TIMER4_CNT_ClearIrqFlag(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_cnt_int_t enIntType)
 {
-    en_result_t enRet = Ok;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_CNT_INT_TYPE(enIntType));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_CNT_INT_TYPE(enIntType));
 
-    switch (enIntType)
-    {
-        case Timer4CntZeroMatchInt:
-            TMR4x->CCSR_f.IRQZF = 0u;
-            break;
-        case Timer4CntPeakMatchInt:
-            TMR4x->CCSR_f.IRQPF = 0u;
-            break;
-        default:
-            enRet = ErrorInvalidParameter;
-            break;
+        enRet = Ok;
+        switch (enIntType)
+        {
+            case Timer4CntZeroMatchInt:
+                TMR4x->CCSR_f.IRQZF = (uint16_t)0u;
+                break;
+            case Timer4CntPeakMatchInt:
+                TMR4x->CCSR_f.IRQPF = (uint16_t)0u;
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
     }
 
     return enRet;
@@ -667,18 +641,16 @@ en_result_t TIMER4_CNT_ClearIrqFlag(M4_TMR4_TypeDef *TMR4x,
  ******************************************************************************/
 en_result_t TIMER4_CNT_SetCycleVal(M4_TMR4_TypeDef *TMR4x, uint16_t u16Cycle)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        TMR4x->CPSR = u16Cycle;
+        enRet = Ok;
     }
 
-    TMR4x->CPSR = u16Cycle;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -693,7 +665,7 @@ en_result_t TIMER4_CNT_SetCycleVal(M4_TMR4_TypeDef *TMR4x, uint16_t u16Cycle)
  ** \retval The cycle value of the specified Timer4 CNT.
  **
  ******************************************************************************/
-uint16_t TIMER4_CNT_GetCycleVal(M4_TMR4_TypeDef *TMR4x)
+uint16_t TIMER4_CNT_GetCycleVal(const M4_TMR4_TypeDef *TMR4x)
 {
     /* Check parameters */
     DDL_ASSERT(IS_VALID_TIMER4(TMR4x));
@@ -716,18 +688,16 @@ uint16_t TIMER4_CNT_GetCycleVal(M4_TMR4_TypeDef *TMR4x)
  ******************************************************************************/
 en_result_t TIMER4_CNT_ClearCountVal(M4_TMR4_TypeDef *TMR4x)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        TMR4x->CCSR_f.CLEAR = (uint16_t)1u;
+        enRet = Ok;
     }
 
-    TMR4x->CCSR_f.CLEAR = 1u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -747,18 +717,16 @@ en_result_t TIMER4_CNT_ClearCountVal(M4_TMR4_TypeDef *TMR4x)
  ******************************************************************************/
 en_result_t TIMER4_CNT_SetCountVal(M4_TMR4_TypeDef *TMR4x, uint16_t u16Count)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        TMR4x->CNTR = u16Count;
+        enRet = Ok;
     }
 
-    TMR4x->CNTR = u16Count;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -773,7 +741,7 @@ en_result_t TIMER4_CNT_SetCountVal(M4_TMR4_TypeDef *TMR4x, uint16_t u16Count)
  ** \retval The current count value of the specified Timer4 CNT.
  **
  ******************************************************************************/
-uint16_t TIMER4_CNT_GetCountVal(M4_TMR4_TypeDef *TMR4x)
+uint16_t TIMER4_CNT_GetCountVal(const M4_TMR4_TypeDef *TMR4x)
 {
     /* Check parameters */
     DDL_ASSERT(IS_VALID_TIMER4(TMR4x));
@@ -818,32 +786,28 @@ en_result_t TIMER4_CNT_SetIntMaskTimes(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_cnt_int_t enIntType,
                                 en_timer4_cnt_int_mask_t enMaskTimes)
 {
-    en_result_t enRet = Ok;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_CNT_INT_TYPE(enIntType));
-    DDL_ASSERT(IS_VALID_CNT_INT_MSK(enMaskTimes));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_CNT_INT_TYPE(enIntType));
+        DDL_ASSERT(IS_VALID_CNT_INT_MSK(enMaskTimes));
 
-    switch (enIntType)
-    {
-        case Timer4CntZeroMatchInt:
-            TMR4x->CVPR_f.ZIM = enMaskTimes;
-            break;
-        case Timer4CntPeakMatchInt:
-            TMR4x->CVPR_f.PIM = enMaskTimes;
-            break;
-        default:
-            enRet = ErrorInvalidParameter;
-            break;
+        enRet = Ok;
+        switch (enIntType)
+        {
+            case Timer4CntZeroMatchInt:
+                TMR4x->CVPR_f.ZIM = (uint16_t)enMaskTimes;
+                break;
+            case Timer4CntPeakMatchInt:
+                TMR4x->CVPR_f.PIM = (uint16_t)enMaskTimes;
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
     }
 
     return enRet;
@@ -882,7 +846,7 @@ en_result_t TIMER4_CNT_SetIntMaskTimes(M4_TMR4_TypeDef *TMR4x,
 en_timer4_cnt_int_mask_t TIMER4_CNT_GetIntMaskTimes(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_cnt_int_t enIntType)
 {
-    uint32_t u32MaskTimes = 0u;
+    uint16_t u16MaskTimes = 0u;
 
     /* Check parameters */
     DDL_ASSERT(IS_VALID_TIMER4(TMR4x));
@@ -891,16 +855,16 @@ en_timer4_cnt_int_mask_t TIMER4_CNT_GetIntMaskTimes(M4_TMR4_TypeDef *TMR4x,
     switch (enIntType)
     {
         case Timer4CntZeroMatchInt:
-            u32MaskTimes = TMR4x->CVPR_f.ZIM;
+            u16MaskTimes = TMR4x->CVPR_f.ZIM;
             break;
         case Timer4CntPeakMatchInt:
-            u32MaskTimes = TMR4x->CVPR_f.PIM;
+            u16MaskTimes = TMR4x->CVPR_f.PIM;
             break;
         default:
             break;
     }
 
-    return (en_timer4_cnt_int_mask_t)u32MaskTimes;
+    return (en_timer4_cnt_int_mask_t)u16MaskTimes;
 }
 
 //@} // Timer4CntGroup

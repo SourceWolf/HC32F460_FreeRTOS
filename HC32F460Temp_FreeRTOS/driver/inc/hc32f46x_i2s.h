@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -55,9 +55,8 @@
 /*******************************************************************************
  * Include files
  ******************************************************************************/
-
+#include "hc32_common.h"
 #include "ddl_config.h"
-#include "hc32_ddl.h"
 
 #if (DDL_I2S_ENABLE == DDL_ON)
 
@@ -96,12 +95,12 @@ typedef enum en_i2s_func
  ******************************************************************************/
 typedef enum en_i2s_std
 {
-    TxBufAlarmFlag = 0,
-    RxBufAlarmFlag = 1,
-    TxBufEmptFlag = 2,
-    TxBufFullFlag = 3,
-    RxBufEmptFlag = 4,
-    RxBufFullFlag = 5,
+    TxBufAlarmFlag = 0u,
+    RxBufAlarmFlag = 1u,
+    TxBufEmptFlag = 2u,
+    TxBufFullFlag = 3u,
+    RxBufEmptFlag = 4u,
+    RxBufFullFlag = 5u,
 }en_i2s_std_t;
 
 /**
@@ -110,8 +109,8 @@ typedef enum en_i2s_std
  ******************************************************************************/
 typedef enum en_i2s_err_flag
 {
-    ClrTxErrFlag = 0,
-    ClrRxErrFlag = 1,
+    ClrTxErrFlag = 0u,
+    ClrRxErrFlag = 1u,
 }en_i2s_err_flag_t;
 /**
  *******************************************************************************
@@ -141,8 +140,8 @@ typedef enum en_i2s_standard
  ******************************************************************************/
 typedef enum en_i2s_duplex
 {
-    I2s_HardDuplex = 0,
-    I2s_FullDuplex = 1,
+    I2s_HardDuplex = 0u,
+    I2s_FullDuplex = 1u,
 }en_i2s_duplex_t;
 
 /**
@@ -151,8 +150,8 @@ typedef enum en_i2s_duplex
  ******************************************************************************/
 typedef enum en_i2s_ch_len
 {
-    I2s_ChLen_16Bit = 0,
-    I2s_ChLen_32Bit = 1,
+    I2s_ChLen_16Bit = 0u,
+    I2s_ChLen_32Bit = 1u,
 }en_i2s_ch_len_t;
 
 /**
@@ -161,9 +160,9 @@ typedef enum en_i2s_ch_len
  ******************************************************************************/
 typedef enum en_i2s_data_len
 {
-    I2s_DataLen_16Bit = 0,
-    I2s_DataLen_24Bit = 1,
-    I2s_DataLen_32Bit = 2,
+    I2s_DataLen_16Bit = 0u,
+    I2s_DataLen_24Bit = 1u,
+    I2s_DataLen_32Bit = 2u,
 }en_i2s_data_len;
 
 /**
@@ -172,58 +171,59 @@ typedef enum en_i2s_data_len
  ******************************************************************************/
 typedef enum en_i2s_clksrc
 {
-    I2s_clk_PCLK3 = 0,
-    I2s_clk_MPLLP = 8,
-    I2s_clk_MPLLQ = 9,
-    I2s_clk_MPLLR = 10,
-    I2s_clk_UPLLP = 11,
-    I2s_clk_UPLLQ = 12,
-    I2s_clk_UPLLR = 13,
+    I2s_clk_PCLK3 = 0u,
+    I2s_clk_MPLLP = 8u,
+    I2s_clk_MPLLQ = 9u,
+    I2s_clk_MPLLR = 10u,
+    I2s_clk_UPLLP = 11u,
+    I2s_clk_UPLLQ = 12u,
+    I2s_clk_UPLLR = 13u,
 }en_i2s_clksrc_t;
 
 
 /**
  *******************************************************************************
- ** \brief I2S configuration sturcture
+ ** \brief I2S configuration structure
  ******************************************************************************/
 typedef struct stc_i2s_config
 {
-    en_i2s_mode_t               enMode;         ///< I2S mode
-    en_i2s_standard_t           enStandrad;     ///< I2S standard
-    en_i2s_data_len             enDataBits;     ///< I2S data format, data bits
-    en_i2s_ch_len_t             enChanelLen;    ///< I2S channel length
-    en_functional_state_t       enMcoOutEn;     ///< I2S MCK output config
-    en_functional_state_t       enExckEn;       ///< I2S EXCK function config
-    uint32_t                    u32AudioFreq;   ///< I2S audio frequecy
+    en_i2s_mode_t               enMode;              ///< I2S mode
+    uint32_t                    u32I2sInterClkFreq;  ///< I2S internal clock frequency
+    en_i2s_standard_t           enStandrad;          ///< I2S standard
+    en_i2s_data_len             enDataBits;          ///< I2S data format, data bits
+    en_i2s_ch_len_t             enChanelLen;         ///< I2S channel length
+    en_functional_state_t       enMcoOutEn;          ///< I2S MCK output config
+    en_functional_state_t       enExckEn;            ///< I2S EXCK function config
+    uint32_t                    u32AudioFreq;        ///< I2S audio frequecy
 }stc_i2s_config_t;
 
 /*******************************************************************************
  * Global pre-processor symbols/macros ('#define')
  ******************************************************************************/
 /* define audio frequency */
-#define I2S_AudioFreq_192k                          192000ul
-#define I2S_AudioFreq_96k                           96000ul
-#define I2S_AudioFreq_48k                           48000ul
-#define I2S_AudioFreq_44k                           44100ul
-#define I2S_AudioFreq_32k                           32000ul
-#define I2S_AudioFreq_22k                           22050ul
-#define I2S_AudioFreq_16k                           16000ul
-#define I2S_AudioFreq_11k                           11025ul
-#define I2S_AudioFreq_8k                            8000ul
-#define I2S_AudioFreq_Default                       2ul
+#define I2S_AudioFreq_192k                          (192000ul)
+#define I2S_AudioFreq_96k                           (96000ul)
+#define I2S_AudioFreq_48k                           (48000ul)
+#define I2S_AudioFreq_44k                           (44100ul)
+#define I2S_AudioFreq_32k                           (32000ul)
+#define I2S_AudioFreq_22k                           (22050ul)
+#define I2S_AudioFreq_16k                           (16000ul)
+#define I2S_AudioFreq_11k                           (11025ul)
+#define I2S_AudioFreq_8k                            (8000ul)
+#define I2S_AudioFreq_Default                       (2ul)
 
 /* if use external clock open this define */
-#define I2S_EXTERNAL_CLOCK_VAL                      12288000
+#define I2S_EXTERNAL_CLOCK_VAL                      (12288000ul)
 
 /* 0: Half Duplex  1: Full Duplex */
-#define DUPLEX_MODE 0
+#define DUPLEX_MODE                                 (0ul)
 
-/* 0,1 or 2 conifg for tx or tx buffer interrupt warnning level */
-#define RXBUF_IRQ_WL 1
-#define TXBUF_IRQ_WL 1
+/* 0,1 or 2 config for tx or tx buffer interrupt warning level */
+#define RXBUF_IRQ_WL                                (1ul)
+#define TXBUF_IRQ_WL                                (1ul)
 
 /* 0: Short frame synchronization; 1: Long frame synchronization */
-#define PCM_SYNC_FRAME 0
+#define PCM_SYNC_FRAME                              (0ul)
 
 /*******************************************************************************
  * Global variable definitions ('extern')
@@ -232,14 +232,14 @@ typedef struct stc_i2s_config
 /*******************************************************************************
   Global function prototypes (definition in C source)
  ******************************************************************************/
-void I2s_Init(M4_I2S_TypeDef* pstcI2sReg, const stc_i2s_config_t* pstcI2sCfg);
-void I2S_SendData(M4_I2S_TypeDef* pstcI2sReg, uint32_t Data);
-uint32_t I2S_RevData(M4_I2S_TypeDef* pstcI2sReg);
+en_result_t I2s_Init(M4_I2S_TypeDef* pstcI2sReg, const stc_i2s_config_t* pstcI2sCfg);
+void I2S_SendData(M4_I2S_TypeDef* pstcI2sReg, uint32_t u32Data);
+uint32_t I2S_RevData(const M4_I2S_TypeDef* pstcI2sReg);
 void I2S_FuncCmd(M4_I2S_TypeDef* pstcI2sReg, en_i2s_func_t enFunc, en_functional_state_t enNewState);
 en_flag_status_t I2S_GetStatus(M4_I2S_TypeDef* pstcI2sReg, en_i2s_std_t enStd);
 en_flag_status_t I2S_GetErrFlag(M4_I2S_TypeDef* pstcI2sReg, en_i2s_err_flag_t enErrFlag);
-void I2S_ClrErrFlag(M4_I2S_TypeDef* pstcI2sReg, en_i2s_err_flag_t enClrFlag);
-void I2s_DeInit(M4_I2S_TypeDef* pstcI2sReg);
+void I2S_ClrErrFlag(M4_I2S_TypeDef* pstcI2sReg, en_i2s_err_flag_t enErrFlag);
+en_result_t I2s_DeInit(M4_I2S_TypeDef* pstcI2sReg);
 
 //@} // I2sGroup
 

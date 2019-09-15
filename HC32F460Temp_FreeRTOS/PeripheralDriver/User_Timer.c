@@ -1,5 +1,6 @@
 #include "hc32_ddl.h"
 #include "User_Gpio.h"
+#include "System_InterruptCFG_Def.h"
 //#include "cmsis_os.h"
 /*神奇的事情就是Timer01通道A不能中断，换成通道B就可以了*/
 void Timer01_CHB_CallBack(void)//

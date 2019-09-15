@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -212,16 +212,6 @@ typedef enum en_rtc_irq_type_
 
 /**
  *******************************************************************************
- ** \brief RTC flag type enumeration
- ******************************************************************************/
-typedef enum en_rtc_flag_type
-{
-    RtcFlagPeriod = 0u,                 ///< Period count flag
-    RtcFlagAlarm  = 1u,                 ///< Alarm flag
-} en_rtc_flag_type_t;
-
-/**
- *******************************************************************************
  ** \brief RTC date and time structure definition
  ******************************************************************************/
 typedef struct stc_rtc_date_time
@@ -277,11 +267,14 @@ typedef struct stc_rtc_init
 en_result_t RTC_DeInit(void);
 en_result_t RTC_Init(const stc_rtc_init_t *pstcRtcInit);
 en_result_t RTC_Cmd(en_functional_state_t enNewSta);
+en_result_t RTC_EnterRwMode(void);
+en_result_t RTC_ExitRwMode(void);
 
 /* Extend functions */
 en_result_t RTC_PeriodIntConfig(en_rtc_period_int_type_t enIntType);
 en_result_t RTC_LowPowerSwitch(void);
 en_result_t RTC_SetClkCompenValue(uint16_t u16CompenVal);
+en_result_t RTC_ClkCompenCmd(en_functional_state_t enNewSta);
 en_result_t RTC_OneHzOutputCmd(en_functional_state_t enNewSta);
 
 /* Date and time functions */
@@ -294,10 +287,10 @@ en_result_t RTC_SetAlarmTime(en_rtc_data_format_t enFormat, const stc_rtc_alarm_
 en_result_t RTC_GetAlarmTime(en_rtc_data_format_t enFormat, stc_rtc_alarm_time_t *pstcRtcAlarmTime);
 en_result_t RTC_AlarmCmd(en_functional_state_t enNewSta);
 
-/* status flags management functions ******************************************/
+/* Interrupt and flags management functions ******************************************/
 en_result_t RTC_IrqCmd(en_rtc_irq_type_t enIrq, en_functional_state_t enNewSta);
-en_flag_status_t RTC_GetFlag(en_rtc_flag_type_t enFlag);
-en_result_t RTC_ClearFlag(en_rtc_flag_type_t enFlag);
+en_flag_status_t RTC_GetAlarmFlag(void);
+en_result_t RTC_ClearAlarmFlag(void);
 
 //@} // RtcGroup
 

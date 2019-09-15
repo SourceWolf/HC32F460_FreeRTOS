@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -221,29 +221,29 @@
     (TimeraFlagUnderflow == (x)))
 
 /*!< Parameter valid check for event source */
-#define IS_VALID_EVENT_SOURCE(x)                ((x) <= 511)
+#define IS_VALID_EVENT_SOURCE(x)                ((x) <= 511u)
 
 /*!< Timera registers reset value */
-#define TIMERA_REG_CNTER_RESET_VALUE            0x0000u
-#define TIMERA_REG_PERAR_RESET_VALUE            0xFFFFu
-#define TIMERA_REG_CMPAR_RESET_VALUE            0xFFFFu
-#define TIMERA_REG_BCSTR_RESET_VALUE            0x0002u
-#define TIMERA_REG_ICONR_RESET_VALUE            0x0000u
-#define TIMERA_REG_ECONR_RESET_VALUE            0x0000u
-#define TIMERA_REG_FCONR_RESET_VALUE            0x0000u
-#define TIMERA_REG_STFLR_RESET_VALUE            0x0000u
-#define TIMERA_REG_BCONR_RESET_VALUE            0x0000u
-#define TIMERA_REG_CCONR_RESET_VALUE            0x0000u
-#define TIMERA_REG_PCONR_RESET_VALUE            0x0000u
-#define TIMERA_REG_HCONR_RESET_VALUE            0x0000u
-#define TIMERA_REG_HCUPR_RESET_VALUE            0x0000u
-#define TIMERA_REG_HCDOR_RESET_VALUE            0x0000u
+#define TIMERA_REG_CNTER_RESET_VALUE            (0x0000u)
+#define TIMERA_REG_PERAR_RESET_VALUE            (0xFFFFu)
+#define TIMERA_REG_CMPAR_RESET_VALUE            (0xFFFFu)
+#define TIMERA_REG_BCSTR_RESET_VALUE            (0x0002u)
+#define TIMERA_REG_ICONR_RESET_VALUE            (0x0000u)
+#define TIMERA_REG_ECONR_RESET_VALUE            (0x0000u)
+#define TIMERA_REG_FCONR_RESET_VALUE            (0x0000u)
+#define TIMERA_REG_STFLR_RESET_VALUE            (0x0000u)
+#define TIMERA_REG_BCONR_RESET_VALUE            (0x0000u)
+#define TIMERA_REG_CCONR_RESET_VALUE            (0x0000u)
+#define TIMERA_REG_PCONR_RESET_VALUE            (0x0000u)
+#define TIMERA_REG_HCONR_RESET_VALUE            (0x0000u)
+#define TIMERA_REG_HCUPR_RESET_VALUE            (0x0000u)
+#define TIMERA_REG_HCDOR_RESET_VALUE            (0x0000u)
 
-#define TIMERA_REG_HTSSR0_RESET_VALUE           0x00000000ul
-#define TIMERA_REG_HTSSR1_RESET_VALUE           0x00000000ul
+#define TIMERA_REG_HTSSR0_RESET_VALUE           (0x000001FFul)
+#define TIMERA_REG_HTSSR1_RESET_VALUE           (0x000001FFul)
 
 /*!< Timera calculate register address of channel */
-#define TIMERA_CALC_REG_ADDR(reg, chl)          ((uint32_t)(&(reg)) + (chl)*0x4)
+#define TIMERA_CALC_REG_ADDR(reg, chl)          ((uint32_t)(&(reg)) + (chl)*0x4u)
 
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
@@ -273,46 +273,50 @@
  ** \arg M4_TMRA6                       Timera unit 6 configuration Address
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
  **
  ******************************************************************************/
 en_result_t TIMERA_DeInit(M4_TMRA_TypeDef *TIMERAx)
 {
-    en_result_t enRet = Ok;
-    uint8_t u8Cnt = 0;
+    en_result_t enRet = ErrorInvalidParameter;
+    uint32_t u32Cnt = 0u;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
+    {
+        TIMERAx->CNTER = TIMERA_REG_CNTER_RESET_VALUE;
+        TIMERAx->PERAR = TIMERA_REG_PERAR_RESET_VALUE;
+        TIMERAx->BCSTR = TIMERA_REG_BCSTR_RESET_VALUE;
+        TIMERAx->ICONR = TIMERA_REG_ICONR_RESET_VALUE;
+        TIMERAx->ECONR = TIMERA_REG_ECONR_RESET_VALUE;
+        TIMERAx->FCONR = TIMERA_REG_FCONR_RESET_VALUE;
+        TIMERAx->STFLR = TIMERA_REG_STFLR_RESET_VALUE;
+        TIMERAx->HCONR = TIMERA_REG_HCONR_RESET_VALUE;
+        TIMERAx->HCUPR = TIMERA_REG_HCUPR_RESET_VALUE;
+        TIMERAx->HCDOR = TIMERA_REG_HCDOR_RESET_VALUE;
 
-    TIMERAx->CNTER = TIMERA_REG_CNTER_RESET_VALUE;
-    TIMERAx->PERAR = TIMERA_REG_PERAR_RESET_VALUE;
-    TIMERAx->BCSTR = TIMERA_REG_BCSTR_RESET_VALUE;
-    TIMERAx->ICONR = TIMERA_REG_ICONR_RESET_VALUE;
-    TIMERAx->ECONR = TIMERA_REG_ECONR_RESET_VALUE;
-    TIMERAx->FCONR = TIMERA_REG_FCONR_RESET_VALUE;
-    TIMERAx->STFLR = TIMERA_REG_STFLR_RESET_VALUE;
-    TIMERAx->HCONR = TIMERA_REG_HCONR_RESET_VALUE;
-    TIMERAx->HCUPR = TIMERA_REG_HCUPR_RESET_VALUE;
-    TIMERAx->HCDOR = TIMERA_REG_HCDOR_RESET_VALUE;
+        for (u32Cnt = 0u; u32Cnt < 8u; u32Cnt++)
+        {
+            *(__IO uint16_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CMPAR1, u32Cnt) = TIMERA_REG_CMPAR_RESET_VALUE;
+        }
+        for (u32Cnt = 0u; u32Cnt < 4u; u32Cnt++)
+        {
+            *(__IO uint16_t *)TIMERA_CALC_REG_ADDR(TIMERAx->BCONR1, u32Cnt * 2u) = TIMERA_REG_BCONR_RESET_VALUE;
+        }
+        for (u32Cnt = 0u; u32Cnt < 8u; u32Cnt++)
+        {
+            *(__IO uint16_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CCONR1, u32Cnt) = TIMERA_REG_CCONR_RESET_VALUE;
+        }
+        for (u32Cnt = 0u; u32Cnt < 8u; u32Cnt++)
+        {
+            *(__IO uint16_t *)TIMERA_CALC_REG_ADDR(TIMERAx->PCONR1, u32Cnt) = TIMERA_REG_PCONR_RESET_VALUE;
+        }
 
-    for (u8Cnt = 0; u8Cnt < 8; u8Cnt++)
-    {
-        *(__IO uint16_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CMPAR1, u8Cnt) = TIMERA_REG_CMPAR_RESET_VALUE;
+        M4_AOS->TMRA_HTSSR0 = TIMERA_REG_HTSSR0_RESET_VALUE;
+        M4_AOS->TMRA_HTSSR1 = TIMERA_REG_HTSSR1_RESET_VALUE;
+        enRet = Ok;
     }
-    for (u8Cnt = 0; u8Cnt < 4; u8Cnt++)
-    {
-        *(__IO uint16_t *)TIMERA_CALC_REG_ADDR(TIMERAx->BCONR1, u8Cnt * 2) = TIMERA_REG_BCONR_RESET_VALUE;
-    }
-    for (u8Cnt = 0; u8Cnt < 8; u8Cnt++)
-    {
-        *(__IO uint16_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CCONR1, u8Cnt) = TIMERA_REG_CCONR_RESET_VALUE;
-    }
-    for (u8Cnt = 0; u8Cnt < 8; u8Cnt++)
-    {
-        *(__IO uint16_t *)TIMERA_CALC_REG_ADDR(TIMERAx->PCONR1, u8Cnt) = TIMERA_REG_PCONR_RESET_VALUE;
-    }
-
-    M4_AOS->TMRA_HTSSR1 = TIMERA_REG_HTSSR0_RESET_VALUE;
-    M4_AOS->TMRA_HTSSR2 = TIMERA_REG_HTSSR1_RESET_VALUE;
 
     return enRet;
 }
@@ -334,36 +338,42 @@ en_result_t TIMERA_DeInit(M4_TMRA_TypeDef *TIMERAx)
  **
  ** \retval Ok                          Process successfully done
  ** \retval ErrorInvalidMode            Unit 1 sync startup invalid
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
+ **                                     - pstcBaseInit == NULL
  **
  ******************************************************************************/
 en_result_t TIMERA_BaseInit(M4_TMRA_TypeDef *TIMERAx, const stc_timera_base_init_t *pstcBaseInit)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_VALID_COUNT_CLK_DIV(pstcBaseInit->enClkDiv));
-    DDL_ASSERT(IS_VALID_COUNT_MODE(pstcBaseInit->enCntMode));
-    DDL_ASSERT(IS_VALID_COUNT_DIR(pstcBaseInit->enCntDir));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcBaseInit->enSyncStartupEn));
-
-    /* Configure control status register */
-    TIMERAx->BCSTR_f.CKDIV = pstcBaseInit->enClkDiv;
-    TIMERAx->BCSTR_f.MODE = pstcBaseInit->enCntMode;
-    TIMERAx->BCSTR_f.DIR = pstcBaseInit->enCntDir;
-
-    /* Unit 1 sync startup invalid */
-    if ((M4_TMRA1 == TIMERAx) && (Enable == pstcBaseInit->enSyncStartupEn))
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx) && (NULL != pstcBaseInit))
     {
-        enRet = ErrorInvalidMode;
-    }
-    else
-    {
-        TIMERAx->BCSTR_f.SYNST = pstcBaseInit->enSyncStartupEn;
-    }
+        DDL_ASSERT(IS_VALID_COUNT_CLK_DIV(pstcBaseInit->enClkDiv));
+        DDL_ASSERT(IS_VALID_COUNT_MODE(pstcBaseInit->enCntMode));
+        DDL_ASSERT(IS_VALID_COUNT_DIR(pstcBaseInit->enCntDir));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcBaseInit->enSyncStartupEn));
 
-    /* Configure period value register */
-    TIMERAx->PERAR = pstcBaseInit->u16PeriodVal;
+        /* Configure control status register */
+        TIMERAx->BCSTR_f.CKDIV = pstcBaseInit->enClkDiv;
+        TIMERAx->BCSTR_f.MODE = pstcBaseInit->enCntMode;
+        TIMERAx->BCSTR_f.DIR = pstcBaseInit->enCntDir;
+
+        /* Unit 1 sync startup invalid */
+        if ((M4_TMRA1 == TIMERAx) && (Enable == pstcBaseInit->enSyncStartupEn))
+        {
+            enRet = ErrorInvalidMode;
+        }
+        else
+        {
+            TIMERAx->BCSTR_f.SYNST = pstcBaseInit->enSyncStartupEn;
+            enRet = Ok;
+        }
+
+        /* Configure period value register */
+        TIMERAx->PERAR = pstcBaseInit->u16PeriodVal;
+    }
 
     return enRet;
 }
@@ -384,16 +394,20 @@ en_result_t TIMERA_BaseInit(M4_TMRA_TypeDef *TIMERAx, const stc_timera_base_init
  ** \arg 0-0xFFFF
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
  **
  ******************************************************************************/
 en_result_t TIMERA_SetCurrCount(M4_TMRA_TypeDef *TIMERAx, uint16_t u16Cnt)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-
-    TIMERAx->CNTER = u16Cnt;
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
+    {
+        TIMERAx->CNTER = u16Cnt;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -415,12 +429,13 @@ en_result_t TIMERA_SetCurrCount(M4_TMRA_TypeDef *TIMERAx, uint16_t u16Cnt)
  ******************************************************************************/
 uint16_t TIMERA_GetCurrCount(M4_TMRA_TypeDef *TIMERAx)
 {
-    uint16_t u16CurrCntVal;
+    uint16_t u16CurrCntVal = 0u;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-
-    u16CurrCntVal = TIMERAx->CNTER;
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
+    {
+        u16CurrCntVal = (uint16_t)TIMERAx->CNTER;
+    }
 
     return u16CurrCntVal;
 }
@@ -441,16 +456,20 @@ uint16_t TIMERA_GetCurrCount(M4_TMRA_TypeDef *TIMERAx)
  ** \arg 0-0xFFFF
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
  **
  ******************************************************************************/
 en_result_t TIMERA_SetPeriodValue(M4_TMRA_TypeDef *TIMERAx, uint16_t u16Period)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-
-    TIMERAx->PERAR = u16Period;
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
+    {
+        TIMERAx->PERAR = u16Period;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -472,12 +491,13 @@ en_result_t TIMERA_SetPeriodValue(M4_TMRA_TypeDef *TIMERAx, uint16_t u16Period)
  ******************************************************************************/
 uint16_t TIMERA_GetPeriodValue(M4_TMRA_TypeDef *TIMERAx)
 {
-    uint16_t u16PeriodVal;
+    uint16_t u16PeriodVal = 0u;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-
-    u16PeriodVal = TIMERAx->PERAR;
+    if (IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
+    {
+        u16PeriodVal = (uint16_t)TIMERAx->PERAR;
+    }
 
     return u16PeriodVal;
 }
@@ -498,17 +518,22 @@ uint16_t TIMERA_GetPeriodValue(M4_TMRA_TypeDef *TIMERAx)
  ** \arg Enable                         Enable synchronous startup
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
  **
  ******************************************************************************/
 en_result_t TIMERA_SyncStartupCmd(M4_TMRA_TypeDef *TIMERAx, en_functional_state_t enNewSta)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_SYNC_STARTUP_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
+    if(IS_VALID_SYNC_STARTUP_TIMERA_UNIT(TIMERAx))
+    {
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
 
-    TIMERAx->BCSTR_f.SYNST = enNewSta;
+        TIMERAx->BCSTR_f.SYNST = enNewSta;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -530,17 +555,22 @@ en_result_t TIMERA_SyncStartupCmd(M4_TMRA_TypeDef *TIMERAx, en_functional_state_
  ** \arg Enable                         Enable timera startup
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
  **
  ******************************************************************************/
 en_result_t TIMERA_Cmd(M4_TMRA_TypeDef *TIMERAx, en_functional_state_t enNewSta)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
+    {
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
 
-    TIMERAx->BCSTR_f.START = enNewSta;
+        TIMERAx->BCSTR_f.START = enNewSta;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -571,57 +601,63 @@ en_result_t TIMERA_Cmd(M4_TMRA_TypeDef *TIMERAx, en_functional_state_t enNewSta)
  ** \arg See the struct #stc_timera_compare_init_t
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
+ **                                     - pstcCompareInit == NULL
  **
  ******************************************************************************/
 en_result_t TIMERA_CompareInit(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t enChannel,
                                const stc_timera_compare_init_t *pstcCompareInit)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
     __IO stc_tmra_pconr_field_t *pstcTimeraPort;
     __IO stc_tmra_bconr_field_t *pstcTimeraCache;
     __IO stc_tmra_cmpar_field_t *pstcTimeraCompare;
     __IO stc_tmra_cconr_field_t *pstcTimeraCapture;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_CHANNEL(enChannel));
-    DDL_ASSERT(IS_VALID_COUNT_START_OUTPUT(pstcCompareInit->enStartCountOutput));
-    DDL_ASSERT(IS_VALID_COUNT_STOP_OUTPUT(pstcCompareInit->enStopCountOutput));
-    DDL_ASSERT(IS_VALID_COMPARE_MATCH_OUTPUT(pstcCompareInit->enCompareMatchOutput));
-    DDL_ASSERT(IS_VALID_PERIOD_MATCH_OUTPUT(pstcCompareInit->enPeriodMatchOutput));
-    DDL_ASSERT(IS_VALID_SPECIFY_OUTPUT_STATUS(pstcCompareInit->enSpecifyOutput));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCompareInit->enCacheEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCompareInit->enTriangularCrestTransEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCompareInit->enTriangularTroughTransEn));
-
-    /* Configure port control register */
-    pstcTimeraPort = (stc_tmra_pconr_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->PCONR1, enChannel);
-    pstcTimeraPort->STAC = pstcCompareInit->enStartCountOutput;
-    pstcTimeraPort->STPC = pstcCompareInit->enStopCountOutput;
-    pstcTimeraPort->CMPC = pstcCompareInit->enCompareMatchOutput;
-    pstcTimeraPort->PERC = pstcCompareInit->enPeriodMatchOutput;
-    pstcTimeraPort->FORC = pstcCompareInit->enSpecifyOutput;
-
-    /* Configure cache control register */
-    if ((TimeraCh1 == enChannel) || (TimeraCh3 == enChannel) ||
-        (TimeraCh5 == enChannel) || (TimeraCh7 == enChannel))
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx) && (NULL != pstcCompareInit))
     {
-        pstcTimeraCache = (stc_tmra_bconr_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->BCONR1, enChannel);
-        pstcTimeraCache->BSE0 = pstcCompareInit->enTriangularCrestTransEn;
-        pstcTimeraCache->BSE1 = pstcCompareInit->enTriangularTroughTransEn;
-        pstcTimeraCache->BEN = pstcCompareInit->enCacheEn;
-        /* Configure compare cache value register */
-        pstcTimeraCompare = (stc_tmra_cmpar_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CMPAR1, enChannel + 1);
-        pstcTimeraCompare->CMP = pstcCompareInit->u16CompareCacheVal;
+        DDL_ASSERT(IS_VALID_NORMAL_TIMERA_CHANNEL(enChannel));
+        DDL_ASSERT(IS_VALID_COUNT_START_OUTPUT(pstcCompareInit->enStartCountOutput));
+        DDL_ASSERT(IS_VALID_COUNT_STOP_OUTPUT(pstcCompareInit->enStopCountOutput));
+        DDL_ASSERT(IS_VALID_COMPARE_MATCH_OUTPUT(pstcCompareInit->enCompareMatchOutput));
+        DDL_ASSERT(IS_VALID_PERIOD_MATCH_OUTPUT(pstcCompareInit->enPeriodMatchOutput));
+        DDL_ASSERT(IS_VALID_SPECIFY_OUTPUT_STATUS(pstcCompareInit->enSpecifyOutput));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCompareInit->enCacheEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCompareInit->enTriangularCrestTransEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCompareInit->enTriangularTroughTransEn));
+
+        /* Configure port control register */
+        pstcTimeraPort = (stc_tmra_pconr_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->PCONR1, enChannel);
+        pstcTimeraPort->STAC = pstcCompareInit->enStartCountOutput;
+        pstcTimeraPort->STPC = pstcCompareInit->enStopCountOutput;
+        pstcTimeraPort->CMPC = pstcCompareInit->enCompareMatchOutput;
+        pstcTimeraPort->PERC = pstcCompareInit->enPeriodMatchOutput;
+        pstcTimeraPort->FORC = pstcCompareInit->enSpecifyOutput;
+
+        /* Configure cache control register */
+        if ((TimeraCh1 == enChannel) || (TimeraCh3 == enChannel) ||
+            (TimeraCh5 == enChannel) || (TimeraCh7 == enChannel))
+        {
+            pstcTimeraCache = (stc_tmra_bconr_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->BCONR1, enChannel);
+            pstcTimeraCache->BSE0 = pstcCompareInit->enTriangularCrestTransEn;
+            pstcTimeraCache->BSE1 = pstcCompareInit->enTriangularTroughTransEn;
+            pstcTimeraCache->BEN = pstcCompareInit->enCacheEn;
+            /* Configure compare cache value register */
+            pstcTimeraCompare = (stc_tmra_cmpar_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CMPAR1, enChannel + 1);
+            pstcTimeraCompare->CMP = pstcCompareInit->u16CompareCacheVal;
+        }
+
+        /* Configure compare value register */
+        pstcTimeraCompare = (stc_tmra_cmpar_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CMPAR1, enChannel);
+        pstcTimeraCompare->CMP = pstcCompareInit->u16CompareVal;
+
+        /* Set compare output function */
+        pstcTimeraCapture = (stc_tmra_cconr_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CCONR1, enChannel);
+        pstcTimeraCapture->CAPMDA = 0u;
+        enRet = Ok;
     }
-
-    /* Configure compare value register */
-    pstcTimeraCompare = (stc_tmra_cmpar_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CMPAR1, enChannel);
-    pstcTimeraCompare->CMP = pstcCompareInit->u16CompareVal;
-
-    /* Set compare output function */
-    pstcTimeraCapture = (stc_tmra_cconr_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CCONR1, enChannel);
-    pstcTimeraCapture->CAPMDA = 0u;
 
     return enRet;
 }
@@ -652,20 +688,25 @@ en_result_t TIMERA_CompareInit(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t enC
  ** \arg 0-0xFFFF
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
  **
  ******************************************************************************/
 en_result_t TIMERA_SetCompareValue(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t enChannel,
                                    uint16_t u16CompareVal)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
     __IO stc_tmra_cmpar_field_t *pstcTimeraCompare;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_CHANNEL(enChannel));
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
+    {
+        DDL_ASSERT(IS_VALID_NORMAL_TIMERA_CHANNEL(enChannel));
 
-    pstcTimeraCompare = (stc_tmra_cmpar_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CMPAR1, enChannel);
-    pstcTimeraCompare->CMP = u16CompareVal;
+        pstcTimeraCompare = (stc_tmra_cmpar_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CMPAR1, enChannel);
+        pstcTimeraCompare->CMP = u16CompareVal;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -693,19 +734,23 @@ en_result_t TIMERA_SetCompareValue(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t
  ** \arg TimeraCh8                      Timera channel 8
  **
  ** \retval uint16_t                    Timera compare value
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
  **
  ******************************************************************************/
 uint16_t TIMERA_GetCompareValue(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t enChannel)
 {
-    uint16_t u16CompareVal;
+    uint16_t u16CompareVal = 0u;
     __IO stc_tmra_cmpar_field_t *pstcTimeraCompare;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_CHANNEL(enChannel));
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
+    {
+        DDL_ASSERT(IS_VALID_NORMAL_TIMERA_CHANNEL(enChannel));
 
-    pstcTimeraCompare = (stc_tmra_cmpar_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CMPAR1, enChannel);
-    u16CompareVal = pstcTimeraCompare->CMP;
+        pstcTimeraCompare = (stc_tmra_cmpar_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CMPAR1, enChannel);
+        u16CompareVal = (uint16_t)pstcTimeraCompare->CMP;
+    }
 
     return u16CompareVal;
 }
@@ -732,20 +777,25 @@ uint16_t TIMERA_GetCompareValue(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t en
  ** \arg 0-0xFFFF
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
  **
  ******************************************************************************/
 en_result_t TIMERA_SetCacheValue(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t enChannel,
                                  uint16_t u16CompareCache)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
     __IO stc_tmra_cmpar_field_t *pstcTimeraCompare;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_VALID_SET_CACHE_CHANNEL(enChannel));
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
+    {
+        DDL_ASSERT(IS_VALID_SET_CACHE_CHANNEL(enChannel));
 
-    pstcTimeraCompare = (stc_tmra_cmpar_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CMPAR1, enChannel + 1);
-    pstcTimeraCompare->CMP = u16CompareCache;
+        pstcTimeraCompare = (stc_tmra_cmpar_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CMPAR1, enChannel + 1);
+        pstcTimeraCompare->CMP = u16CompareCache;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -773,22 +823,27 @@ en_result_t TIMERA_SetCacheValue(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t e
  ** \arg Enable                         Enable timera compare cache
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
  **
  ******************************************************************************/
 en_result_t TIMERA_CompareCacheCmd(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t enChannel,
                                    en_functional_state_t enNewSta)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
     __IO stc_tmra_bconr_field_t *pstcTimeraCache;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_VALID_ENABLE_CACHE_CHANNEL(enChannel));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
+    {
+        DDL_ASSERT(IS_VALID_ENABLE_CACHE_CHANNEL(enChannel));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
 
-    /* Configure cache control register */
-    pstcTimeraCache = (stc_tmra_bconr_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->BCONR1, enChannel);
-    pstcTimeraCache->BEN = enNewSta;
+        /* Configure cache control register */
+        pstcTimeraCache = (stc_tmra_bconr_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->BCONR1, enChannel);
+        pstcTimeraCache->BEN = enNewSta;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -821,21 +876,26 @@ en_result_t TIMERA_CompareCacheCmd(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t
  ** \arg TimeraSpecifyOutputHigh        Port output high level from next period
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
  **
  ******************************************************************************/
 en_result_t TIMERA_SpecifyOutputSta(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t enChannel,
                                     en_timera_specify_output_t enOutputSta)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
     __IO stc_tmra_pconr_field_t *pstcTimeraPort;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_CHANNEL(enChannel));
-    DDL_ASSERT(IS_VALID_SPECIFY_OUTPUT_STATUS(enOutputSta));
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
+    {
+        DDL_ASSERT(IS_VALID_NORMAL_TIMERA_CHANNEL(enChannel));
+        DDL_ASSERT(IS_VALID_SPECIFY_OUTPUT_STATUS(enOutputSta));
 
-    pstcTimeraPort = (stc_tmra_pconr_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->PCONR1, enChannel);
-    pstcTimeraPort->FORC = enOutputSta;
+        pstcTimeraPort = (stc_tmra_pconr_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->PCONR1, enChannel);
+        pstcTimeraPort->FORC = enOutputSta;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -867,21 +927,26 @@ en_result_t TIMERA_SpecifyOutputSta(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_
  ** \arg Enable                         Enable timera compare function
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
  **
  ******************************************************************************/
 en_result_t TIMERA_CompareCmd(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t enChannel,
                               en_functional_state_t enNewSta)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
     __IO stc_tmra_pconr_field_t *pstcTimeraPort;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_CHANNEL(enChannel));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
+    {
+        DDL_ASSERT(IS_VALID_NORMAL_TIMERA_CHANNEL(enChannel));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
 
-    pstcTimeraPort = (stc_tmra_pconr_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->PCONR1, enChannel);
-    pstcTimeraPort->OUTEN = enNewSta;
+        pstcTimeraPort = (stc_tmra_pconr_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->PCONR1, enChannel);
+        pstcTimeraPort->OUTEN = enNewSta;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -912,47 +977,53 @@ en_result_t TIMERA_CompareCmd(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t enCh
  ** \arg See the struct #stc_timera_capture_init_t
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
+ **                                     - pstcCapInit == NULL
  **
  ******************************************************************************/
 en_result_t TIMERA_CaptureInit(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t enChannel,
                                const stc_timera_capture_init_t *pstcCapInit)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
     __IO stc_tmra_cconr_field_t *pstcTimeraCapture;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_CHANNEL(enChannel));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCapInit->enCapturePwmRisingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCapInit->enCapturePwmFallingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCapInit->enCaptureSpecifyEventEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCapInit->enCaptureTrigFallingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCapInit->enCaptureTrigRisingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCapInit->enPwmFilterEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCapInit->enTrigFilterEn));
-    DDL_ASSERT(IS_VALID_PORT_FILTER_CLOCK(pstcCapInit->enPwmClkDiv));
-    DDL_ASSERT(IS_VALID_PORT_FILTER_CLOCK(pstcCapInit->enTrigClkDiv));
-
-    /* Configure capture control register */
-    pstcTimeraCapture = (stc_tmra_cconr_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CCONR1, enChannel);
-    pstcTimeraCapture->HICP0 = pstcCapInit->enCapturePwmRisingEn;
-    pstcTimeraCapture->HICP1 = pstcCapInit->enCapturePwmFallingEn;
-    pstcTimeraCapture->HICP2 = pstcCapInit->enCaptureSpecifyEventEn;
-    pstcTimeraCapture->NOFICKCP = pstcCapInit->enPwmClkDiv;
-    pstcTimeraCapture->NOFIENCP = pstcCapInit->enPwmFilterEn;
-
-    /* TIMA_<t>_TRIG port capture function only valid for TimeraCh4 */
-    if (TimeraCh4 == enChannel)
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx) && (NULL != pstcCapInit))
     {
-        pstcTimeraCapture->HICP3 = pstcCapInit->enCaptureTrigRisingEn;
-        pstcTimeraCapture->HICP4 = pstcCapInit->enCaptureTrigFallingEn;
-        /* Configure filter control register */
-        TIMERAx->FCONR_f.NOFICKTG = pstcCapInit->enTrigClkDiv;
-        TIMERAx->FCONR_f.NOFIENTG = pstcCapInit->enTrigFilterEn;
-    }
+        DDL_ASSERT(IS_VALID_NORMAL_TIMERA_CHANNEL(enChannel));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCapInit->enCapturePwmRisingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCapInit->enCapturePwmFallingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCapInit->enCaptureSpecifyEventEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCapInit->enCaptureTrigFallingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCapInit->enCaptureTrigRisingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCapInit->enPwmFilterEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCapInit->enTrigFilterEn));
+        DDL_ASSERT(IS_VALID_PORT_FILTER_CLOCK(pstcCapInit->enPwmClkDiv));
+        DDL_ASSERT(IS_VALID_PORT_FILTER_CLOCK(pstcCapInit->enTrigClkDiv));
 
-    /* Set capture input function */
-    pstcTimeraCapture->CAPMDA = 1u;
+        /* Configure capture control register */
+        pstcTimeraCapture = (stc_tmra_cconr_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CCONR1, enChannel);
+        pstcTimeraCapture->HICP0 = pstcCapInit->enCapturePwmRisingEn;
+        pstcTimeraCapture->HICP1 = pstcCapInit->enCapturePwmFallingEn;
+        pstcTimeraCapture->HICP2 = pstcCapInit->enCaptureSpecifyEventEn;
+        pstcTimeraCapture->NOFICKCP = pstcCapInit->enPwmClkDiv;
+        pstcTimeraCapture->NOFIENCP = pstcCapInit->enPwmFilterEn;
+
+        /* TIMA_<t>_TRIG port capture function only valid for TimeraCh4 */
+        if (TimeraCh4 == enChannel)
+        {
+            pstcTimeraCapture->HICP3 = pstcCapInit->enCaptureTrigRisingEn;
+            pstcTimeraCapture->HICP4 = pstcCapInit->enCaptureTrigFallingEn;
+            /* Configure filter control register */
+            TIMERAx->FCONR_f.NOFICKTG = pstcCapInit->enTrigClkDiv;
+            TIMERAx->FCONR_f.NOFIENTG = pstcCapInit->enTrigFilterEn;
+        }
+
+        /* Set capture input function */
+        pstcTimeraCapture->CAPMDA = 1u;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -985,27 +1056,32 @@ en_result_t TIMERA_CaptureInit(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t enC
  ** \arg Enable                         Enable timera capture filter
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
  **
  ******************************************************************************/
 en_result_t TIMERA_CaptureFilterCmd(M4_TMRA_TypeDef *TIMERAx, en_timera_filter_source_t enFilterPort,
                                     en_functional_state_t enNewSta)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
     __IO stc_tmra_cconr_field_t *pstcTimeraCapture;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_VALID_CAPTURE_FILTER_PORT_SOURCE(enFilterPort));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
+    {
+        DDL_ASSERT(IS_VALID_CAPTURE_FILTER_PORT_SOURCE(enFilterPort));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
 
-    if (TimeraFilterSourceTrig == enFilterPort)
-    {
-        TIMERAx->FCONR_f.NOFIENTG = enNewSta;
-    }
-    else
-    {
-        pstcTimeraCapture = (stc_tmra_cconr_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CCONR1, enFilterPort);
-        pstcTimeraCapture->NOFIENCP = enNewSta;
+        if (TimeraFilterSourceTrig == enFilterPort)
+        {
+            TIMERAx->FCONR_f.NOFIENTG = enNewSta;
+        }
+        else
+        {
+            pstcTimeraCapture = (stc_tmra_cconr_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CCONR1, enFilterPort);
+            pstcTimeraCapture->NOFIENCP = enNewSta;
+        }
+        enRet = Ok;
     }
 
     return enRet;
@@ -1038,15 +1114,17 @@ en_result_t TIMERA_CaptureFilterCmd(M4_TMRA_TypeDef *TIMERAx, en_timera_filter_s
  ******************************************************************************/
 uint16_t TIMERA_GetCaptureValue(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t enChannel)
 {
-    uint16_t u16CapVal;
+    uint16_t u16CapVal = 0u;
     __IO stc_tmra_cmpar_field_t *pstcTimeraCompare;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_CHANNEL(enChannel));
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
+    {
+        DDL_ASSERT(IS_VALID_NORMAL_TIMERA_CHANNEL(enChannel));
 
-    pstcTimeraCompare = (stc_tmra_cmpar_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CMPAR1, enChannel);
-    u16CapVal = pstcTimeraCompare->CMP;
+        pstcTimeraCompare = (stc_tmra_cmpar_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CMPAR1, enChannel);
+        u16CapVal = (uint16_t)pstcTimeraCompare->CMP;
+    }
 
     return u16CapVal;
 }
@@ -1067,84 +1145,90 @@ uint16_t TIMERA_GetCaptureValue(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t en
  ** \arg See the struct #stc_timera_orthogonal_coding_init_t
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
+ **                                     - pstcCodingInit == NULL
  **
  ******************************************************************************/
 en_result_t TIMERA_OrthogonalCodingInit(M4_TMRA_TypeDef *TIMERAx, const stc_timera_orthogonal_coding_init_t *pstcCodingInit)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_VALID_PORT_FILTER_CLOCK(pstcCodingInit->enTrigClkDiv));
-    DDL_ASSERT(IS_VALID_PORT_FILTER_CLOCK(pstcCodingInit->enClkBClkDiv));
-    DDL_ASSERT(IS_VALID_PORT_FILTER_CLOCK(pstcCodingInit->enClkAClkDiv));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enTrigFilterEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enClkBFilterEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enClkAFilterEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncClkALowAndClkBRisingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncClkALowAndClkBFallingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncClkAHighAndClkBRisingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncClkAHighAndClkBFallingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncClkBLowAndClkARisingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncClkBLowAndClkAFallingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncClkBHighAndClkARisingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncClkBHighAndClkAFallingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncTrigRisingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncTrigFallingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncSpecifyEventTriggerEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncAnotherUnitOverflowEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncAnotherUnitUnderflowEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecClkALowAndClkBRisingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecClkALowAndClkBFallingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecClkAHighAndClkBRisingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecClkAHighAndClkBFallingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecClkBLowAndClkARisingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecClkBLowAndClkAFallingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecClkBHighAndClkARisingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecClkBHighAndClkAFallingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecTrigRisingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecTrigFallingEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecSpecifyEventTriggerEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecAnotherUnitUnderflowEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecAnotherUnitOverflowEn));
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx) && (NULL != pstcCodingInit))
+    {
+        DDL_ASSERT(IS_VALID_PORT_FILTER_CLOCK(pstcCodingInit->enTrigClkDiv));
+        DDL_ASSERT(IS_VALID_PORT_FILTER_CLOCK(pstcCodingInit->enClkBClkDiv));
+        DDL_ASSERT(IS_VALID_PORT_FILTER_CLOCK(pstcCodingInit->enClkAClkDiv));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enTrigFilterEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enClkBFilterEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enClkAFilterEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncClkALowAndClkBRisingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncClkALowAndClkBFallingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncClkAHighAndClkBRisingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncClkAHighAndClkBFallingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncClkBLowAndClkARisingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncClkBLowAndClkAFallingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncClkBHighAndClkARisingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncClkBHighAndClkAFallingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncTrigRisingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncTrigFallingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncSpecifyEventTriggerEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncAnotherUnitOverflowEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enIncAnotherUnitUnderflowEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecClkALowAndClkBRisingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecClkALowAndClkBFallingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecClkAHighAndClkBRisingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecClkAHighAndClkBFallingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecClkBLowAndClkARisingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecClkBLowAndClkAFallingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecClkBHighAndClkARisingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecClkBHighAndClkAFallingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecTrigRisingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecTrigFallingEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecSpecifyEventTriggerEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecAnotherUnitUnderflowEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecAnotherUnitOverflowEn));
 
-    /* Configure hardware increase event register */
-    TIMERAx->HCUPR_f.HCUP0 = pstcCodingInit->enIncClkALowAndClkBRisingEn;
-    TIMERAx->HCUPR_f.HCUP1 = pstcCodingInit->enIncClkALowAndClkBFallingEn;
-    TIMERAx->HCUPR_f.HCUP2 = pstcCodingInit->enIncClkAHighAndClkBRisingEn;
-    TIMERAx->HCUPR_f.HCUP3 = pstcCodingInit->enIncClkAHighAndClkBFallingEn;
-    TIMERAx->HCUPR_f.HCUP4 = pstcCodingInit->enIncClkBLowAndClkARisingEn;
-    TIMERAx->HCUPR_f.HCUP5 = pstcCodingInit->enIncClkBLowAndClkAFallingEn;
-    TIMERAx->HCUPR_f.HCUP6 = pstcCodingInit->enIncClkBHighAndClkARisingEn;
-    TIMERAx->HCUPR_f.HCUP7 = pstcCodingInit->enIncClkBHighAndClkAFallingEn;
-    TIMERAx->HCUPR_f.HCUP8 = pstcCodingInit->enIncTrigRisingEn;
-    TIMERAx->HCUPR_f.HCUP9 = pstcCodingInit->enIncTrigFallingEn;
-    TIMERAx->HCUPR_f.HCUP10 = pstcCodingInit->enIncSpecifyEventTriggerEn;
-    TIMERAx->HCUPR_f.HCUP11 = pstcCodingInit->enIncAnotherUnitOverflowEn;
-    TIMERAx->HCUPR_f.HCUP12 = pstcCodingInit->enIncAnotherUnitUnderflowEn;
+        /* Configure hardware increase event register */
+        TIMERAx->HCUPR_f.HCUP0 = pstcCodingInit->enIncClkALowAndClkBRisingEn;
+        TIMERAx->HCUPR_f.HCUP1 = pstcCodingInit->enIncClkALowAndClkBFallingEn;
+        TIMERAx->HCUPR_f.HCUP2 = pstcCodingInit->enIncClkAHighAndClkBRisingEn;
+        TIMERAx->HCUPR_f.HCUP3 = pstcCodingInit->enIncClkAHighAndClkBFallingEn;
+        TIMERAx->HCUPR_f.HCUP4 = pstcCodingInit->enIncClkBLowAndClkARisingEn;
+        TIMERAx->HCUPR_f.HCUP5 = pstcCodingInit->enIncClkBLowAndClkAFallingEn;
+        TIMERAx->HCUPR_f.HCUP6 = pstcCodingInit->enIncClkBHighAndClkARisingEn;
+        TIMERAx->HCUPR_f.HCUP7 = pstcCodingInit->enIncClkBHighAndClkAFallingEn;
+        TIMERAx->HCUPR_f.HCUP8 = pstcCodingInit->enIncTrigRisingEn;
+        TIMERAx->HCUPR_f.HCUP9 = pstcCodingInit->enIncTrigFallingEn;
+        TIMERAx->HCUPR_f.HCUP10 = pstcCodingInit->enIncSpecifyEventTriggerEn;
+        TIMERAx->HCUPR_f.HCUP11 = pstcCodingInit->enIncAnotherUnitOverflowEn;
+        TIMERAx->HCUPR_f.HCUP12 = pstcCodingInit->enIncAnotherUnitUnderflowEn;
 
-    /* Configure hardware decrease event register */
-    TIMERAx->HCDOR_f.HCDO0 = pstcCodingInit->enDecClkALowAndClkBRisingEn;
-    TIMERAx->HCDOR_f.HCDO1 = pstcCodingInit->enDecClkALowAndClkBFallingEn;
-    TIMERAx->HCDOR_f.HCDO2 = pstcCodingInit->enDecClkAHighAndClkBRisingEn;
-    TIMERAx->HCDOR_f.HCDO3 = pstcCodingInit->enDecClkAHighAndClkBFallingEn;
-    TIMERAx->HCDOR_f.HCDO4 = pstcCodingInit->enDecClkBLowAndClkARisingEn;
-    TIMERAx->HCDOR_f.HCDO5 = pstcCodingInit->enDecClkBLowAndClkAFallingEn;
-    TIMERAx->HCDOR_f.HCDO6 = pstcCodingInit->enDecClkBHighAndClkARisingEn;
-    TIMERAx->HCDOR_f.HCDO7 = pstcCodingInit->enDecClkBHighAndClkAFallingEn;
-    TIMERAx->HCDOR_f.HCDO8 = pstcCodingInit->enDecTrigRisingEn;
-    TIMERAx->HCDOR_f.HCDO9 = pstcCodingInit->enDecTrigFallingEn;
-    TIMERAx->HCDOR_f.HCDO10 = pstcCodingInit->enDecSpecifyEventTriggerEn;
-    TIMERAx->HCDOR_f.HCDO11 = pstcCodingInit->enDecAnotherUnitUnderflowEn;
-    TIMERAx->HCDOR_f.HCDO12 = pstcCodingInit->enDecAnotherUnitOverflowEn;
+        /* Configure hardware decrease event register */
+        TIMERAx->HCDOR_f.HCDO0 = pstcCodingInit->enDecClkALowAndClkBRisingEn;
+        TIMERAx->HCDOR_f.HCDO1 = pstcCodingInit->enDecClkALowAndClkBFallingEn;
+        TIMERAx->HCDOR_f.HCDO2 = pstcCodingInit->enDecClkAHighAndClkBRisingEn;
+        TIMERAx->HCDOR_f.HCDO3 = pstcCodingInit->enDecClkAHighAndClkBFallingEn;
+        TIMERAx->HCDOR_f.HCDO4 = pstcCodingInit->enDecClkBLowAndClkARisingEn;
+        TIMERAx->HCDOR_f.HCDO5 = pstcCodingInit->enDecClkBLowAndClkAFallingEn;
+        TIMERAx->HCDOR_f.HCDO6 = pstcCodingInit->enDecClkBHighAndClkARisingEn;
+        TIMERAx->HCDOR_f.HCDO7 = pstcCodingInit->enDecClkBHighAndClkAFallingEn;
+        TIMERAx->HCDOR_f.HCDO8 = pstcCodingInit->enDecTrigRisingEn;
+        TIMERAx->HCDOR_f.HCDO9 = pstcCodingInit->enDecTrigFallingEn;
+        TIMERAx->HCDOR_f.HCDO10 = pstcCodingInit->enDecSpecifyEventTriggerEn;
+        TIMERAx->HCDOR_f.HCDO11 = pstcCodingInit->enDecAnotherUnitUnderflowEn;
+        TIMERAx->HCDOR_f.HCDO12 = pstcCodingInit->enDecAnotherUnitOverflowEn;
 
-    /* Configure filter control register */
-    TIMERAx->FCONR_f.NOFICKTG = pstcCodingInit->enTrigClkDiv;
-    TIMERAx->FCONR_f.NOFIENTG = pstcCodingInit->enTrigFilterEn;
-    TIMERAx->FCONR_f.NOFICKCB = pstcCodingInit->enClkBClkDiv;
-    TIMERAx->FCONR_f.NOFIENCB = pstcCodingInit->enClkBFilterEn;
-    TIMERAx->FCONR_f.NOFICKCA = pstcCodingInit->enClkAClkDiv;
-    TIMERAx->FCONR_f.NOFIENCA = pstcCodingInit->enClkAFilterEn;
+        /* Configure filter control register */
+        TIMERAx->FCONR_f.NOFICKTG = pstcCodingInit->enTrigClkDiv;
+        TIMERAx->FCONR_f.NOFIENTG = pstcCodingInit->enTrigFilterEn;
+        TIMERAx->FCONR_f.NOFICKCB = pstcCodingInit->enClkBClkDiv;
+        TIMERAx->FCONR_f.NOFIENCB = pstcCodingInit->enClkBFilterEn;
+        TIMERAx->FCONR_f.NOFICKCA = pstcCodingInit->enClkAClkDiv;
+        TIMERAx->FCONR_f.NOFIENCA = pstcCodingInit->enClkAFilterEn;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -1165,16 +1249,20 @@ en_result_t TIMERA_OrthogonalCodingInit(M4_TMRA_TypeDef *TIMERAx, const stc_time
  ** \arg 0-0xFFFF
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
  **
  ******************************************************************************/
 en_result_t TIMERA_SetOrthogonalCodingCount(M4_TMRA_TypeDef *TIMERAx, uint16_t u16CodingCnt)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-
-    TIMERAx->CNTER = u16CodingCnt;
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
+    {
+        TIMERAx->CNTER = u16CodingCnt;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -1196,12 +1284,13 @@ en_result_t TIMERA_SetOrthogonalCodingCount(M4_TMRA_TypeDef *TIMERAx, uint16_t u
  ******************************************************************************/
 uint16_t TIMERA_GetOrthogonalCodingCount(M4_TMRA_TypeDef *TIMERAx)
 {
-    uint16_t u16CodingCnt;
+    uint16_t u16CodingCnt = 0u;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-
-    u16CodingCnt = TIMERAx->CNTER;
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
+    {
+        u16CodingCnt = (uint16_t)TIMERAx->CNTER;
+    }
 
     return u16CodingCnt;
 }
@@ -1228,31 +1317,36 @@ uint16_t TIMERA_GetOrthogonalCodingCount(M4_TMRA_TypeDef *TIMERAx)
  ** \arg Enable                         Enable timera orthogonal coding filter
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
  **
  ******************************************************************************/
 en_result_t TIMERA_OrthogonalCodingFilterCmd(M4_TMRA_TypeDef *TIMERAx, en_timera_filter_source_t enFilterPort,
                                              en_functional_state_t enNewSta)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_VALID_CODING_FILTER_PORT_SOURCE(enFilterPort));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
-
-    switch (enFilterPort)
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
     {
-        case TimeraFilterSourceClkA:
-            TIMERAx->FCONR_f.NOFIENCA = enNewSta;
-            break;
-        case TimeraFilterSourceClkB:
-            TIMERAx->FCONR_f.NOFIENCB = enNewSta;
-            break;
-        case TimeraFilterSourceTrig:
-            TIMERAx->FCONR_f.NOFIENTG = enNewSta;
-            break;
-        default:
-            break;
+        DDL_ASSERT(IS_VALID_CODING_FILTER_PORT_SOURCE(enFilterPort));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
+
+        switch (enFilterPort)
+        {
+            case TimeraFilterSourceClkA:
+                TIMERAx->FCONR_f.NOFIENCA = enNewSta;
+                break;
+            case TimeraFilterSourceClkB:
+                TIMERAx->FCONR_f.NOFIENCB = enNewSta;
+                break;
+            case TimeraFilterSourceTrig:
+                TIMERAx->FCONR_f.NOFIENTG = enNewSta;
+                break;
+            default:
+                break;
+        }
+        enRet = Ok;
     }
 
     return enRet;
@@ -1274,50 +1368,56 @@ en_result_t TIMERA_OrthogonalCodingFilterCmd(M4_TMRA_TypeDef *TIMERAx, en_timera
  ** \arg See the struct #stc_timera_hw_trigger_init_t
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
+ **                                     - pstcHwTriggerInit == NULL
  **
  ** \note If sync startup(BCSTR.SYNST) bit set 1 trigger hardware sync startup when HCONR.HSTA1~0 bit set
  **
  ******************************************************************************/
 en_result_t TIMERA_HwTriggerInit(M4_TMRA_TypeDef *TIMERAx, const stc_timera_hw_trigger_init_t *pstcHwTriggerInit)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwStartup.enTrigRisingStartupEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwStartup.enTrigFallingStartupEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwStartup.enSpecifyEventStartupEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwStop.enTrigRisingStopEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwStop.enTrigFallingStopEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwStop.enSpecifyEventStopEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwClear.enTrigRisingClearEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwClear.enTrigFallingClearEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwClear.enSpecifyEventClearEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwClear.enAnotherUnitTrigRisingClearEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwClear.enAnotherUnitTrigFallingClearEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwClear.enChannel3RisingClearEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwClear.enChannel3FallingClearEn));
-
-    /* Configure hardware startup conditions */
-    TIMERAx->HCONR_f.HSTA0 = pstcHwTriggerInit->stcHwStartup.enTrigRisingStartupEn;
-    TIMERAx->HCONR_f.HSTA1 = pstcHwTriggerInit->stcHwStartup.enTrigFallingStartupEn;
-    TIMERAx->HCONR_f.HSTA2 = pstcHwTriggerInit->stcHwStartup.enSpecifyEventStartupEn;
-
-    /* Configure hardware stop conditions */
-    TIMERAx->HCONR_f.HSTP0 = pstcHwTriggerInit->stcHwStop.enTrigRisingStopEn;
-    TIMERAx->HCONR_f.HSTP1 = pstcHwTriggerInit->stcHwStop.enTrigFallingStopEn;
-    TIMERAx->HCONR_f.HSTP2 = pstcHwTriggerInit->stcHwStop.enSpecifyEventStopEn;
-
-    /* Configure hardware clear conditions */
-    TIMERAx->HCONR_f.HCLE0 = pstcHwTriggerInit->stcHwClear.enTrigRisingClearEn;
-    TIMERAx->HCONR_f.HCLE1 = pstcHwTriggerInit->stcHwClear.enTrigFallingClearEn;
-    TIMERAx->HCONR_f.HCLE2 = pstcHwTriggerInit->stcHwClear.enSpecifyEventClearEn;
-    TIMERAx->HCONR_f.HCLE3 = pstcHwTriggerInit->stcHwClear.enAnotherUnitTrigRisingClearEn;
-    TIMERAx->HCONR_f.HCLE4 = pstcHwTriggerInit->stcHwClear.enAnotherUnitTrigFallingClearEn;
-    if (M4_TMRA3 == TIMERAx)
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx) && (NULL != pstcHwTriggerInit))
     {
-        TIMERAx->HCONR_f.HCLE5 = pstcHwTriggerInit->stcHwClear.enChannel3RisingClearEn;
-        TIMERAx->HCONR_f.HCLE6 = pstcHwTriggerInit->stcHwClear.enChannel3FallingClearEn;
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwStartup.enTrigRisingStartupEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwStartup.enTrigFallingStartupEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwStartup.enSpecifyEventStartupEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwStop.enTrigRisingStopEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwStop.enTrigFallingStopEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwStop.enSpecifyEventStopEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwClear.enTrigRisingClearEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwClear.enTrigFallingClearEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwClear.enSpecifyEventClearEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwClear.enAnotherUnitTrigRisingClearEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwClear.enAnotherUnitTrigFallingClearEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwClear.enChannel3RisingClearEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwTriggerInit->stcHwClear.enChannel3FallingClearEn));
+
+        /* Configure hardware startup conditions */
+        TIMERAx->HCONR_f.HSTA0 = pstcHwTriggerInit->stcHwStartup.enTrigRisingStartupEn;
+        TIMERAx->HCONR_f.HSTA1 = pstcHwTriggerInit->stcHwStartup.enTrigFallingStartupEn;
+        TIMERAx->HCONR_f.HSTA2 = pstcHwTriggerInit->stcHwStartup.enSpecifyEventStartupEn;
+
+        /* Configure hardware stop conditions */
+        TIMERAx->HCONR_f.HSTP0 = pstcHwTriggerInit->stcHwStop.enTrigRisingStopEn;
+        TIMERAx->HCONR_f.HSTP1 = pstcHwTriggerInit->stcHwStop.enTrigFallingStopEn;
+        TIMERAx->HCONR_f.HSTP2 = pstcHwTriggerInit->stcHwStop.enSpecifyEventStopEn;
+
+        /* Configure hardware clear conditions */
+        TIMERAx->HCONR_f.HCLE0 = pstcHwTriggerInit->stcHwClear.enTrigRisingClearEn;
+        TIMERAx->HCONR_f.HCLE1 = pstcHwTriggerInit->stcHwClear.enTrigFallingClearEn;
+        TIMERAx->HCONR_f.HCLE2 = pstcHwTriggerInit->stcHwClear.enSpecifyEventClearEn;
+        TIMERAx->HCONR_f.HCLE3 = pstcHwTriggerInit->stcHwClear.enAnotherUnitTrigRisingClearEn;
+        TIMERAx->HCONR_f.HCLE4 = pstcHwTriggerInit->stcHwClear.enAnotherUnitTrigFallingClearEn;
+        if (M4_TMRA3 == TIMERAx)
+        {
+            TIMERAx->HCONR_f.HCLE5 = pstcHwTriggerInit->stcHwClear.enChannel3RisingClearEn;
+            TIMERAx->HCONR_f.HCLE6 = pstcHwTriggerInit->stcHwClear.enChannel3FallingClearEn;
+        }
+        enRet = Ok;
     }
 
     return enRet;
@@ -1339,21 +1439,27 @@ en_result_t TIMERA_HwTriggerInit(M4_TMRA_TypeDef *TIMERAx, const stc_timera_hw_t
  ** \arg See the struct #stc_timera_hw_startup_cofig_t
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
+ **                                     - pstcHwStartup == NULL
  **
  ******************************************************************************/
 en_result_t TIMERA_HwStartupConfig(M4_TMRA_TypeDef *TIMERAx, const stc_timera_hw_startup_cofig_t *pstcHwStartup)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwStartup->enTrigRisingStartupEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwStartup->enTrigFallingStartupEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwStartup->enSpecifyEventStartupEn));
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx) && (NULL != pstcHwStartup))
+    {
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwStartup->enTrigRisingStartupEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwStartup->enTrigFallingStartupEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwStartup->enSpecifyEventStartupEn));
 
-    TIMERAx->HCONR_f.HSTA0 = pstcHwStartup->enTrigRisingStartupEn;
-    TIMERAx->HCONR_f.HSTA1 = pstcHwStartup->enTrigFallingStartupEn;
-    TIMERAx->HCONR_f.HSTA2 = pstcHwStartup->enSpecifyEventStartupEn;
+        TIMERAx->HCONR_f.HSTA0 = pstcHwStartup->enTrigRisingStartupEn;
+        TIMERAx->HCONR_f.HSTA1 = pstcHwStartup->enTrigFallingStartupEn;
+        TIMERAx->HCONR_f.HSTA2 = pstcHwStartup->enSpecifyEventStartupEn;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -1374,21 +1480,27 @@ en_result_t TIMERA_HwStartupConfig(M4_TMRA_TypeDef *TIMERAx, const stc_timera_hw
  ** \arg See the struct #stc_timera_hw_stop_cofig_t
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
+ **                                     - pstcHwStop == NULL
  **
  ******************************************************************************/
 en_result_t TIMERA_HwStopConfig(M4_TMRA_TypeDef *TIMERAx, const stc_timera_hw_stop_cofig_t *pstcHwStop)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwStop->enTrigRisingStopEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwStop->enTrigFallingStopEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwStop->enSpecifyEventStopEn));
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx) && (NULL != pstcHwStop))
+    {
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwStop->enTrigRisingStopEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwStop->enTrigFallingStopEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwStop->enSpecifyEventStopEn));
 
-    TIMERAx->HCONR_f.HSTP0 = pstcHwStop->enTrigRisingStopEn;
-    TIMERAx->HCONR_f.HSTP1 = pstcHwStop->enTrigFallingStopEn;
-    TIMERAx->HCONR_f.HSTP2 = pstcHwStop->enSpecifyEventStopEn;
+        TIMERAx->HCONR_f.HSTP0 = pstcHwStop->enTrigRisingStopEn;
+        TIMERAx->HCONR_f.HSTP1 = pstcHwStop->enTrigFallingStopEn;
+        TIMERAx->HCONR_f.HSTP2 = pstcHwStop->enSpecifyEventStopEn;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -1409,31 +1521,37 @@ en_result_t TIMERA_HwStopConfig(M4_TMRA_TypeDef *TIMERAx, const stc_timera_hw_st
  ** \arg See the struct #stc_timera_hw_clear_config_t
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
+ **                                     - pstcHwClear == NULL
  **
  ******************************************************************************/
 en_result_t TIMERA_HwClearConfig(M4_TMRA_TypeDef *TIMERAx, const stc_timera_hw_clear_config_t *pstcHwClear)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwClear->enTrigRisingClearEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwClear->enTrigFallingClearEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwClear->enSpecifyEventClearEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwClear->enAnotherUnitTrigRisingClearEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwClear->enAnotherUnitTrigFallingClearEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwClear->enChannel3RisingClearEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwClear->enChannel3FallingClearEn));
-
-    TIMERAx->HCONR_f.HCLE0 = pstcHwClear->enTrigRisingClearEn;
-    TIMERAx->HCONR_f.HCLE1 = pstcHwClear->enTrigFallingClearEn;
-    TIMERAx->HCONR_f.HCLE2 = pstcHwClear->enSpecifyEventClearEn;
-    TIMERAx->HCONR_f.HCLE3 = pstcHwClear->enAnotherUnitTrigRisingClearEn;
-    TIMERAx->HCONR_f.HCLE4 = pstcHwClear->enAnotherUnitTrigFallingClearEn;
-    if (M4_TMRA3 == TIMERAx)
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx) && (NULL != pstcHwClear))
     {
-        TIMERAx->HCONR_f.HCLE5 = pstcHwClear->enChannel3RisingClearEn;
-        TIMERAx->HCONR_f.HCLE6 = pstcHwClear->enChannel3FallingClearEn;
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwClear->enTrigRisingClearEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwClear->enTrigFallingClearEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwClear->enSpecifyEventClearEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwClear->enAnotherUnitTrigRisingClearEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwClear->enAnotherUnitTrigFallingClearEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwClear->enChannel3RisingClearEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcHwClear->enChannel3FallingClearEn));
+
+        TIMERAx->HCONR_f.HCLE0 = pstcHwClear->enTrigRisingClearEn;
+        TIMERAx->HCONR_f.HCLE1 = pstcHwClear->enTrigFallingClearEn;
+        TIMERAx->HCONR_f.HCLE2 = pstcHwClear->enSpecifyEventClearEn;
+        TIMERAx->HCONR_f.HCLE3 = pstcHwClear->enAnotherUnitTrigRisingClearEn;
+        TIMERAx->HCONR_f.HCLE4 = pstcHwClear->enAnotherUnitTrigFallingClearEn;
+        if (M4_TMRA3 == TIMERAx)
+        {
+            TIMERAx->HCONR_f.HCLE5 = pstcHwClear->enChannel3RisingClearEn;
+            TIMERAx->HCONR_f.HCLE6 = pstcHwClear->enChannel3FallingClearEn;
+        }
+        enRet = Ok;
     }
 
     return enRet;
@@ -1468,52 +1586,57 @@ en_result_t TIMERA_HwClearConfig(M4_TMRA_TypeDef *TIMERAx, const stc_timera_hw_c
  ** \arg Enable                         Enable timera interrupt request
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
  **
  ******************************************************************************/
 en_result_t TIMERA_IrqCmd(M4_TMRA_TypeDef *TIMERAx, en_timera_irq_type_t enIrq,
                           en_functional_state_t enNewSta)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_VALID_IRQ_SOURCE(enIrq));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
-
-    switch (enIrq)
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
     {
-        case TimeraIrqCaptureOrCompareCh1:
-            TIMERAx->ICONR_f.ITEN1 = enNewSta;
-            break;
-        case TimeraIrqCaptureOrCompareCh2:
-            TIMERAx->ICONR_f.ITEN2 = enNewSta;
-            break;
-        case TimeraIrqCaptureOrCompareCh3:
-            TIMERAx->ICONR_f.ITEN3 = enNewSta;
-            break;
-        case TimeraIrqCaptureOrCompareCh4:
-            TIMERAx->ICONR_f.ITEN4 = enNewSta;
-            break;
-        case TimeraIrqCaptureOrCompareCh5:
-            TIMERAx->ICONR_f.ITEN5 = enNewSta;
-            break;
-        case TimeraIrqCaptureOrCompareCh6:
-            TIMERAx->ICONR_f.ITEN6 = enNewSta;
-            break;
-        case TimeraIrqCaptureOrCompareCh7:
-            TIMERAx->ICONR_f.ITEN7 = enNewSta;
-            break;
-        case TimeraIrqCaptureOrCompareCh8:
-            TIMERAx->ICONR_f.ITEN8 = enNewSta;
-            break;
-        case TimeraIrqOverflow:
-            TIMERAx->BCSTR_f.INENOVF = enNewSta;
-            break;
-        case TimeraIrqUnderflow:
-            TIMERAx->BCSTR_f.INENUDF = enNewSta;
-            break;
-        default:
-            break;
+        DDL_ASSERT(IS_VALID_IRQ_SOURCE(enIrq));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
+
+        switch (enIrq)
+        {
+            case TimeraIrqCaptureOrCompareCh1:
+                TIMERAx->ICONR_f.ITEN1 = enNewSta;
+                break;
+            case TimeraIrqCaptureOrCompareCh2:
+                TIMERAx->ICONR_f.ITEN2 = enNewSta;
+                break;
+            case TimeraIrqCaptureOrCompareCh3:
+                TIMERAx->ICONR_f.ITEN3 = enNewSta;
+                break;
+            case TimeraIrqCaptureOrCompareCh4:
+                TIMERAx->ICONR_f.ITEN4 = enNewSta;
+                break;
+            case TimeraIrqCaptureOrCompareCh5:
+                TIMERAx->ICONR_f.ITEN5 = enNewSta;
+                break;
+            case TimeraIrqCaptureOrCompareCh6:
+                TIMERAx->ICONR_f.ITEN6 = enNewSta;
+                break;
+            case TimeraIrqCaptureOrCompareCh7:
+                TIMERAx->ICONR_f.ITEN7 = enNewSta;
+                break;
+            case TimeraIrqCaptureOrCompareCh8:
+                TIMERAx->ICONR_f.ITEN8 = enNewSta;
+                break;
+            case TimeraIrqOverflow:
+                TIMERAx->BCSTR_f.ITENOVF = enNewSta;
+                break;
+            case TimeraIrqUnderflow:
+                TIMERAx->BCSTR_f.ITENUDF = enNewSta;
+                break;
+            default:
+                break;
+        }
+        enRet = Ok;
     }
 
     return enRet;
@@ -1546,45 +1669,50 @@ en_result_t TIMERA_IrqCmd(M4_TMRA_TypeDef *TIMERAx, en_timera_irq_type_t enIrq,
  ** \arg Enable                         Enable timera event request
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
  **
  ******************************************************************************/
 en_result_t TIMERA_EventCmd(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t enChannel,
                             en_functional_state_t enNewSta)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_CHANNEL(enChannel));
-
-    switch (enChannel)
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
     {
-        case TimeraCh1:
-            TIMERAx->ECONR_f.ETEN1 = enNewSta;
-            break;
-        case TimeraCh2:
-            TIMERAx->ECONR_f.ETEN2 = enNewSta;
-            break;
-        case TimeraCh3:
-            TIMERAx->ECONR_f.ETEN3 = enNewSta;
-            break;
-        case TimeraCh4:
-            TIMERAx->ECONR_f.ETEN4 = enNewSta;
-            break;
-        case TimeraCh5:
-            TIMERAx->ECONR_f.ETEN5 = enNewSta;
-            break;
-        case TimeraCh6:
-            TIMERAx->ECONR_f.ETEN6 = enNewSta;
-            break;
-        case TimeraCh7:
-            TIMERAx->ECONR_f.ETEN7 = enNewSta;
-            break;
-        case TimeraCh8:
-            TIMERAx->ECONR_f.ETEN8 = enNewSta;
-            break;
-        default:
-            break;
+        DDL_ASSERT(IS_VALID_NORMAL_TIMERA_CHANNEL(enChannel));
+
+        switch (enChannel)
+        {
+            case TimeraCh1:
+                TIMERAx->ECONR_f.ETEN1 = enNewSta;
+                break;
+            case TimeraCh2:
+                TIMERAx->ECONR_f.ETEN2 = enNewSta;
+                break;
+            case TimeraCh3:
+                TIMERAx->ECONR_f.ETEN3 = enNewSta;
+                break;
+            case TimeraCh4:
+                TIMERAx->ECONR_f.ETEN4 = enNewSta;
+                break;
+            case TimeraCh5:
+                TIMERAx->ECONR_f.ETEN5 = enNewSta;
+                break;
+            case TimeraCh6:
+                TIMERAx->ECONR_f.ETEN6 = enNewSta;
+                break;
+            case TimeraCh7:
+                TIMERAx->ECONR_f.ETEN7 = enNewSta;
+                break;
+            case TimeraCh8:
+                TIMERAx->ECONR_f.ETEN8 = enNewSta;
+                break;
+            default:
+                break;
+        }
+        enRet = Ok;
     }
 
     return enRet;
@@ -1623,43 +1751,45 @@ en_flag_status_t TIMERA_GetFlag(M4_TMRA_TypeDef *TIMERAx, en_timera_flag_type_t 
     en_flag_status_t enFlagSta = Reset;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_VALID_FLAG_TYPE(enFlag));
-
-    switch (enFlag)
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
     {
-        case TimeraFlagCaptureOrCompareCh1:
-            enFlagSta = (1u == TIMERAx->STFLR_f.CMPF1) ? Set : Reset;
-            break;
-        case TimeraFlagCaptureOrCompareCh2:
-            enFlagSta = (1u == TIMERAx->STFLR_f.CMPF2) ? Set : Reset;
-            break;
-        case TimeraFlagCaptureOrCompareCh3:
-            enFlagSta = (1u == TIMERAx->STFLR_f.CMPF3) ? Set : Reset;
-            break;
-        case TimeraFlagCaptureOrCompareCh4:
-            enFlagSta = (1u == TIMERAx->STFLR_f.CMPF4) ? Set : Reset;
-            break;
-        case TimeraFlagCaptureOrCompareCh5:
-            enFlagSta = (1u == TIMERAx->STFLR_f.CMPF5) ? Set : Reset;
-            break;
-        case TimeraFlagCaptureOrCompareCh6:
-            enFlagSta = (1u == TIMERAx->STFLR_f.CMPF6) ? Set : Reset;
-            break;
-        case TimeraFlagCaptureOrCompareCh7:
-            enFlagSta = (1u == TIMERAx->STFLR_f.CMPF7) ? Set : Reset;
-            break;
-        case TimeraFlagCaptureOrCompareCh8:
-            enFlagSta = (1u == TIMERAx->STFLR_f.CMPF8) ? Set : Reset;
-            break;
-        case TimeraFlagOverflow:
-            enFlagSta = (1u == TIMERAx->BCSTR_f.OVFF) ? Set : Reset;
-            break;
-        case TimeraFlagUnderflow:
-            enFlagSta = (1u == TIMERAx->BCSTR_f.UDFF) ? Set : Reset;
-            break;
-        default:
-            break;
+        DDL_ASSERT(IS_VALID_FLAG_TYPE(enFlag));
+
+        switch (enFlag)
+        {
+            case TimeraFlagCaptureOrCompareCh1:
+                enFlagSta = (en_flag_status_t)TIMERAx->STFLR_f.CMPF1;
+                break;
+            case TimeraFlagCaptureOrCompareCh2:
+                enFlagSta = (en_flag_status_t)TIMERAx->STFLR_f.CMPF2;
+                break;
+            case TimeraFlagCaptureOrCompareCh3:
+                enFlagSta = (en_flag_status_t)TIMERAx->STFLR_f.CMPF3;
+                break;
+            case TimeraFlagCaptureOrCompareCh4:
+                enFlagSta = (en_flag_status_t)TIMERAx->STFLR_f.CMPF4;
+                break;
+            case TimeraFlagCaptureOrCompareCh5:
+                enFlagSta = (en_flag_status_t)TIMERAx->STFLR_f.CMPF5;
+                break;
+            case TimeraFlagCaptureOrCompareCh6:
+                enFlagSta = (en_flag_status_t)TIMERAx->STFLR_f.CMPF6;
+                break;
+            case TimeraFlagCaptureOrCompareCh7:
+                enFlagSta = (en_flag_status_t)TIMERAx->STFLR_f.CMPF7;
+                break;
+            case TimeraFlagCaptureOrCompareCh8:
+                enFlagSta = (en_flag_status_t)TIMERAx->STFLR_f.CMPF8;
+                break;
+            case TimeraFlagOverflow:
+                enFlagSta = (en_flag_status_t)TIMERAx->BCSTR_f.OVFF;
+                break;
+            case TimeraFlagUnderflow:
+                enFlagSta = (en_flag_status_t)TIMERAx->BCSTR_f.UDFF;
+                break;
+            default:
+                break;
+        }
     }
 
     return enFlagSta;
@@ -1690,50 +1820,55 @@ en_flag_status_t TIMERA_GetFlag(M4_TMRA_TypeDef *TIMERAx, en_timera_flag_type_t 
  ** \arg TimeraFlagUnderflow            Count underflow flag
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - TIMERAx is invalid
  **
  ******************************************************************************/
 en_result_t TIMERA_ClearFlag(M4_TMRA_TypeDef *TIMERAx, en_timera_flag_type_t enFlag)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx));
-    DDL_ASSERT(IS_VALID_FLAG_TYPE(enFlag));
-
-    switch (enFlag)
+    if(IS_VALID_NORMAL_TIMERA_UNIT(TIMERAx))
     {
-        case TimeraFlagCaptureOrCompareCh1:
-            TIMERAx->STFLR_f.CMPF1 = 0u;
-            break;
-        case TimeraFlagCaptureOrCompareCh2:
-            TIMERAx->STFLR_f.CMPF2 = 0u;
-            break;
-        case TimeraFlagCaptureOrCompareCh3:
-            TIMERAx->STFLR_f.CMPF3 = 0u;
-            break;
-        case TimeraFlagCaptureOrCompareCh4:
-            TIMERAx->STFLR_f.CMPF4 = 0u;
-            break;
-        case TimeraFlagCaptureOrCompareCh5:
-            TIMERAx->STFLR_f.CMPF5 = 0u;
-            break;
-        case TimeraFlagCaptureOrCompareCh6:
-            TIMERAx->STFLR_f.CMPF6 = 0u;
-            break;
-        case TimeraFlagCaptureOrCompareCh7:
-            TIMERAx->STFLR_f.CMPF7 = 0u;
-            break;
-        case TimeraFlagCaptureOrCompareCh8:
-            TIMERAx->STFLR_f.CMPF8 = 0u;
-            break;
-        case TimeraFlagOverflow:
-            TIMERAx->BCSTR_f.OVFF = 0u;
-            break;
-        case TimeraFlagUnderflow:
-            TIMERAx->BCSTR_f.UDFF = 0u;
-            break;
-        default:
-            break;
+        DDL_ASSERT(IS_VALID_FLAG_TYPE(enFlag));
+
+        switch (enFlag)
+        {
+            case TimeraFlagCaptureOrCompareCh1:
+                TIMERAx->STFLR_f.CMPF1 = 0u;
+                break;
+            case TimeraFlagCaptureOrCompareCh2:
+                TIMERAx->STFLR_f.CMPF2 = 0u;
+                break;
+            case TimeraFlagCaptureOrCompareCh3:
+                TIMERAx->STFLR_f.CMPF3 = 0u;
+                break;
+            case TimeraFlagCaptureOrCompareCh4:
+                TIMERAx->STFLR_f.CMPF4 = 0u;
+                break;
+            case TimeraFlagCaptureOrCompareCh5:
+                TIMERAx->STFLR_f.CMPF5 = 0u;
+                break;
+            case TimeraFlagCaptureOrCompareCh6:
+                TIMERAx->STFLR_f.CMPF6 = 0u;
+                break;
+            case TimeraFlagCaptureOrCompareCh7:
+                TIMERAx->STFLR_f.CMPF7 = 0u;
+                break;
+            case TimeraFlagCaptureOrCompareCh8:
+                TIMERAx->STFLR_f.CMPF8 = 0u;
+                break;
+            case TimeraFlagOverflow:
+                TIMERAx->BCSTR_f.OVFF = 0u;
+                break;
+            case TimeraFlagUnderflow:
+                TIMERAx->BCSTR_f.UDFF = 0u;
+                break;
+            default:
+                break;
+        }
+        enRet = Ok;
     }
 
     return enRet;
@@ -1756,7 +1891,7 @@ en_result_t TIMERA_SetCountTriggerSrc(en_event_src_t enTriggerSrc)
     /* Check parameters */
     DDL_ASSERT(IS_VALID_EVENT_SOURCE(enTriggerSrc));
 
-    M4_AOS->TMRA_HTSSR1 = enTriggerSrc;
+    M4_AOS->TMRA_HTSSR0 = enTriggerSrc;
 
     return enRet;
 }
@@ -1778,7 +1913,7 @@ en_result_t TIMERA_SetCaptureTriggerSrc(en_event_src_t enTriggerSrc)
     /* Check parameters */
     DDL_ASSERT(IS_VALID_EVENT_SOURCE(enTriggerSrc));
 
-    M4_AOS->TMRA_HTSSR2 = enTriggerSrc;
+    M4_AOS->TMRA_HTSSR1 = enTriggerSrc;
 
     return enRet;
 }

@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -218,10 +218,10 @@ en_flag_status_t TIMER4_CNT_GetIrqFlag(M4_TMR4_TypeDef *TMR4x,
 en_result_t TIMER4_CNT_ClearIrqFlag(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_cnt_int_t enIntType);
 en_result_t TIMER4_CNT_SetCycleVal(M4_TMR4_TypeDef *TMR4x, uint16_t u16Cycle);
-uint16_t TIMER4_CNT_GetCycleVal(M4_TMR4_TypeDef *TMR4x);
+uint16_t TIMER4_CNT_GetCycleVal(const M4_TMR4_TypeDef *TMR4x);
 en_result_t TIMER4_CNT_ClearCountVal(M4_TMR4_TypeDef *TMR4x);
 en_result_t TIMER4_CNT_SetCountVal(M4_TMR4_TypeDef *TMR4x, uint16_t u16Count);
-uint16_t TIMER4_CNT_GetCountVal(M4_TMR4_TypeDef *TMR4x);
+uint16_t TIMER4_CNT_GetCountVal(const M4_TMR4_TypeDef *TMR4x);
 en_result_t TIMER4_CNT_SetIntMaskTimes(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_cnt_int_t enIntType,
                                 en_timer4_cnt_int_mask_t enMaskTimes);

@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -71,18 +71,18 @@
 /*******************************************************************************
  * Local pre-processor symbols/macros ('#define')
  ******************************************************************************/
-#define EP1_BASE        0x40010800 + 0x0100
-#define EP2_BASE        0x40010800 + 0x011C
-#define EP3_BASE        0x40010800 + 0x0138
-#define EP4_BASE        0x40010800 + 0x0154
-#define EP1_DIR_BASE    0x00
-#define EP1_IDR_BASE    0x04
-#define EP1_ODR_BASE    0x08
-#define EP1_ORR_BASE    0x0C
-#define EP1_OSR_BASE    0x10
-#define EP1_RISR_BASE   0x14
-#define EP1_FAL_BASE    0x18
-#define EP_NFCR_BASE    0x40010800 + 0x0170
+#define EP1_BASE        0x40010800ul + 0x0100ul
+#define EP2_BASE        0x40010800ul + 0x011Cul
+#define EP3_BASE        0x40010800ul + 0x0138ul
+#define EP4_BASE        0x40010800ul + 0x0154ul
+#define EP1_DIR_BASE    0x00ul
+#define EP1_IDR_BASE    0x04ul
+#define EP1_ODR_BASE    0x08ul
+#define EP1_ORR_BASE    0x0Cul
+#define EP1_OSR_BASE    0x10ul
+#define EP1_RISR_BASE   0x14ul
+#define EP1_FAL_BASE    0x18ul
+#define EP_NFCR_BASE    0x40010800ul + 0x0170ul
 
 
 /*! Parameter validity check for port group. */
@@ -164,7 +164,7 @@ en_result_t EVENTPORT_Init(en_event_port_t enEventPort, uint16_t u16EventPin,  \
     }
     else
     {
-        *EPDIRx &= (~u16EventPin) & 0xFFFF;
+        *EPDIRx &= (~(uint32_t)u16EventPin) & 0xFFFFul;
     }
 
     /* Reset if be triggered */
@@ -174,7 +174,7 @@ en_result_t EVENTPORT_Init(en_event_port_t enEventPort, uint16_t u16EventPin,  \
     }
     else
     {
-        *EPORRx &= (~u16EventPin) & 0xFFFF;
+        *EPORRx &= (~(uint32_t)u16EventPin) & 0xFFFFul;
     }
 
     /* Set if be triggered */
@@ -184,7 +184,7 @@ en_result_t EVENTPORT_Init(en_event_port_t enEventPort, uint16_t u16EventPin,  \
     }
     else
     {
-        *EPOSRx &= (~u16EventPin) & 0xFFFF;
+        *EPOSRx &= (~(uint32_t)u16EventPin) & 0xFFFFul;
     }
 
     /* Rising edge detect setting */
@@ -194,7 +194,7 @@ en_result_t EVENTPORT_Init(en_event_port_t enEventPort, uint16_t u16EventPin,  \
     }
     else
     {
-        *EPRISRx &= (~u16EventPin) & 0xFFFF;
+        *EPRISRx &= (~(uint32_t)u16EventPin) & 0xFFFFul;
     }
 
     /* Falling edge detect setting */
@@ -204,7 +204,7 @@ en_result_t EVENTPORT_Init(en_event_port_t enEventPort, uint16_t u16EventPin,  \
     }
     else
     {
-        *EPFALx &= (~u16EventPin) & 0xFFFF;
+        *EPFALx &= (~(uint32_t)u16EventPin) & 0xFFFFul;
     }
 
     /* Noise filter setting */
@@ -213,22 +213,22 @@ en_result_t EVENTPORT_Init(en_event_port_t enEventPort, uint16_t u16EventPin,  \
         case EventPort1:
             M4_AOS->PEVNTNFCR_f.NFEN1 = pstcEventPortInit->enFilter;
             M4_AOS->PEVNTNFCR_f.DIVS1 = pstcEventPortInit->enFilterClk;
-        break;
+            break;
         case EventPort2:
             M4_AOS->PEVNTNFCR_f.NFEN2 = pstcEventPortInit->enFilter;
             M4_AOS->PEVNTNFCR_f.DIVS2 = pstcEventPortInit->enFilterClk;
-        break;
+            break;
         case EventPort3:
             M4_AOS->PEVNTNFCR_f.NFEN3 = pstcEventPortInit->enFilter;
             M4_AOS->PEVNTNFCR_f.DIVS3 = pstcEventPortInit->enFilterClk;
-        break;
+            break;
         case EventPort4:
             M4_AOS->PEVNTNFCR_f.NFEN4 = pstcEventPortInit->enFilter;
             M4_AOS->PEVNTNFCR_f.DIVS4 = pstcEventPortInit->enFilterClk;
-        break;
+            break;
         default:
             enRet = ErrorInvalidParameter;
-        break;
+            break;
     }
     return enRet;
 }
@@ -260,17 +260,17 @@ en_result_t EVENTPORT_DeInit(void)
     EPFALx = (uint32_t)(EP1_BASE + EP1_FAL_BASE);
 
     /* Restore all registers to default value */
-    M4_AOS->PORT_PEVNTTRGSR12 = 0x1FF;
-    M4_AOS->PORT_PEVNTTRGSR34 = 0x1FF;
-    M4_AOS->PEVNTNFCR = 0;
-    for (u8EPCnt = 0; u8EPCnt < 4; u8EPCnt++)
+    M4_AOS->PORT_PEVNTTRGSR12 = 0x1FFul;
+    M4_AOS->PORT_PEVNTTRGSR34 = 0x1FFul;
+    M4_AOS->PEVNTNFCR = 0ul;
+    for (u8EPCnt = 0u; u8EPCnt < 4u; u8EPCnt++)
     {
-        *(uint32_t *)(EPDIRx + 0x1C * u8EPCnt) = 0;
-        *(uint32_t *)(EPODRx + 0x1C * u8EPCnt) = 0;
-        *(uint32_t *)(EPORRx + 0x1C * u8EPCnt) = 0;
-        *(uint32_t *)(EPOSRx + 0x1C * u8EPCnt) = 0;
-        *(uint32_t *)(EPRISRx + 0x1C * u8EPCnt) = 0;
-        *(uint32_t *)(EPFALx + 0x1C * u8EPCnt) = 0;
+        *(uint32_t *)(EPDIRx + 0x1Cul * u8EPCnt) = 0ul;
+        *(uint32_t *)(EPODRx + 0x1Cul * u8EPCnt) = 0ul;
+        *(uint32_t *)(EPORRx + 0x1Cul * u8EPCnt) = 0ul;
+        *(uint32_t *)(EPOSRx + 0x1Cul * u8EPCnt) = 0ul;
+        *(uint32_t *)(EPRISRx + 0x1Cul * u8EPCnt) = 0ul;
+        *(uint32_t *)(EPFALx + 0x1Cul * u8EPCnt) = 0ul;
     }
     return Ok;
 }
@@ -284,22 +284,28 @@ en_result_t EVENTPORT_DeInit(void)
  ** \param   [in]  enTriggerSrc         Event port trigger source. This parameter
  **                                     can be any value of @ref en_event_src_t
  ** \retval  Ok                         Trigger source is set
+ **          ErrorInvalidParameter      Invalid event port enum
  **
  ******************************************************************************/
 en_result_t EVENTPORT_SetTriggerSrc(en_event_port_t enEventPort,               \
                                     en_event_src_t enTriggerSrc)
 {
+    en_result_t enRet = Ok;
     DDL_ASSERT(IS_VALID_EVENT_PORT(enEventPort));
 
-    if (EventPort1 == enEventPort || EventPort2 == enEventPort)
+    if ((EventPort1 == enEventPort) || (EventPort2 == enEventPort))
     {
         M4_AOS->PORT_PEVNTTRGSR12 = enTriggerSrc;
     }
-    else if (EventPort3 == enEventPort || EventPort4 == enEventPort)
+    else if ((EventPort3 == enEventPort) || (EventPort4 == enEventPort))
     {
         M4_AOS->PORT_PEVNTTRGSR34 = enTriggerSrc;
     }
-    return Ok;
+    else
+    {
+        enRet = ErrorInvalidParameter;
+    }
+    return enRet;
 }
 
 /**
@@ -307,29 +313,29 @@ en_result_t EVENTPORT_SetTriggerSrc(en_event_port_t enEventPort,               \
  ** \brief   Read Event Port value after be triggered
  **
  ** \param   [in]  enEventPort          Event port index, This parameter can be
- **                                     any value of @ref en_port_t
+ **                                     any value of @ref en_event_port_t
  **
  ** \retval  uint16_t                   The output port value
  **
  ******************************************************************************/
 uint16_t EVENTPORT_GetData(en_event_port_t enEventPort)
 {
-    uint16_t u16Data;
+    uint16_t u16Data = 0u;
     DDL_ASSERT(IS_VALID_EVENT_PORT(enEventPort));
     switch (enEventPort)
     {
         case EventPort1:
-            u16Data = (uint16_t)(M4_AOS->PEVNTIDR1 & 0xFFFF);
-        break;
+            u16Data = (uint16_t)(M4_AOS->PEVNTIDR1 & 0xFFFFul);
+            break;
         case EventPort2:
-            u16Data = (uint16_t)(M4_AOS->PEVNTIDR2 & 0xFFFF);
-        break;
+            u16Data = (uint16_t)(M4_AOS->PEVNTIDR2 & 0xFFFFul);
+            break;
         case EventPort3:
-            u16Data = (uint16_t)(M4_AOS->PEVNTIDR3 & 0xFFFF);
-        break;
+            u16Data = (uint16_t)(M4_AOS->PEVNTIDR3 & 0xFFFFul);
+            break;
         case EventPort4:
-            u16Data = (uint16_t)(M4_AOS->PEVNTIDR4 & 0xFFFF);
-        break;
+            u16Data = (uint16_t)(M4_AOS->PEVNTIDR4 & 0xFFFFul);
+            break;
     }
     return u16Data;
 }
@@ -347,24 +353,24 @@ uint16_t EVENTPORT_GetData(en_event_port_t enEventPort)
  ******************************************************************************/
 en_flag_status_t EVENTPORT_GetBit(en_event_port_t enEventPort, en_event_pin_t enEventPin)
 {
-    bool bBitValue;
+    bool bBitValue = false;
 
     switch (enEventPort)
     {
         case EventPort1:
             bBitValue = M4_AOS->PEVNTIDR1 & enEventPin;
-        break;
+            break;
         case EventPort2:
             bBitValue = M4_AOS->PEVNTIDR2 & enEventPin;
-        break;
+            break;
         case EventPort3:
             bBitValue = M4_AOS->PEVNTIDR3 & enEventPin;
-        break;
+            break;
         case EventPort4:
             bBitValue = M4_AOS->PEVNTIDR4 & enEventPin;
-        break;
+            break;
     }
-    return (en_flag_status_t)(!!bBitValue);
+    return (en_flag_status_t)(bool)((!!bBitValue));
 }
 
 /**
@@ -381,26 +387,28 @@ en_flag_status_t EVENTPORT_GetBit(en_event_port_t enEventPort, en_event_pin_t en
  ******************************************************************************/
 en_result_t EVENTPORT_SetBits(en_event_port_t enEventPort, en_event_pin_t u16EventPin)
 {
+    en_result_t enRet = Ok;
     DDL_ASSERT(IS_VALID_EVENT_PORT(enEventPort));
 
     switch (enEventPort)
     {
         case EventPort1:
             M4_AOS->PEVNTODR1 |= u16EventPin;
-        break;
+            break;
         case EventPort2:
             M4_AOS->PEVNTODR2 |= u16EventPin;
-        break;
+            break;
         case EventPort3:
             M4_AOS->PEVNTODR3 |= u16EventPin;
-        break;
+            break;
         case EventPort4:
             M4_AOS->PEVNTODR4 |= u16EventPin;
-        break;
+            break;
         default:
-            return ErrorInvalidParameter;
+            enRet = ErrorInvalidParameter;
+            break;
     }
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -417,26 +425,28 @@ en_result_t EVENTPORT_SetBits(en_event_port_t enEventPort, en_event_pin_t u16Eve
  ******************************************************************************/
 en_result_t EVENTPORT_ResetBits(en_event_port_t enEventPort, en_event_pin_t u16EventPin)
 {
+    en_result_t enRet = Ok;
     DDL_ASSERT(IS_VALID_EVENT_PORT(enEventPort));
 
     switch (enEventPort)
     {
         case EventPort1:
-            M4_AOS->PEVNTODR1 &= (~u16EventPin) & 0xFFFF;
-        break;
+            M4_AOS->PEVNTODR1 &= (~(uint32_t)u16EventPin) & 0xFFFFul;
+            break;
         case EventPort2:
-            M4_AOS->PEVNTODR2 &= (~u16EventPin) & 0xFFFF;
-        break;
+            M4_AOS->PEVNTODR2 &= (~(uint32_t)u16EventPin) & 0xFFFFul;
+            break;
         case EventPort3:
-            M4_AOS->PEVNTODR3 &= (~u16EventPin) & 0xFFFF;
-        break;
+            M4_AOS->PEVNTODR3 &= (~(uint32_t)u16EventPin) & 0xFFFFul;
+            break;
         case EventPort4:
-            M4_AOS->PEVNTODR4 &= (~u16EventPin) & 0xFFFF;
-        break;
+            M4_AOS->PEVNTODR4 &= (~(uint32_t)u16EventPin) & 0xFFFFul;
+            break;
         default:
-            return ErrorInvalidParameter;
+            enRet = ErrorInvalidParameter;
+            break;
     }
-    return Ok;
+    return enRet;
 }
 
 //@} // EventPortGroup

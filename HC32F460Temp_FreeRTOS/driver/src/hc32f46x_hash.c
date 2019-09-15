@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -74,18 +74,6 @@
 #define HASH_GROUP_LEN                      (64u)
 #define LAST_GROUP_MAX_LEN                  (56u)
 
-/* Set first/continuous group. */
-#define HASH_SET_FIRST_GROUP()              M4_HASH->CR_f.FST_GRP = 1u
-#define HASH_SET_CONTINUOUS_GROUP()         M4_HASH->CR_f.FST_GRP = 0u
-
-/* Start/stop HASH. */
-#define HASH_START_CALCULATING()            M4_HASH->CR_f.START   = 1u
-#define HASH_STOP_CALCULATING()             M4_HASH->CR_f.START   = 0u
-
-/* Check HASH. */
-#define IS_HASH_CALCULATING()               M4_HASH->CR_f.START   == 1u
-#define IS_HASH_CALCULATED_DONE()           M4_HASH->CR_f.START   == 0u
-
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
  ******************************************************************************/
@@ -115,7 +103,7 @@ static void HASH_GetMsgDigest(uint8_t *pu8MsgDigest);
 void HASH_Init(void)
 {
     /* Stop hash calculating */
-    HASH_STOP_CALCULATING();
+    bM4_HASH_CR_START = 0u;
 }
 
 /**
@@ -130,8 +118,9 @@ void HASH_Init(void)
 void HASH_DeInit(void)
 {
     /* Stop hash calculating */
-    HASH_STOP_CALCULATING();
+    bM4_HASH_CR_START = 0u;
 
+    /* Reset register CR. */
     M4_HASH->CR = 0u;
 }
 
@@ -159,116 +148,121 @@ en_result_t HASH_Start(const uint8_t *pu8SrcData,
                        uint8_t *pu8MsgDigest,
                        uint32_t u32Timeout)
 {
-    en_result_t   enRet;
+    en_result_t   enRet = ErrorInvalidParameter;
     uint8_t       u8FillBuffer[HASH_GROUP_LEN];
     uint8_t       u8FillCount   = 0u;
     uint8_t       u8FirstGroup  = 0u;
     uint32_t      u32GroupCount = 0u;
+    uint32_t      u32Index;
     uint32_t      u32BitLenHi;
     uint32_t      u32BitLenLo;
-    uint32_t      u32TimeCount;
     uint32_t      u32HashTimeout;
+    __IO uint32_t u32TimeCount;
 
-    if ((NULL == pu8SrcData)    ||
-        (0u == u32SrcDataSize)  ||
-        (NULL == pu8MsgDigest)  ||
-        (0u == u32Timeout))
+    if ((NULL != pu8SrcData)    &&
+        (0u != u32SrcDataSize)  &&
+        (NULL != pu8MsgDigest)  &&
+        (0u != u32Timeout))
     {
-        return ErrorInvalidParameter;
-    }
+        /* 10 is the number of required instructions cycles for the below loop statement. */
+        u32HashTimeout = u32Timeout * (SystemCoreClock / 10u / 1000u);
+        u32BitLenHi    = (u32SrcDataSize >> 29u) & 0x7u;
+        u32BitLenLo    = (u32SrcDataSize << 3u);
 
-    /* 10 is the number of required instructions cycles for the below loop statement. */
-    u32HashTimeout = u32Timeout * (SystemCoreClock / 10u / 1000u);
-    u32BitLenHi    = (u32SrcDataSize >> 29u) & 0x7u;
-    u32BitLenLo    = (u32SrcDataSize << 3u);
-
-    while (0u != u32SrcDataSize)
-    {
-        HASH_STOP_CALCULATING();
-
-        if (u32SrcDataSize >= HASH_GROUP_LEN)
+        while (0u != u32SrcDataSize)
         {
-            HASH_WriteData(&pu8SrcData[u32GroupCount*HASH_GROUP_LEN]);
-            u32GroupCount++;
-            u32SrcDataSize -= HASH_GROUP_LEN;
-        }
-        else
-        {
-            memset(u8FillBuffer, 0u, HASH_GROUP_LEN);
+            /* Stop hash calculating. */
+            bM4_HASH_CR_START = 0u;
 
-            if (u32SrcDataSize >= LAST_GROUP_MAX_LEN)
+            u32Index = u32GroupCount * HASH_GROUP_LEN;
+            if (u32SrcDataSize >= HASH_GROUP_LEN)
             {
-                if (u8FillCount == 0u)
-                {
-                    memcpy(u8FillBuffer, &pu8SrcData[u32GroupCount*HASH_GROUP_LEN], u32SrcDataSize);
-                    u8FillBuffer[u32SrcDataSize] = 0x80u;
-                    u8FillCount = 1u;
-                }
-                else
-                {
-                    u32SrcDataSize = 0u;
-                }
+                HASH_WriteData(&pu8SrcData[u32Index]);
+                u32GroupCount++;
+                u32SrcDataSize -= HASH_GROUP_LEN;
             }
             else
             {
-                memcpy(u8FillBuffer, &pu8SrcData[u32GroupCount*HASH_GROUP_LEN], u32SrcDataSize);
-                u8FillBuffer[u32SrcDataSize] = 0x80u;
-                u32SrcDataSize = 0u;
+                memset(u8FillBuffer, 0, HASH_GROUP_LEN);
+
+                if (u32SrcDataSize >= LAST_GROUP_MAX_LEN)
+                {
+                    if (u8FillCount == 0u)
+                    {
+                        memcpy(u8FillBuffer, &pu8SrcData[u32Index], u32SrcDataSize);
+                        u8FillBuffer[u32SrcDataSize] = 0x80u;
+                        u8FillCount = 1u;
+                    }
+                    else
+                    {
+                        u32SrcDataSize = 0u;
+                    }
+                }
+                else
+                {
+                    memcpy(u8FillBuffer, &pu8SrcData[u32Index], u32SrcDataSize);
+                    u8FillBuffer[u32SrcDataSize] = 0x80u;
+                    u32SrcDataSize = 0u;
+                }
+
+                if (0u == u32SrcDataSize)
+                {
+                    u8FillBuffer[63u] = (uint8_t)(u32BitLenLo);
+                    u8FillBuffer[62u] = (uint8_t)(u32BitLenLo >> 8u);
+                    u8FillBuffer[61u] = (uint8_t)(u32BitLenLo >> 16u);
+                    u8FillBuffer[60u] = (uint8_t)(u32BitLenLo >> 24u);
+                    u8FillBuffer[59u] = (uint8_t)(u32BitLenHi);
+                    u8FillBuffer[58u] = (uint8_t)(u32BitLenHi >> 8u);
+                    u8FillBuffer[57u] = (uint8_t)(u32BitLenHi >> 16u);
+                    u8FillBuffer[56u] = (uint8_t)(u32BitLenHi >> 24u);
+                }
+
+                HASH_WriteData(u8FillBuffer);
             }
 
-            if (0u == u32SrcDataSize)
+            /* check if first group */
+            if (0u == u8FirstGroup)
             {
-                u8FillBuffer[63u] = (uint8_t)(u32BitLenLo);
-                u8FillBuffer[62u] = (uint8_t)(u32BitLenLo >> 8u);
-                u8FillBuffer[61u] = (uint8_t)(u32BitLenLo >> 16u);
-                u8FillBuffer[60u] = (uint8_t)(u32BitLenLo >> 24u);
-                u8FillBuffer[59u] = (uint8_t)(u32BitLenHi);
-                u8FillBuffer[58u] = (uint8_t)(u32BitLenHi >> 8u);
-                u8FillBuffer[57u] = (uint8_t)(u32BitLenHi >> 16u);
-                u8FillBuffer[56u] = (uint8_t)(u32BitLenHi >> 24u);
+                u8FirstGroup = 1u;
+                /* Set first group. */
+                bM4_HASH_CR_FST_GRP = 1u;
+            }
+            else
+            {
+                /* Set continuous group. */
+                bM4_HASH_CR_FST_GRP = 0u;
             }
 
-            HASH_WriteData(u8FillBuffer);
-        }
+            /* Start hash calculating. */
+            bM4_HASH_CR_START = 1u;
 
-        /* check if first group */
-        if (0u == u8FirstGroup)
-        {
-            u8FirstGroup = 1u;
-            HASH_SET_FIRST_GROUP();
-        }
-        else
-        {
-            HASH_SET_CONTINUOUS_GROUP();
-        }
-
-        HASH_START_CALCULATING();
-
-        u32TimeCount = 0u;
-        enRet = ErrorTimeout;
-        while (u32TimeCount < u32HashTimeout)
-        {
-            if (IS_HASH_CALCULATED_DONE())
+            u32TimeCount = 0u;
+            enRet = ErrorTimeout;
+            while (u32TimeCount < u32HashTimeout)
             {
-                enRet = Ok;
+                if (bM4_HASH_CR_START == 0u)
+                {
+                    enRet = Ok;
+                    break;
+                }
+                u32TimeCount++;
+            }
+
+            if (ErrorTimeout == enRet)
+            {
                 break;
             }
-            u32TimeCount++;
         }
 
-        if (ErrorTimeout == enRet)
+        if (Ok == enRet)
         {
-            break;
+            /* HASH calculated done */
+            HASH_GetMsgDigest(pu8MsgDigest);
         }
-    }
 
-    if (Ok == enRet)
-    {
-        /* HASH calculated done */
-        HASH_GetMsgDigest(pu8MsgDigest);
+        /* Stop hash calculating. */
+        bM4_HASH_CR_START = 0u;
     }
-
-    HASH_STOP_CALCULATING();
 
     return enRet;
 }
@@ -287,15 +281,15 @@ en_result_t HASH_Start(const uint8_t *pu8SrcData,
  ******************************************************************************/
 static void HASH_WriteData(const uint8_t *pu8SrcData)
 {
-    uint8_t         i;
-    uint8_t         j;
-    uint32_t        u32Temp;
-    __IO uint32_t   *io32HashDr = &(M4_HASH->DR15);
+    uint8_t       i;
+    uint8_t       j;
+    uint32_t      u32Temp;
+    __IO uint32_t *io32HashDr = &(M4_HASH->DR15);
 
     for (i = 0u; i < 16u; i++)
     {
         j = i * 4u + 3u;
-        u32Temp = (uint32_t)pu8SrcData[j];
+        u32Temp  = (uint32_t)pu8SrcData[j];
         u32Temp |= ((uint32_t)pu8SrcData[j-1u]) << 8u;
         u32Temp |= ((uint32_t)pu8SrcData[j-2u]) << 16u;
         u32Temp |= ((uint32_t)pu8SrcData[j-3u]) << 24u;
@@ -316,10 +310,10 @@ static void HASH_WriteData(const uint8_t *pu8SrcData)
  ******************************************************************************/
 static void HASH_GetMsgDigest(uint8_t *pu8MsgDigest)
 {
-    uint8_t         i;
-    uint8_t         j;
-    uint32_t        u32Temp;
-    __IO uint32_t   *io32HashHr = &(M4_HASH->HR7);
+    uint8_t       i;
+    uint8_t       j;
+    uint32_t      u32Temp;
+    __IO uint32_t *io32HashHr = &(M4_HASH->HR7);
 
     for (i = 0u; i < 8u; i++)
     {

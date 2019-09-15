@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -204,26 +204,61 @@ typedef enum en_int
     Int31               =   1u << 31,
 }en_int_t;
 
+
+/*! Bit mask definition*/
+#define     BIT_MASK_00                 (1ul << 0)
+#define     BIT_MASK_01                 (1ul << 1)
+#define     BIT_MASK_02                 (1ul << 2)
+#define     BIT_MASK_03                 (1ul << 3)
+#define     BIT_MASK_04                 (1ul << 4)
+#define     BIT_MASK_05                 (1ul << 5)
+#define     BIT_MASK_06                 (1ul << 6)
+#define     BIT_MASK_07                 (1ul << 7)
+#define     BIT_MASK_08                 (1ul << 8)
+#define     BIT_MASK_09                 (1ul << 9)
+#define     BIT_MASK_10                 (1ul << 10)
+#define     BIT_MASK_11                 (1ul << 11)
+#define     BIT_MASK_12                 (1ul << 12)
+#define     BIT_MASK_13                 (1ul << 13)
+#define     BIT_MASK_14                 (1ul << 14)
+#define     BIT_MASK_15                 (1ul << 15)
+#define     BIT_MASK_16                 (1ul << 16)
+#define     BIT_MASK_17                 (1ul << 17)
+#define     BIT_MASK_18                 (1ul << 18)
+#define     BIT_MASK_19                 (1ul << 19)
+#define     BIT_MASK_20                 (1ul << 20)
+#define     BIT_MASK_21                 (1ul << 21)
+#define     BIT_MASK_22                 (1ul << 22)
+#define     BIT_MASK_23                 (1ul << 23)
+#define     BIT_MASK_24                 (1ul << 24)
+#define     BIT_MASK_25                 (1ul << 25)
+#define     BIT_MASK_26                 (1ul << 26)
+#define     BIT_MASK_27                 (1ul << 27)
+#define     BIT_MASK_28                 (1ul << 28)
+#define     BIT_MASK_29                 (1ul << 29)
+#define     BIT_MASK_30                 (1ul << 30)
+#define     BIT_MASK_31                 (1ul << 31)
+
 /*! Default Priority for IRQ, Possible values are 0 (high priority) to 15 (low priority) */
 #define     DDL_IRQ_PRIORITY_DEFAULT    15u
 
 /*! Interrupt priority level 00 ~ 15*/
-#define     DDL_IRQ_PRIORITY_00          0u
-#define     DDL_IRQ_PRIORITY_01          1u
-#define     DDL_IRQ_PRIORITY_02          2u
-#define     DDL_IRQ_PRIORITY_03          3u
-#define     DDL_IRQ_PRIORITY_04          4u
-#define     DDL_IRQ_PRIORITY_05          5u
-#define     DDL_IRQ_PRIORITY_06          6u
-#define     DDL_IRQ_PRIORITY_07          7u
-#define     DDL_IRQ_PRIORITY_08          8u
-#define     DDL_IRQ_PRIORITY_09          9u
-#define     DDL_IRQ_PRIORITY_10         10u
-#define     DDL_IRQ_PRIORITY_11         11u
-#define     DDL_IRQ_PRIORITY_12         12u
-#define     DDL_IRQ_PRIORITY_13         13u
-#define     DDL_IRQ_PRIORITY_14         14u
-#define     DDL_IRQ_PRIORITY_15         15u
+#define     DDL_IRQ_PRIORITY_00         (0u)
+#define     DDL_IRQ_PRIORITY_01         (1u)
+#define     DDL_IRQ_PRIORITY_02         (2u)
+#define     DDL_IRQ_PRIORITY_03         (3u)
+#define     DDL_IRQ_PRIORITY_04         (4u)
+#define     DDL_IRQ_PRIORITY_05         (5u)
+#define     DDL_IRQ_PRIORITY_06         (6u)
+#define     DDL_IRQ_PRIORITY_07         (7u)
+#define     DDL_IRQ_PRIORITY_08         (8u)
+#define     DDL_IRQ_PRIORITY_09         (9u)
+#define     DDL_IRQ_PRIORITY_10         (10u)
+#define     DDL_IRQ_PRIORITY_11         (11u)
+#define     DDL_IRQ_PRIORITY_12         (12u)
+#define     DDL_IRQ_PRIORITY_13         (13u)
+#define     DDL_IRQ_PRIORITY_14         (14u)
+#define     DDL_IRQ_PRIORITY_15         (15u)
 
 /**
  *******************************************************************************
@@ -232,13 +267,14 @@ typedef enum en_int
  ******************************************************************************/
 __STATIC_INLINE void AOS_SW_Trigger(void)
 {
-    bM4_AOS_INT_SFTTRG_STRG = 1;
+    bM4_AOS_INT_SFTTRG_STRG = 1u;
 }
 
 /*******************************************************************************
  * Global variable definitions ('extern')
  ******************************************************************************/
 extern en_result_t enIrqRegistration(const stc_irq_regi_conf_t *pstcIrqRegiConf);
+extern en_result_t enIrqResign(IRQn_Type enIRQn);
 extern en_result_t enShareIrqEnable(en_int_src_t enIntSrc);
 extern en_result_t enShareIrqDisable(en_int_src_t enIntSrc);
 extern en_result_t enIntWakeupEnable(uint32_t u32WakeupSrc);
@@ -297,7 +333,7 @@ __WEAKDEF void Dma2Btc3_IrqHandler(void);
 __WEAKDEF void Dma1Err_IrqHandler(void);
 __WEAKDEF void Dma2Err_IrqHandler(void);
 
-__WEAKDEF void EfmPageEraseErr_IrqHandler(void);
+__WEAKDEF void EfmPgmEraseErr_IrqHandler(void);
 __WEAKDEF void EfmColErr_IrqHandler(void);
 __WEAKDEF void EfmOpEnd_IrqHandler(void);
 __WEAKDEF void QspiInt_IrqHandler(void);
@@ -310,9 +346,6 @@ __WEAKDEF void Timer01GCMA_IrqHandler(void);
 __WEAKDEF void Timer01GCMB_IrqHandler(void);
 __WEAKDEF void Timer02GCMA_IrqHandler(void);
 __WEAKDEF void Timer02GCMB_IrqHandler(void);
-
-__WEAKDEF void RtcAlarm_IrqHandler(void);
-__WEAKDEF void RtcPeriod_IrqHandler(void);
 
 __WEAKDEF void MainOscStop_IrqHandler(void);
 __WEAKDEF void WakeupTimer_IrqHandler(void);
@@ -447,10 +480,10 @@ __WEAKDEF void Timer43ReloadU_IrqHandler(void);
 __WEAKDEF void Timer43ReloadV_IrqHandler(void);
 __WEAKDEF void Timer43ReloadW_IrqHandler(void);
 
-__WEAKDEF void Emb0_IrqHandler(void);
 __WEAKDEF void Emb1_IrqHandler(void);
 __WEAKDEF void Emb2_IrqHandler(void);
 __WEAKDEF void Emb3_IrqHandler(void);
+__WEAKDEF void Emb4_IrqHandler(void);
 
 __WEAKDEF void I2s1Tx_IrqHandler(void);
 __WEAKDEF void I2s1Rx_IrqHandler(void);

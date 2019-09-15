@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -70,20 +70,27 @@
 /*******************************************************************************
  * Local pre-processor symbols/macros ('#define')
  ******************************************************************************/
-#define DMACH0                              0x01
-#define DMACH1                              0x02
-#define DMACH2                              0x04
-#define DMACH3                              0x08
+#define DMA_CNT                             (10u)
+#define DMA_IDLE                            (0u)
+#define DMA_BUSY                            (1u)
 
-#define DMA_CHCTL_DEFAULT                   0x00001000
-#define DMA_DTCTL_DEFAULT                   0x00000001
-#define DMA_DAR_DEFAULT                     0x00000000
-#define DMA_SAR_DEFAULT                     0x00000000
-#define DMA_RPT_DEFAULT                     0x00000000
-#define DMA_LLP_DEFAULT                     0x00000000
-#define DMA_SNSEQCTL_DEFAULT                0x00000000
-#define DMA_DNSEQCTL_DEFAULT                0x00000000
-#define DMA_RCFGCTL_DEFAULT                 0x00000000
+#define DMACH0                              (0x01u)
+#define DMACH1                              (0x02u)
+#define DMACH2                              (0x04u)
+#define DMACH3                              (0x08u)
+
+#define DMATIMEOUT1                         (0x5000u)
+#define DMATIMEOUT2                         (0x1000u)
+
+#define DMA_CHCTL_DEFAULT                   (0x00001000ul)
+#define DMA_DTCTL_DEFAULT                   (0x00000001ul)
+#define DMA_DAR_DEFAULT                     (0x00000000ul)
+#define DMA_SAR_DEFAULT                     (0x00000000ul)
+#define DMA_RPT_DEFAULT                     (0x00000000ul)
+#define DMA_LLP_DEFAULT                     (0x00000000ul)
+#define DMA_SNSEQCTL_DEFAULT                (0x00000000ul)
+#define DMA_DNSEQCTL_DEFAULT                (0x00000000ul)
+#define DMA_RCFGCTL_DEFAULT                 (0x00000000ul)
 
 /*****************  Bits definition for DMA_INTSTAT0 register  ****************/
 #define DMA_INTSTAT0_TRNERR_Pos             (0U)                                /*!< DMA_INTSTAT0: TRNERR Position */
@@ -113,129 +120,129 @@
 #define DMA_CHEN_CHEN_Pos                   (0U)                                /*!< DMA_CHEN: CHEN Position */
 
 /**************  Bits definition for DMA_DTCTLx(x=0~3) register  **************/
-#define DMA_DTCTL_BLKSIZE_Pos               (0U)                                /*!< DMA_DTCTLx: BLKSIZE Position */
-#define DMA_DTCTL_BLKSIZE_Msk               (0x3FFU << DMA_DTCTL_BLKSIZE_Pos)   /*!< DMA_DTCTLx: BLKSIZE Mask 0x000003FF */
-#define DMA_DTCTL_BLKSIZE                   DMA_DTCTL_BLKSIZE_Msk
+#define DMA_DTCTL_BLKSIZE_Pos               (0ul)                                /*!< DMA_DTCTLx: BLKSIZE Position */
+#define DMA_DTCTL_BLKSIZE_Msk               (0x3FFul << DMA_DTCTL_BLKSIZE_Pos)   /*!< DMA_DTCTLx: BLKSIZE Mask 0x000003FF */
+#define DMA_DTCTL_BLKSIZE                   (DMA_DTCTL_BLKSIZE_Msk)
 
-#define DMA_DTCTL_CNT_Pos                   (16U)                               /*!< DMA_DTCTLx: CNT Position */
-#define DMA_DTCTL_CNT_Msk                   (0xFFFFU << DMA_DTCTL_CNT_Pos)      /*!< DMA_DTCTLx: CNT Mask 0xFFFF0000 */
-#define DMA_DTCTL_CNT                       DMA_DTCTL_CNT_Msk
+#define DMA_DTCTL_CNT_Pos                   (16ul)                               /*!< DMA_DTCTLx: CNT Position */
+#define DMA_DTCTL_CNT_Msk                   (0xFFFFul << DMA_DTCTL_CNT_Pos)      /*!< DMA_DTCTLx: CNT Mask 0xFFFF0000 */
+#define DMA_DTCTL_CNT                       (DMA_DTCTL_CNT_Msk)
 
 /***************  Bits definition for DMA_RPTx(x=0~3) register  ***************/
-#define DMA_RPT_SRPT_Pos                    (0U)                                /*!< DMA_RPTx: SRPT Position */
-#define DMA_RPT_SRPT_Msk                    (0x3FFU << DMA_RPT_SRPT_Pos)        /*!< DMA_RPTx: SRPT Mask 0x000003FF */
-#define DMA_RPT_SRPT                        DMA_RPT_SRPT_Msk
+#define DMA_RPT_SRPT_Pos                    (0ul)                                /*!< DMA_RPTx: SRPT Position */
+#define DMA_RPT_SRPT_Msk                    (0x3FFul << DMA_RPT_SRPT_Pos)        /*!< DMA_RPTx: SRPT Mask 0x000003FF */
+#define DMA_RPT_SRPT                        (DMA_RPT_SRPT_Msk)
 
-#define DMA_RPT_DRPT_Pos                    (16U)                               /*!< DMA_RPTx: DRPT Position */
-#define DMA_RPT_DRPT_Msk                    (0x3FFU << DMA_RPT_DRPT_Pos)        /*!< DMA_RPTx: DRPT Mask 0x03FF0000 */
-#define DMA_RPT_DRPT                        DMA_RPT_DRPT_Msk
+#define DMA_RPT_DRPT_Pos                    (16ul)                               /*!< DMA_RPTx: DRPT Position */
+#define DMA_RPT_DRPT_Msk                    (0x3FFul << DMA_RPT_DRPT_Pos)        /*!< DMA_RPTx: DRPT Mask 0x03FF0000 */
+#define DMA_RPT_DRPT                        (DMA_RPT_DRPT_Msk)
 
 /***************  Bits definition for DMA_RPTBx(x=0~3) register  ***************/
-#define DMA_RPTB_SRPTB_Pos                  (0U)                                /*!< DMA_RPTBx: SRPTB Position */
-#define DMA_RPTB_SRPTB_Msk                  (0x3FFU << DMA_RPTB_SRPTB_Pos)      /*!< DMA_RPTBx: SRPTB Mask 0x000003FF */
-#define DMA_RPTB_SRPTB                      DMA_RPTB_SRPTB_Msk
+#define DMA_RPTB_SRPTB_Pos                  (0ul)                                /*!< DMA_RPTBx: SRPTB Position */
+#define DMA_RPTB_SRPTB_Msk                  (0x3FFul << DMA_RPTB_SRPTB_Pos)      /*!< DMA_RPTBx: SRPTB Mask 0x000003FF */
+#define DMA_RPTB_SRPTB                      (DMA_RPTB_SRPTB_Msk)
 
-#define DMA_RPTB_DRPTB_Pos                  (16U)                               /*!< DMA_RPTBx: DRPTB Position */
-#define DMA_RPTB_DRPTB_Msk                  (0x3FFU << DMA_RPTB_DRPTB_Pos)      /*!< DMA_RPTBx: DRPTB Mask 0x03FF0000 */
-#define DMA_RPTB_DRPTB                      DMA_RPTB_DRPTB_Msk
+#define DMA_RPTB_DRPTB_Pos                  (16ul)                               /*!< DMA_RPTBx: DRPTB Position */
+#define DMA_RPTB_DRPTB_Msk                  (0x3FFul << DMA_RPTB_DRPTB_Pos)      /*!< DMA_RPTBx: DRPTB Mask 0x03FF0000 */
+#define DMA_RPTB_DRPTB                      (DMA_RPTB_DRPTB_Msk)
 
 /*************  Bits definition for DMA_SNSEQCTLx(x=0~3) register  ************/
-#define DMA_SNSEQCTL_SOFFSET_Pos            (0U)                                /*!< DMA_SNSEQCTLx: SOFFSET Position */
-#define DMA_SNSEQCTL_SOFFSET_Msk            (0xFFFFFU << DMA_SNSEQCTL_SOFFSET_Pos)      /*!< DMA_SNSEQCTLx: SOFFSET Mask 0x000FFFFF */
-#define DMA_SNSEQCTL_SOFFSET                DMA_SNSEQCTL_SOFFSET_Msk
+#define DMA_SNSEQCTL_SOFFSET_Pos            (0ul)                                /*!< DMA_SNSEQCTLx: SOFFSET Position */
+#define DMA_SNSEQCTL_SOFFSET_Msk            (0xFFFFFul << DMA_SNSEQCTL_SOFFSET_Pos)      /*!< DMA_SNSEQCTLx: SOFFSET Mask 0x000FFFFF */
+#define DMA_SNSEQCTL_SOFFSET                (DMA_SNSEQCTL_SOFFSET_Msk)
 
-#define DMA_SNSEQCTL_SNSCNT_Pos             (20U)                               /*!< DMA_SNSEQCTLx: SNSCNT Position */
-#define DMA_SNSEQCTL_SNSCNT_Msk             (0xFFFU << DMA_SNSEQCTL_SNSCNT_Pos)         /*!< DMA_SNSEQCTLx: SNSCNT Mask 0xFFF00000 */
-#define DMA_SNSEQCTL_SNSCNT                 DMA_SNSEQCTL_SNSCNT_Msk
+#define DMA_SNSEQCTL_SNSCNT_Pos             (20ul)                               /*!< DMA_SNSEQCTLx: SNSCNT Position */
+#define DMA_SNSEQCTL_SNSCNT_Msk             (0xFFFul << DMA_SNSEQCTL_SNSCNT_Pos)         /*!< DMA_SNSEQCTLx: SNSCNT Mask 0xFFF00000 */
+#define DMA_SNSEQCTL_SNSCNT                 (DMA_SNSEQCTL_SNSCNT_Msk)
 
 /*************  Bits definition for DMA_SNSEQCTLBx(x=0~3) register  ************/
-#define DMA_SNSEQCTLB_SNSDIST_Pos           (0U)                                /*!< DMA_SNSEQCTLBx: SNSDIST Position */
-#define DMA_SNSEQCTLB_SNSDIST_Msk           (0xFFFFFU << DMA_SNSEQCTLB_SNSDIST_Pos)     /*!< DMA_SNSEQCTLBx: SNSDIST Mask 0x000FFFFF */
-#define DMA_SNSEQCTLB_SNSDIST               DMA_SNSEQCTLB_SNSDIST_Msk
+#define DMA_SNSEQCTLB_SNSDIST_Pos           (0ul)                                /*!< DMA_SNSEQCTLBx: SNSDIST Position */
+#define DMA_SNSEQCTLB_SNSDIST_Msk           (0xFFFFFul << DMA_SNSEQCTLB_SNSDIST_Pos)     /*!< DMA_SNSEQCTLBx: SNSDIST Mask 0x000FFFFF */
+#define DMA_SNSEQCTLB_SNSDIST               (DMA_SNSEQCTLB_SNSDIST_Msk)
 
-#define DMA_SNSEQCTLB_SNSCNTB_Pos           (20U)                               /*!< DMA_SNSEQCTLBx: SNSCNTB Position */
-#define DMA_SNSEQCTLB_SNSCNTB_Msk           (0xFFFU << DMA_SNSEQCTLB_SNSCNTB_Pos)       /*!< DMA_SNSEQCTLBx: SNSCNTB Mask 0xFFF00000 */
-#define DMA_SNSEQCTLB_SNSCNTB               DMA_SNSEQCTLB_SNSCNTB_Msk
-
-/*************  Bits definition for DMA_DNSEQCTLx(x=0~3) register  ************/
-#define DMA_DNSEQCTL_DOFFSET_Pos            (0U)                                /*!< DMA_DNSEQCTLx: DOFFSET Position */
-#define DMA_DNSEQCTL_DOFFSET_Msk            (0xFFFFFU << DMA_DNSEQCTL_DOFFSET_Pos)      /*!< DMA_DNSEQCTLx: DOFFSET Mask 0x000FFFFF */
-#define DMA_DNSEQCTL_DOFFSET                DMA_DNSEQCTL_DOFFSET_Msk
-
-#define DMA_DNSEQCTL_DNSCNT_Pos             (20U)                               /*!< DMA_DNSEQCTLx: DNSCNT Position */
-#define DMA_DNSEQCTL_DNSCNT_Msk             (0xFFFU << DMA_DNSEQCTL_DNSCNT_Pos)         /*!< DMA_DNSEQCTLx: DNSCNT Mask 0xFFF00000 */
-#define DMA_DNSEQCTL_DNSCNT                 DMA_DNSEQCTL_DNSCNT_Msk
+#define DMA_SNSEQCTLB_SNSCNTB_Pos           (20ul)                               /*!< DMA_SNSEQCTLBx: SNSCNTB Position */
+#define DMA_SNSEQCTLB_SNSCNTB_Msk           (0xFFFul << DMA_SNSEQCTLB_SNSCNTB_Pos)       /*!< DMA_SNSEQCTLBx: SNSCNTB Mask 0xFFF00000 */
+#define DMA_SNSEQCTLB_SNSCNTB               (DMA_SNSEQCTLB_SNSCNTB_Msk)
 
 /*************  Bits definition for DMA_DNSEQCTLx(x=0~3) register  ************/
-#define DMA_DNSEQCTLB_DNSDIST_Pos           (0U)                                /*!< DMA_DNSEQCTLBx: DNSDIST Position */
-#define DMA_DNSEQCTLB_DNSDIST_Msk           (0xFFFFFU << DMA_DNSEQCTLB_DNSDIST_Pos)      /*!< DMA_DNSEQCTLBx: DNSDIST Mask 0x000FFFFF */
-#define DMA_DNSEQCTLB_DNSDIST               DMA_DNSEQCTLB_DNSDIST_Msk
+#define DMA_DNSEQCTL_DOFFSET_Pos            (0ul)                                /*!< DMA_DNSEQCTLx: DOFFSET Position */
+#define DMA_DNSEQCTL_DOFFSET_Msk            (0xFFFFFul << DMA_DNSEQCTL_DOFFSET_Pos)      /*!< DMA_DNSEQCTLx: DOFFSET Mask 0x000FFFFF */
+#define DMA_DNSEQCTL_DOFFSET                (DMA_DNSEQCTL_DOFFSET_Msk)
 
-#define DMA_DNSEQCTLB_DNSCNTB_Pos           (20U)                               /*!< DMA_DNSEQCTLBx: DNSCNTB Position */
-#define DMA_DNSEQCTLB_DNSCNTB_Msk           (0xFFFU << DMA_DNSEQCTLB_DNSCNTB_Pos)         /*!< DMA_DNSEQCTLBx: DNSCNTB Mask 0xFFF00000 */
-#define DMA_DNSEQCTLB_DNSCNTB               DMA_DNSEQCTLB_DNSCNTB_Msk
+#define DMA_DNSEQCTL_DNSCNT_Pos             (20ul)                               /*!< DMA_DNSEQCTLx: DNSCNT Position */
+#define DMA_DNSEQCTL_DNSCNT_Msk             (0xFFFul << DMA_DNSEQCTL_DNSCNT_Pos)         /*!< DMA_DNSEQCTLx: DNSCNT Mask 0xFFF00000 */
+#define DMA_DNSEQCTL_DNSCNT                 (DMA_DNSEQCTL_DNSCNT_Msk)
+
+/*************  Bits definition for DMA_DNSEQCTLx(x=0~3) register  ************/
+#define DMA_DNSEQCTLB_DNSDIST_Pos           (0ul)                                /*!< DMA_DNSEQCTLBx: DNSDIST Position */
+#define DMA_DNSEQCTLB_DNSDIST_Msk           (0xFFFFFul << DMA_DNSEQCTLB_DNSDIST_Pos)      /*!< DMA_DNSEQCTLBx: DNSDIST Mask 0x000FFFFF */
+#define DMA_DNSEQCTLB_DNSDIST               (DMA_DNSEQCTLB_DNSDIST_Msk)
+
+#define DMA_DNSEQCTLB_DNSCNTB_Pos           (20ul)                               /*!< DMA_DNSEQCTLBx: DNSCNTB Position */
+#define DMA_DNSEQCTLB_DNSCNTB_Msk           (0xFFFul << DMA_DNSEQCTLB_DNSCNTB_Pos)         /*!< DMA_DNSEQCTLBx: DNSCNTB Mask 0xFFF00000 */
+#define DMA_DNSEQCTLB_DNSCNTB               (DMA_DNSEQCTLB_DNSCNTB_Msk)
 
 /****************  Bits definition for DMA_LLPx(x=0~7) register  **************/
-#define DMA_LLP_LLP_Pos                     (2U)                                /*!< DMA_LLPx: LLP Position */
-#define DMA_LLP_LLP_Msk                     (0x3FFFFFFFU << DMA_LLP_LLP_Pos)    /*!< DMA_LLPx: LLP Mask 0xFFFFFFC */
-#define DMA_LLP_LLP                         DMA_LLP_LLP_Msk
+#define DMA_LLP_LLP_Pos                     (2ul)                                /*!< DMA_LLPx: LLP Position */
+#define DMA_LLP_LLP_Msk                     (0x3FFFFFFFul << DMA_LLP_LLP_Pos)    /*!< DMA_LLPx: LLP Mask 0xFFFFFFC */
+#define DMA_LLP_LLP                         (DMA_LLP_LLP_Msk)
 
 /***************  Bits definition for DMA_CHxCTL(x=0~3) register  *************/
-#define DMA_CHCTL_SINC_Pos                  (0U)                                /*!< DMA_CHxCTL: SINC Position */
-#define DMA_CHCTL_SINC_Msk                  (0x3u << DMA_CHCTL_SINC_Pos)        /*!< DMA_CHxCTL: SINC Mask 0x00000003 */
-#define DMA_CHCTL_SINC                      DMA_CHCTL_SINC_Msk
+#define DMA_CHCTL_SINC_Pos                  (0ul)                                /*!< DMA_CHxCTL: SINC Position */
+#define DMA_CHCTL_SINC_Msk                  (0x3ul << DMA_CHCTL_SINC_Pos)        /*!< DMA_CHxCTL: SINC Mask 0x00000003 */
+#define DMA_CHCTL_SINC                      (DMA_CHCTL_SINC_Msk)
 
-#define DMA_CHCTL_DINC_Pos                  (2U)                                /*!< DMA_CHxCTL: DINC Position */
-#define DMA_CHCTL_DINC_Msk                  (0x3U << DMA_CHCTL_DINC_Pos)        /*!< DMA_CHxCTL: DINC Mask 0x0000000C */
-#define DMA_CHCTL_DINC                      DMA_CHCTL_DINC_Msk
+#define DMA_CHCTL_DINC_Pos                  (2ul)                                /*!< DMA_CHxCTL: DINC Position */
+#define DMA_CHCTL_DINC_Msk                  (0x3ul << DMA_CHCTL_DINC_Pos)        /*!< DMA_CHxCTL: DINC Mask 0x0000000C */
+#define DMA_CHCTL_DINC                      (DMA_CHCTL_DINC_Msk)
 
-#define DMA_CHCTL_SRPTEN_Pos                (4U)                                /*!< DMA_CHxCTL: SRPTEN Position */
-#define DMA_CHCTL_SRPTEN_Msk                (0x1U << DMA_CHCTL_SRPTEN_Pos)      /*!< DMA_CHxCTL: SRPTEN Mask 0x00000010 */
-#define DMA_CHCTL_SRPTEN                    DMA_CHCTL_SRPTEN_Msk
+#define DMA_CHCTL_SRPTEN_Pos                (4ul)                                /*!< DMA_CHxCTL: SRPTEN Position */
+#define DMA_CHCTL_SRPTEN_Msk                (0x1ul << DMA_CHCTL_SRPTEN_Pos)      /*!< DMA_CHxCTL: SRPTEN Mask 0x00000010 */
+#define DMA_CHCTL_SRPTEN                    (DMA_CHCTL_SRPTEN_Msk)
 
-#define DMA_CHCTL_DRPTEN_Pos                (5U)                                /*!< DMA_CHxCTL: DRPTEN Position */
-#define DMA_CHCTL_DRPTEN_Msk                (0x1U << DMA_CHCTL_DRPTEN_Pos)      /*!< DMA_CHxCTL: DRPTEN Mask 0x00000020 */
-#define DMA_CHCTL_DRPTEN                    DMA_CHCTL_DRPTEN_Msk
+#define DMA_CHCTL_DRPTEN_Pos                (5ul)                                /*!< DMA_CHxCTL: DRPTEN Position */
+#define DMA_CHCTL_DRPTEN_Msk                (0x1ul << DMA_CHCTL_DRPTEN_Pos)      /*!< DMA_CHxCTL: DRPTEN Mask 0x00000020 */
+#define DMA_CHCTL_DRPTEN                    (DMA_CHCTL_DRPTEN_Msk)
 
-#define DMA_CHCTL_SNSEQEN_Pos               (6U)                                /*!< DMA_CHxCTL: SNSEQEN Position */
-#define DMA_CHCTL_SNSEQEN_Msk               (0x1U << DMA_CHCTL_SNSEQEN_Pos)      /*!< DMA_CHxCTL: SNSEQEN Mask 0x00000040 */
-#define DMA_CHCTL_SNSEQEN                   DMA_CHCTL_SNSEQEN_Msk
+#define DMA_CHCTL_SNSEQEN_Pos               (6ul)                                /*!< DMA_CHxCTL: SNSEQEN Position */
+#define DMA_CHCTL_SNSEQEN_Msk               (0x1ul << DMA_CHCTL_SNSEQEN_Pos)      /*!< DMA_CHxCTL: SNSEQEN Mask 0x00000040 */
+#define DMA_CHCTL_SNSEQEN                   (DMA_CHCTL_SNSEQEN_Msk)
 
-#define DMA_CHCTL_DNSEQEN_Pos               (7U)                                /*!< DMA_CHxCTL: DNSEQEN Position */
-#define DMA_CHCTL_DNSEQEN_Msk               (0x1U << DMA_CHCTL_DNSEQEN_Pos)      /*!< DMA_CHxCTL: DNSEQEN Mask 0x00000080 */
-#define DMA_CHCTL_DNSEQEN                   DMA_CHCTL_DNSEQEN_Msk
+#define DMA_CHCTL_DNSEQEN_Pos               (7ul)                                /*!< DMA_CHxCTL: DNSEQEN Position */
+#define DMA_CHCTL_DNSEQEN_Msk               (0x1ul << DMA_CHCTL_DNSEQEN_Pos)      /*!< DMA_CHxCTL: DNSEQEN Mask 0x00000080 */
+#define DMA_CHCTL_DNSEQEN                   (DMA_CHCTL_DNSEQEN_Msk)
 
-#define DMA_CHCTL_HSIZE_Pos                 (8U)                                /*!< DMA_CHxCTL: HSIZE Position */
-#define DMA_CHCTL_HSIZE_Msk                 (0x3U << DMA_CHCTL_HSIZE_Pos)       /*!< DMA_CHxCTL: HSIZE Mask 0x00000300 */
-#define DMA_CHCTL_HSIZE                     DMA_CHCTL_HSIZE_Msk
+#define DMA_CHCTL_HSIZE_Pos                 (8ul)                                /*!< DMA_CHxCTL: HSIZE Position */
+#define DMA_CHCTL_HSIZE_Msk                 (0x3ul << DMA_CHCTL_HSIZE_Pos)       /*!< DMA_CHxCTL: HSIZE Mask 0x00000300 */
+#define DMA_CHCTL_HSIZE                     (DMA_CHCTL_HSIZE_Msk)
 
-#define DMA_CHCTL_LLPEN_Pos                 (10U)                               /*!< DMA_CHxCTL: LLPEN Position */
-#define DMA_CHCTL_LLPEN_Msk                 (0x1U << DMA_CHCTL_LLPEN_Pos)       /*!< DMA_CHxCTL: LLPEN Mask 0x00000400 */
-#define DMA_CHCTL_LLPEN                     DMA_CHCTL_LLPEN_Msk
+#define DMA_CHCTL_LLPEN_Pos                 (10ul)                               /*!< DMA_CHxCTL: LLPEN Position */
+#define DMA_CHCTL_LLPEN_Msk                 (0x1ul << DMA_CHCTL_LLPEN_Pos)       /*!< DMA_CHxCTL: LLPEN Mask 0x00000400 */
+#define DMA_CHCTL_LLPEN                     (DMA_CHCTL_LLPEN_Msk)
 
-#define DMA_CHCTL_LLPRUN_Pos                (11U)                               /*!< DMA_CHxCTL: LLPRUN Position */
-#define DMA_CHCTL_LLPRUN_Msk                (0x1U << DMA_CHCTL_LLPRUN_Pos)      /*!< DMA_CHxCTL: LLPRUN Mask 0x00000800 */
-#define DMA_CHCTL_LLPRUN                    DMA_CHCTL_LLPRUN_Msk
+#define DMA_CHCTL_LLPRUN_Pos                (11ul)                               /*!< DMA_CHxCTL: LLPRUN Position */
+#define DMA_CHCTL_LLPRUN_Msk                (0x1ul << DMA_CHCTL_LLPRUN_Pos)      /*!< DMA_CHxCTL: LLPRUN Mask 0x00000800 */
+#define DMA_CHCTL_LLPRUN                    (DMA_CHCTL_LLPRUN_Msk)
 
-#define DMA_CHCTL_IE_Pos                    (12U)                               /*!< DMA_CHxCTL: IE Position */
-#define DMA_CHCTL_IE_Msk                    (0x1U << DMA_CHCTL_IE_Pos)          /*!< DMA_CHxCTL: IE Mask 0x00001000 */
-#define DMA_CHCTL_IE                        DMA_CHCTL_IE_Msk
+#define DMA_CHCTL_IE_Pos                    (12ul)                               /*!< DMA_CHxCTL: IE Position */
+#define DMA_CHCTL_IE_Msk                    (0x1ul << DMA_CHCTL_IE_Pos)          /*!< DMA_CHxCTL: IE Mask 0x00001000 */
+#define DMA_CHCTL_IE                        (DMA_CHCTL_IE_Msk)
 
 /***********************  DMA REGISTERx(x=0~3) register  **********************/
-#define _DMA_CH_REG_OFFSET(ch)              ((ch) * 0x40u)
+#define _DMA_CH_REG_OFFSET(ch)              ((ch) * 0x40ul)
 #define _DMA_CH_REG(reg_base, ch)           (*(volatile uint32_t *)((uint32_t)(reg_base) + _DMA_CH_REG_OFFSET(ch)))
 
-#define WRITE_DMA_CH_REG(reg_base, ch, val)         (_DMA_CH_REG(reg_base, ch) = (val))
-#define READ_DMA_CH_REG(reg_base, ch)               (_DMA_CH_REG(reg_base, ch))
+#define WRITE_DMA_CH_REG(reg_base, ch, val)         (_DMA_CH_REG((reg_base), (ch)) = (val))
+#define READ_DMA_CH_REG(reg_base, ch)               (_DMA_CH_REG((reg_base), (ch)))
 
-#define SET_DMA_CH_REG_BIT(reg_base, ch, pos)       (_DMA_CH_REG(reg_base, ch) |= (1U << (pos)))
-#define CLR_DMA_CH_REG_BIT(reg_base, ch, pos)       (_DMA_CH_REG(reg_base, ch) &= (~(1U << (pos))))
+#define SET_DMA_CH_REG_BIT(reg_base, ch, pos)       (_DMA_CH_REG((reg_base), (ch)) |= (1ul << (pos)))
+#define CLR_DMA_CH_REG_BIT(reg_base, ch, pos)       (_DMA_CH_REG((reg_base), (ch)) &= (~(1ul << (pos))))
 
-#define WRITE_DMA_CH_TRGSEL(reg_base, ch, val)      ((*(volatile uint32_t *)((uint32_t)(reg_base) + (ch) * 4u)) = (val))
+#define WRITE_DMA_CH_TRGSEL(reg_base, ch, val)      ((*(volatile uint32_t *)((uint32_t)(reg_base) + (ch) * 4ul)) = (val))
 
-#define MODIFY_DMA_CH_REG(reg_base, ch, msk, val)   do { \
-    WRITE_DMA_CH_REG(reg_base, ch, ((READ_DMA_CH_REG(reg_base, ch) & (~(msk))) | (val << (msk##_Pos)))); \
-} while(0);
+#define MODIFY_DMA_CH_REG(reg_base, ch, msk, val)   {do { \
+    WRITE_DMA_CH_REG((reg_base), (ch), ((READ_DMA_CH_REG((reg_base), (ch)) & (~(msk))) | ((val) << (msk##_Pos)))); \
+} while(0);}
 
 /*! Parameter valid check for Dmac register pointer. */
 #define IS_VALID_DMA_REG(x)                                                    \
@@ -302,7 +309,7 @@
 
 /*! Parameter valid check for Dmac transfer block size. */
 #define IS_VALID_BLKSIZE(x)                                                    \
-(   !((x) & ~(DMA_DTCTL_BLKSIZE_Msk >> DMA_DTCTL_BLKSIZE_Pos)))
+(   !((x) & (uint16_t)(~(DMA_DTCTL_BLKSIZE_Msk >> DMA_DTCTL_BLKSIZE_Pos))))
 
 /*! Parameter valid check for Dmac transfer count. */
 #define IS_VALID_TRNCNT(x)                                                     \
@@ -370,6 +377,7 @@
 /*******************************************************************************
  * Local variable definitions ('static')
  ******************************************************************************/
+static volatile uint8_t DmaChEnState = DMA_IDLE;
 
 /*******************************************************************************
  * Function implementation - global ('extern') and local ('static')
@@ -397,7 +405,7 @@ void DMA_Cmd(M4_DMA_TypeDef* pstcDmaReg, en_functional_state_t enNewState)
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewState));
 
-    pstcDmaReg->EN_f.EN = (Enable == enNewState ? Set : Reset);
+    pstcDmaReg->EN_f.EN = enNewState;
 }
 
 /**
@@ -421,7 +429,9 @@ void DMA_Cmd(M4_DMA_TypeDef* pstcDmaReg, en_functional_state_t enNewState)
  ** \note   None
  **
  ******************************************************************************/
-en_result_t DMA_EnableIrq(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_dma_irq_sel_t enIrqSel)
+en_result_t DMA_EnableIrq(M4_DMA_TypeDef* pstcDmaReg,
+                          uint8_t u8Ch,
+                          en_dma_irq_sel_t enIrqSel)
 {
     en_result_t enRet = Ok;
 
@@ -431,26 +441,28 @@ en_result_t DMA_EnableIrq(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_dma_irq_s
 
     if(!IS_VALID_CH(u8Ch))
     {
-        return ErrorInvalidParameter;
+        enRet = ErrorInvalidParameter;
     }
-
-    switch(enIrqSel)
+    else
     {
-        case TrnErrIrq:
-            pstcDmaReg->INTMASK0 &= ~(1u << (u8Ch + DMA_INTMASK0_MSKTRNERR_Pos));
-            break;
-        case TrnReqErrIrq:
-            pstcDmaReg->INTMASK0 &= ~(1u << (u8Ch + DMA_INTMASK0_MSKREQERR_Pos));
-            break;
-        case TrnCpltIrq:
-            pstcDmaReg->INTMASK1 &= ~(1u << (u8Ch + DMA_INTMASK1_MSKTC_Pos));
-            break;
-        case BlkTrnCpltIrq:
-            pstcDmaReg->INTMASK1 &= ~(1u << (u8Ch + DMA_INTMASK1_MSKBTC_Pos));
-            break;
-        default:
-            enRet = ErrorInvalidParameter;
-            break;
+        switch(enIrqSel)
+        {
+            case TrnErrIrq:
+                pstcDmaReg->INTMASK0 &= ~(1ul << (u8Ch + DMA_INTMASK0_MSKTRNERR_Pos));
+                break;
+            case TrnReqErrIrq:
+                pstcDmaReg->INTMASK0 &= ~(1ul << (u8Ch + DMA_INTMASK0_MSKREQERR_Pos));
+                break;
+            case TrnCpltIrq:
+                pstcDmaReg->INTMASK1 &= ~(1ul << (u8Ch + DMA_INTMASK1_MSKTC_Pos));
+                break;
+            case BlkTrnCpltIrq:
+                pstcDmaReg->INTMASK1 &= ~(1ul << (u8Ch + DMA_INTMASK1_MSKBTC_Pos));
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
     }
 
     return enRet;
@@ -477,7 +489,9 @@ en_result_t DMA_EnableIrq(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_dma_irq_s
  ** \note   None
  **
  ******************************************************************************/
-en_result_t DMA_DisableIrq(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_dma_irq_sel_t enIrqSel)
+en_result_t DMA_DisableIrq(M4_DMA_TypeDef* pstcDmaReg,
+                           uint8_t u8Ch,
+                           en_dma_irq_sel_t enIrqSel)
 {
     en_result_t enRet = Ok;
 
@@ -487,26 +501,28 @@ en_result_t DMA_DisableIrq(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_dma_irq_
 
     if(!IS_VALID_CH(u8Ch))
     {
-        return ErrorInvalidParameter;
+        enRet = ErrorInvalidParameter;
     }
-
-    switch(enIrqSel)
+    else
     {
-        case TrnErrIrq:
-            pstcDmaReg->INTMASK0 |= (1u << (u8Ch + DMA_INTMASK0_MSKTRNERR_Pos));
-            break;
-        case TrnReqErrIrq:
-            pstcDmaReg->INTMASK0 |= (1u << (u8Ch + DMA_INTMASK0_MSKREQERR_Pos));
-            break;
-        case TrnCpltIrq:
-            pstcDmaReg->INTMASK1 |= (1u << (u8Ch + DMA_INTMASK1_MSKTC_Pos));
-            break;
-        case BlkTrnCpltIrq:
-            pstcDmaReg->INTMASK1 |= (1u << (u8Ch + DMA_INTMASK1_MSKBTC_Pos));
-            break;
-        default:
-            enRet = ErrorInvalidParameter;
-            break;
+        switch(enIrqSel)
+        {
+            case TrnErrIrq:
+                pstcDmaReg->INTMASK0 |= (1ul << (u8Ch + DMA_INTMASK0_MSKTRNERR_Pos));
+                break;
+            case TrnReqErrIrq:
+                pstcDmaReg->INTMASK0 |= (1ul << (u8Ch + DMA_INTMASK0_MSKREQERR_Pos));
+                break;
+            case TrnCpltIrq:
+                pstcDmaReg->INTMASK1 |= (1ul << (u8Ch + DMA_INTMASK1_MSKTC_Pos));
+                break;
+            case BlkTrnCpltIrq:
+                pstcDmaReg->INTMASK1 |= (1ul << (u8Ch + DMA_INTMASK1_MSKBTC_Pos));
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
     }
 
     return enRet;
@@ -534,16 +550,11 @@ en_result_t DMA_DisableIrq(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_dma_irq_
  ******************************************************************************/
 en_flag_status_t DMA_GetIrqFlag(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_dma_irq_sel_t enIrqSel)
 {
-    uint32_t u32IntStat = 0;
+    uint32_t u32IntStat = 0ul;
 
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
     DDL_ASSERT(IS_VALID_CH(u8Ch));
     DDL_ASSERT(IS_VALID_IRQ_SEL(enIrqSel));
-
-    if(!IS_VALID_CH(u8Ch))
-    {
-        return Reset;
-    }
 
     switch(enIrqSel)
     {
@@ -601,26 +612,28 @@ en_result_t DMA_ClearIrqFlag(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_dma_ir
 
     if(!IS_VALID_CH(u8Ch))
     {
-        return ErrorInvalidParameter;
+        enRet = ErrorInvalidParameter;
     }
-
-    switch(enIrqSel)
+    else
     {
-        case TrnErrIrq:
-            pstcDmaReg->INTCLR0 |= (1ul << (u8Ch + DMA_INTCLR0_CLRTRNERR_Pos));
-            break;
-        case TrnReqErrIrq:
-            pstcDmaReg->INTCLR0 |= (1ul << (u8Ch + DMA_INTCLR0_CLRREQERR_Pos));
-            break;
-        case TrnCpltIrq:
-            pstcDmaReg->INTCLR1 |= (1ul << (u8Ch + DMA_INTCLR1_CLRTC_Pos));
-            break;
-        case BlkTrnCpltIrq:
-            pstcDmaReg->INTCLR1 |= (1ul << (u8Ch + DMA_INTCLR1_CLRBTC_Pos));
-            break;
-        default:
-            enRet = ErrorInvalidParameter;
-            break;
+        switch(enIrqSel)
+        {
+            case TrnErrIrq:
+                pstcDmaReg->INTCLR0 |= (1ul << (u8Ch + DMA_INTCLR0_CLRTRNERR_Pos));
+                break;
+            case TrnReqErrIrq:
+                pstcDmaReg->INTCLR0 |= (1ul << (u8Ch + DMA_INTCLR0_CLRREQERR_Pos));
+                break;
+            case TrnCpltIrq:
+                pstcDmaReg->INTCLR1 |= (1ul << (u8Ch + DMA_INTCLR1_CLRTC_Pos));
+                break;
+            case BlkTrnCpltIrq:
+                pstcDmaReg->INTCLR1 |= (1ul << (u8Ch + DMA_INTCLR1_CLRBTC_Pos));
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
     }
 
     return enRet;
@@ -644,21 +657,124 @@ en_result_t DMA_ClearIrqFlag(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_dma_ir
  ** \note   None
  **
  ******************************************************************************/
-void DMA_ChannelCmd(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_functional_state_t enNewState)
+en_result_t DMA_ChannelCmd(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_functional_state_t enNewState)
 {
+    uint16_t u16Timeout = 0u;
+    uint32_t u32Temp = 0u;
+    uint32_t u32Cnt;
+
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
     DDL_ASSERT(IS_VALID_CH(u8Ch));
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewState));
 
-    switch(enNewState)
+    if(DMA_IDLE == DmaChEnState)
     {
-        case Enable:
-            pstcDmaReg->CHEN |= (1u << (u8Ch + DMA_CHEN_CHEN_Pos));
-            break;
-        case Disable:
-            pstcDmaReg->CHEN &= (~(1u << (u8Ch + DMA_CHEN_CHEN_Pos)));
-            break;
+        DmaChEnState = DMA_BUSY;
+
+        /* Read back channel enable register except current channel */
+        u32Temp = (pstcDmaReg->CHEN & (~(1ul << u8Ch)));
+        if(0ul != u32Temp)
+        {
+            if(((pstcDmaReg->CHEN & 0x01ul) == 0x01ul) && (u8Ch != DmaCh0))
+            {
+                u32Cnt = pstcDmaReg->DTCTL0_f.CNT;
+                if(pstcDmaReg->MONDTCTL0_f.CNT > DMA_CNT)
+                {
+                    /* not wait. */ 
+                }
+                else if(pstcDmaReg->MONDTCTL0_f.CNT < u32Cnt)
+                {
+                    while(Reset != (pstcDmaReg->CHEN & 0x01ul))
+                    {
+                        u16Timeout++;
+                        if(u16Timeout > DMATIMEOUT1)
+                        {
+                            DmaChEnState =  DMA_IDLE;
+                            return ErrorTimeout;
+                        }
+                    }
+                }
+            }
+            if(((pstcDmaReg->CHEN & 0x02ul) == 0x02ul) && (u8Ch != DmaCh1))
+            {
+                u32Cnt = pstcDmaReg->DTCTL1_f.CNT;
+                if(pstcDmaReg->MONDTCTL1_f.CNT > DMA_CNT)
+                {
+                    /* not wait. */ 
+                }
+                else if(pstcDmaReg->MONDTCTL1_f.CNT < u32Cnt)
+                {
+                    u16Timeout = 0u;
+                    while(Reset != (pstcDmaReg->CHEN & 0x02ul))
+                    {
+                        u16Timeout++;
+                        if(u16Timeout > DMATIMEOUT1)
+                        {
+                            DmaChEnState =  DMA_IDLE;
+                            return ErrorTimeout;
+                        }
+                    }
+                }
+            }
+            if(((pstcDmaReg->CHEN & 0x04ul) == 0x04ul) && (u8Ch != DmaCh2))
+            {
+                u16Timeout = 0u;
+                u32Cnt = pstcDmaReg->DTCTL2_f.CNT;
+                if(pstcDmaReg->MONDTCTL2_f.CNT > DMA_CNT)
+                {
+                    /* not wait. */ 
+                }
+                else if(pstcDmaReg->MONDTCTL2_f.CNT < u32Cnt)
+                {
+                    while(Reset != (pstcDmaReg->CHEN & 0x04ul))
+                    {
+                        u16Timeout++;
+                        if(u16Timeout > DMATIMEOUT1)
+                        {
+                            DmaChEnState =  DMA_IDLE;
+                            return ErrorTimeout;
+                        }
+                    }
+                }
+            }
+            if(((pstcDmaReg->CHEN & 0x08ul) == 0x08ul) && (u8Ch != DmaCh3))
+            {
+                u16Timeout = 0u;
+                u32Cnt = pstcDmaReg->DTCTL3_f.CNT;
+                if(pstcDmaReg->MONDTCTL3_f.CNT > DMA_CNT)
+                {
+                    /* not wait. */ 
+                }
+                else if(pstcDmaReg->MONDTCTL3_f.CNT < u32Cnt)
+                {
+                    while(Reset != (pstcDmaReg->CHEN & 0x08ul))
+                    {
+                        u16Timeout++;
+                        if(u16Timeout > DMATIMEOUT1)
+                        {
+                            DmaChEnState =  DMA_IDLE;
+                            return ErrorTimeout;
+                        }
+                    }
+                }
+            }
+        }
+
+        switch(enNewState)
+        {
+            case Enable:
+                pstcDmaReg->CHEN |= (1ul << (u8Ch + DMA_CHEN_CHEN_Pos)) & 0x0fu;
+                break;
+            case Disable:
+                pstcDmaReg->CHEN &= (~(1ul << (u8Ch + DMA_CHEN_CHEN_Pos))) & 0x0fu;
+                break;
+        }
+
+        DmaChEnState =  DMA_IDLE;
+        return Ok;
     }
+
+    return Error;
 }
 
 /**
@@ -703,15 +819,15 @@ void DMA_InitReConfig(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
     pstcDmaReg->RCFGCTL_f.CNTMD = pstcDmaReCfg->enCntMd;
 
     /* Set DMA source repeat size B. */
-    MODIFY_DMA_CH_REG(&pstcDmaReg->RPTB0, u8Ch, DMA_RPT_SRPT, pstcDmaReCfg->u16SrcRptBSize);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->RPTB0, u8Ch, DMA_RPT_SRPT, (uint32_t)pstcDmaReCfg->u16SrcRptBSize);
     /* Set DMA destination repeat size B. */
-    MODIFY_DMA_CH_REG(&pstcDmaReg->RPTB0, u8Ch, DMA_RPT_DRPT, pstcDmaReCfg->u16DesRptBSize);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->RPTB0, u8Ch, DMA_RPT_DRPT, (uint32_t)pstcDmaReCfg->u16DesRptBSize);
     /* Set DMA source no_sequence B. */
     MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTLB0, u8Ch, DMA_SNSEQCTL_SOFFSET, pstcDmaReCfg->stcSrcNseqBCfg.u32Offset);
-    MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTLB0, u8Ch, DMA_SNSEQCTL_SNSCNT, pstcDmaReCfg->stcSrcNseqBCfg.u16Cnt);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTLB0, u8Ch, DMA_SNSEQCTL_SNSCNT, (uint32_t)pstcDmaReCfg->stcSrcNseqBCfg.u16Cnt);
     /* Set DMA destination no_sequence B. */
     MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTLB0, u8Ch, DMA_DNSEQCTL_DOFFSET, pstcDmaReCfg->stcDesNseqBCfg.u32Offset);
-    MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTLB0, u8Ch, DMA_DNSEQCTL_DNSCNT, pstcDmaReCfg->stcDesNseqBCfg.u16Cnt);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTLB0, u8Ch, DMA_DNSEQCTL_DNSCNT, (uint32_t)pstcDmaReCfg->stcDesNseqBCfg.u16Cnt);
 }
 
 /**
@@ -736,7 +852,7 @@ void DMA_ReCfgCmd(M4_DMA_TypeDef* pstcDmaReg, en_functional_state_t enNewState)
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewState));
 
-    pstcDmaReg->RCFGCTL_f.RCFGEN = (Enable == enNewState ? Set : Reset);
+    pstcDmaReg->RCFGCTL_f.RCFGEN = enNewState;
 }
 
 /**
@@ -762,7 +878,7 @@ void DMA_ReCfgCmd(M4_DMA_TypeDef* pstcDmaReg, en_functional_state_t enNewState)
  ******************************************************************************/
 en_flag_status_t DMA_GetChFlag(M4_DMA_TypeDef* pstcDmaReg, en_dma_ch_flag_t enDmaChFlag)
 {
-    uint32_t u32IntStat = 0;
+    uint32_t u32IntStat = 0ul;
 
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
     DDL_ASSERT(IS_VALID_DMA_STA(enDmaChFlag));
@@ -809,12 +925,31 @@ en_flag_status_t DMA_GetChFlag(M4_DMA_TypeDef* pstcDmaReg, en_dma_ch_flag_t enDm
  ** \note   None
  **
  ******************************************************************************/
-void DMA_SetSrcAddress(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint32_t u32Address)
+en_result_t DMA_SetSrcAddress(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint32_t u32Address)
 {
+    uint16_t u16Timeout = 0u;
+    en_result_t enRet = Ok;
+
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
     DDL_ASSERT(IS_VALID_CH(u8Ch));
 
     WRITE_DMA_CH_REG(&pstcDmaReg->SAR0, u8Ch, u32Address);
+
+    /* Ensure the address has been writed */
+    while(u32Address != READ_DMA_CH_REG(&pstcDmaReg->SAR0, u8Ch))
+    {
+        u16Timeout++;
+        if(u16Timeout > DMATIMEOUT2)
+        {
+            enRet = ErrorTimeout;
+        }
+        else
+        {
+            WRITE_DMA_CH_REG(&pstcDmaReg->SAR0, u8Ch, u32Address);
+        }
+    }
+
+    return enRet;
 }
 
 /**
@@ -833,12 +968,32 @@ void DMA_SetSrcAddress(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint32_t u32Add
  ** \note   None
  **
  ******************************************************************************/
-void DMA_SetDesAddress(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint32_t u32Address)
+en_result_t DMA_SetDesAddress(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint32_t u32Address)
 {
+    uint16_t u16Timeout = 0u;
+    en_result_t enRet = Ok;
+
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
     DDL_ASSERT(IS_VALID_CH(u8Ch));
 
     WRITE_DMA_CH_REG(&pstcDmaReg->DAR0, u8Ch, u32Address);
+
+    /* Ensure the address has been writed */
+    while(u32Address != READ_DMA_CH_REG(&pstcDmaReg->DAR0, u8Ch))
+    {
+        u16Timeout++;
+        if(u16Timeout > DMATIMEOUT2)
+        {
+            enRet = ErrorTimeout;
+        }
+        else
+        {
+            WRITE_DMA_CH_REG(&pstcDmaReg->DAR0, u8Ch, u32Address);
+        }
+    }
+
+    return enRet;
+
 }
 
 
@@ -858,13 +1013,32 @@ void DMA_SetDesAddress(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint32_t u32Add
  ** \note   None
  **
  ******************************************************************************/
-void DMA_SetBlockSize(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t u16BlkSize)
+en_result_t DMA_SetBlockSize(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t u16BlkSize)
 {
+    uint16_t u16Timeout = 0u;
+    en_result_t enRet = Ok;
+
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
     DDL_ASSERT(IS_VALID_CH(u8Ch));
     DDL_ASSERT(IS_VALID_BLKSIZE(u16BlkSize));
 
-    MODIFY_DMA_CH_REG(&pstcDmaReg->DTCTL0, u8Ch, DMA_DTCTL_BLKSIZE, u16BlkSize);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->DTCTL0, u8Ch, DMA_DTCTL_BLKSIZE, (uint32_t)u16BlkSize);
+
+    /* Ensure the block size has been writed */
+    while(u16BlkSize != (uint16_t)(READ_DMA_CH_REG(&pstcDmaReg->DTCTL0, u8Ch) & DMA_DTCTL_BLKSIZE))
+    {
+        u16Timeout++;
+        if(u16Timeout > DMATIMEOUT2)
+        {
+            enRet = ErrorTimeout;
+        }
+        else
+        {
+            MODIFY_DMA_CH_REG(&pstcDmaReg->DTCTL0, u8Ch, DMA_DTCTL_BLKSIZE, (uint32_t)u16BlkSize);
+        }
+    }
+
+    return enRet;
 }
 
 /**
@@ -883,13 +1057,32 @@ void DMA_SetBlockSize(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t u16BlkS
  ** \note   None
  **
  ******************************************************************************/
-void DMA_SetTransferCnt(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t u16TrnCnt)
+en_result_t DMA_SetTransferCnt(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t u16TrnCnt)
 {
+    uint16_t u16Timeout = 0u;
+    en_result_t enRet = Ok;
+
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
     DDL_ASSERT(IS_VALID_CH(u8Ch));
     DDL_ASSERT(IS_VALID_TRNCNT(u16TrnCnt));
 
-    MODIFY_DMA_CH_REG(&pstcDmaReg->DTCTL0, u8Ch, DMA_DTCTL_CNT, u16TrnCnt);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->DTCTL0, u8Ch, DMA_DTCTL_CNT, (uint32_t)u16TrnCnt);
+
+    /* Ensure the transfer count has been writed */
+    while(u16TrnCnt != ((READ_DMA_CH_REG(&pstcDmaReg->DTCTL0, u8Ch) & DMA_DTCTL_CNT) >> DMA_DTCTL_CNT_Pos))
+    {
+        u16Timeout++;
+        if(u16Timeout > DMATIMEOUT2)
+        {
+            enRet = ErrorTimeout;
+        }
+        else
+        {
+            MODIFY_DMA_CH_REG(&pstcDmaReg->DTCTL0, u8Ch, DMA_DTCTL_CNT, (uint32_t)u16TrnCnt);
+        }
+    }
+
+    return enRet;
 }
 
 /**
@@ -908,13 +1101,32 @@ void DMA_SetTransferCnt(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t u16Tr
  ** \note   None
  **
  ******************************************************************************/
-void DMA_SetSrcRptSize(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t u16Size)
+en_result_t DMA_SetSrcRptSize(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t u16Size)
 {
+    uint16_t u16Timeout = 0u;
+    en_result_t enRet = Ok;
+
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
     DDL_ASSERT(IS_VALID_CH(u8Ch));
     DDL_ASSERT(IS_VALID_SRPT_SIZE(u16Size));
 
-    MODIFY_DMA_CH_REG(&pstcDmaReg->RPT0, u8Ch, DMA_RPT_SRPT, u16Size);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->RPT0, u8Ch, DMA_RPT_SRPT, (uint32_t)u16Size);
+
+    /* Ensure the source repeat size has been writed */
+    while(u16Size != (uint16_t)(READ_DMA_CH_REG(&pstcDmaReg->RPT0, u8Ch) & DMA_RPT_SRPT))
+    {
+        u16Timeout++;
+        if(u16Timeout > DMATIMEOUT2)
+        {
+            enRet = ErrorTimeout;
+        }
+        else
+        {
+            MODIFY_DMA_CH_REG(&pstcDmaReg->RPT0, u8Ch, DMA_RPT_SRPT, (uint32_t)u16Size);
+        }
+    }
+
+    return enRet;
 }
 
 /**
@@ -933,13 +1145,32 @@ void DMA_SetSrcRptSize(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t u16Siz
  ** \note   None
  **
  ******************************************************************************/
-void DMA_SetDesRptSize(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t u16Size)
+en_result_t DMA_SetDesRptSize(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t u16Size)
 {
+    uint16_t u16Timeout = 0u;
+    en_result_t enRet = Ok;
+
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
     DDL_ASSERT(IS_VALID_CH(u8Ch));
     DDL_ASSERT(IS_VALID_DRPT_SIZE(u16Size));
 
-    MODIFY_DMA_CH_REG(&pstcDmaReg->RPT0, u8Ch, DMA_RPT_DRPT, u16Size);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->RPT0, u8Ch, DMA_RPT_DRPT, (uint32_t)u16Size);
+
+    /* Ensure the destination repeat size has been writed */
+    while(u16Size != ((READ_DMA_CH_REG(&pstcDmaReg->RPT0, u8Ch) & DMA_RPT_DRPT) >> DMA_RPT_DRPT_Pos))
+    {
+        u16Timeout++;
+        if(u16Timeout > DMATIMEOUT2)
+        {
+            enRet = ErrorTimeout;
+        }
+        else
+        {
+            MODIFY_DMA_CH_REG(&pstcDmaReg->RPT0, u8Ch, DMA_RPT_DRPT, (uint32_t)u16Size);
+        }
+    }
+
+    return enRet;
 }
 
 
@@ -959,13 +1190,32 @@ void DMA_SetDesRptSize(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t u16Siz
  ** \note   None
  **
  ******************************************************************************/
-void DMA_SetSrcRptbSize(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t u16Size)
+en_result_t DMA_SetSrcRptbSize(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t u16Size)
 {
+    uint16_t u16Timeout = 0u;
+    en_result_t enRet = Ok;
+
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
     DDL_ASSERT(IS_VALID_CH(u8Ch));
     DDL_ASSERT(IS_VALID_SRPTB_SIZE(u16Size));
 
-    MODIFY_DMA_CH_REG(&pstcDmaReg->RPTB0, u8Ch, DMA_RPTB_SRPTB, u16Size);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->RPTB0, u8Ch, DMA_RPTB_SRPTB, (uint32_t)u16Size);
+
+    /* Ensure the source repeat size has been writed */
+    while(u16Size != (uint16_t)(READ_DMA_CH_REG(&pstcDmaReg->RPTB0, u8Ch) & DMA_RPTB_SRPTB))
+    {
+        u16Timeout++;
+        if(u16Timeout > DMATIMEOUT2)
+        {
+            enRet = ErrorTimeout;
+        }
+        else
+        {
+            MODIFY_DMA_CH_REG(&pstcDmaReg->RPTB0, u8Ch, DMA_RPTB_SRPTB, (uint32_t)u16Size);
+        }
+    }
+
+    return enRet;
 }
 
 /**
@@ -984,13 +1234,32 @@ void DMA_SetSrcRptbSize(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t u16Si
  ** \note   None
  **
  ******************************************************************************/
-void DMA_SetDesRptBSize(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t u16Size)
+en_result_t DMA_SetDesRptBSize(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t u16Size)
 {
+    uint16_t u16Timeout = 0u;
+    en_result_t enRet = Ok;
+
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
     DDL_ASSERT(IS_VALID_CH(u8Ch));
     DDL_ASSERT(IS_VALID_DRPTB_SIZE(u16Size));
 
-    MODIFY_DMA_CH_REG(&pstcDmaReg->RPTB0, u8Ch, DMA_RPTB_DRPTB, u16Size);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->RPTB0, u8Ch, DMA_RPTB_DRPTB, (uint32_t)u16Size);
+
+    /* Ensure the destination repeat size has been writed */
+    while(u16Size != ((READ_DMA_CH_REG(&pstcDmaReg->RPTB0, u8Ch) & DMA_RPTB_DRPTB) >> DMA_RPTB_DRPTB_Pos))
+    {
+        u16Timeout++;
+        if(u16Timeout > DMATIMEOUT2)
+        {
+            enRet = ErrorTimeout;
+        }
+        else
+        {
+            MODIFY_DMA_CH_REG(&pstcDmaReg->RPTB0, u8Ch, DMA_RPTB_DRPTB, (uint32_t)u16Size);
+        }
+    }
+
+    return enRet;
 }
 
 /**
@@ -1011,16 +1280,41 @@ void DMA_SetDesRptBSize(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t u16Si
  ** \note   None
  **
  ******************************************************************************/
-void DMA_SetSrcNseqCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
+en_result_t DMA_SetSrcNseqCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
                         const stc_dma_nseq_cfg_t* pstcSrcNseqCfg)
 {
+    uint16_t u16Timeout = 0u;
+    en_result_t enRet = Ok;
+
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
     DDL_ASSERT(IS_VALID_CH(u8Ch));
     DDL_ASSERT(IS_VALID_SNSOFFSET(pstcSrcNseqCfg->u32Offset));
     DDL_ASSERT(IS_VALID_SNSCNT(pstcSrcNseqCfg->u16Cnt));
 
-    MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTL0, u8Ch, DMA_SNSEQCTL_SOFFSET, pstcSrcNseqCfg->u32Offset);
-    MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTL0, u8Ch, DMA_SNSEQCTL_SNSCNT, pstcSrcNseqCfg->u16Cnt);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTL0, u8Ch,
+                       DMA_SNSEQCTL_SOFFSET, pstcSrcNseqCfg->u32Offset);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTL0, u8Ch,
+                       DMA_SNSEQCTL_SNSCNT, (uint32_t)pstcSrcNseqCfg->u16Cnt);
+
+    /* Ensure the no-sequence offset & count has been writed */
+    while((pstcSrcNseqCfg->u32Offset | ((uint32_t)pstcSrcNseqCfg->u16Cnt << DMA_SNSEQCTL_SNSCNT_Pos))
+            != READ_DMA_CH_REG(&pstcDmaReg->SNSEQCTL0, u8Ch))
+    {
+        u16Timeout++;
+        if(u16Timeout > DMATIMEOUT2)
+        {
+            enRet = ErrorTimeout;
+        }
+        else
+        {
+            MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTL0, u8Ch,
+                               DMA_SNSEQCTL_SOFFSET, pstcSrcNseqCfg->u32Offset);
+            MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTL0, u8Ch,
+                               DMA_SNSEQCTL_SNSCNT, (uint32_t)pstcSrcNseqCfg->u16Cnt);
+        }
+    }
+
+    return enRet;
 }
 
 /**
@@ -1041,16 +1335,39 @@ void DMA_SetSrcNseqCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
  ** \note   None
  **
  ******************************************************************************/
-void DMA_SetSrcNseqBCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
+en_result_t DMA_SetSrcNseqBCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
                         const stc_dma_nseqb_cfg_t* pstcSrcNseqBCfg)
 {
+    uint16_t u16Timeout = 0u;
+    en_result_t enRet = Ok;
+
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
     DDL_ASSERT(IS_VALID_CH(u8Ch));
     DDL_ASSERT(IS_VALID_SNSDIST(pstcSrcNseqBCfg->u32NseqDist));
     DDL_ASSERT(IS_VALID_SNSCNTB(pstcSrcNseqBCfg->u16CntB));
 
     MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTLB0, u8Ch, DMA_SNSEQCTLB_SNSDIST, pstcSrcNseqBCfg->u32NseqDist);
-    MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTLB0, u8Ch, DMA_SNSEQCTLB_SNSCNTB, pstcSrcNseqBCfg->u16CntB);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTLB0, u8Ch, DMA_SNSEQCTLB_SNSCNTB, (uint32_t)pstcSrcNseqBCfg->u16CntB);
+
+    /* Ensure the no-sequence offset & count has been writed */
+    while((pstcSrcNseqBCfg->u32NseqDist | ((uint32_t)pstcSrcNseqBCfg->u16CntB << DMA_SNSEQCTLB_SNSCNTB_Pos))
+            != READ_DMA_CH_REG(&pstcDmaReg->SNSEQCTLB0, u8Ch))
+    {
+        u16Timeout++;
+        if(u16Timeout > DMATIMEOUT2)
+        {
+            enRet = ErrorTimeout;
+        }
+        else
+        {
+            MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTLB0, u8Ch,
+                               DMA_SNSEQCTLB_SNSDIST, pstcSrcNseqBCfg->u32NseqDist);
+            MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTLB0, u8Ch,
+                               DMA_SNSEQCTLB_SNSCNTB, (uint32_t)pstcSrcNseqBCfg->u16CntB);
+        }
+    }
+
+    return enRet;
 }
 
 /**
@@ -1071,16 +1388,39 @@ void DMA_SetSrcNseqBCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
  ** \note   None
  **
  ******************************************************************************/
-void DMA_SetDesNseqCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
+en_result_t DMA_SetDesNseqCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
                         const stc_dma_nseq_cfg_t* pstcDesNseqCfg)
 {
+    uint16_t u16Timeout = 0u;
+    en_result_t enRet = Ok;
+
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
     DDL_ASSERT(IS_VALID_CH(u8Ch));
     DDL_ASSERT(IS_VALID_DNSOFFSET(pstcDesNseqCfg->u32Offset));
     DDL_ASSERT(IS_VALID_DNSCNT(pstcDesNseqCfg->u16Cnt));
 
     MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTL0, u8Ch, DMA_DNSEQCTL_DOFFSET, pstcDesNseqCfg->u32Offset);
-    MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTL0, u8Ch, DMA_DNSEQCTL_DNSCNT, pstcDesNseqCfg->u16Cnt);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTL0, u8Ch, DMA_DNSEQCTL_DNSCNT, (uint32_t)pstcDesNseqCfg->u16Cnt);
+
+    /* Ensure the no-sequence offset & count has been writed */
+    while((pstcDesNseqCfg->u32Offset | ((uint32_t)pstcDesNseqCfg->u16Cnt << DMA_DNSEQCTL_DNSCNT_Pos))
+            != READ_DMA_CH_REG(&pstcDmaReg->DNSEQCTL0, u8Ch))
+    {
+        u16Timeout++;
+        if(u16Timeout > DMATIMEOUT2)
+        {
+            enRet = ErrorTimeout;
+        }
+        else
+        {
+            MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTL0, u8Ch,
+                              DMA_DNSEQCTL_DOFFSET, pstcDesNseqCfg->u32Offset);
+            MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTL0, u8Ch,
+                              DMA_DNSEQCTL_DNSCNT, (uint32_t)pstcDesNseqCfg->u16Cnt);
+        }
+    }
+
+    return enRet;
 }
 
 /**
@@ -1101,16 +1441,39 @@ void DMA_SetDesNseqCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
  ** \note   None
  **
  ******************************************************************************/
-void DMA_SetDesNseqBCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
+en_result_t DMA_SetDesNseqBCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
                         const stc_dma_nseqb_cfg_t* pstcDesNseqBCfg)
 {
+    uint16_t u16Timeout = 0u;
+    en_result_t enRet = Ok;
+
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
     DDL_ASSERT(IS_VALID_CH(u8Ch));
     DDL_ASSERT(IS_VALID_DNSDIST(pstcDesNseqBCfg->u32NseqDist));
     DDL_ASSERT(IS_VALID_DNSCNTB(pstcDesNseqBCfg->u16CntB));
 
     MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTLB0, u8Ch, DMA_DNSEQCTLB_DNSDIST, pstcDesNseqBCfg->u32NseqDist);
-    MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTLB0, u8Ch, DMA_DNSEQCTLB_DNSCNTB, pstcDesNseqBCfg->u16CntB);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTLB0, u8Ch, DMA_DNSEQCTLB_DNSCNTB, (uint32_t)pstcDesNseqBCfg->u16CntB);
+
+    /* Ensure the no-sequence offset & count has been writed */
+    while((pstcDesNseqBCfg->u32NseqDist | ((uint32_t)pstcDesNseqBCfg->u16CntB << DMA_DNSEQCTLB_DNSCNTB_Pos))
+            != READ_DMA_CH_REG(&pstcDmaReg->DNSEQCTLB0, u8Ch))
+    {
+        u16Timeout++;
+        if(u16Timeout > DMATIMEOUT2)
+        {
+            enRet = ErrorTimeout;
+        }
+        else
+        {
+            MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTLB0, u8Ch,
+                              DMA_DNSEQCTLB_DNSDIST, pstcDesNseqBCfg->u32NseqDist);
+            MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTLB0, u8Ch,
+                              DMA_DNSEQCTLB_DNSCNTB, (uint32_t)pstcDesNseqBCfg->u16CntB);
+        }
+    }
+
+    return enRet;
 }
 
 /**
@@ -1129,32 +1492,51 @@ void DMA_SetDesNseqBCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
  ** \note   None
  **
  ******************************************************************************/
-void DMA_SetLLP(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint32_t u32Pointer)
+en_result_t DMA_SetLLP(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint32_t u32Pointer)
 {
+    uint16_t u16Timeout = 0u;
+    en_result_t enRet = Ok;
+
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
     DDL_ASSERT(IS_VALID_CH(u8Ch));
     DDL_ASSERT(IS_VALID_LLP(u32Pointer));
 
     WRITE_DMA_CH_REG(&pstcDmaReg->LLP0, u8Ch, u32Pointer);
+
+    /* Ensure the destination repeat size has been writed */
+    while(u32Pointer != ((READ_DMA_CH_REG(&pstcDmaReg->LLP0, u8Ch) & DMA_LLP_LLP) >> DMA_LLP_LLP_Pos))
+    {
+        u16Timeout++;
+        if(u16Timeout > DMATIMEOUT2)
+        {
+            enRet = ErrorTimeout;
+        }
+        else
+        {
+            WRITE_DMA_CH_REG(&pstcDmaReg->LLP0, u8Ch, u32Pointer);
+        }
+    }
+
+    return enRet;
 }
 
 /**
  *******************************************************************************
- ** \brief  Set linked list pointer of the specified dma channel.
+ ** \brief  Set The DMA trigger source.
  **
  ** \param  [in] pstcDmaReg             The pointer to dma register
  ** \arg    M4_DMA1                     DMAC unit 1 registers
  ** \arg    M4_DMA2
  **
  ** \param  [in] u8Ch                   The specified dma channel.
- ** \param  [in] enSrc                  The DMA triggle source.
+ ** \param  [in] enSrc                  The DMA trigger source.
  **
  ** \retval None.
  **
  ** \note   Before call this function, shoud ensure enable AOS.
  **
  ******************************************************************************/
-void DMA_SetTriggerSrc(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_event_src_t enSrc)
+void DMA_SetTriggerSrc(const M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_event_src_t enSrc)
 {
     DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
 
@@ -1165,6 +1547,10 @@ void DMA_SetTriggerSrc(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_event_src_t 
     else if(M4_DMA2 == pstcDmaReg)
     {
         WRITE_DMA_CH_TRGSEL(&M4_AOS->DMA2_TRGSEL0,u8Ch,enSrc);
+    }
+    else
+    {
+        //else
     }
 }
 
@@ -1273,7 +1659,8 @@ void DMA_ChannelCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
  **
  ** \retval None.
  **
- ** \note   This function should be used after enable DMAx clk(PWC_Fcg0PeriphClockCmd).
+ ** \note   This function should be used after enable DMAx clk(PWC_Fcg0PeriphClockCmd)
+ **         and before channel enable.
  **
  ******************************************************************************/
 void DMA_InitChannel(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
@@ -1295,19 +1682,19 @@ void DMA_InitChannel(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
     /* Set DMA destination address. */
     WRITE_DMA_CH_REG(&pstcDmaReg->DAR0, u8Ch, pstcDmaCfg->u32DesAddr);
     /* Set DMA transfer block size. */
-    MODIFY_DMA_CH_REG(&pstcDmaReg->DTCTL0, u8Ch, DMA_DTCTL_BLKSIZE, pstcDmaCfg->u16BlockSize);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->DTCTL0, u8Ch, DMA_DTCTL_BLKSIZE, (uint32_t)pstcDmaCfg->u16BlockSize);
     /* Set DMA transfer count. */
-    MODIFY_DMA_CH_REG(&pstcDmaReg->DTCTL0, u8Ch, DMA_DTCTL_CNT, pstcDmaCfg->u16TransferCnt);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->DTCTL0, u8Ch, DMA_DTCTL_CNT, (uint32_t)pstcDmaCfg->u16TransferCnt);
     /* Set DMA source repeat size. */
-    MODIFY_DMA_CH_REG(&pstcDmaReg->RPT0, u8Ch, DMA_RPT_SRPT, pstcDmaCfg->u16SrcRptSize);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->RPT0, u8Ch, DMA_RPT_SRPT, (uint32_t)pstcDmaCfg->u16SrcRptSize);
     /* Set DMA destination repeat size. */
-    MODIFY_DMA_CH_REG(&pstcDmaReg->RPT0, u8Ch, DMA_RPT_DRPT, pstcDmaCfg->u16DesRptSize);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->RPT0, u8Ch, DMA_RPT_DRPT, (uint32_t)pstcDmaCfg->u16DesRptSize);
     /* Set DMA source no_sequence. */
     MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTL0, u8Ch, DMA_SNSEQCTL_SOFFSET, pstcDmaCfg->stcSrcNseqCfg.u32Offset);
-    MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTL0, u8Ch, DMA_SNSEQCTL_SNSCNT, pstcDmaCfg->stcSrcNseqCfg.u16Cnt);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTL0, u8Ch, DMA_SNSEQCTL_SNSCNT, (uint32_t)pstcDmaCfg->stcSrcNseqCfg.u16Cnt);
     /* Set DMA destination no_sequence. */
     MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTL0, u8Ch, DMA_DNSEQCTL_DOFFSET, pstcDmaCfg->stcDesNseqCfg.u32Offset);
-    MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTL0, u8Ch, DMA_DNSEQCTL_DNSCNT, pstcDmaCfg->stcDesNseqCfg.u16Cnt);
+    MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTL0, u8Ch, DMA_DNSEQCTL_DNSCNT, (uint32_t)pstcDmaCfg->stcDesNseqCfg.u16Cnt);
     /* Set DMA linked list pointer. */
     WRITE_DMA_CH_REG(&pstcDmaReg->LLP0, u8Ch, pstcDmaCfg->u32DmaLlp);
     /* Set DMA channel parameter. */

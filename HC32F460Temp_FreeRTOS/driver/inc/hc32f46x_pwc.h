@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -152,8 +152,8 @@ typedef enum en_pwc_waketime_sel
  ******************************************************************************/
 typedef enum en_pwc_stop_flash_sel
 {
-    NotWait                         = 0u,  ///< Not Wait flash stable.
-    Wait                            = 1u,  ///< wait flash stable.
+    Wait                            = 0u,  ///< wait flash stable.
+    NotWait                         = 1u,  ///< Not Wait flash stable.
 }en_pwc_stop_flash_sel_t;
 
 /**
@@ -164,7 +164,7 @@ typedef enum en_pwc_stop_flash_sel
 typedef enum en_pwc_stop_clk_sel
 {
     ClkFix                          = 0u,  ///< clock fix.
-    ClkMrc                          = 1u,  ///< clock source is MRC.
+    ClkMrc                          = 1u,  ///< clock source is MRC, only ram code.
 }en_pwc_stop_clk_sel_t;
 
 /**
@@ -207,8 +207,8 @@ typedef enum en_pwc_wkover_flag
  ******************************************************************************/
 typedef enum en_pwc_ram_pwr_ctl
 {
-    DynamicCtl                      = 0u,   ///< Work at high speed.
-    PowDownCtl                      = 1u,   ///< Work at ultra low speed.
+    DynamicCtl                      = 0u,   ///< Ram dynamic.
+    PowDownCtl                      = 1u,   ///< Ram power down.
 }en_pwc_ram_pwr_ctl_t;
 
 /**
@@ -327,10 +327,9 @@ typedef struct stc_pwc_pwr_mode_cfg
     en_pwc_iortn_t          enIoRetain;     ///< IO retain.
     en_functional_state_t   enVPll;         ///< Enable or disable PLL vcc.
     en_functional_state_t   enVHrc;         ///< Enable or disable HRC vcc.
-    en_pwc_stopdas_t        enStpDrvAbi;    ///< Driver ability while enter stop mode.
     en_pwc_drvability_sca_t enDrvAbility;   ///< Driver ability scale.
     en_pwc_dvoltage_sca_t   enDynVol;       ///< Dynamic voltage.
-    en_pwc_waketime_sel_t   enPwrDWkupTm;   ///< Ptwk2 edge configuration (rising or falling).
+    en_pwc_waketime_sel_t   enPwrDWkupTm;   ///< The power down wake up time select.
 }stc_pwc_pwr_mode_cfg_t;
 
 /**
@@ -343,6 +342,7 @@ typedef struct stc_pwc_stop_mode_cfg
     en_pwc_stopdas_t        enStpDrvAbi;    ///< Driver ability while enter stop mode.
     en_pwc_stop_flash_sel_t enStopFlash;    ///< Flash mode while stop mode awake.
     en_pwc_stop_clk_sel_t   enStopClk;      ///< Clock value while stop mode awake.
+    en_functional_state_t   enPll;          ///< Whether the PLL enable or disable while enter stop mode.
 }stc_pwc_stop_mode_cfg_t;
 
 /**
@@ -566,32 +566,44 @@ typedef struct stc_pwc_pvd_cfg
  ******************************************************************************/
 void PWC_PowerModeCfg(const stc_pwc_pwr_mode_cfg_t* pstcPwrMdCfg);
 void PWC_EnterPowerDownMd(void);
-void PWC_PdWakeup0Cmd(uint32_t u32WkupEvent, en_functional_state_t enNewState);
+
+void PWC_PdWakeup0Cmd(uint32_t u32Wkup0Event, en_functional_state_t enNewState);
 void PWC_PdWakeup1Cmd(uint32_t u32Wkup1Event, en_functional_state_t enNewState);
 void PWC_PdWakeup2Cmd(uint32_t u32Wkup2Event, en_functional_state_t enNewState);
 void PWC_PdWkupEdgeCfg(const stc_pwc_wkup_edge_cfg_t* pstcWkupEdgeCfg);
-en_flag_status_t PWC_GetWakeup0Flag(uint32_t u32WkupFlag);
-en_flag_status_t PWC_GetWakeup1Flag(uint32_t u32WkupFlag);
-void PWC_ClearWakeup0Flag(uint32_t u32WkupFlag);
-void PWC_ClearWakeup1Flag(uint32_t u32WkupFlag);
+
+en_flag_status_t PWC_GetWakeup0Flag(uint8_t u8WkupFlag);
+en_flag_status_t PWC_GetWakeup1Flag(uint8_t u8WkupFlag);
+void PWC_ClearWakeup0Flag(uint8_t u8WkupFlag);
+void PWC_ClearWakeup1Flag(uint8_t u8WkupFlag);
 void PWC_PwrMonitorCmd(en_functional_state_t enNewState);
+
 void PWC_Fcg0PeriphClockCmd(uint32_t u32Fcg0Periph, en_functional_state_t enNewState);
 void PWC_Fcg1PeriphClockCmd(uint32_t u32Fcg1Periph, en_functional_state_t enNewState);
 void PWC_Fcg2PeriphClockCmd(uint32_t u32Fcg2Periph, en_functional_state_t enNewState);
 void PWC_Fcg3PeriphClockCmd(uint32_t u32Fcg3Periph, en_functional_state_t enNewState);
-void PWC_StopModeCfg(const stc_pwc_stop_mode_cfg_t*  pstcStpMdCfg);
+
+en_result_t PWC_StopModeCfg(const stc_pwc_stop_mode_cfg_t*  pstcStpMdCfg);
 void PWC_StopWkupCmd(uint32_t u32Wkup0Event, en_functional_state_t enNewState);
+
 void PWC_EnterStopMd(void);
 void PWC_EnterSleepMd(void);
-void PWC_RamCfg(stc_pwc_ram_cfg_t* pstcRamCfg);
+
+void PWC_RamCfg(const stc_pwc_ram_cfg_t* pstcRamCfg);
 void PWC_Xtal32CsCmd(en_functional_state_t enNewState);
-void PWC_WktmControl(stc_pwc_wktm_ctl_t* pstcWktmCtl);
-void PWC_PvdCfg(stc_pwc_pvd_cfg_t* pstcPvdCfg);
+void PWC_WktmControl(const stc_pwc_wktm_ctl_t* pstcWktmCtl);
+
+void PWC_PvdCfg(const stc_pwc_pvd_cfg_t* pstcPvdCfg);
 void PWC_Pvd1Cmd(en_functional_state_t enNewState);
 void PWC_Pvd2Cmd(en_functional_state_t enNewState);
 void PWC_ExVccCmd(en_functional_state_t enNewState);
 en_flag_status_t PWC_GetPvdFlag(en_pwc_pvd_flag_t enPvdFlag);
 
+void PWC_HrcPwrCmd(en_functional_state_t enNewState);
+void PWC_PllPwrCmd(en_functional_state_t enNewState);
+
+void PWC_IrqClkBackup(void);
+void PWC_IrqClkRecover(void);
 
 
 //@} // PwcGroup

@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -424,9 +424,9 @@ en_result_t SPI_Cmd(M4_SPI_TypeDef *SPIx, en_functional_state_t enNewSta);
 en_result_t SPI_SendData8(M4_SPI_TypeDef *SPIx, uint8_t u8Data);
 en_result_t SPI_SendData16(M4_SPI_TypeDef *SPIx, uint16_t u16Data);
 en_result_t SPI_SendData32(M4_SPI_TypeDef *SPIx, uint32_t u32Data);
-uint8_t SPI_ReceiveData8(M4_SPI_TypeDef *SPIx);
-uint16_t SPI_ReceiveData16(M4_SPI_TypeDef *SPIx);
-uint32_t SPI_ReceiveData32(M4_SPI_TypeDef *SPIx);
+uint8_t SPI_ReceiveData8(const M4_SPI_TypeDef *SPIx);
+uint16_t SPI_ReceiveData16(const M4_SPI_TypeDef *SPIx);
+uint32_t SPI_ReceiveData32(const M4_SPI_TypeDef *SPIx);
 
 /* Communication configure functions */
 en_result_t SPI_SetSsPolarity(M4_SPI_TypeDef *SPIx, en_spi_ss_channel_t enChannel,
@@ -436,6 +436,7 @@ en_result_t SPI_SetReadDataRegObject(M4_SPI_TypeDef *SPIx, en_spi_read_object_t 
 en_result_t SPI_SetFrameNumber(M4_SPI_TypeDef *SPIx, en_spi_frame_number_t enFrameNum);
 en_result_t SPI_SetDataLength(M4_SPI_TypeDef *SPIx, en_spi_data_length_t enDataLength);
 en_result_t SPI_SetFirstBitPosition(M4_SPI_TypeDef *SPIx, en_spi_first_bit_position_t enPosition);
+en_result_t SPI_SetClockDiv(M4_SPI_TypeDef *SPIx, en_spi_clk_div_t enClkDiv);
 
 /* Interrupt and flags functions */
 en_result_t SPI_IrqCmd(M4_SPI_TypeDef *SPIx, en_spi_irq_type_t enIrq,

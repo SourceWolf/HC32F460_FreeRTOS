@@ -1,4 +1,6 @@
 #include "hc32_ddl.h"
+#include "System_InterruptCFG_Def.h"
+
 #define DCU_UNIT                        M4_DCU1
 
 bool flag_DCU1_INT  = 0;

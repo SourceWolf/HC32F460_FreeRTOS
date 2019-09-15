@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -137,9 +137,9 @@
     (Timer4SevtMask15 == (x)))
 
 /*!< Get the specified register address of the specified Timer4 unit */
-#define TMR4_SCCRx(__TMR4x__, __CH__)       ((uint32_t)&__TMR4x__->SCCRUH + ((uint32_t)__CH__)*4)
-#define TMR4_SCSRx(__TMR4x__, __CH__)       ((uint32_t)&__TMR4x__->SCSRUH + ((uint32_t)__CH__)*4)
-#define TMR4_SCMRx(__TMR4x__, __CH__)       ((uint32_t)&__TMR4x__->SCMRUH + ((uint32_t)__CH__)*4)
+#define TMR4_SCCRx(__TMR4x__, __CH__)       ((uint32_t)&(__TMR4x__)->SCCRUH + ((uint32_t)(__CH__))*4ul)
+#define TMR4_SCSRx(__TMR4x__, __CH__)       ((uint32_t)&(__TMR4x__)->SCSRUH + ((uint32_t)(__CH__))*4ul)
+#define TMR4_SCMRx(__TMR4x__, __CH__)       ((uint32_t)&(__TMR4x__)->SCMRUH + ((uint32_t)(__CH__))*4ul)
 
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
@@ -187,92 +187,94 @@ en_result_t TIMER4_SEVT_Init(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_sevt_ch_t enCh,
                                 const stc_timer4_sevt_init_t *pstcInitCfg)
 {
-    __IO uint16_t *pu16SCCR;
-    __IO stc_tmr4_scsruh_field_t stcSCSR_f;
-    __IO stc_tmr4_scmruh_field_t stcSCMR_f;
-    __IO stc_tmr4_scsruh_field_t *pstcSCSR_f;
-    __IO stc_tmr4_scmruh_field_t *pstcSCMR_f;
+    __IO uint16_t *pu16SCCR = NULL;
+    __IO stc_tmr4_scsr_field_t stcSCSR_f;
+    __IO stc_tmr4_scmr_field_t stcSCMR_f;
+    __IO stc_tmr4_scsr_field_t *pstcSCSR_f = NULL;
+    __IO stc_tmr4_scmr_field_t *pstcSCMR_f = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_SEVT_CH(enCh));
-    DDL_ASSERT(IS_VALID_SEVT_MODE(pstcInitCfg->enMode));
-    DDL_ASSERT(IS_VALID_SEVT_BUF_MODE(pstcInitCfg->enBuf));
-    DDL_ASSERT(IS_VALID_SEVT_MSK(pstcInitCfg->enMaskTimes));
-    DDL_ASSERT(IS_VALID_SEVT_TRG_EVT(pstcInitCfg->enTrigEvt));
-    DDL_ASSERT(IS_VALID_SEVT_OCCR_SEL(pstcInitCfg->enOccrSel));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enCmpAmcZicCmd));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enCmpAmcPicCmd));
-
-    if ((!IS_VALID_TIMER4(TMR4x)) || (NULL == pstcInitCfg))
+    /* Check TMR4x && pstcInitCfg pointer */
+    if ((IS_VALID_TIMER4(TMR4x)) && (NULL != pstcInitCfg))
     {
-        return ErrorInvalidParameter;
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_SEVT_CH(enCh));
+        DDL_ASSERT(IS_VALID_SEVT_MODE(pstcInitCfg->enMode));
+        DDL_ASSERT(IS_VALID_SEVT_BUF_MODE(pstcInitCfg->enBuf));
+        DDL_ASSERT(IS_VALID_SEVT_MSK(pstcInitCfg->enMaskTimes));
+        DDL_ASSERT(IS_VALID_SEVT_TRG_EVT(pstcInitCfg->enTrigEvt));
+        DDL_ASSERT(IS_VALID_SEVT_OCCR_SEL(pstcInitCfg->enOccrSel));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enCmpAmcZicCmd));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enCmpAmcPicCmd));
+
+        enRet = Ok;
+        /* Get actual address of register list of current channel */
+        pu16SCCR = (__IO uint16_t*)TMR4_SCCRx(TMR4x, enCh);
+        pstcSCSR_f = (__IO stc_tmr4_scsr_field_t*)TMR4_SCSRx(TMR4x, enCh);
+        pstcSCMR_f = (__IO stc_tmr4_scmr_field_t*)TMR4_SCMRx(TMR4x, enCh);
+
+        /* Configure default parameter */
+        *pu16SCCR = (uint16_t)0u;
+        *(__IO uint16_t*)pstcSCSR_f = (uint16_t)0x0000u;
+        *(__IO uint16_t*)pstcSCMR_f = (uint16_t)0xFF00u;
+
+        switch (pstcInitCfg->enBuf)
+        {
+            case SevtBufDisable:
+                stcSCSR_f.BUFEN = (uint16_t)0u;
+                stcSCSR_f.LMC = (uint16_t)0u;
+                break;
+            case SevtBufCntZero:
+                stcSCSR_f.BUFEN = (uint16_t)1u;
+                stcSCSR_f.LMC = (uint16_t)0u;
+                break;
+            case SevtBufCntPeak:
+                stcSCSR_f.BUFEN = (uint16_t)2u;
+                stcSCSR_f.LMC = (uint16_t)0u;
+                break;
+            case SevtBufCntZeroOrCntPeak:
+                stcSCSR_f.BUFEN = (uint16_t)3u;
+                stcSCSR_f.LMC = (uint16_t)0u;
+                break;
+            case SevtBufCntZeroZicZero:
+                stcSCSR_f.BUFEN = (uint16_t)1u;
+                stcSCSR_f.LMC = (uint16_t)1u;
+                break;
+            case SevtBufCntPeakPicZero:
+                stcSCSR_f.BUFEN = (uint16_t)2u;
+                stcSCSR_f.LMC = (uint16_t)1u;
+                break;
+            case SevtBufCntZeroZicZeroOrCntPeakPicZero:
+                stcSCSR_f.BUFEN = (uint16_t)3u;
+                stcSCSR_f.LMC = (uint16_t)1u;
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
+
+        if (Ok == enRet)
+        {
+            /* Configure start trigger output channel number */
+            stcSCSR_f.EVTOS = (uint16_t)(pstcInitCfg->enTrigEvt);
+
+            /* Select SEVT running mode */
+            stcSCSR_f.EVTMS = (uint16_t)(pstcInitCfg->enMode);
+
+            /* select OCO OCCR register: OCCR(x) */
+            stcSCSR_f.EVTDS = (uint16_t)(pstcInitCfg->enOccrSel);
+
+            /* Set the comparison with CNT interrupt mask counter */
+            stcSCMR_f.AMC = (uint16_t)(pstcInitCfg->enMaskTimes);
+            stcSCMR_f.MZCE = (uint16_t)(pstcInitCfg->enCmpAmcZicCmd);
+            stcSCMR_f.MPCE = (uint16_t)(pstcInitCfg->enCmpAmcPicCmd);
+
+            *pstcSCSR_f = stcSCSR_f;
+            *pstcSCMR_f = stcSCMR_f;
+        }
     }
-    else
-    {
-    }
 
-    /* Get actual address of register list of current channel */
-    pu16SCCR = (__IO uint16_t*)TMR4_SCCRx(TMR4x, enCh);
-    pstcSCSR_f = (__IO stc_tmr4_scsruh_field_t*)TMR4_SCSRx(TMR4x, enCh);
-    pstcSCMR_f = (__IO stc_tmr4_scmruh_field_t*)TMR4_SCMRx(TMR4x, enCh);
-
-    /* Configure default parameter */
-    *pu16SCCR = 0u;
-    *(__IO uint16_t*)pstcSCSR_f = 0x0000u;
-    *(__IO uint16_t*)pstcSCMR_f = 0xFF00u;
-
-    switch (pstcInitCfg->enBuf)
-    {
-        case SevtBufDisable:
-            stcSCSR_f.BUFENUH = 0u;
-            stcSCSR_f.LMCUH = 0u;
-            break;
-        case SevtBufCntZero:
-            stcSCSR_f.BUFENUH = 1u;
-            stcSCSR_f.LMCUH = 0u;
-            break;
-        case SevtBufCntPeak:
-            stcSCSR_f.BUFENUH = 2u;
-            stcSCSR_f.LMCUH = 0u;
-            break;
-        case SevtBufCntZeroOrCntPeak:
-            stcSCSR_f.BUFENUH = 3u;
-            stcSCSR_f.LMCUH = 0u;
-            break;
-        case SevtBufCntZeroZicZero:
-            stcSCSR_f.BUFENUH = 1u;
-            stcSCSR_f.LMCUH = 1u;
-            break;
-        case SevtBufCntPeakPicZero:
-            stcSCSR_f.BUFENUH = 2u;
-            stcSCSR_f.LMCUH = 1u;
-            break;
-        case SevtBufCntZeroZicZeroOrCntPeakPicZero:
-            stcSCSR_f.BUFENUH = 3u;
-            stcSCSR_f.LMCUH = 1u;
-            break;
-        default:
-            return ErrorInvalidParameter;
-    }
-
-    /* Configure start trigger output channel number */
-    stcSCSR_f.EVTOSUH = pstcInitCfg->enTrigEvt;
-
-    /* Select SEVT running mode */
-    stcSCSR_f.EVTMSUH = pstcInitCfg->enMode;
-
-    /* select OCO OCCR register: OCCR(x) */
-    stcSCSR_f.EVTDSUH = pstcInitCfg->enOccrSel;
-
-    /* Set the comparison with CNT interrupt mask counter */
-    stcSCMR_f.AMCUH = pstcInitCfg->enMaskTimes;
-    stcSCMR_f.MZCEUH = ((Enable == pstcInitCfg->enCmpAmcZicCmd) ? 1u : 0u);
-    stcSCMR_f.MPCEUH = ((Enable == pstcInitCfg->enCmpAmcPicCmd) ? 1u : 0u);
-
-    *pstcSCSR_f = stcSCSR_f;
-    *pstcSCMR_f = stcSCMR_f;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -298,33 +300,31 @@ en_result_t TIMER4_SEVT_Init(M4_TMR4_TypeDef *TMR4x,
 en_result_t TIMER4_SEVT_DeInit(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_sevt_ch_t enCh)
 {
-    __IO uint16_t *pu16SCCR;
-    __IO stc_tmr4_scsruh_field_t *pstcSCSR_f;
-    __IO stc_tmr4_scmruh_field_t *pstcSCMR_f;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_SEVT_CH(enCh));
+    __IO uint16_t *pu16SCCR = NULL;
+    __IO stc_tmr4_scsr_field_t *pstcSCSR_f = NULL;
+    __IO stc_tmr4_scmr_field_t *pstcSCMR_f = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_SEVT_CH(enCh));
+
+        /* Get actual address of register list of current channel */
+        pu16SCCR = (__IO uint16_t*)TMR4_SCCRx(TMR4x, enCh);
+        pstcSCSR_f = (__IO stc_tmr4_scsr_field_t*)TMR4_SCSRx(TMR4x, enCh);
+        pstcSCMR_f = (__IO stc_tmr4_scmr_field_t*)TMR4_SCMRx(TMR4x, enCh);
+
+        /* Configure default parameter */
+        *pu16SCCR = 0u;
+        *(__IO uint16_t*)pstcSCSR_f = (uint16_t)0x0000u;
+        *(__IO uint16_t*)pstcSCMR_f = (uint16_t)0xFF00u;
+
+        enRet = Ok;
     }
-    else
-    {
-    }
 
-    /* Get actual address of register list of current channel */
-    pu16SCCR = (__IO uint16_t*)TMR4_SCCRx(TMR4x, enCh);
-    pstcSCSR_f = (__IO stc_tmr4_scsruh_field_t*)TMR4_SCSRx(TMR4x, enCh);
-    pstcSCMR_f = (__IO stc_tmr4_scmruh_field_t*)TMR4_SCMRx(TMR4x, enCh);
-
-    /* Configure default parameter */
-    *pu16SCCR = 0u;
-    *(__IO uint16_t*)pstcSCSR_f = 0x0000u;
-    *(__IO uint16_t*)pstcSCMR_f = 0xFF00u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -358,26 +358,24 @@ en_result_t TIMER4_SEVT_SetTriggerEvent(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_sevt_ch_t enCh,
                                 en_timer4_sevt_trigger_evt_t enTrgEvt)
 {
-    __IO stc_tmr4_scsruh_field_t *pstcSCSR_f;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_SEVT_CH(enCh));
-    DDL_ASSERT(IS_VALID_SEVT_TRG_EVT(enTrgEvt));
+    __IO stc_tmr4_scsr_field_t *pstcSCSR_f = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_SEVT_CH(enCh));
+        DDL_ASSERT(IS_VALID_SEVT_TRG_EVT(enTrgEvt));
+
+        /* Get actual address of register list of current channel */
+        pstcSCSR_f = (__IO stc_tmr4_scsr_field_t*)TMR4_SCSRx(TMR4x, enCh);
+        pstcSCSR_f->EVTOS = (uint16_t)(enTrgEvt);
+
+        enRet = Ok;
     }
 
-    /* Get actual address of register list of current channel */
-    pstcSCSR_f = (__IO stc_tmr4_scsruh_field_t*)TMR4_SCSRx(TMR4x, enCh);
-    pstcSCSR_f->EVTOSUH = (uint8_t)(enTrgEvt);
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -406,33 +404,30 @@ en_result_t TIMER4_SEVT_SetTriggerCond(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_sevt_ch_t enCh,
                                 const stc_timer4_sevt_trigger_cond_t *pstcTrigCond)
 {
-    __IO stc_tmr4_scsruh_field_t *pstcSCSR_f;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_SEVT_CH(enCh));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcTrigCond->enUpMatchCmd));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcTrigCond->enZeroMatchCmd));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcTrigCond->enDownMatchCmd));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcTrigCond->enPeakMatchCmd));
+    __IO stc_tmr4_scsr_field_t *pstcSCSR_f = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_SEVT_CH(enCh));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcTrigCond->enUpMatchCmd));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcTrigCond->enZeroMatchCmd));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcTrigCond->enDownMatchCmd));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcTrigCond->enPeakMatchCmd));
+
+        /* Get actual address of register list of current channel */
+        pstcSCSR_f = (__IO stc_tmr4_scsr_field_t*)TMR4_SCSRx(TMR4x, enCh);
+        pstcSCSR_f->PEN = (uint16_t)(pstcTrigCond->enPeakMatchCmd);
+        pstcSCSR_f->ZEN = (uint16_t)(pstcTrigCond->enZeroMatchCmd);
+        pstcSCSR_f->UEN = (uint16_t)(pstcTrigCond->enUpMatchCmd);
+        pstcSCSR_f->DEN = (uint16_t)(pstcTrigCond->enDownMatchCmd);
+
+        enRet = Ok;
     }
-    else
-    {
-    }
 
-    /* Get actual address of register list of current channel */
-    pstcSCSR_f = (__IO stc_tmr4_scsruh_field_t*)TMR4_SCSRx(TMR4x, enCh);
-
-    pstcSCSR_f->PENUH = (Enable == pstcTrigCond->enPeakMatchCmd) ? 1u : 0u;
-    pstcSCSR_f->ZENUH = (Enable == pstcTrigCond->enZeroMatchCmd) ? 1u : 0u;
-    pstcSCSR_f->UENUH = (Enable == pstcTrigCond->enUpMatchCmd)   ? 1u : 0u;
-    pstcSCSR_f->DENUH = (Enable == pstcTrigCond->enDownMatchCmd) ? 1u : 0u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -460,25 +455,23 @@ en_result_t TIMER4_SEVT_WriteSCCR(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_sevt_ch_t enCh,
                                 uint16_t u16SccrVal)
 {
-    __IO uint16_t *pu16SCCR;
-
-    /* check parameters */
-    DDL_ASSERT(IS_VALID_SEVT_CH(enCh));
+    __IO uint16_t *pu16SCCR = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* check parameters */
+        DDL_ASSERT(IS_VALID_SEVT_CH(enCh));
+
+        /* Get actual address of register list of current channel */
+        pu16SCCR = (__IO uint16_t*)TMR4_SCCRx(TMR4x, enCh);
+        *pu16SCCR = u16SccrVal;
+
+        enRet = Ok;
     }
 
-    /* Get actual address of register list of current channel */
-    pu16SCCR = (__IO uint16_t*)TMR4_SCCRx(TMR4x, enCh);
-    *pu16SCCR = u16SccrVal;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -503,19 +496,11 @@ en_result_t TIMER4_SEVT_WriteSCCR(M4_TMR4_TypeDef *TMR4x,
 uint16_t TIMER4_SEVT_ReadSCCR(M4_TMR4_TypeDef *TMR4x,
                                   en_timer4_sevt_ch_t enCh)
 {
-    __IO uint16_t *pu16SCCR;
+    __IO uint16_t *pu16SCCR = NULL;
 
     /* check parameters */
+    DDL_ASSERT(IS_VALID_TIMER4(TMR4x));
     DDL_ASSERT(IS_VALID_SEVT_CH(enCh));
-
-    /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
-    {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
 
     /* Get actual address of register list of current channel */
     pu16SCCR = (__IO uint16_t*)TMR4_SCCRx(TMR4x, enCh);
@@ -564,26 +549,24 @@ en_result_t TIMER4_SEVT_SetMaskTimes(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_sevt_ch_t enCh,
                                 en_timer4_sevt_mask_t enMaskTimes)
 {
-    __IO stc_tmr4_scmruh_field_t *pstcSCMR_f;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_SEVT_CH(enCh));
-    DDL_ASSERT(IS_VALID_SEVT_MSK(enMaskTimes));
+    __IO stc_tmr4_scmr_field_t *pstcSCMR_f = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_SEVT_CH(enCh));
+        DDL_ASSERT(IS_VALID_SEVT_MSK(enMaskTimes));
+
+        /* Get actual address of register list of current channel */
+        pstcSCMR_f = (__IO stc_tmr4_scmr_field_t*)TMR4_SCMRx(TMR4x, enCh);
+        pstcSCMR_f->AMC = (uint16_t)(enMaskTimes);
+
+        enRet = Ok;
     }
 
-    /* Get actual address of register list of current channel */
-    pstcSCMR_f = (__IO stc_tmr4_scmruh_field_t*)TMR4_SCMRx(TMR4x, enCh);
-    pstcSCMR_f->AMCUH = (uint8_t)(enMaskTimes);
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -623,16 +606,16 @@ en_result_t TIMER4_SEVT_SetMaskTimes(M4_TMR4_TypeDef *TMR4x,
 en_timer4_sevt_mask_t TIMER4_SEVT_GetMaskTimes(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_sevt_ch_t enCh)
 {
-    __IO stc_tmr4_scmruh_field_t *pstcSCMR_f;
+    __IO stc_tmr4_scmr_field_t *pstcSCMR_f = NULL;
 
     /* Check parameters */
     DDL_ASSERT(IS_VALID_TIMER4(TMR4x));
     DDL_ASSERT(IS_VALID_SEVT_CH(enCh));
 
     /* Get actual address of register list of current channel */
-    pstcSCMR_f = (__IO stc_tmr4_scmruh_field_t*)TMR4_SCMRx(TMR4x, enCh);
+    pstcSCMR_f = (__IO stc_tmr4_scmr_field_t*)TMR4_SCMRx(TMR4x, enCh);
 
-    return (en_timer4_sevt_mask_t)pstcSCMR_f->AMCUH;
+    return (en_timer4_sevt_mask_t)pstcSCMR_f->AMC;
 }
 
 //@} // Timer4SevtGroup

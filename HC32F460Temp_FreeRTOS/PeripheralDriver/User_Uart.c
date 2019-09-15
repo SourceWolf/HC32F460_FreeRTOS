@@ -1,5 +1,6 @@
 #include "hc32_ddl.h"
 #include "User_Uart.h"
+#include "System_InterruptCFG_Def.h"
 //#include "cmsis_os.h"
 volatile uint8_t Rx2data[4000];
 volatile bool flag_RX2_receviced;

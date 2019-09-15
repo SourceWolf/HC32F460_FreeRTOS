@@ -1,4 +1,5 @@
 #include "hc32_ddl.h"
+#include "System_InterruptCFG_Def.h"
 
 /* Timer4 CNT */
 #define TIMER4_UNIT                     M4_TMR41

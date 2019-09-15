@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -195,7 +195,6 @@ typedef struct stc_exint_config
     en_functional_state_t   enFilterEn;         ///< TRUE: Enable filter function
     en_ei_flt_clk_t         enFltClk;           ///< Filter clock, ref@ en_ei_flt_clk_t for details
     en_exti_lvl_t           enExtiLvl;          ///< Detection level, ref@ en_exti_lvl_t for details
-    func_ptr_t              pfnExtiCallback;    ///< Callback pointers
 }stc_exint_config_t;
 
 /**
@@ -269,10 +268,10 @@ typedef struct stc_swi_config
 /*******************************************************************************
  * Global function prototypes (definition in C source)
  ******************************************************************************/
-extern en_result_t EXINT_Init(stc_exint_config_t *pstcConfig);
+extern en_result_t EXINT_Init(const stc_exint_config_t *pstcExtiConfig);
 extern en_int_status_t EXINT_IrqFlgGet(en_exti_ch_t enExint);
 extern en_result_t EXINT_IrqFlgClr(en_exti_ch_t enExint);
-extern en_result_t NMI_Init(stc_nmi_config_t *pstcNmiConfig);
+extern en_result_t NMI_Init(const stc_nmi_config_t *pstcNmiConfig);
 extern en_result_t NMI_DeInit(void);
 extern en_int_status_t NMI_IrqFlgGet(en_nmi_src_t enNmiSrc);
 extern en_result_t NMI_IrqFlgClr(uint16_t u16NmiSrc);

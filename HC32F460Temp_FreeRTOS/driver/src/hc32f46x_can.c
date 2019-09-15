@@ -17,7 +17,7 @@
 *
 * Disclaimer:
 * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
-* REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+* REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
 * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
 * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
 * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -55,7 +55,7 @@
 #include "hc32f46x_can.h"
 #include "hc32f46x_utility.h"
 
-#if (DDL_CLK_ENABLE == DDL_ON)
+#if (DDL_CAN_ENABLE == DDL_ON)
 
 /**
  *******************************************************************************
@@ -70,69 +70,74 @@
 /*******************************************************************************
  * Local pre-processor symbols/macros ('#define')
  ******************************************************************************/
-#define CAN_RESET_ENABLE()                  M4_CAN->CFG_STAT_f.RESET = 1;
-#define CAN_RESET_DISABLE()                 M4_CAN->CFG_STAT_f.RESET = 0;\
-                                            while(M4_CAN->CFG_STAT_f.RESET){;}
+#define CAN_RESET_ENABLE()                  (M4_CAN->CFG_STAT_f.RESET = 1u)
+#define CAN_RESET_DISABLE()                                                     \
+do{                                                                             \
+    do{                                                                         \
+        M4_CAN->CFG_STAT_f.RESET = 0u;                                          \
+}while(M4_CAN->CFG_STAT_f.RESET);                                               \
+}while(0)
 
-#define CAN_ACF_ID_REG_SEL                  ((uint8_t)0x00)
-#define CAN_ACF_MASK_REG_SEL                ((uint8_t)0x01)
+
+#define CAN_ACF_ID_REG_SEL                  ((uint8_t)0x00u)
+#define CAN_ACF_MASK_REG_SEL                ((uint8_t)0x01u)
 
 
 /*! Parameter validity check for CAN Mode \a CanMode. */
 #define IS_CAN_MODE_VALID(CanMode)                                             \
-(       (CanExternalLoopBackMode  == CanMode) ||                               \
-        (CanInternalLoopBackMode  == CanMode) ||                               \
-        (CanTxSignalPrimaryMode   == CanMode) ||                               \
-        (CanTxSignalSecondaryMode == CanMode) ||                               \
-        (CanListenOnlyMode        == CanMode)                                  \
+(       (CanExternalLoopBackMode  == (CanMode)) ||                             \
+        (CanInternalLoopBackMode  == (CanMode)) ||                             \
+        (CanTxSignalPrimaryMode   == (CanMode)) ||                             \
+        (CanTxSignalSecondaryMode == (CanMode)) ||                             \
+        (CanListenOnlyMode        == (CanMode))                                \
 )
 
 /*! Parameter validity check for CAN Tx Cmd \a TxCmd. */
 #define IS_TX_CMD_VALID(TxCmd)                                                 \
-(       (CanPTBTxCmd      == TxCmd) ||                                         \
-        (CanPTBTxAbortCmd == TxCmd) ||                                         \
-        (CanSTBTxOneCmd   == TxCmd) ||                                         \
-        (CanSTBTxAllCmd   == TxCmd) ||                                         \
-        (CanSTBTxAbortCmd == TxCmd)                                            \
+(       (CanPTBTxCmd      == (TxCmd))           ||                             \
+        (CanPTBTxAbortCmd == (TxCmd))           ||                             \
+        (CanSTBTxOneCmd   == (TxCmd))           ||                             \
+        (CanSTBTxAllCmd   == (TxCmd))           ||                             \
+        (CanSTBTxAbortCmd == (TxCmd))                                          \
 )
 
 /*! Parameter validity check for CAN status \a enCanStatus. */
 #define IS_CAN_STATUS_VALID(enCanStatus)                                       \
-(       (CanRxActive == enCanStatus) ||                                        \
-        (CanTxActive == enCanStatus) ||                                        \
-        (CanBusoff   == enCanStatus)                                           \
+(       (CanRxActive == (enCanStatus))          ||                             \
+        (CanTxActive == (enCanStatus))          ||                             \
+        (CanBusoff   == (enCanStatus))                                         \
 )
 
 /*! Parameter validity check for CAN Irq type \a enCanIrqType. */
 #define IS_CAN_IRQ_TYPE_VALID(enCanIrqType)                                    \
-(       (CanRxIrqEn              == enCanIrqType) ||                           \
-        (CanRxOverIrqEn          == enCanIrqType) ||                           \
-        (CanRxBufFullIrqEn       == enCanIrqType) ||                           \
-        (CanRxBufAlmostFullIrqEn == enCanIrqType) ||                           \
-        (CanTxPrimaryIrqEn       == enCanIrqType) ||                           \
-        (CanTxSecondaryIrqEn     == enCanIrqType) ||                           \
-        (CanErrorIrqEn           == enCanIrqType) ||                           \
-        (CanErrorPassiveIrqEn    == enCanIrqType) ||                           \
-        (CanArbiLostIrqEn        == enCanIrqType) ||                           \
-        (CanBusErrorIrqEn        == enCanIrqType)                              \
+(       (CanRxIrqEn              == (enCanIrqType)) ||                         \
+        (CanRxOverIrqEn          == (enCanIrqType)) ||                         \
+        (CanRxBufFullIrqEn       == (enCanIrqType)) ||                         \
+        (CanRxBufAlmostFullIrqEn == (enCanIrqType)) ||                         \
+        (CanTxPrimaryIrqEn       == (enCanIrqType)) ||                         \
+        (CanTxSecondaryIrqEn     == (enCanIrqType)) ||                         \
+        (CanErrorIrqEn           == (enCanIrqType)) ||                         \
+        (CanErrorPassiveIrqEn    == (enCanIrqType)) ||                         \
+        (CanArbiLostIrqEn        == (enCanIrqType)) ||                         \
+        (CanBusErrorIrqEn        == (enCanIrqType))                            \
 )
 
 /*! Parameter validity check for CAN Irq flag type \a enCanIrqFLg. */
 #define IS_CAN_IRQ_FLAG_VALID(enCanIrqFLg)                                     \
-(       (CanTxBufFullIrqFlg        == enCanIrqFLg) ||                          \
-        (CanRxIrqFlg               == enCanIrqFLg) ||                          \
-        (CanRxOverIrqFlg           == enCanIrqFLg) ||                          \
-        (CanRxBufFullIrqFlg        == enCanIrqFLg) ||                          \
-        (CanRxBufAlmostFullIrqFlg  == enCanIrqFLg) ||                          \
-        (CanTxPrimaryIrqFlg        == enCanIrqFLg) ||                          \
-        (CanTxSecondaryIrqFlg      == enCanIrqFLg) ||                          \
-        (CanErrorIrqFlg            == enCanIrqFLg) ||                          \
-        (CanAbortIrqFlg            == enCanIrqFLg) ||                          \
-        (CanErrorWarningIrqFlg     == enCanIrqFLg) ||                          \
-        (CanErrorPassivenodeIrqFlg == enCanIrqFLg) ||                          \
-        (CanErrorPassiveIrqFlg     == enCanIrqFLg) ||                          \
-        (CanArbiLostIrqFlg         == enCanIrqFLg) ||                          \
-        (CanBusErrorIrqFlg         == enCanIrqFLg)                             \
+(       (CanTxBufFullIrqFlg        == (enCanIrqFLg))    ||                     \
+        (CanRxIrqFlg               == (enCanIrqFLg))    ||                     \
+        (CanRxOverIrqFlg           == (enCanIrqFLg))    ||                     \
+        (CanRxBufFullIrqFlg        == (enCanIrqFLg))    ||                     \
+        (CanRxBufAlmostFullIrqFlg  == (enCanIrqFLg))    ||                     \
+        (CanTxPrimaryIrqFlg        == (enCanIrqFLg))    ||                     \
+        (CanTxSecondaryIrqFlg      == (enCanIrqFLg))    ||                     \
+        (CanErrorIrqFlg            == (enCanIrqFLg))    ||                     \
+        (CanAbortIrqFlg            == (enCanIrqFLg))    ||                     \
+        (CanErrorWarningIrqFlg     == (enCanIrqFLg))    ||                     \
+        (CanErrorPassivenodeIrqFlg == (enCanIrqFLg))    ||                     \
+        (CanErrorPassiveIrqFlg     == (enCanIrqFLg))    ||                     \
+        (CanArbiLostIrqFlg         == (enCanIrqFLg))    ||                     \
+        (CanBusErrorIrqFlg         == (enCanIrqFLg))                           \
 )
 
 /*******************************************************************************
@@ -163,26 +168,27 @@
  ******************************************************************************/
 void CAN_Init(stc_can_init_config_t *pstcCanInitCfg)
 {
-    DDL_ASSERT(NULL != pstcCanInitCfg);
+    if (NULL != pstcCanInitCfg)
+    {
+        M4_CAN->RCTRL_f.SACK   = pstcCanInitCfg->enCanSAck;
+        M4_CAN->TCTRL_f.TSMODE = pstcCanInitCfg->enCanSTBMode;
+        M4_CAN->RCTRL_f.RBALL  = pstcCanInitCfg->enCanRxBufAll;
+        M4_CAN->RCTRL_f.ROM    = pstcCanInitCfg->enCanRxBufMode;
 
-    M4_CAN->RCTRL_f.SACK   = pstcCanInitCfg->enCanSAck;
-    M4_CAN->TCTRL_f.TSMODE = pstcCanInitCfg->enCanSTBMode;
-    M4_CAN->RCTRL_f.RBALL  = pstcCanInitCfg->enCanRxBufAll;
-    M4_CAN->RCTRL_f.ROM    = pstcCanInitCfg->enCanRxBufMode;
+        M4_CAN->RTIE = 0x00u;
 
-    M4_CAN->RTIE = 0x00;
+        CAN_RESET_ENABLE();
 
-    CAN_RESET_ENABLE();
+        M4_CAN->BT_f.PRESC = pstcCanInitCfg->stcCanBt.PRESC;
+        M4_CAN->BT_f.SEG_1 = pstcCanInitCfg->stcCanBt.SEG_1;
+        M4_CAN->BT_f.SEG_2 = pstcCanInitCfg->stcCanBt.SEG_2;
+        M4_CAN->BT_f.SJW   = pstcCanInitCfg->stcCanBt.SJW;
 
-    M4_CAN->BT_f.PRESC = pstcCanInitCfg->stcCanBt.PRESC;
-    M4_CAN->BT_f.SEG_1 = pstcCanInitCfg->stcCanBt.SEG_1;
-    M4_CAN->BT_f.SEG_2 = pstcCanInitCfg->stcCanBt.SEG_2;
-    M4_CAN->BT_f.SJW   = pstcCanInitCfg->stcCanBt.SJW;
+        M4_CAN->LIMIT_f.AFWL = pstcCanInitCfg->stcWarningLimit.CanWarningLimitVal;
+        M4_CAN->LIMIT_f.EWL  = pstcCanInitCfg->stcWarningLimit.CanErrorWarningLimitVal;
 
-    M4_CAN->LIMIT_f.AFWL = pstcCanInitCfg->stcWarningLimit.CanWarningLimitVal;
-    M4_CAN->LIMIT_f.EWL  = pstcCanInitCfg->stcWarningLimit.CanErrorWarningLimitVal;
-
-    CAN_RESET_DISABLE();
+        CAN_RESET_DISABLE();
+    }
 }
 
 /**
@@ -251,37 +257,39 @@ void CAN_ModeConfig(en_can_mode_t enMode, en_functional_state_t enNewState)
  ** \note   None
  **
  ******************************************************************************/
-void CAN_FilterConfig(stc_can_filter_t *pstcFilter, en_functional_state_t enNewState)
+void CAN_FilterConfig(const stc_can_filter_t *pstcFilter, en_functional_state_t enNewState)
 {
-    DDL_ASSERT(NULL != pstcFilter);
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewState));
-
-    CAN_RESET_ENABLE();
-
-    //<<Acceptance filter address
-    M4_CAN->ACFCTRL_f.ACFADR  = pstcFilter->enFilterSel;
-
-    //<<ID config
-    M4_CAN->ACFCTRL_f.SELMASK = CAN_ACF_ID_REG_SEL;
-    M4_CAN->ACF               = pstcFilter->u32CODE;
-
-    //<<MASK config
-    M4_CAN->ACFCTRL_f.SELMASK = CAN_ACF_MASK_REG_SEL;
-    M4_CAN->ACF               = pstcFilter->u32MASK;
-
-    //<<Frame format config
-    M4_CAN->ACF_f.AIDEE = ((pstcFilter->enAcfFormat >> 1) & 0x01);
-    M4_CAN->ACF_f.AIDE  = (pstcFilter->enAcfFormat & 0x01);
-
-    if(Enable == enNewState)
+    if(NULL != pstcFilter)
     {
-        M4_CAN->ACFEN |= 1u << pstcFilter->enFilterSel;
-    }else
-    {
-        M4_CAN->ACFEN &= ~(1u << pstcFilter->enFilterSel);
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewState));
+
+        CAN_RESET_ENABLE();
+
+        //<<Acceptance filter address
+        M4_CAN->ACFCTRL_f.ACFADR  = pstcFilter->enFilterSel;
+
+        //<<ID config
+        M4_CAN->ACFCTRL_f.SELMASK = CAN_ACF_ID_REG_SEL;
+        M4_CAN->ACF               = pstcFilter->u32CODE;
+
+        //<<MASK config
+        M4_CAN->ACFCTRL_f.SELMASK = CAN_ACF_MASK_REG_SEL;
+        M4_CAN->ACF               = pstcFilter->u32MASK;
+
+        //<<Frame format config
+        M4_CAN->ACF_f.AIDEE = ((pstcFilter->enAcfFormat >> 1ul) & 0x01u);
+        M4_CAN->ACF_f.AIDE  = (pstcFilter->enAcfFormat & 0x01ul);
+
+        if(Enable == enNewState)
+        {
+            M4_CAN->ACFEN |= (uint8_t)(1ul << pstcFilter->enFilterSel);
+        }else
+        {
+            M4_CAN->ACFEN &= (uint8_t)(~(1ul << (pstcFilter->enFilterSel)));
+        }
+
+        CAN_RESET_DISABLE();
     }
-
-    CAN_RESET_DISABLE();
 }
 
 
@@ -298,19 +306,19 @@ void CAN_FilterConfig(stc_can_filter_t *pstcFilter, en_functional_state_t enNewS
  ******************************************************************************/
 void CAN_SetFrame(stc_can_txframe_t *pstcTxFrame)
 {
-    DDL_ASSERT(NULL != pstcTxFrame);
-
-    M4_CAN->TCMD_f.TBSEL = pstcTxFrame->enBufferSel;
-    M4_CAN->TBUF0 = pstcTxFrame->TBUF32_0;
-    M4_CAN->TBUF1 = pstcTxFrame->TBUF32_1;
-    M4_CAN->TBUF2 = pstcTxFrame->TBUF32_2[0];
-    M4_CAN->TBUF3 = pstcTxFrame->TBUF32_2[1];
-
-    if(CanSTBSel == pstcTxFrame->enBufferSel)
+    if(NULL != pstcTxFrame)
     {
-        M4_CAN->TCTRL_f.TSNEXT = Enable;
-    }
+        M4_CAN->TCMD_f.TBSEL = pstcTxFrame->enBufferSel;
+        M4_CAN->TBUF0 = pstcTxFrame->TBUF32_0;
+        M4_CAN->TBUF1 = pstcTxFrame->TBUF32_1;
+        M4_CAN->TBUF2 = pstcTxFrame->TBUF32_2[0];
+        M4_CAN->TBUF3 = pstcTxFrame->TBUF32_2[1];
 
+        if(CanSTBSel == pstcTxFrame->enBufferSel)
+        {
+            M4_CAN->TCTRL_f.TSNEXT = Enable;
+        }
+    }
 }
 
 /**
@@ -347,15 +355,15 @@ en_can_tx_buf_status_t CAN_TransmitCmd(en_can_tx_cmd_t enTxCmd)
  ******************************************************************************/
 en_can_rx_buf_status_t CAN_Receive(stc_can_rxframe_t *pstcRxFrame)
 {
-    DDL_ASSERT(NULL != pstcRxFrame);
+    if(NULL != pstcRxFrame)
+    {
+        pstcRxFrame->RBUF32_0    = M4_CAN->RBUF0;
+        pstcRxFrame->RBUF32_1    = M4_CAN->RBUF1;
+        pstcRxFrame->RBUF32_2[0] = M4_CAN->RBUF2;
+        pstcRxFrame->RBUF32_2[1] = M4_CAN->RBUF3;
 
-    pstcRxFrame->RBUF32_0    = M4_CAN->RBUF0;
-    pstcRxFrame->RBUF32_1    = M4_CAN->RBUF1;
-    pstcRxFrame->RBUF32_2[0] = M4_CAN->RBUF2;
-    pstcRxFrame->RBUF32_2[1] = M4_CAN->RBUF3;
-
-    M4_CAN->RCTRL_f.RREL = 1;
-
+        M4_CAN->RCTRL_f.RREL = 1u;
+    }
     return (en_can_rx_buf_status_t)M4_CAN->RCTRL_f.RSSTAT;
 }
 
@@ -373,13 +381,13 @@ en_can_rx_buf_status_t CAN_Receive(stc_can_rxframe_t *pstcRxFrame)
  ******************************************************************************/
 en_can_error_t CAN_ErrorStatusGet(void)
 {
-    if(6 > M4_CAN->EALCAP_f.KOER)
+    en_can_error_t enRet = UNKOWN_ERROR;
+
+    if(6u > M4_CAN->EALCAP_f.KOER)
     {
-        return (en_can_error_t)M4_CAN->EALCAP_f.KOER;
-    }else
-    {
-        return UNKOWN_ERROR;
+        enRet = (en_can_error_t)M4_CAN->EALCAP_f.KOER;
     }
+    return enRet;
 
 }
 
@@ -397,15 +405,14 @@ en_can_error_t CAN_ErrorStatusGet(void)
  ******************************************************************************/
 bool CAN_StatusGet(en_can_status_t enCanStatus)
 {
+    bool bRet = false;
     DDL_ASSERT(IS_CAN_STATUS_VALID(enCanStatus));
 
     if(M4_CAN->CFG_STAT & enCanStatus)
     {
-        return true;
-    }else
-    {
-        return false;
+        bRet = true;
     }
+    return bRet;
 }
 
 /**
@@ -436,7 +443,7 @@ void CAN_IrqCmd(en_can_irq_type_t enCanIrqType, en_functional_state_t enNewState
         *u32pIE |= enCanIrqType;
     }else
     {
-        *u32pIE &= ~enCanIrqType;
+        *u32pIE &= ~((uint32_t)enCanIrqType);
     }
 
 }
@@ -455,6 +462,7 @@ void CAN_IrqCmd(en_can_irq_type_t enCanIrqType, en_functional_state_t enNewState
 bool CAN_IrqFlgGet(en_can_irq_flag_type_t enCanIrqFlgType)
 {
     volatile uint32_t *u32pIE = NULL;
+    bool bRet = false;
 
     DDL_ASSERT(IS_CAN_IRQ_FLAG_VALID(enCanIrqFlgType));
 
@@ -462,12 +470,9 @@ bool CAN_IrqFlgGet(en_can_irq_flag_type_t enCanIrqFlgType)
 
     if( *u32pIE & enCanIrqFlgType)
     {
-        return true;
-    }else
-    {
-        return false;
+        bRet = true;
     }
-
+    return bRet;
 }
 
 /**

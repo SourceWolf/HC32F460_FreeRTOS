@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -631,7 +631,7 @@ uint8_t Timer6_GetStatus(M4_TMR6_TypeDef *TMR6x, en_timer6_status_t enStatus);
 
 /* Base functions */
 en_result_t Timer6_DeInit(M4_TMR6_TypeDef *TMR6x);
-en_result_t Timer6_Init(M4_TMR6_TypeDef *TMR6x, stc_timer6_basecnt_cfg_t* pstcTimer6BaseCntCfg);
+en_result_t Timer6_Init(M4_TMR6_TypeDef *TMR6x, const stc_timer6_basecnt_cfg_t* pstcTimer6BaseCntCfg);
 /* Timer6 unit start count*/
 en_result_t Timer6_StartCount(M4_TMR6_TypeDef *TMR6x);
 /* Timer6 unit stop count*/
@@ -653,31 +653,31 @@ en_result_t Timer6_SetSpecialCmpValue(M4_TMR6_TypeDef *TMR6x, en_timer6_special_
 uint16_t Timer6_GetGeneralCmpValue(M4_TMR6_TypeDef *TMR6x, en_timer6_compare_t enTimer6Compare);
 
 /* Timer6 unit set period buffer transfer function*/
-en_result_t Timer6_SetPeriodBuf(M4_TMR6_TypeDef *TMR6x, stc_timer6_period_buf_cfg_t* pstcTimer6PrdBufCfg);
+en_result_t Timer6_SetPeriodBuf(M4_TMR6_TypeDef *TMR6x, const stc_timer6_period_buf_cfg_t* pstcTimer6PrdBufCfg);
 /* Timer6 unit set general compare buffer transfer function*/
-en_result_t Timer6_SetGeneralBuf(M4_TMR6_TypeDef *TMR6x, en_timer6_chx_port_t enTimer6PWMPort, stc_timer6_gcmp_buf_cfg_t* pstcTimer6GenBufCfg);
+en_result_t Timer6_SetGeneralBuf(M4_TMR6_TypeDef *TMR6x, en_timer6_chx_port_t enTimer6PWMPort, const stc_timer6_gcmp_buf_cfg_t* pstcTimer6GenBufCfg);
 /* Timer6 unit set special compare buffer transfer function*/
-en_result_t Timer6_SetSpecialBuf(M4_TMR6_TypeDef *TMR6x,en_timer6_special_compare_t enTimer6SpclCmp, stc_timer6_spcl_buf_cfg_t* pstcTimer6SpclBufCfg);
+en_result_t Timer6_SetSpecialBuf(M4_TMR6_TypeDef *TMR6x,en_timer6_special_compare_t enTimer6SpclCmp, const stc_timer6_spcl_buf_cfg_t* pstcTimer6SpclBufCfg);
 
 /* Timer6 unit Set valid period Value*/
-en_result_t Timer6_SetValidPeriod(M4_TMR6_TypeDef *TMR6x, stc_timer6_validper_cfg_t* pstcTimer6ValidPerCfg);
+en_result_t Timer6_SetValidPeriod(M4_TMR6_TypeDef *TMR6x, const stc_timer6_validper_cfg_t* pstcTimer6ValidPerCfg);
 
 /* Config Input prot and filter function */
-en_result_t Timer6_PortInputConfig(M4_TMR6_TypeDef *TMR6x,stc_timer6_port_input_cfg_t* pstcTimer6PortInputCfg);
+en_result_t Timer6_PortInputConfig(M4_TMR6_TypeDef *TMR6x, const stc_timer6_port_input_cfg_t* pstcTimer6PortInputCfg);
 /* Config output prot function */
-en_result_t Timer6_PortOutputConfig(M4_TMR6_TypeDef *TMR6x, en_timer6_chx_port_t enTimer6PWMPort, stc_timer6_port_output_cfg_t* pstcTimer6PortOutCfg);
+en_result_t Timer6_PortOutputConfig(M4_TMR6_TypeDef *TMR6x, en_timer6_chx_port_t enTimer6PWMPort, const stc_timer6_port_output_cfg_t* pstcTimer6PortOutCfg);
 
 /* Set dead time register value */
 en_result_t Timer6_SetDeadTimeValue(M4_TMR6_TypeDef *TMR6x, en_timer6_dead_time_reg_t enTimer6DTReg, uint16_t u16DTValue);
 /* Config dead time function */
-en_result_t Timer6_ConfigDeadTime(M4_TMR6_TypeDef *TMR6x, stc_timer6_deadtime_cfg_t* pstcTimer6DTCfg);
+en_result_t Timer6_ConfigDeadTime(M4_TMR6_TypeDef *TMR6x, const stc_timer6_deadtime_cfg_t* pstcTimer6DTCfg);
 
 /* Config Software Synchrony Stop */
-en_result_t Timer6_SwSyncStart(stc_timer6_sw_sync_t* pstcTimer6SwSyncStart);
+en_result_t Timer6_SwSyncStart(const stc_timer6_sw_sync_t* pstcTimer6SwSyncStart);
 /* Config Software Synchrony Start */
-en_result_t Timer6_SwSyncStop(stc_timer6_sw_sync_t* pstcTimer6SwSyncStop);
+en_result_t Timer6_SwSyncStop(const stc_timer6_sw_sync_t* pstcTimer6SwSyncStop);
 /* Config Software Synchrony Clear */
-en_result_t Timer6_SwSyncClear(stc_timer6_sw_sync_t* pstcTimer6SwSyncClear);
+en_result_t Timer6_SwSyncClear(const stc_timer6_sw_sync_t* pstcTimer6SwSyncClear);
 /* Get Software Synchrony Status */
 en_result_t Timer6_GetSwSyncState(stc_timer6_sw_sync_t* pstcTimer6SwSyncState);
 
@@ -729,7 +729,7 @@ en_result_t Timer6_ConfigHwCaptureB(M4_TMR6_TypeDef *TMR6x, en_timer6_hw_trig_t 
 en_result_t Timer6_ClearHwCaptureB(M4_TMR6_TypeDef *TMR6x);
 
 /* Z phase input mask config */
-en_result_t Timer6_ConfigZMask(M4_TMR6_TypeDef *TMR6x, stc_timer6_zmask_cfg_t* pstcTimer6ZMaskCfg);
+en_result_t Timer6_ConfigZMask(M4_TMR6_TypeDef *TMR6x, const stc_timer6_zmask_cfg_t* pstcTimer6ZMaskCfg);
 
 //@} // Timer6Group
 

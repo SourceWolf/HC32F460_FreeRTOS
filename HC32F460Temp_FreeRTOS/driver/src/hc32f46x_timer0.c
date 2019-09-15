@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -70,9 +70,6 @@
 /*******************************************************************************
  * Local pre-processor symbols/macros ('#define')
  ******************************************************************************/
-/* Parameter valid check for peripheral Instances. */
-#define IS_VALID_POINTER(x)           (NULL != (x))
-
 /* Parameter validity check for unit. */
 #define IS_VALID_UNIT(x)                                                       \
 (   ((x) == M4_TMR01)                              ||                          \
@@ -121,6 +118,10 @@
 #define IS_VALID_CLK_MODE(x)                                                   \
 (   ((x) == Tim0_Sync)                             ||                          \
     ((x) == Tim0_Async))
+
+/* Parameter validity check for counter clock mode for M4_TMR01. */
+#define IS_VALID_CLK_MODE_UNIT01(x)                                            \
+(    (x) == Tim0_Async)
 
 /* Parameter validity check for external trigger event. */
 #define IS_VALID_TRIG_SRC_EVENT(x)                                             \
@@ -184,12 +185,11 @@
  ******************************************************************************/
 en_flag_status_t TIMER0_GetFlag(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh)
 {
-    en_flag_status_t enFlag;
+    en_flag_status_t enFlag = Reset;
     DDL_ASSERT(IS_VALID_UNIT(pstcTim0Reg));
     DDL_ASSERT(IS_VALID_CHANNEL(enCh));
 
     switch(enCh)
-
     {
         case Tim0_ChannelA:
             enFlag = (en_flag_status_t)pstcTim0Reg->STFLR_f.CMAF;
@@ -222,12 +222,18 @@ void TIMER0_ClearFlag(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh)
     if(Tim0_ChannelA == enCh)
     {
         pstcTim0Reg->STFLR_f.CMAF =0u;
-        while(0u != pstcTim0Reg->STFLR_f.CMAF);
+        while(0u != pstcTim0Reg->STFLR_f.CMAF)
+        {
+            ;
+        }
     }
-    else if(Tim0_ChannelB == enCh)
+    else
     {
         pstcTim0Reg->STFLR_f.CMBF = 0u;
-        while(0u != pstcTim0Reg->STFLR_f.CMBF);
+        while(0u != pstcTim0Reg->STFLR_f.CMBF)
+        {
+            ;
+        }
     }
 }
 
@@ -255,11 +261,17 @@ void TIMER0_Cmd(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
     {
         case Tim0_ChannelA:
             pstcTim0Reg->BCONR_f.CSTA = enCmd;
-            while(enCmd != pstcTim0Reg->BCONR_f.CSTA);
+            while(enCmd != pstcTim0Reg->BCONR_f.CSTA)
+            {
+                ;
+            }
             break;
         case Tim0_ChannelB:
             pstcTim0Reg->BCONR_f.CSTB = enCmd;
-            while(enCmd != pstcTim0Reg->BCONR_f.CSTB);
+            while(enCmd != pstcTim0Reg->BCONR_f.CSTB)
+            {
+                ;
+            }
             break;
         default:
             break;
@@ -345,18 +357,19 @@ void TIMER0_IntCmd(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
  ******************************************************************************/
 uint16_t TIMER0_GetCntReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh)
 {
-    uint16_t u16Value = 0;
+    uint16_t u16Value = 0u;
     DDL_ASSERT(IS_VALID_UNIT(pstcTim0Reg));
     DDL_ASSERT(IS_VALID_CHANNEL(enCh));
 
     if(Tim0_ChannelA == enCh)
     {
-        u16Value = pstcTim0Reg->CNTAR&0xFFFF;
+        u16Value = (uint16_t)((pstcTim0Reg->CNTAR)&0xFFFFu);
     }
-    else if(Tim0_ChannelB == enCh)
+    else
     {
-        u16Value = pstcTim0Reg->CNTBR&0xFFFF;
+        u16Value = (uint16_t)((pstcTim0Reg->CNTBR)&0xFFFFu);
     }
+
     return u16Value;
 }
 
@@ -382,12 +395,18 @@ void TIMER0_WriteCntReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
     if(Tim0_ChannelA == enCh)
     {
         pstcTim0Reg->CNTAR = (uint32_t)u16Cnt;
-        while(u16Cnt != (uint16_t)pstcTim0Reg->CNTAR);
+        while(u16Cnt != (uint16_t)pstcTim0Reg->CNTAR)
+        {
+            ;
+        }
     }
-    else if(Tim0_ChannelB == enCh)
+    else
     {
         pstcTim0Reg->CNTBR = (uint32_t)u16Cnt;
-        while(u16Cnt != (uint16_t)pstcTim0Reg->CNTBR);
+        while(u16Cnt != (uint16_t)pstcTim0Reg->CNTBR)
+        {
+            ;
+        }
     }
 }
 
@@ -404,17 +423,17 @@ void TIMER0_WriteCntReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
  ******************************************************************************/
 uint16_t TIMER0_GetCmpReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh)
 {
-    uint16_t u16Value = 0;
+    uint16_t u16Value = 0u;
     DDL_ASSERT(IS_VALID_UNIT(pstcTim0Reg));
     DDL_ASSERT(IS_VALID_CHANNEL(enCh));
 
     if(Tim0_ChannelA == enCh)
     {
-        u16Value = pstcTim0Reg->CMPAR&0xFFFF;
+        u16Value = (uint16_t)((pstcTim0Reg->CMPAR)&0xFFFFu);
     }
-    else if(Tim0_ChannelB == enCh)
+    else
     {
-        u16Value = pstcTim0Reg->CMPBR&0xFFFF;
+        u16Value = (uint16_t)((pstcTim0Reg->CMPBR)&0xFFFFu);
     }
     return u16Value;
 }
@@ -441,18 +460,24 @@ void TIMER0_WriteCmpReg(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
     if(Tim0_ChannelA == enCh)
     {
         pstcTim0Reg->CMPAR = (uint32_t)u16Cnt;
-        while(u16Cnt != (uint16_t)pstcTim0Reg->CMPAR);
+        while(u16Cnt != (uint16_t)pstcTim0Reg->CMPAR)
+        {
+            ;
+        }
     }
-    else if(Tim0_ChannelB == enCh)
+    else
     {
         pstcTim0Reg->CMPBR = (uint32_t)u16Cnt;
-        while(u16Cnt != (uint16_t)pstcTim0Reg->CMPBR);
+        while(u16Cnt != (uint16_t)pstcTim0Reg->CMPBR)
+        {
+            ;
+        }
     }
 }
 
 /**
  *******************************************************************************
- ** \brief  Timer0 peripheral base function initalize
+ ** \brief  Timer0 peripheral base function initialize
  **
  ** \param [in] pstcTim0Reg     Pointer to Timer0 register
  **
@@ -460,77 +485,98 @@ void TIMER0_WriteCmpReg(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
  **
  ** \param [in] pstcBaseInit    Timer0 function base parameter structure
  **
- ** \retval None
+ ** \retval Ok                      Process finished.
+ ** \retval ErrorInvalidParameter   Parameter error.
  **
  ******************************************************************************/
-void TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
+en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
                        const stc_tim0_base_init_t* pstcBaseInit)
 {
     stc_tmr0_bconr_field_t stcBconrTmp;
+    en_result_t enRet = Ok;
 
-    DDL_ASSERT(IS_VALID_UNIT(pstcTim0Reg));
-    DDL_ASSERT(IS_VALID_CHANNEL(enCh));
-    DDL_ASSERT(IS_VALID_POINTER(pstcBaseInit));
-    DDL_ASSERT(IS_VALID_CLK_DIVISION(pstcBaseInit->Tim0_ClockDivision));
-    DDL_ASSERT(IS_VALID_CLK_SYN_SRC(pstcBaseInit->Tim0_SyncClockSource));
-    DDL_ASSERT(IS_VALID_CLK_ASYN_SRC(pstcBaseInit->Tim0_AsyncClockSource));
-    DDL_ASSERT(IS_VALID_CLK_MODE(pstcBaseInit->Tim0_CounterMode));
-
-    /*Read current BCONR register */
-    stcBconrTmp = pstcTim0Reg->BCONR_f;
-
-    switch(enCh)
+    if (NULL != pstcBaseInit)
     {
-        case Tim0_ChannelA:
-            /*set timer counter mode*/
-            stcBconrTmp.SYNSA = pstcBaseInit->Tim0_CounterMode;
-            switch(pstcBaseInit->Tim0_CounterMode)
-            {
-                case Tim0_Sync:
-                    stcBconrTmp.SYNCLKA = pstcBaseInit->Tim0_SyncClockSource;
-                    break;
-                case Tim0_Async:
-                    stcBconrTmp.ASYNCLKA = pstcBaseInit->Tim0_AsyncClockSource;
-                    break;
-                default:
-                    break;
-            }
-            /*set clock division*/
-            stcBconrTmp.CKDIVA = pstcBaseInit->Tim0_ClockDivision;
-            /* Write BCONR register */
-            pstcTim0Reg->BCONR_f = stcBconrTmp;
-            /*set timer compare value*/
-            pstcTim0Reg->CMPAR = pstcBaseInit->Tim0_CmpValue;
-            while(pstcBaseInit->Tim0_CmpValue != (uint16_t)pstcTim0Reg->CMPAR);
+        DDL_ASSERT(IS_VALID_UNIT(pstcTim0Reg));
+        DDL_ASSERT(IS_VALID_CHANNEL(enCh));
+        DDL_ASSERT(IS_VALID_CLK_DIVISION(pstcBaseInit->Tim0_ClockDivision));
+        DDL_ASSERT(IS_VALID_CLK_SYN_SRC(pstcBaseInit->Tim0_SyncClockSource));
+        DDL_ASSERT(IS_VALID_CLK_ASYN_SRC(pstcBaseInit->Tim0_AsyncClockSource));
+        DDL_ASSERT(IS_VALID_CLK_MODE(pstcBaseInit->Tim0_CounterMode));
 
-            break;
+        if((M4_TMR01 == pstcTim0Reg)&&(Tim0_ChannelA == enCh))
+        {
+            DDL_ASSERT(IS_VALID_CLK_MODE_UNIT01(pstcBaseInit->Tim0_CounterMode));
+        }
 
-        case Tim0_ChannelB:
-            /*set timer counter mode*/
-            stcBconrTmp.SYNSB = pstcBaseInit->Tim0_CounterMode;
-            switch(pstcBaseInit->Tim0_CounterMode)
-            {
-                case Tim0_Sync:
-                    stcBconrTmp.SYNCLKB = pstcBaseInit->Tim0_SyncClockSource;
-                    break;
-                case Tim0_Async:
-                    stcBconrTmp.ASYNCLKB = pstcBaseInit->Tim0_AsyncClockSource;
-                    break;
-                default:
-                    break;
-            }
-            /*set clock division*/
-            stcBconrTmp.CKDIVB = pstcBaseInit->Tim0_ClockDivision;
-            /* Write BCONR register */
-            pstcTim0Reg->BCONR_f = stcBconrTmp;
-            /*set timer compare value*/
-            pstcTim0Reg->CMPBR = pstcBaseInit->Tim0_CmpValue;
-            while(pstcBaseInit->Tim0_CmpValue != (uint16_t)pstcTim0Reg->CMPBR);
+        /*Read current BCONR register */
+        stcBconrTmp = pstcTim0Reg->BCONR_f;
 
-            break;
-        default:
-            break;
+        switch(enCh)
+        {
+            case Tim0_ChannelA:
+                /*set timer counter mode*/
+                stcBconrTmp.SYNSA = pstcBaseInit->Tim0_CounterMode;
+                switch(pstcBaseInit->Tim0_CounterMode)
+                {
+                    case Tim0_Sync:
+                        stcBconrTmp.SYNCLKA = pstcBaseInit->Tim0_SyncClockSource;
+                        break;
+                    case Tim0_Async:
+                        stcBconrTmp.ASYNCLKA = pstcBaseInit->Tim0_AsyncClockSource;
+                        break;
+                    default:
+                        break;
+                }
+                /*set clock division*/
+                stcBconrTmp.CKDIVA = pstcBaseInit->Tim0_ClockDivision;
+                /* Write BCONR register */
+                pstcTim0Reg->BCONR_f = stcBconrTmp;
+                /*set timer compare value*/
+                pstcTim0Reg->CMPAR = pstcBaseInit->Tim0_CmpValue;
+                while(pstcBaseInit->Tim0_CmpValue != (uint16_t)pstcTim0Reg->CMPAR)
+                {
+                    ;
+                }
+
+                break;
+
+            case Tim0_ChannelB:
+                /*set timer counter mode*/
+                stcBconrTmp.SYNSB = pstcBaseInit->Tim0_CounterMode;
+                switch(pstcBaseInit->Tim0_CounterMode)
+                {
+                    case Tim0_Sync:
+                        stcBconrTmp.SYNCLKB = pstcBaseInit->Tim0_SyncClockSource;
+                        break;
+                    case Tim0_Async:
+                        stcBconrTmp.ASYNCLKB = pstcBaseInit->Tim0_AsyncClockSource;
+                        break;
+                    default:
+                        break;
+                }
+                /*set clock division*/
+                stcBconrTmp.CKDIVB = pstcBaseInit->Tim0_ClockDivision;
+                /* Write BCONR register */
+                pstcTim0Reg->BCONR_f = stcBconrTmp;
+                /*set timer compare value*/
+                pstcTim0Reg->CMPBR = pstcBaseInit->Tim0_CmpValue;
+                while(pstcBaseInit->Tim0_CmpValue != (uint16_t)pstcTim0Reg->CMPBR)
+                {
+                    ;
+                }
+
+                break;
+            default:
+                break;
+        }
     }
+    else
+    {
+        enRet = ErrorInvalidParameter;
+    }
+    
+    return enRet;
 }
 
 /**
@@ -552,16 +598,16 @@ void TIMER0_DeInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh)
     switch(enCh)
     {
         case Tim0_ChannelA:
-            pstcTim0Reg->BCONR &= 0xFFFF0000;
-            pstcTim0Reg->CMPAR = 0x0000FFFF;
-            pstcTim0Reg->CNTAR = 0x00000000;
+            pstcTim0Reg->BCONR &= 0xFFFF0000ul;
+            pstcTim0Reg->CMPAR = 0x0000FFFFul;
+            pstcTim0Reg->CNTAR = 0x00000000ul;
             pstcTim0Reg->STFLR_f.CMAF =0u;
             break;
 
         case Tim0_ChannelB:
-            pstcTim0Reg->BCONR &= 0x0000FFFF;
-            pstcTim0Reg->CMPBR = 0x0000FFFF;
-            pstcTim0Reg->CNTBR = 0x00000000;
+            pstcTim0Reg->BCONR &= 0x0000FFFFul;
+            pstcTim0Reg->CMPBR = 0x0000FFFFul;
+            pstcTim0Reg->CNTBR = 0x00000000ul;
             pstcTim0Reg->STFLR_f.CMBF =0u;
             break;
         default:
@@ -573,16 +619,13 @@ void TIMER0_DeInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh)
  *******************************************************************************
  ** \brief  Set external trigger source for Timer0
  **
- ** \param [in] pstcTim0Reg     Pointer to Timer0 register
- **
  ** \param [in] enEvent         External event source
  **
  ** \retval None
  **
  ******************************************************************************/
-void TIMER0_SetTriggerSrc(M4_TMR0_TypeDef* pstcTim0Reg, en_event_src_t enEvent)
+void TIMER0_SetTriggerSrc(en_event_src_t enEvent)
 {
-    DDL_ASSERT(IS_VALID_UNIT(pstcTim0Reg));
     DDL_ASSERT(IS_VALID_TRIG_SRC_EVENT(enEvent));
 
     M4_AOS->TMR0_HTSSR_f.TRGSEL = enEvent;
@@ -598,59 +641,69 @@ void TIMER0_SetTriggerSrc(M4_TMR0_TypeDef* pstcTim0Reg, en_event_src_t enEvent)
  **
  ** \param [in] pStcInit        Timer0 hareware trigger function structure
  **
- ** \retval None
+ ** \retval Ok                      Process finished.
+ ** \retval ErrorInvalidParameter   Parameter error.
  **
  ******************************************************************************/
-void TIMER0_HardTriggerInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
+en_result_t TIMER0_HardTriggerInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
                                 const stc_tim0_trigger_init_t* pStcInit)
 {
     stc_tmr0_bconr_field_t stcBconrTmp;
-    DDL_ASSERT(IS_VALID_UNIT(pstcTim0Reg));
-    DDL_ASSERT(IS_VALID_CHANNEL(enCh));
-    DDL_ASSERT(IS_VALID_POINTER(pStcInit));
-    DDL_ASSERT(IS_VALID_FUNCTION(pStcInit->Tim0_OCMode));
-    DDL_ASSERT(IS_VALID_TRIG_SRC_EVENT(pStcInit->Tim0_SelTrigSrc));
-
-    /*Read current BCONR register */
-    stcBconrTmp = pstcTim0Reg->BCONR_f;
-
-    switch(enCh)
+    en_result_t enRet = Ok;
+    if(NULL != pStcInit)
     {
-        case Tim0_ChannelA:
-            /*set work on input captrue or output capare*/
-            stcBconrTmp.CAPMDA = pStcInit->Tim0_OCMode;
-            /*enable input capture*/
-            stcBconrTmp.HICPA = pStcInit->Tim0_InTrigEnable;
-            /*enable trigger clear counter*/
-            stcBconrTmp.HCLEA = pStcInit->Tim0_InTrigClear;
-            /*enable trigger start counter*/
-            stcBconrTmp.HSTAA = pStcInit->Tim0_InTrigStart;
-            /*enable trigger stop counter*/
-            stcBconrTmp.HSTPA = pStcInit->Tim0_InTrigStop;
+        DDL_ASSERT(IS_VALID_UNIT(pstcTim0Reg));
+        DDL_ASSERT(IS_VALID_CHANNEL(enCh));
+        DDL_ASSERT(IS_VALID_FUNCTION(pStcInit->Tim0_OCMode));
+        DDL_ASSERT(IS_VALID_TRIG_SRC_EVENT(pStcInit->Tim0_SelTrigSrc));
 
-            /* Write BCONR register */
-            pstcTim0Reg->BCONR_f = stcBconrTmp;
-            break;
-        case Tim0_ChannelB:
-            /*set work on input captrue or output capare*/
-            stcBconrTmp.CAPMDB = pStcInit->Tim0_OCMode;
-            /*enable input capture*/
-            stcBconrTmp.HICPB = pStcInit->Tim0_InTrigEnable;
-            /*enable trigger clear counter*/
-            stcBconrTmp.HCLEB = pStcInit->Tim0_InTrigClear;
-            /*enable trigger start counter*/
-            stcBconrTmp.HSTAB = pStcInit->Tim0_InTrigStart;
-            /*enable trigger stop counter*/
-            stcBconrTmp.HSTPB = pStcInit->Tim0_InTrigStop;
+        /*Read current BCONR register */
+        stcBconrTmp = pstcTim0Reg->BCONR_f;
 
-            /* Write BCONR register */
-            pstcTim0Reg->BCONR_f = stcBconrTmp;
-            break;
-        default:
-            break;
+        switch(enCh)
+        {
+            case Tim0_ChannelA:
+                /*set work on input captrue or output capare*/
+                stcBconrTmp.CAPMDA = pStcInit->Tim0_OCMode;
+                /*enable input capture*/
+                stcBconrTmp.HICPA = pStcInit->Tim0_InTrigEnable;
+                /*enable trigger clear counter*/
+                stcBconrTmp.HCLEA = pStcInit->Tim0_InTrigClear;
+                /*enable trigger start counter*/
+                stcBconrTmp.HSTAA = pStcInit->Tim0_InTrigStart;
+                /*enable trigger stop counter*/
+                stcBconrTmp.HSTPA = pStcInit->Tim0_InTrigStop;
+
+                /* Write BCONR register */
+                pstcTim0Reg->BCONR_f = stcBconrTmp;
+                break;
+            case Tim0_ChannelB:
+                /*set work on input captrue or output capare*/
+                stcBconrTmp.CAPMDB = pStcInit->Tim0_OCMode;
+                /*enable input capture*/
+                stcBconrTmp.HICPB = pStcInit->Tim0_InTrigEnable;
+                /*enable trigger clear counter*/
+                stcBconrTmp.HCLEB = pStcInit->Tim0_InTrigClear;
+                /*enable trigger start counter*/
+                stcBconrTmp.HSTAB = pStcInit->Tim0_InTrigStart;
+                /*enable trigger stop counter*/
+                stcBconrTmp.HSTPB = pStcInit->Tim0_InTrigStop;
+
+                /* Write BCONR register */
+                pstcTim0Reg->BCONR_f = stcBconrTmp;
+                break;
+            default:
+                break;
+        }
+        /* Set trigger source*/
+        M4_AOS->TMR0_HTSSR_f.TRGSEL = pStcInit->Tim0_SelTrigSrc;
     }
-    /* Set trigger source*/
-    M4_AOS->TMR0_HTSSR_f.TRGSEL = pStcInit->Tim0_SelTrigSrc;
+    else
+    {
+        enRet = ErrorInvalidParameter;
+    }
+    
+    return enRet;
 
 }
 

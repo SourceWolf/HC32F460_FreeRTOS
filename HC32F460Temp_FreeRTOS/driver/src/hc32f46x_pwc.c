@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -70,29 +70,29 @@
 /*******************************************************************************
  * Local pre-processor symbols/macros ('#define')
  ******************************************************************************/
-#define ENABLE_FCG0_REG_WRITE()             (M4_MSTP->FCG0PC = 0xa5a50001)
-#define DISABLE_FCG0_REG_WRITE()            (M4_MSTP->FCG0PC = 0xa5a50000)
+#define ENABLE_FCG0_REG_WRITE()             (M4_MSTP->FCG0PC = 0xa5a50001u)
+#define DISABLE_FCG0_REG_WRITE()            (M4_MSTP->FCG0PC = 0xa5a50000u)
 
-#define ENABLE_PWR_REG0_WRITE()             (M4_SYSREG->PWR_FPRC = 0xa501)
-#define DISABLE_PWR_REG0_WRITE()            (M4_SYSREG->PWR_FPRC = 0xa500)
+#define ENABLE_PWR_REG0_WRITE()             (M4_SYSREG->PWR_FPRC = 0xa503u)
+#define DISABLE_PWR_REG0_WRITE()            (M4_SYSREG->PWR_FPRC = 0xa500u)
 
-#define ENABLE_PWR_REG_WRITE()              (M4_SYSREG->PWR_FPRC = 0xa502)
-#define DISABLE_PWR_REG_WRITE()             (M4_SYSREG->PWR_FPRC = 0xa500)
+#define ENABLE_PWR_REG_WRITE()              (M4_SYSREG->PWR_FPRC = 0xa502u)
+#define DISABLE_PWR_REG_WRITE()             (M4_SYSREG->PWR_FPRC = 0xa500u)
 
-#define ENABLE_PVD_REG_WRITE()              (M4_SYSREG->PWR_FPRC = 0xa508)
-#define DISABLE_PVD_REG_WRITE()             (M4_SYSREG->PWR_FPRC = 0xa500)
-
-/*! Parameter validity check for wake up event. */
-#define IS_PWC_WKUP_EVENT(evt)              ((0x00) != (evt))
+#define ENABLE_PVD_REG_WRITE()              (M4_SYSREG->PWR_FPRC = 0xa508u)
+#define DISABLE_PVD_REG_WRITE()             (M4_SYSREG->PWR_FPRC = 0xa500u)
 
 /*! Parameter validity check for wake up event. */
-#define IS_PWC_WKUP2_EVENT(evt)             ((0x08) != (evt))
+#define IS_PWC_WKUP_EVENT(evt)              ((0x00u) != (evt))
+
+/*! Parameter validity check for wake up event. */
+#define IS_PWC_WKUP2_EVENT(evt)             ((0x08u) != (evt))
 
 /*! Parameter validity check for wake up flag. */
-#define IS_PWC_WKUP0_FLAG(flag)             ((0x80) != (flag))
+#define IS_PWC_WKUP0_FLAG(flag)             ((0x80u) != (flag))
 
 /*! Parameter validity check for wake up flag. */
-#define IS_PWC_WKUP1_FLAG(flag)             ((0x07) != (flag))
+#define IS_PWC_WKUP1_FLAG(flag)             ((0x07u) != (flag))
 
 /*! Parameter validity check for power down mode. */
 #define IS_PWC_PWR_DOWN_MODE(md)                                               \
@@ -138,23 +138,23 @@
 
 /*! Parameter validity check for peripheral in fcg0. */
 #define IS_PWC_FCG0_PERIPH(per)                                                \
-(   (((per) & (0x700C3AEE)) == (0X00))  &&                                     \
-    ((0x00) != (per)))
+(   (((per) & (0x700C3AEEu)) == (0X00u))  &&                                   \
+    ((0x00u) != (per)))
 
 /*! Parameter validity check for peripheral in fcg1. */
 #define IS_PWC_FCG1_PERIPH(per)                                                \
-(   (((per) & (0xF0F00286)) == (0X00))  &&                                     \
-    ((0x00) != (per)))
+(   (((per) & (0xF0F00286u)) == (0X00u))  &&                                     \
+    ((0x00u) != (per)))
 
 /*! Parameter validity check for peripheral in fcg2. */
 #define IS_PWC_FCG2_PERIPH(per)                                                \
-(   (((per) & (0xFFF87800)) == (0X00))  &&                                     \
-    ((0x00) != (per)))
+(   (((per) & (0xFFF87800u)) == (0X00u))  &&                                   \
+    ((0x00u) != (per)))
 
 /*! Parameter validity check for peripheral in fcg3. */
 #define IS_PWC_FCG3_PERIPH(per)                                                \
-(   (((per) & (0XFFFFEEEC)) == (0X00))  &&                                     \
-    ((0x00) != (per)))
+(   (((per) & (0XFFFFEEECu)) == (0X00u))  &&                                   \
+    ((0x00u) != (per)))
 
 /*! Parameter validity check for clock value while stop mode mode. */
 #define IS_PWC_STOP_MODE_CLK(clk)                                              \
@@ -228,9 +228,43 @@
 (   ((x) == NonMskInt)                  ||                                     \
     ((x) == MskInt))
 
+/*! Parameter validity check for valid wakeup source from stop mode. */
+#define     IS_VALID_WKUP_SRC(x)                                                \
+(   ((x) == INT_USART1_WUPI)                    ||                              \
+    ((x) == INT_TMR01_GCMA)                     ||                              \
+    ((x) == INT_RTC_ALM)                        ||                              \
+    ((x) == INT_RTC_PRD)                        ||                              \
+    ((x) == INT_WKTM_PRD)                       ||                              \
+    ((x) == INT_ACMP1)                          ||                              \
+    ((x) == INT_PVD_PVD1)                       ||                              \
+    ((x) == INT_PVD_PVD2)                       ||                              \
+    ((x) == INT_SWDT_REFUDF)                    ||                              \
+    ((x) == INT_PORT_EIRQ0)                     ||                              \
+    ((x) == INT_PORT_EIRQ1)                     ||                              \
+    ((x) == INT_PORT_EIRQ2)                     ||                              \
+    ((x) == INT_PORT_EIRQ3)                     ||                              \
+    ((x) == INT_PORT_EIRQ4)                     ||                              \
+    ((x) == INT_PORT_EIRQ5)                     ||                              \
+    ((x) == INT_PORT_EIRQ6)                     ||                              \
+    ((x) == INT_PORT_EIRQ7)                     ||                              \
+    ((x) == INT_PORT_EIRQ8)                     ||                              \
+    ((x) == INT_PORT_EIRQ9)                     ||                              \
+    ((x) == INT_PORT_EIRQ10)                    ||                              \
+    ((x) == INT_PORT_EIRQ11)                    ||                              \
+    ((x) == INT_PORT_EIRQ12)                    ||                              \
+    ((x) == INT_PORT_EIRQ13)                    ||                              \
+    ((x) == INT_PORT_EIRQ14)                    ||                              \
+    ((x) == INT_PORT_EIRQ15))
+
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
  ******************************************************************************/
+uint32_t    NVIC_ISER_BAK[5];
+uint8_t     u8HrcState = 0u;
+uint8_t     u8MrcState = 0u;
+uint8_t     u8WkupIntCnt = 0u;
+uint8_t     u8StopFlag = 0u;
+uint8_t     u8SysClkSrc = 1u;
 
 /*******************************************************************************
  * Local function prototypes ('static')
@@ -239,6 +273,7 @@
 /*******************************************************************************
  * Local variable definitions ('static')
  ******************************************************************************/
+
 
 /*******************************************************************************
  * Function implementation - global ('extern') and local ('static')
@@ -254,7 +289,6 @@
  ** \arg    enVPll                      Enable or disable PLL VCC.
  ** \arg    enVHrc                      Enable or disable Hrc VCC.
  ** \arg    enIoRetain                  The IO state while power down.
- ** \arg    enStpDrvAbi                 The driver ability while enter stop mode.
  ** \arg    enDynVol                    The dynamic voltage.
  ** \arg    enPwrDWkupTm                The wake_up timer while power down.
  **
@@ -271,24 +305,22 @@ void PWC_PowerModeCfg(const stc_pwc_pwr_mode_cfg_t* pstcPwrMdCfg)
     DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcPwrMdCfg->enVPll));
     DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcPwrMdCfg->enVHrc));
     DDL_ASSERT(IS_PWC_PWR_DWON_IO_STATE(pstcPwrMdCfg->enIoRetain));
-    DDL_ASSERT(IS_PWC_STP_DRIVER_ABILITY(pstcPwrMdCfg->enStpDrvAbi));
     DDL_ASSERT(IS_PWC_DRIVER_ABILITY(pstcPwrMdCfg->enDrvAbility));
     DDL_ASSERT(IS_PWC_DYNAMIC_VOLTAGE(pstcPwrMdCfg->enDynVol));
     DDL_ASSERT(IS_PWC_PWR_DOWN_WKUP_TIM(pstcPwrMdCfg->enPwrDWkupTm));
 
     ENABLE_PWR_REG_WRITE();
 
-    M4_SYSREG->PWR_PWRC0 = (pstcPwrMdCfg->enPwrDownMd       |
-                           (pstcPwrMdCfg->enRLdo << 2)      |
-                           (pstcPwrMdCfg->enRetSram << 3)   |
-                           (pstcPwrMdCfg->enIoRetain << 4));
+    M4_SYSREG->PWR_PWRC0 = (pstcPwrMdCfg->enPwrDownMd                                       |
+                           (uint8_t)(((Enable == pstcPwrMdCfg->enRLdo) ? 0u : 1u) << 2u)    |
+                           (uint8_t)(((Enable == pstcPwrMdCfg->enRetSram) ? 0u : 1u) << 3u) |
+                           (pstcPwrMdCfg->enIoRetain << 4u));
 
-    M4_SYSREG->PWR_PWRC1 = (pstcPwrMdCfg->enVPll            |
-                           (pstcPwrMdCfg->enVHrc << 1)      |
-                           (pstcPwrMdCfg->enStpDrvAbi << 6));
+    M4_SYSREG->PWR_PWRC1_f.VHRCSD = ((Enable == pstcPwrMdCfg->enVHrc) ? 0u : 1u);
+    M4_SYSREG->PWR_PWRC1_f.VPLLSD = ((Enable == pstcPwrMdCfg->enVPll) ? 0u : 1u);
 
-    M4_SYSREG->PWR_PWRC2 = (pstcPwrMdCfg->enDrvAbility      |
-                           (pstcPwrMdCfg->enDynVol << 4));
+    M4_SYSREG->PWR_PWRC2 = (pstcPwrMdCfg->enDrvAbility         |
+                           (pstcPwrMdCfg->enDynVol << 4u));
 
     M4_SYSREG->PWR_PWRC3_f.PDTS = pstcPwrMdCfg->enPwrDWkupTm;
 
@@ -348,11 +380,11 @@ void PWC_PdWakeup0Cmd(uint32_t u32Wkup0Event, en_functional_state_t enNewState)
 
     if(Enable == enNewState)
     {
-        M4_SYSREG->PWR_PDWKE0 |= u32Wkup0Event;
+        M4_SYSREG->PWR_PDWKE0 |= (uint8_t)u32Wkup0Event;
     }
     else
     {
-        M4_SYSREG->PWR_PDWKE0 &= ~u32Wkup0Event;
+        M4_SYSREG->PWR_PDWKE0 &= (uint8_t)(~u32Wkup0Event);
     }
 
     DISABLE_PWR_REG_WRITE();
@@ -390,11 +422,11 @@ void PWC_PdWakeup1Cmd(uint32_t u32Wkup1Event, en_functional_state_t enNewState)
 
     if(Enable == enNewState)
     {
-        M4_SYSREG->PWR_PDWKE1 |= u32Wkup1Event;
+        M4_SYSREG->PWR_PDWKE1 |= (uint8_t)u32Wkup1Event;
     }
     else
     {
-        M4_SYSREG->PWR_PDWKE1 &= ~u32Wkup1Event;
+        M4_SYSREG->PWR_PDWKE1 &= (uint8_t)(~u32Wkup1Event);
     }
 
     DISABLE_PWR_REG_WRITE();
@@ -431,11 +463,11 @@ void PWC_PdWakeup2Cmd(uint32_t u32Wkup2Event, en_functional_state_t enNewState)
 
     if(Enable == enNewState)
     {
-        M4_SYSREG->PWR_PDWKE2 |= u32Wkup2Event;
+        M4_SYSREG->PWR_PDWKE2 |= (uint8_t)u32Wkup2Event;
     }
     else
     {
-        M4_SYSREG->PWR_PDWKE2 &= ~u32Wkup2Event;
+        M4_SYSREG->PWR_PDWKE2 &= (uint8_t)(~u32Wkup2Event);
     }
 
     DISABLE_PWR_REG_WRITE();
@@ -486,7 +518,7 @@ void PWC_PdWkupEdgeCfg(const stc_pwc_wkup_edge_cfg_t* pstcWkupEdgeCfg)
  *******************************************************************************
  ** \brief  Get wake_up event in PDWKF0 flag.
  **
- ** \param  [in] u32WkupFlag            The wake_up event in PDWKF0.
+ ** \param  [in] u8WkupFlag             The wake_up event in PDWKF0.
  ** \arg    PWC_PTWK0_WKUPFLAG          Ptwk0 wake_up flag
  ** \arg    PWC_PTWK1_WKUPFLAG          Ptwk1 wake_up flag
  ** \arg    PWC_PTWK2_WKUPFLAG          Ptwk2 wake_up flag
@@ -500,21 +532,21 @@ void PWC_PdWkupEdgeCfg(const stc_pwc_wkup_edge_cfg_t* pstcWkupEdgeCfg)
  ** \note   None
  **
  ******************************************************************************/
-en_flag_status_t PWC_GetWakeup0Flag(uint32_t u32WkupFlag)
+en_flag_status_t PWC_GetWakeup0Flag(uint8_t u8WkupFlag)
 {
     uint8_t u8flag;
-    DDL_ASSERT(IS_PWC_WKUP0_FLAG(u32WkupFlag));
+    DDL_ASSERT(IS_PWC_WKUP0_FLAG(u8WkupFlag));
 
-    u8flag = (M4_SYSREG->PWR_PDWKF0 & u32WkupFlag);
+    u8flag = (M4_SYSREG->PWR_PDWKF0 & u8WkupFlag);
 
-    return ((1 == u8flag) ? Set : Reset);
+    return ((0u == u8flag) ? Reset : Set);
 }
 
 /**
  *******************************************************************************
  ** \brief  Get wake_up event in PDWKF1 flag.
  **
- ** \param  [in] u32WkupFlag            The wake_up event in PDWKF1.
+ ** \param  [in] u8WkupFlag             The wake_up event in PDWKF1.
  ** \arg    PWC_RXD0_WKUPFLAG           Rxd0 wake_up flag
  ** \arg    PWC_RTCPRD_WKUPFALG         Rtcprd wake_up flag
  ** \arg    PWC_RTCAL_WKUPFLAG          Rtcal wake_up flag
@@ -526,21 +558,21 @@ en_flag_status_t PWC_GetWakeup0Flag(uint32_t u32WkupFlag)
  ** \note   None
  **
  ******************************************************************************/
-en_flag_status_t PWC_GetWakeup1Flag(uint32_t u32WkupFlag)
+en_flag_status_t PWC_GetWakeup1Flag(uint8_t u8WkupFlag)
 {
     uint8_t u8flag;
-    DDL_ASSERT(IS_PWC_WKUP1_FLAG(u32WkupFlag));
+    DDL_ASSERT(IS_PWC_WKUP1_FLAG(u8WkupFlag));
 
-    u8flag = (M4_SYSREG->PWR_PDWKF1 & u32WkupFlag);
+    u8flag = (M4_SYSREG->PWR_PDWKF1 & u8WkupFlag);
 
-    return ((1 == u8flag) ? Set : Reset);
+    return ((0u == u8flag) ? Reset : Set);
 }
 
 /**
  *******************************************************************************
  ** \brief  clear wake_up event in PDWKF0 flag.
  **
- ** \param  [in] u32WkupFlag            The wake_up event in PDWKF0.
+ ** \param  [in] u8WkupFlag             The wake_up event in PDWKF0.
  ** \arg    PWC_PTWK0_WKUPFLAG          Ptwk0 wake_up flag
  ** \arg    PWC_PTWK1_WKUPFLAG          Ptwk1 wake_up flag
  ** \arg    PWC_PTWK2_WKUPFLAG          Ptwk2 wake_up flag
@@ -554,13 +586,13 @@ en_flag_status_t PWC_GetWakeup1Flag(uint32_t u32WkupFlag)
  ** \note   None
  **
  ******************************************************************************/
-void PWC_ClearWakeup0Flag(uint32_t u32WkupFlag)
+void PWC_ClearWakeup0Flag(uint8_t u8WkupFlag)
 {
-    DDL_ASSERT(IS_PWC_WKUP0_FLAG(u32WkupFlag));
+    DDL_ASSERT(IS_PWC_WKUP0_FLAG(u8WkupFlag));
 
     ENABLE_PWR_REG_WRITE();
 
-    M4_SYSREG->PWR_PDWKF0 &= (~u32WkupFlag);
+    M4_SYSREG->PWR_PDWKF0 &= (uint8_t)(~u8WkupFlag);
 
     DISABLE_PWR_REG_WRITE();
 }
@@ -569,7 +601,7 @@ void PWC_ClearWakeup0Flag(uint32_t u32WkupFlag)
  *******************************************************************************
  ** \brief  clear wake_up event in PDWKF1 flag.
  **
- ** \param  [in] u32WkupFlag            The wake_up event in PDWKF1.
+ ** \param  [in] u8WkupFlag             The wake_up event in PDWKF1.
  ** \arg    PWC_RXD0_WKUPFLAG           Rxd0 wake_up flag
  ** \arg    PWC_RTCPRD_WKUPFALG         Rtcprd wake_up flag
  ** \arg    PWC_RTCAL_WKUPFLAG          Rtcal wake_up flag
@@ -581,13 +613,13 @@ void PWC_ClearWakeup0Flag(uint32_t u32WkupFlag)
  ** \note   None
  **
  ******************************************************************************/
-void PWC_ClearWakeup1Flag(uint32_t u32WkupFlag)
+void PWC_ClearWakeup1Flag(uint8_t u8WkupFlag)
 {
-    DDL_ASSERT(IS_PWC_WKUP1_FLAG(u32WkupFlag));
+    DDL_ASSERT(IS_PWC_WKUP1_FLAG(u8WkupFlag));
 
     ENABLE_PWR_REG_WRITE();
 
-    M4_SYSREG->PWR_PDWKF1 &= (~u32WkupFlag);
+    M4_SYSREG->PWR_PDWKF1 &= (uint8_t)(~u8WkupFlag);
 
     DISABLE_PWR_REG_WRITE();
 }
@@ -822,17 +854,41 @@ void PWC_Fcg3PeriphClockCmd(uint32_t u32Fcg3Periph, en_functional_state_t enNewS
  ** \note   None
  **
  ******************************************************************************/
-void PWC_StopModeCfg(const stc_pwc_stop_mode_cfg_t*  pstcStpMdCfg)
+en_result_t PWC_StopModeCfg(const stc_pwc_stop_mode_cfg_t*  pstcStpMdCfg)
 {
+    en_result_t enRet = Ok;
+
     DDL_ASSERT(IS_PWC_STOP_MODE_FLASH(pstcStpMdCfg->enStopFlash));
     DDL_ASSERT(IS_PWC_STOP_MODE_CLK(pstcStpMdCfg->enStopClk));
 
-    ENABLE_PWR_REG_WRITE();
+    ENABLE_PWR_REG0_WRITE();
 
     M4_SYSREG->PWR_STPMCR = (pstcStpMdCfg->enStopFlash          |
-                            (pstcStpMdCfg->enStopClk << 1));
+                            (pstcStpMdCfg->enStopClk << 1u));
 
-    DISABLE_PWR_REG_WRITE();
+    /* if should close HRC & PLL while stop mode, please disable before modifying the register */
+    if(Disable == pstcStpMdCfg->enPll)
+    {
+        /* PLL is system clock */
+        if(5u == M4_SYSREG->CMU_CKSWR_f.CKSW)
+        {
+            enRet = ErrorInvalidParameter;
+        }
+        else
+        {
+            /* Disable PLL */
+            M4_SYSREG->CMU_PLLCR_f.MPLLOFF = 1u;
+        }
+    }
+
+    /* Hrc power should be enable. */
+    M4_SYSREG->PWR_PWRC1_f.VHRCSD = 0u;
+    M4_SYSREG->PWR_PWRC1_f.VPLLSD = ((Enable == pstcStpMdCfg->enPll) ? 0u : 1u);
+    M4_SYSREG->PWR_PWRC1_f.STPDAS = pstcStpMdCfg->enStpDrvAbi;
+
+    DISABLE_PWR_REG0_WRITE();
+
+    return enRet;
 }
 
 /**
@@ -891,27 +947,6 @@ void PWC_StopWkupCmd(uint32_t u32Wkup0Event, en_functional_state_t enNewState)
 
 /**
  *******************************************************************************
- ** \brief  Enter stop mode.
- **
- ** \param  None
- **
- ** \retval None
- **
- ******************************************************************************/
-void PWC_EnterStopMd(void)
-{
-    ENABLE_PWR_REG_WRITE();
-
-    M4_SYSREG->PWR_STPMCR_f.STOP = 1u;
-    M4_SYSREG->PWR_PWRC0_f.PWDN = 0u;
-
-    DISABLE_PWR_REG_WRITE();
-
-    __WFI();
-}
-
-      /**
- *******************************************************************************
  ** \brief  Enter sleep mode.
  **
  ** \param  None
@@ -951,7 +986,7 @@ void PWC_EnterSleepMd(void)
  ** \note   None
  **
  ******************************************************************************/
-void PWC_RamCfg(stc_pwc_ram_cfg_t* pstcRamCfg)
+void PWC_RamCfg(const stc_pwc_ram_cfg_t* pstcRamCfg)
 {
     DDL_ASSERT(IS_PWC_RAM_PWR_CTL(pstcRamCfg->enRam0));
     DDL_ASSERT(IS_PWC_RAM_PWR_CTL(pstcRamCfg->enRam1));
@@ -967,14 +1002,14 @@ void PWC_RamCfg(stc_pwc_ram_cfg_t* pstcRamCfg)
     ENABLE_PWR_REG_WRITE();
 
     M4_SYSREG->PWR_RAMPC0 = (pstcRamCfg->enRam0             |
-                            (pstcRamCfg->enRam1 << 1)       |
-                            (pstcRamCfg->enRam2 << 2)       |
-                            (pstcRamCfg->enRam3 << 3)       |
-                            (pstcRamCfg->enUsbfs << 4)      |
-                            (pstcRamCfg->enSdioc0 << 5)     |
-                            (pstcRamCfg->enSdioc1 << 6)     |
-                            (pstcRamCfg->enCan << 7)        |
-                            (pstcRamCfg->enCache << 8));
+                            (pstcRamCfg->enRam1 << 1ul)       |
+                            (pstcRamCfg->enRam2 << 2ul)       |
+                            (pstcRamCfg->enRam3 << 3ul)       |
+                            (pstcRamCfg->enUsbfs << 4ul)      |
+                            (pstcRamCfg->enSdioc0 << 5ul)     |
+                            (pstcRamCfg->enSdioc1 << 6ul)     |
+                            (pstcRamCfg->enCan << 7ul)        |
+                            (pstcRamCfg->enCache << 8ul));
 
     M4_SYSREG->PWR_RAMOPM = pstcRamCfg->enRamOpMd;
 
@@ -1018,7 +1053,7 @@ void PWC_Xtal32CsCmd(en_functional_state_t enNewState)
  ** \note   None
  **
  ******************************************************************************/
-void PWC_WktmControl(stc_pwc_wktm_ctl_t* pstcWktmCtl)
+void PWC_WktmControl(const stc_pwc_wktm_ctl_t* pstcWktmCtl)
 {
     DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcWktmCtl->enWktmEn));
     DDL_ASSERT(IS_PWC_WKTM_CLK(pstcWktmCtl->enWkclk));
@@ -1051,7 +1086,7 @@ void PWC_WktmControl(stc_pwc_wktm_ctl_t* pstcWktmCtl)
  ** \note   None
  **
  ******************************************************************************/
-void PWC_PvdCfg(stc_pwc_pvd_cfg_t* pstcPvdCfg)
+void PWC_PvdCfg(const stc_pwc_pvd_cfg_t* pstcPvdCfg)
 {
     DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcPvdCfg->stcPvd1Ctl.enPvdIREn));
     DDL_ASSERT(IS_PWC_PVD_MD(pstcPvdCfg->stcPvd1Ctl.enPvdMode));
@@ -1179,7 +1214,7 @@ void PWC_ExVccCmd(en_functional_state_t enNewState)
  ******************************************************************************/
 en_flag_status_t PWC_GetPvdFlag(en_pwc_pvd_flag_t enPvdFlag)
 {
-    uint8_t u8flag;
+    uint8_t u8flag = 0u;
 
     switch(enPvdFlag)
     {
@@ -1189,9 +1224,543 @@ en_flag_status_t PWC_GetPvdFlag(en_pwc_pvd_flag_t enPvdFlag)
         case Pvd2Flag:
             u8flag = M4_SYSREG->PWR_PVDDSR_f.PVD2DETFLG;
             break;
+        default:
+            break;
     }
 
-    return ((1 == u8flag) ? Set : Reset);
+    return ((1u == u8flag) ? Set : Reset);
+}
+
+/**
+ *******************************************************************************
+ ** \brief  Enable or disable HRC power.
+ **
+ ** \param  [in] enNewState             The HRC power state.
+ ** \arg    Enable                      Enable HRC power.
+ ** \arg    Disable                     Disable HRC power.
+ **
+ ** \retval None
+ **
+ ******************************************************************************/
+void PWC_HrcPwrCmd(en_functional_state_t enNewState)
+{
+    DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewState));
+
+    ENABLE_PVD_REG_WRITE();
+
+     M4_SYSREG->PWR_PWRC1_f.VHRCSD = ((Enable == enNewState) ? 0u : 1u);
+
+    DISABLE_PVD_REG_WRITE();
+}
+
+/**
+ *******************************************************************************
+ ** \brief  Enable or disable PLL power.
+ **
+ ** \param  [in] enNewState             The PLL power state.
+ ** \arg    Enable                      Enable PLL power.
+ ** \arg    Disable                     Disable PLL power.
+ **
+ ** \retval None
+ **
+ ******************************************************************************/
+void PWC_PllPwrCmd(en_functional_state_t enNewState)
+{
+    DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewState));
+
+    ENABLE_PVD_REG_WRITE();
+
+     M4_SYSREG->PWR_PWRC1_f.VPLLSD = ((Enable == enNewState) ? 0u : 1u);
+
+    DISABLE_PVD_REG_WRITE();
+}
+/**
+ *******************************************************************************
+ ** \brief NVIC backup and disable before entry from stop mode
+ **
+ ** param  none
+ **
+ ** retval Ok                           Ok, Backup and disable sucessfully.
+ **
+ *****************************************************************************/
+static en_result_t PWC_enNvicBackup(void)
+{
+    uint8_t u8Cnt;
+    stc_intc_sel_field_t *stcIntSel;
+    uint32_t u32WakeupSrc = INT_MAX;
+    en_result_t enRet = Ok;
+
+    /* Backup NVIC set enable register for IRQ0~143*/
+    for (u8Cnt = 0u; u8Cnt < sizeof(NVIC_ISER_BAK)/sizeof(uint32_t); u8Cnt++)
+    {
+        NVIC_ISER_BAK[u8Cnt] = NVIC->ISER[u8Cnt];
+    }
+
+    /* Disable share vector */
+    for (u8Cnt = 128u; u8Cnt < 144u; u8Cnt++)
+    {
+        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+    }
+
+    for (u8Cnt = 0u; u8Cnt < 128u; u8Cnt++)
+    {
+        stcIntSel = (stc_intc_sel_field_t *)((uint32_t)(&M4_INTC->SEL0) + (4ul * u8Cnt));
+        /* Disable NVIC if it is the wakeup-able source from stop mode */
+        u32WakeupSrc = stcIntSel->INTSEL;
+        if (IS_VALID_WKUP_SRC(u32WakeupSrc))
+        {
+            switch (stcIntSel->INTSEL)
+            {
+                case INT_USART1_WUPI:
+                    if (Reset == bM4_INTC_WUPEN_SCIWEN)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_TMR01_GCMA:
+                    if (Reset == bM4_INTC_WUPEN_TMR0WUEN)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_RTC_ALM:
+                    if (Reset == bM4_INTC_WUPEN_RTCALMWUEN)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_RTC_PRD:
+                    if (Reset == bM4_INTC_WUPEN_RTCPRDWUEN)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_WKTM_PRD:
+                    if (Reset == bM4_INTC_WUPEN_WKTMWUEN)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_ACMP1:
+                    if (Reset == bM4_INTC_WUPEN_CMPI0WUEN)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_PVD_PVD1:
+                    if (Reset == bM4_INTC_WUPEN_PVD1WUEN)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_PVD_PVD2:
+                    if (Reset == bM4_INTC_WUPEN_PVD2WUEN)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_SWDT_REFUDF:
+                    if (Reset == bM4_INTC_WUPEN_SWDTWUEN)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_PORT_EIRQ0:
+                    if (Reset == bM4_INTC_WUPEN_EIRQWUEN0)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_PORT_EIRQ1:
+                    if (Reset == bM4_INTC_WUPEN_EIRQWUEN1)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_PORT_EIRQ2:
+                    if (Reset == bM4_INTC_WUPEN_EIRQWUEN2)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_PORT_EIRQ3:
+                    if (Reset == bM4_INTC_WUPEN_EIRQWUEN3)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_PORT_EIRQ4:
+                    if (Reset == bM4_INTC_WUPEN_EIRQWUEN4)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_PORT_EIRQ5:
+                    if (Reset == bM4_INTC_WUPEN_EIRQWUEN5)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_PORT_EIRQ6:
+                    if (Reset == bM4_INTC_WUPEN_EIRQWUEN6)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_PORT_EIRQ7:
+                    if (Reset == bM4_INTC_WUPEN_EIRQWUEN7)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_PORT_EIRQ8:
+                    if (Reset == bM4_INTC_WUPEN_EIRQWUEN8)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_PORT_EIRQ9:
+                    if (Reset == bM4_INTC_WUPEN_EIRQWUEN9)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_PORT_EIRQ10:
+                    if (Reset == bM4_INTC_WUPEN_EIRQWUEN10)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_PORT_EIRQ11:
+                    if (Reset == bM4_INTC_WUPEN_EIRQWUEN11)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_PORT_EIRQ12:
+                    if (Reset == bM4_INTC_WUPEN_EIRQWUEN12)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_PORT_EIRQ13:
+                    if (Reset == bM4_INTC_WUPEN_EIRQWUEN13)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_PORT_EIRQ14:
+                    if (Reset == bM4_INTC_WUPEN_EIRQWUEN14)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                case INT_PORT_EIRQ15:
+                    if (Reset == bM4_INTC_WUPEN_EIRQWUEN15)
+                    {
+                        NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        /* Disable NVIC for all none-wakeup source */
+        else if (INT_MAX != stcIntSel->INTSEL)
+        {
+            NVIC_DisableIRQ((IRQn_Type)u8Cnt);
+        }
+        else
+        {
+            enRet = ErrorInvalidParameter;
+            break;
+        }
+    }
+    return enRet;
+}
+
+/**
+ *******************************************************************************
+ ** \brief NVIC recover after wakeup from stop mode
+ **
+ ** param  none
+ **
+ ** retval Ok                           Ok, NVIC set enable recover sucessfully.
+ **
+ *****************************************************************************/
+static en_result_t PWC_enNvicRecover(void)
+{
+    uint8_t u8Cnt;
+
+    for (u8Cnt = 0u; u8Cnt < sizeof(NVIC_ISER_BAK)/sizeof(uint32_t); u8Cnt++)
+    {
+        NVIC->ISER[u8Cnt] = NVIC_ISER_BAK[u8Cnt];
+    }
+    return Ok;
+}
+
+/**
+ *******************************************************************************
+ ** \brief  Select system clock source.
+ **
+ ** \param  [in] u8SysSrc         The system clock source.
+ **
+ ** \retval None
+ **
+ ** \note   Must close all of the fcg register before switch system clock source.
+ **         This function only be called in func. PWC_enClockBackup and
+ **         PWC_enClockRecover.
+ **         If need to switch system clock please call CLK_SetSysClkSource.
+ **
+ ******************************************************************************/
+static void PWC_SetSysClk(uint8_t u8SysSrc)
+{
+    __IO uint32_t fcg0 = M4_MSTP->FCG0;
+    __IO uint32_t fcg1 = M4_MSTP->FCG1;
+    __IO uint32_t fcg2 = M4_MSTP->FCG2;
+    __IO uint32_t fcg3 = M4_MSTP->FCG3;
+
+    /* Only current system clock source or target system clock source is MPLL
+    need to close fcg0~fcg3 and open fcg0~fcg3 during switch system clock source.
+    We need to backup fcg0~fcg3 before close them. */
+    if((5u == M4_SYSREG->CMU_CKSWR_f.CKSW) || (5u == u8SysSrc))
+    {
+        /* Close fcg0~fcg3. */
+        M4_MSTP->FCG0 = 0xFFFFFAEEul;
+        M4_MSTP->FCG1 = 0xFFFFFFFFul;
+        M4_MSTP->FCG2 = 0xFFFFFFFFul;
+        M4_MSTP->FCG3 = 0xFFFFFFFFul;
+
+        Ddl_Delay1us(1ul);
+    }
+
+    /* Switch to target system clock source. */
+    ENABLE_PWR_REG0_WRITE();
+
+    M4_SYSREG->CMU_CKSWR_f.CKSW = u8SysSrc;
+
+    DISABLE_PWR_REG0_WRITE();
+
+    /* update system clock frequency. */
+    SystemCoreClockUpdate();
+
+    Ddl_Delay1us(1ul);
+
+    /* Open fcg0~fcg3. */
+    M4_MSTP->FCG0 = fcg0;
+    M4_MSTP->FCG1 = fcg1;
+    M4_MSTP->FCG2 = fcg2;
+    M4_MSTP->FCG3 = fcg3;
+
+    Ddl_Delay1us(1ul);
+}
+/**
+ *******************************************************************************
+ ** \brief  Backup HRC/MRC state and system clock , enable HRC/MRC ,set MRC as
+ **         system clock before enter stop mode.
+ **
+ ** \param  None
+ **
+ ** \retval None
+ **
+ ******************************************************************************/
+static void PWC_enClockBackup(void)
+{
+    __IO uint32_t timeout = 0ul;
+    en_flag_status_t status = Reset;
+
+    /* HRC state backup. */
+    u8HrcState = (uint8_t)bM4_SYSREG_CMU_HRCCR_HRCSTP;
+    /* System clock backup*/
+    u8SysClkSrc = M4_SYSREG->CMU_CKSWR_f.CKSW;
+
+    ENABLE_PWR_REG0_WRITE();
+
+    /* Enable HRC  before enter stop mode. */
+    if(0u != u8HrcState)
+    {
+        bM4_SYSREG_CMU_HRCCR_HRCSTP = 0u;
+        do
+        {
+            status = (en_flag_status_t)M4_SYSREG->CMU_OSCSTBSR_f.HRCSTBF;
+            timeout++;
+        }while((timeout < 0x1000ul) && (status != Set));
+    }
+    else
+    {
+        /* code */
+    }
+    /* When system clock source is HRC and MPLL, set MRC as system clock. . */
+    if((0u == u8SysClkSrc) || (5u == u8SysClkSrc))
+    {
+        /* MRC state backup. */
+        u8MrcState = (uint8_t)bM4_SYSREG_CMU_MRCCR_MRCSTP;
+        if(0u != u8MrcState)
+        {
+            bM4_SYSREG_CMU_MRCCR_MRCSTP = 0u;
+            __NOP();
+            __NOP();
+            __NOP();
+            __NOP();
+            __NOP();
+        }
+        PWC_SetSysClk(1u);
+    }
+    else
+    {
+        /* code */
+    }
+
+    DISABLE_PWR_REG0_WRITE();
+}
+
+/**
+ *******************************************************************************
+ ** \brief  Recover HRC/MRC state and system clock after wakeup stop mode.
+ **
+ ** \param  None
+ **
+ ** \retval None
+ **
+ ******************************************************************************/
+static void PWC_enClockRecover(void)
+{
+    ENABLE_PWR_REG0_WRITE();
+
+    if((0u == u8SysClkSrc) || (5u == u8SysClkSrc))
+    {
+        /* Recover MRC state & system clock source. */
+        M4_SYSREG->CMU_MRCCR_f.MRCSTP = u8MrcState;
+        PWC_SetSysClk(u8SysClkSrc);
+    }
+    /* Recover HRC state after wakeup stop mode. */
+    M4_SYSREG->CMU_HRCCR_f.HRCSTP = u8HrcState;
+
+    DISABLE_PWR_REG0_WRITE();
+}
+
+/**
+ *******************************************************************************
+ ** \brief  Clock backup before enter stop mode and mark it.
+ **
+ ** \param  None
+ **
+ ** \retval None
+ **
+ ** \note   This function should be called before func. PWC_EnterStopMd.
+ ******************************************************************************/
+static void PWC_ClkBackup(void)
+{
+    /* Disable all interrupt to ensure the following operation continued. */
+    __disable_irq();
+
+    /* HRC/MRC backup and switch system clock as MRC before entry from stop mode. */
+    PWC_enClockBackup();
+
+    /* Mark the system clock has been switch as MRC, and will enter the stop mode. */
+    u8StopFlag = 1u;
+
+    /* Enable all interrupt. */
+    __enable_irq();
+}
+
+/**
+ *******************************************************************************
+ ** \brief  Clock recover after wakeup stop mode.
+ **
+ ** \param  None
+ **
+ ** \retval None
+ **
+ ** \note   This function should be called after func. PWC_EnterStopMd.
+ ******************************************************************************/
+static void PWC_ClkRecover(void)
+{
+    /* Disable all interrupt to ensure the following operation continued. */
+    __disable_irq();
+
+    /* Mark the system clock will be switch as MRC, and has waked_up from stop mode. */
+    u8StopFlag = 0u;
+
+    /* Recover HRC/MRC state and system clock after wakeup stop mode. */
+    PWC_enClockRecover();
+
+    /* Enable all interrupt. */
+    __enable_irq();
+}
+
+/**
+ *******************************************************************************
+ ** \brief  Clock backup before exit wakup interrupt.
+ **
+ ** \param  None
+ **
+ ** \retval None
+ **
+ ** \note   This function should be called before exit wakup interrput.
+ ******************************************************************************/
+void PWC_IrqClkBackup(void)
+{
+    if((1ul == u8StopFlag) && (1ul == u8WkupIntCnt))
+    {
+         /* HRC/MRC backup and switch system clock as MRC. */
+        PWC_enClockBackup();
+    }
+    u8WkupIntCnt--;
+}
+
+/**
+ *******************************************************************************
+ ** \brief  Clock recover after enter wakeup interrupt.
+ **
+ ** \param  None
+ **
+ ** \retval None
+ **
+** \note   This function should be called after enter wakup interrput.
+ ******************************************************************************/
+void PWC_IrqClkRecover(void)
+{
+    /* The varibale to display how many waked_up interrupt has been occured
+       simultaneously and to decided whether backup clock before exit wake_up
+       interrupt. */
+    u8WkupIntCnt++;
+
+    if(1ul == u8StopFlag)
+    {
+        /* Recover HRC/MRC state and system clock. */
+        PWC_enClockRecover();
+    }
+}
+/**
+ *******************************************************************************
+ ** \brief  Enter stop mode.
+ **
+ ** \param  None
+ **
+ ** \retval None
+ **
+ ******************************************************************************/
+void PWC_EnterStopMd(void)
+{
+    /* NVIC backup and disable before entry from stop mode.*/
+    PWC_enNvicBackup();
+    /* Clock backup and switch system clock as MRC before entry from stop mode. */
+    PWC_ClkBackup();
+
+    ENABLE_PWR_REG_WRITE();
+
+    M4_SYSREG->PWR_STPMCR_f.STOP = 1u;
+    M4_SYSREG->PWR_PWRC0_f.PWDN = 0u;
+
+    DISABLE_PWR_REG_WRITE();
+
+    __WFI();
+
+    /* Recover HRC/MRC state and system clock after wakeup from stop mode. */
+    PWC_ClkRecover();
+    /* NVIC recover after wakeup from stop mode. */
+    PWC_enNvicRecover();
 }
 
 #endif /* DDL_PWC_ENABLE */

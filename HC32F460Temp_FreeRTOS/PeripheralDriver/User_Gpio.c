@@ -1,5 +1,6 @@
 #include "hc32_ddl.h"
 #include "hc32f46x_gpio.h"
+#include "System_InterruptCFG_Def.h"
 
 #define LED0_PORT   PortE
 #define LED0_Pin    Pin06
@@ -60,11 +61,11 @@ void User_Gpio_Init(void)
     stcEitCfg.enExtiLvl = ExIntFallingEdge;
     stcEitCfg.enFilterEn = Enable;
     stcEitCfg.enFltClk = Pclk3Div64;
-    stcEitCfg.pfnExtiCallback = key0_int_callback;
+//    stcEitCfg.pfnExtiCallback = key0_int_callback;
     EXINT_Init(&stcEitCfg);
     
     stcEitCfg.enExitCh = ExtiCh04;
-    stcEitCfg.pfnExtiCallback = key1_int_callback;
+//    stcEitCfg.pfnExtiCallback = key1_int_callback;
     EXINT_Init(&stcEitCfg);
 //    
     stcIrqRegiCfg.enIntSrc = INT_PORT_EIRQ3;

@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -75,35 +75,12 @@ extern "C"
 /*******************************************************************************
  * Global type definitions ('typedef')
  ******************************************************************************/
-/* AES padding type. */
-typedef enum en_aes_padding
-{
-    AesPadding_NONE     = 0,        ///< No padding, the size of source data in bytes must be N * 16 (N >= 1).
-
-    AesPadding_PKCS5    = 1,        ///< Size(in bytes) is N, N % 16 = x:
-                                    ///< 1. x == 0, padding 16(count) 0x10(data),
-                                    ///< the size of source data in bytes is N + 16
-                                    ///< 2. x != 0, padding (16 - x)(count) (16 - x)(data),
-                                    ///< the size of source data in bytes is N + (16 - x)
-
-    AesPadding_PKCS7    = 2,        ///< Same as AesPadding_PKCS5
-
-    AesPadding_ZEROS    = 3,        ///< Size(in bytes) is N, N % 16 = x:
-                                    ///< 1. x == 0, padding 16(count) 0x00(data),
-                                    ///< the size of source data in bytes is N + 16
-                                    ///< 2. x != 0, padding (16 - x)(count) 0x00(data),
-                                    ///< the size of source data in bytes is N + (16 - x)
-
-    AesPadding_ANSIX923 = 4,        ///< Size(in bytes) is N, N % 16 = x
-                                    ///< 1. x == 0, padding 15(count) 0x00(data) and 1(count) 0x10(data),
-                                    ///< the size of source data in bytes is N + 16
-                                    ///< 2. x != 0, padding (15 - x)(count) 0x00(data) and 1(count) (16 - x)(data),
-                                    ///< the size of source data in bytes is N + (16 - x)
-} en_aes_padding_t;
 
 /*******************************************************************************
  * Global pre-processor symbols/macros ('#define')
  ******************************************************************************/
+ /* AES key length in bytes is 16. */
+#define AES_KEYLEN                          ((uint8_t)16)
 
 /*******************************************************************************
  * Global variable definitions ('extern')
@@ -112,15 +89,10 @@ typedef enum en_aes_padding
 /*******************************************************************************
  * Global function prototypes (definition in C source)
  ******************************************************************************/
-void AES_Init(void);
-void AES_DeInit(void);
-
 en_result_t AES_Encrypt(const uint8_t *pu8Plaintext,
                         uint32_t u32PlaintextSize,
-                        en_aes_padding_t enPadding,
                         const uint8_t *pu8Key,
-                        uint8_t *pu8Ciphertext,
-                        uint32_t *pu32CiphertextSize);
+                        uint8_t *pu8Ciphertext);
 
 en_result_t AES_Decrypt(const uint8_t *pu8Ciphertext,
                         uint32_t u32CiphertextSize,

@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -460,11 +460,11 @@ typedef struct stc_clk_xtal32_cfg
  ******************************************************************************/
 typedef struct stc_clk_pll_cfg
 {
-    uint8_t         PllpDiv;            ///< Pllp clk, division factor of VCO out.
-    uint8_t         PllqDiv;            ///< Pllq clk, division factor of VCO out.
-    uint8_t         PllrDiv;            ///< Pllr clk, division factor of VCO out.
-    uint16_t        plln;               ///< Multiplication factor of vco out, ensure between 240M~480M
-    uint16_t        pllmDiv;            ///< Division factor of VCO in, ensure between 1M~12M.
+    uint32_t         PllpDiv;            ///< Pllp clk, division factor of VCO out.
+    uint32_t         PllqDiv;            ///< Pllq clk, division factor of VCO out.
+    uint32_t         PllrDiv;            ///< Pllr clk, division factor of VCO out.
+    uint32_t         plln;               ///< Multiplication factor of vco out, ensure between 240M~480M
+    uint32_t         pllmDiv;            ///< Division factor of VCO in, ensure between 1M~12M.
 }stc_clk_mpll_cfg_t, stc_clk_upll_cfg_t;
 
 /**
@@ -589,6 +589,21 @@ typedef struct stc_clk_freq
     uint32_t            pclk4Freq;          ///< Pclk4 frequency.
 }stc_clk_freq_t;
 
+/**
+ *******************************************************************************
+ ** \brief  PLL Clock frequency structure.
+ **
+ ******************************************************************************/
+typedef struct stc_pll_clk_freq
+{
+    uint32_t            mpllp;              ///< mpllp clock frequency.
+    uint32_t            mpllq;              ///< mpllq clock frequency.
+    uint32_t            mpllr;              ///< mpllr clock frequency.
+    uint32_t            upllp;              ///< upllp clock frequency.
+    uint32_t            upllq;              ///< upllq clock frequency.
+    uint32_t            upllr;              ///< upllr clock frequency.
+}stc_pll_clk_freq_t;
+
 /*******************************************************************************
  * Global pre-processor symbols/macros ('#define')
  ******************************************************************************/
@@ -604,38 +619,55 @@ typedef struct stc_clk_freq
 void CLK_XtalConfig(const stc_clk_xtal_cfg_t *pstcXtalCfg);
 void CLK_XtalStbConfig(const en_clk_xtal_stb_cycle_t enXtalStb);
 void CLK_XtalStpConfig(const stc_clk_xtal_stp_cfg_t *pstcXtalStpCfg);
-void CLK_XtalCmd(en_functional_state_t enNewState);
+en_result_t CLK_XtalCmd(en_functional_state_t enNewState);
+
 void CLK_Xtal32Config(const stc_clk_xtal32_cfg_t *pstcXtal32Cfg);
-void CLK_Xtal32Cmd(en_functional_state_t enNewState);
-void CLK_HrcTrim(int8_t trimValue);
-void CLK_HrcCmd(en_functional_state_t enNewState);
-void CLK_MrcTrim(int8_t trimValue);
-void CLK_MrcCmd(en_functional_state_t enNewState);
-void CLK_LrcTrim(int8_t trimValue);
-void CLK_LrcCmd(en_functional_state_t enNewState);
+en_result_t CLK_Xtal32Cmd(en_functional_state_t enNewState);
+
+void CLK_HrcTrim(uint8_t trimValue);
+en_result_t CLK_HrcCmd(en_functional_state_t enNewState);
+
+void CLK_MrcTrim(uint8_t trimValue);
+en_result_t CLK_MrcCmd(en_functional_state_t enNewState);
+
+void CLK_LrcTrim(uint8_t trimValue);
+en_result_t CLK_LrcCmd(en_functional_state_t enNewState);
+
 void CLK_SetPllSource(en_clk_pll_source_t enPllSrc);
 void CLK_MpllConfig(const stc_clk_mpll_cfg_t *pstcMpllCfg);
-void CLK_MpllCmd(en_functional_state_t enNewState);
+en_result_t CLK_MpllCmd(en_functional_state_t enNewState);
+
 void CLK_UpllConfig(const stc_clk_upll_cfg_t *pstcUpllCfg);
-void CLK_UpllCmd(en_functional_state_t enNewState);
+en_result_t CLK_UpllCmd(en_functional_state_t enNewState);
+
 void CLK_SetSysClkSource(en_clk_sys_source_t enTargetSysSrc);
 en_clk_sys_source_t CLK_GetSysClkSource(void);
+
 void CLK_SysClkConfig(const stc_clk_sysclk_cfg_t *pstcSysclkCfg);
 void CLK_GetClockFreq(stc_clk_freq_t *pstcClkFreq);
+void CLK_GetPllClockFreq(stc_pll_clk_freq_t *pstcPllClkFreq);
+
 void CLK_SetUsbClkSource(en_clk_usb_source_t enTargetUsbSrc);
-void CLK_SetPeriClkSource(en_clk_peri_source_t enTargetAdcSrc);
-void CLK_SetI2sClkSource(M4_I2S_TypeDef* pstcI2sReg, en_clk_peri_source_t enTargetPeriSrc);
+void CLK_SetPeriClkSource(en_clk_peri_source_t enTargetPeriSrc);
+void CLK_SetI2sClkSource(const M4_I2S_TypeDef* pstcI2sReg, en_clk_peri_source_t enTargetPeriSrc);
+en_clk_peri_source_t CLK_GetI2sClkSource(const M4_I2S_TypeDef* pstcI2sReg);
+
 void CLK_TpiuClkConfig(const en_clk_tpiuclk_div_factor_t enTpiuDiv);
 void CLK_TpiuClkCmd(en_functional_state_t enNewState);
+
 void CLK_OutputClkConfig(en_clk_output_ch_t enCh, const stc_clk_output_cfg_t *pstcOutputCfg);
 void CLK_OutputClkCmd(en_clk_output_ch_t enCh, en_functional_state_t enNewState);
 en_flag_status_t CLK_GetFlagStatus(en_clk_flag_t enClkFlag);
+
 void CLK_FcmConfig(const stc_clk_fcm_cfg_t *pstcClkFcmCfg);
 void CLK_FcmCmd(en_functional_state_t enNewState);
+
 uint16_t CLK_GetFcmCounter(void);
 en_flag_status_t CLK_GetFcmFlag(en_clk_fcm_flag_t enFcmFlag);
 void CLK_ClearFcmFlag(en_clk_fcm_flag_t enFcmFlag);
 
+void CLK_MainLoopClkBackup(void);
+void CLK_MainLoopClkRecover(void);
 
 //@} // CmuGroup
 

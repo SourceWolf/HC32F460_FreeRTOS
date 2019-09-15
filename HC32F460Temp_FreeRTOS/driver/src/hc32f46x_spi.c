@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -271,25 +271,29 @@
  ** \arg M4_SPI4                        SPI unit 4 configuration Address
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - SPIx is invalid
  **
  ******************************************************************************/
 en_result_t SPI_DeInit(M4_SPI_TypeDef *SPIx)
 {
-    en_result_t enRet = Ok;
-    uint32_t regTemp = 0;
+    en_result_t enRet = ErrorInvalidParameter;
+    uint32_t regTemp = 0ul;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
-
-    regTemp = SPIx->SR;
-    if (SPI_REG_SR_RESET_VALUE != regTemp)
+    if(IS_VALID_SPI_UNIT(SPIx))
     {
-        SPIx->SR = SPI_REG_SR_RESET_VALUE;
+        regTemp = SPIx->SR;
+        if (SPI_REG_SR_RESET_VALUE != regTemp)
+        {
+            SPIx->SR = SPI_REG_SR_RESET_VALUE;
+        }
+        SPIx->CR1 = SPI_REG_CR1_RESET_VALUE;
+        SPIx->DR = SPI_REG_DR_RESET_VALUE;
+        SPIx->CFG1 = SPI_REG_CFG1_RESET_VALUE;
+        SPIx->CFG2 = SPI_REG_CFG2_RESET_VALUE;
+        enRet = Ok;
     }
-    SPIx->CR1 = SPI_REG_CR1_RESET_VALUE;
-    SPIx->DR = SPI_REG_DR_RESET_VALUE;
-    SPIx->CFG1 = SPI_REG_CFG1_RESET_VALUE;
-    SPIx->CFG2 = SPI_REG_CFG2_RESET_VALUE;
 
     return enRet;
 }
@@ -308,99 +312,105 @@ en_result_t SPI_DeInit(M4_SPI_TypeDef *SPIx)
  ** \arg See the struct #stc_spi_init_t
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - SPIx is invalid
+ **                                     - pstcSpiInitCfg == NULL
  **
  ******************************************************************************/
 en_result_t SPI_Init(M4_SPI_TypeDef *SPIx, const stc_spi_init_t *pstcSpiInitCfg)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
-    DDL_ASSERT(IS_VALID_SS_SETUP_DEALY_OPTION(pstcSpiInitCfg->stcDelayConfig.enSsSetupDelayOption));
-    DDL_ASSERT(IS_VALID_SS_SETUP_DELAY_TIME(pstcSpiInitCfg->stcDelayConfig.enSsSetupDelayTime));
-    DDL_ASSERT(IS_VALID_SS_HOLD_DELAY_OPTION(pstcSpiInitCfg->stcDelayConfig.enSsHoldDelayOption));
-    DDL_ASSERT(IS_VALID_SS_HOLD_DELAY_TIME(pstcSpiInitCfg->stcDelayConfig.enSsHoldDelayTime));
-    DDL_ASSERT(IS_VALID_SS_INTERVAL_TIME_OPTION(pstcSpiInitCfg->stcDelayConfig.enSsIntervalTimeOption));
-    DDL_ASSERT(IS_VALID_SS_INTERVAL_TIME(pstcSpiInitCfg->stcDelayConfig.enSsIntervalTime));
-    DDL_ASSERT(IS_VALID_SS_VALID_CHANNEL(pstcSpiInitCfg->stcSsConfig.enSsValidBit));
-    DDL_ASSERT(IS_VALID_SS_POLARITY(pstcSpiInitCfg->stcSsConfig.enSs0Polarity));
-    DDL_ASSERT(IS_VALID_SS_POLARITY(pstcSpiInitCfg->stcSsConfig.enSs1Polarity));
-    DDL_ASSERT(IS_VALID_SS_POLARITY(pstcSpiInitCfg->stcSsConfig.enSs2Polarity));
-    DDL_ASSERT(IS_VALID_SS_POLARITY(pstcSpiInitCfg->stcSsConfig.enSs3Polarity));
-    DDL_ASSERT(IS_VALID_READ_DATA_REG_OBJECT(pstcSpiInitCfg->enReadBufferObject));
-    DDL_ASSERT(IS_VALID_SCK_POLARITY(pstcSpiInitCfg->enSckPolarity));
-    DDL_ASSERT(IS_VALID_SCK_PHASE(pstcSpiInitCfg->enSckPhase));
-    DDL_ASSERT(IS_VALID_CLK_DIV(pstcSpiInitCfg->enClkDiv));
-    DDL_ASSERT(IS_VALID_DATA_LENGTH(pstcSpiInitCfg->enDataLength));
-    DDL_ASSERT(IS_VALID_FIRST_BIT_POSITION(pstcSpiInitCfg->enFirstBitPosition));
-    DDL_ASSERT(IS_VALID_FRAME_NUMBER(pstcSpiInitCfg->enFrameNumber));
-    DDL_ASSERT(IS_VALID_WORK_MODE(pstcSpiInitCfg->enWorkMode));
-    DDL_ASSERT(IS_VALID_COMM_MODE(pstcSpiInitCfg->enTransMode));
-    DDL_ASSERT(IS_VALID_MASTER_SLAVE_MODE(pstcSpiInitCfg->enMasterSlaveMode));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcSpiInitCfg->enCommAutoSuspendEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcSpiInitCfg->enModeFaultErrorDetectEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcSpiInitCfg->enParitySelfDetectEn));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcSpiInitCfg->enParityEn));
-    DDL_ASSERT(IS_VALID_PARITY_MODE(pstcSpiInitCfg->enParity));
-
-    /* Master mode */
-    if (SpiModeMaster == pstcSpiInitCfg->enMasterSlaveMode)
+    if((IS_VALID_SPI_UNIT(SPIx)) && (NULL != pstcSpiInitCfg))
     {
-        SPIx->CFG2_f.SCKDLE = pstcSpiInitCfg->stcDelayConfig.enSsSetupDelayOption;
-        SPIx->CFG2_f.SSDLE = pstcSpiInitCfg->stcDelayConfig.enSsHoldDelayOption;
-        SPIx->CFG2_f.NXTDLE = pstcSpiInitCfg->stcDelayConfig.enSsIntervalTimeOption;
-        SPIx->CFG1_f.MSSI = pstcSpiInitCfg->stcDelayConfig.enSsSetupDelayTime;
-        SPIx->CFG1_f.MSSDL = pstcSpiInitCfg->stcDelayConfig.enSsHoldDelayTime;
-        SPIx->CFG1_f.MIDI = pstcSpiInitCfg->stcDelayConfig.enSsIntervalTime;
-    }
-    else
-    {
-        SPIx->CFG2_f.SCKDLE = SpiSsSetupDelayTypicalSck1;
-        SPIx->CFG2_f.SSDLE = SpiSsHoldDelayTypicalSck1;
-        SPIx->CFG2_f.NXTDLE = SpiSsIntervalTypicalSck1PlusPck2;
-        SPIx->CFG1_f.MSSI = SpiSsSetupDelaySck1;
-        SPIx->CFG1_f.MSSDL = SpiSsHoldDelaySck1;
-        SPIx->CFG1_f.MIDI = SpiSsIntervalSck1PlusPck2;
-    }
+        DDL_ASSERT(IS_VALID_SS_SETUP_DEALY_OPTION(pstcSpiInitCfg->stcDelayConfig.enSsSetupDelayOption));
+        DDL_ASSERT(IS_VALID_SS_SETUP_DELAY_TIME(pstcSpiInitCfg->stcDelayConfig.enSsSetupDelayTime));
+        DDL_ASSERT(IS_VALID_SS_HOLD_DELAY_OPTION(pstcSpiInitCfg->stcDelayConfig.enSsHoldDelayOption));
+        DDL_ASSERT(IS_VALID_SS_HOLD_DELAY_TIME(pstcSpiInitCfg->stcDelayConfig.enSsHoldDelayTime));
+        DDL_ASSERT(IS_VALID_SS_INTERVAL_TIME_OPTION(pstcSpiInitCfg->stcDelayConfig.enSsIntervalTimeOption));
+        DDL_ASSERT(IS_VALID_SS_INTERVAL_TIME(pstcSpiInitCfg->stcDelayConfig.enSsIntervalTime));
+        DDL_ASSERT(IS_VALID_SS_VALID_CHANNEL(pstcSpiInitCfg->stcSsConfig.enSsValidBit));
+        DDL_ASSERT(IS_VALID_SS_POLARITY(pstcSpiInitCfg->stcSsConfig.enSs0Polarity));
+        DDL_ASSERT(IS_VALID_SS_POLARITY(pstcSpiInitCfg->stcSsConfig.enSs1Polarity));
+        DDL_ASSERT(IS_VALID_SS_POLARITY(pstcSpiInitCfg->stcSsConfig.enSs2Polarity));
+        DDL_ASSERT(IS_VALID_SS_POLARITY(pstcSpiInitCfg->stcSsConfig.enSs3Polarity));
+        DDL_ASSERT(IS_VALID_READ_DATA_REG_OBJECT(pstcSpiInitCfg->enReadBufferObject));
+        DDL_ASSERT(IS_VALID_SCK_POLARITY(pstcSpiInitCfg->enSckPolarity));
+        DDL_ASSERT(IS_VALID_SCK_PHASE(pstcSpiInitCfg->enSckPhase));
+        DDL_ASSERT(IS_VALID_CLK_DIV(pstcSpiInitCfg->enClkDiv));
+        DDL_ASSERT(IS_VALID_DATA_LENGTH(pstcSpiInitCfg->enDataLength));
+        DDL_ASSERT(IS_VALID_FIRST_BIT_POSITION(pstcSpiInitCfg->enFirstBitPosition));
+        DDL_ASSERT(IS_VALID_FRAME_NUMBER(pstcSpiInitCfg->enFrameNumber));
+        DDL_ASSERT(IS_VALID_WORK_MODE(pstcSpiInitCfg->enWorkMode));
+        DDL_ASSERT(IS_VALID_COMM_MODE(pstcSpiInitCfg->enTransMode));
+        DDL_ASSERT(IS_VALID_MASTER_SLAVE_MODE(pstcSpiInitCfg->enMasterSlaveMode));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcSpiInitCfg->enCommAutoSuspendEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcSpiInitCfg->enModeFaultErrorDetectEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcSpiInitCfg->enParitySelfDetectEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcSpiInitCfg->enParityEn));
+        DDL_ASSERT(IS_VALID_PARITY_MODE(pstcSpiInitCfg->enParity));
 
-    /* 4 lines spi mode */
-    if (SpiWorkMode4Line == pstcSpiInitCfg->enWorkMode)
-    {
-        SPIx->CFG2_f.SSA = pstcSpiInitCfg->stcSsConfig.enSsValidBit;
-        SPIx->CFG1_f.SS0PV = pstcSpiInitCfg->stcSsConfig.enSs0Polarity;
-        SPIx->CFG1_f.SS1PV = pstcSpiInitCfg->stcSsConfig.enSs1Polarity;
-        SPIx->CFG1_f.SS2PV = pstcSpiInitCfg->stcSsConfig.enSs2Polarity;
-        SPIx->CFG1_f.SS3PV = pstcSpiInitCfg->stcSsConfig.enSs3Polarity;
+        /* Master mode */
+        if (SpiModeMaster == pstcSpiInitCfg->enMasterSlaveMode)
+        {
+            SPIx->CFG2_f.SCKDLE = pstcSpiInitCfg->stcDelayConfig.enSsSetupDelayOption;
+            SPIx->CFG2_f.SSDLE = pstcSpiInitCfg->stcDelayConfig.enSsHoldDelayOption;
+            SPIx->CFG2_f.NXTDLE = pstcSpiInitCfg->stcDelayConfig.enSsIntervalTimeOption;
+            SPIx->CFG1_f.MSSI = pstcSpiInitCfg->stcDelayConfig.enSsSetupDelayTime;
+            SPIx->CFG1_f.MSSDL = pstcSpiInitCfg->stcDelayConfig.enSsHoldDelayTime;
+            SPIx->CFG1_f.MIDI = pstcSpiInitCfg->stcDelayConfig.enSsIntervalTime;
+        }
+        else
+        {
+            SPIx->CFG2_f.SCKDLE = SpiSsSetupDelayTypicalSck1;
+            SPIx->CFG2_f.SSDLE = SpiSsHoldDelayTypicalSck1;
+            SPIx->CFG2_f.NXTDLE = SpiSsIntervalTypicalSck1PlusPck2;
+            SPIx->CFG1_f.MSSI = SpiSsSetupDelaySck1;
+            SPIx->CFG1_f.MSSDL = SpiSsHoldDelaySck1;
+            SPIx->CFG1_f.MIDI = SpiSsIntervalSck1PlusPck2;
+        }
+
+        /* 4 lines spi mode */
+        if (SpiWorkMode4Line == pstcSpiInitCfg->enWorkMode)
+        {
+            SPIx->CFG2_f.SSA = pstcSpiInitCfg->stcSsConfig.enSsValidBit;
+            SPIx->CFG1_f.SS0PV = pstcSpiInitCfg->stcSsConfig.enSs0Polarity;
+            SPIx->CFG1_f.SS1PV = pstcSpiInitCfg->stcSsConfig.enSs1Polarity;
+            SPIx->CFG1_f.SS2PV = pstcSpiInitCfg->stcSsConfig.enSs2Polarity;
+            SPIx->CFG1_f.SS3PV = pstcSpiInitCfg->stcSsConfig.enSs3Polarity;
+        }
+        else
+        {
+            SPIx->CFG2_f.SSA = SpiSsValidChannel0;
+            SPIx->CFG1_f.SS0PV = SpiSsLowValid;
+            SPIx->CFG1_f.SS1PV = SpiSsLowValid;
+            SPIx->CFG1_f.SS2PV = SpiSsLowValid;
+            SPIx->CFG1_f.SS3PV = SpiSsLowValid;
+        }
+
+        /* Configure communication config register 1 */
+        SPIx->CFG1_f.SPRDTD = pstcSpiInitCfg->enReadBufferObject;
+        SPIx->CFG1_f.FTHLV = pstcSpiInitCfg->enFrameNumber;
+
+        /* Configure communication config register 2 */
+        SPIx->CFG2_f.LSBF = pstcSpiInitCfg->enFirstBitPosition;
+        SPIx->CFG2_f.DSIZE = pstcSpiInitCfg->enDataLength;
+        SPIx->CFG2_f.MBR = pstcSpiInitCfg->enClkDiv;
+        SPIx->CFG2_f.CPOL = pstcSpiInitCfg->enSckPolarity;
+        SPIx->CFG2_f.CPHA = pstcSpiInitCfg->enSckPhase;
+
+        /* Configure control register */
+        SPIx->CR1_f.SPIMDS = pstcSpiInitCfg->enWorkMode;
+        SPIx->CR1_f.TXMDS = pstcSpiInitCfg->enTransMode;
+        SPIx->CR1_f.MSTR = pstcSpiInitCfg->enMasterSlaveMode;
+        SPIx->CR1_f.CSUSPE = pstcSpiInitCfg->enCommAutoSuspendEn;
+        SPIx->CR1_f.MODFE = pstcSpiInitCfg->enModeFaultErrorDetectEn;
+        SPIx->CR1_f.PATE = pstcSpiInitCfg->enParitySelfDetectEn;
+        SPIx->CR1_f.PAE = pstcSpiInitCfg->enParityEn;
+        SPIx->CR1_f.PAOE = pstcSpiInitCfg->enParity;
+        enRet = Ok;
     }
-    else
-    {
-        SPIx->CFG2_f.SSA = SpiSsValidChannel0;
-        SPIx->CFG1_f.SS0PV = SpiSsLowValid;
-        SPIx->CFG1_f.SS1PV = SpiSsLowValid;
-        SPIx->CFG1_f.SS2PV = SpiSsLowValid;
-        SPIx->CFG1_f.SS3PV = SpiSsLowValid;
-    }
-
-    /* Configure communication config register 1 */
-    SPIx->CFG1_f.SPRDTD = pstcSpiInitCfg->enReadBufferObject;
-    SPIx->CFG1_f.FTHLV = pstcSpiInitCfg->enFrameNumber;
-
-    /* Configure communication config register 2 */
-    SPIx->CFG2_f.LSBF = pstcSpiInitCfg->enFirstBitPosition;
-    SPIx->CFG2_f.DSIZE = pstcSpiInitCfg->enDataLength;
-    SPIx->CFG2_f.MBR = pstcSpiInitCfg->enClkDiv;
-    SPIx->CFG2_f.CPOL = pstcSpiInitCfg->enSckPolarity;
-    SPIx->CFG2_f.CPHA = pstcSpiInitCfg->enSckPhase;
-
-    /* Configure control register */
-    SPIx->CR1_f.SPIMDS = pstcSpiInitCfg->enWorkMode;
-    SPIx->CR1_f.TXMDS = pstcSpiInitCfg->enTransMode;
-    SPIx->CR1_f.MSTR = pstcSpiInitCfg->enMasterSlaveMode;
-    SPIx->CR1_f.CSUSPE = pstcSpiInitCfg->enCommAutoSuspendEn;
-    SPIx->CR1_f.MODFE = pstcSpiInitCfg->enModeFaultErrorDetectEn;
-    SPIx->CR1_f.PATE = pstcSpiInitCfg->enParitySelfDetectEn;
-    SPIx->CR1_f.PAE = pstcSpiInitCfg->enParityEn;
-    SPIx->CR1_f.PAOE = pstcSpiInitCfg->enParity;
 
     return enRet;
 }
@@ -420,17 +430,22 @@ en_result_t SPI_Init(M4_SPI_TypeDef *SPIx, const stc_spi_init_t *pstcSpiInitCfg)
  ** \arg Enable                         Enable general loopback
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - SPIx is invalid
  **
  ******************************************************************************/
 en_result_t SPI_GeneralLoopbackCmd(M4_SPI_TypeDef *SPIx, en_functional_state_t enNewSta)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
+    if(IS_VALID_SPI_UNIT(SPIx))
+    {
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
 
-    SPIx->CR1_f.SPLPBK2 = enNewSta;
+        SPIx->CR1_f.SPLPBK2 = enNewSta;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -450,17 +465,22 @@ en_result_t SPI_GeneralLoopbackCmd(M4_SPI_TypeDef *SPIx, en_functional_state_t e
  ** \arg Enable                         Enable reverse loopback
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - SPIx is invalid
  **
  ******************************************************************************/
 en_result_t SPI_ReverseLoopbackCmd(M4_SPI_TypeDef *SPIx, en_functional_state_t enNewSta)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
+    if(IS_VALID_SPI_UNIT(SPIx))
+    {
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
 
-    SPIx->CR1_f.SPLPBK = enNewSta;
+        SPIx->CR1_f.SPLPBK = enNewSta;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -480,17 +500,22 @@ en_result_t SPI_ReverseLoopbackCmd(M4_SPI_TypeDef *SPIx, en_functional_state_t e
  ** \arg Enable                         Enable SPI working
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - SPIx is invalid
  **
  ******************************************************************************/
 en_result_t SPI_Cmd(M4_SPI_TypeDef *SPIx, en_functional_state_t enNewSta)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
+    if(IS_VALID_SPI_UNIT(SPIx))
+    {
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
 
-    SPIx->CR1_f.SPE = enNewSta;
+        SPIx->CR1_f.SPE = enNewSta;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -508,16 +533,20 @@ en_result_t SPI_Cmd(M4_SPI_TypeDef *SPIx, en_functional_state_t enNewSta)
  ** \param [in] u8Data                  Send data value
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - SPIx is invalid
  **
  ******************************************************************************/
 en_result_t SPI_SendData8(M4_SPI_TypeDef *SPIx, uint8_t u8Data)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
-
-    SPIx->DR = u8Data;
+    if(IS_VALID_SPI_UNIT(SPIx))
+    {
+        SPIx->DR = u8Data;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -535,16 +564,20 @@ en_result_t SPI_SendData8(M4_SPI_TypeDef *SPIx, uint8_t u8Data)
  ** \param [in] u16Data                 Send data value
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - SPIx is invalid
  **
  ******************************************************************************/
 en_result_t SPI_SendData16(M4_SPI_TypeDef *SPIx, uint16_t u16Data)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
-
-    SPIx->DR = u16Data;
+    if(IS_VALID_SPI_UNIT(SPIx))
+    {
+        SPIx->DR = u16Data;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -562,16 +595,20 @@ en_result_t SPI_SendData16(M4_SPI_TypeDef *SPIx, uint16_t u16Data)
  ** \param [in] u32Data                 Send data value
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - SPIx is invalid
  **
  ******************************************************************************/
 en_result_t SPI_SendData32(M4_SPI_TypeDef *SPIx, uint32_t u32Data)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
-
-    SPIx->DR = u32Data;
+    if(IS_VALID_SPI_UNIT(SPIx))
+    {
+        SPIx->DR = u32Data;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -589,7 +626,7 @@ en_result_t SPI_SendData32(M4_SPI_TypeDef *SPIx, uint32_t u32Data)
  ** \retval uint8_t                     Receive data value
  **
  ******************************************************************************/
-uint8_t SPI_ReceiveData8(M4_SPI_TypeDef *SPIx)
+uint8_t SPI_ReceiveData8(const M4_SPI_TypeDef *SPIx)
 {
     /* Check parameters */
     DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
@@ -610,7 +647,7 @@ uint8_t SPI_ReceiveData8(M4_SPI_TypeDef *SPIx)
  ** \retval uint16_t                    Receive data value
  **
  ******************************************************************************/
-uint16_t SPI_ReceiveData16(M4_SPI_TypeDef *SPIx)
+uint16_t SPI_ReceiveData16(const M4_SPI_TypeDef *SPIx)
 {
     /* Check parameters */
     DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
@@ -631,7 +668,7 @@ uint16_t SPI_ReceiveData16(M4_SPI_TypeDef *SPIx)
  ** \retval uint32_t                    Receive data value
  **
  ******************************************************************************/
-uint32_t SPI_ReceiveData32(M4_SPI_TypeDef *SPIx)
+uint32_t SPI_ReceiveData32(const M4_SPI_TypeDef *SPIx)
 {
     /* Check parameters */
     DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
@@ -660,34 +697,39 @@ uint32_t SPI_ReceiveData32(M4_SPI_TypeDef *SPIx)
  ** \arg SpiSsHighValid                 SS0~3 signal high level valid
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - SPIx is invalid
  **
  ******************************************************************************/
 en_result_t SPI_SetSsPolarity(M4_SPI_TypeDef *SPIx, en_spi_ss_channel_t enChannel,
                               en_spi_ss_polarity_t enPolarity)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
-    DDL_ASSERT(IS_VALID_SS_CHANNEL(enChannel));
-    DDL_ASSERT(IS_VALID_SS_POLARITY(enPolarity));
-
-    switch (enChannel)
+    if(IS_VALID_SPI_UNIT(SPIx))
     {
-        case SpiSsChannel0:
-            SPIx->CFG1_f.SS0PV = enPolarity;
-            break;
-        case SpiSsChannel1:
-            SPIx->CFG1_f.SS1PV = enPolarity;
-            break;
-        case SpiSsChannel2:
-            SPIx->CFG1_f.SS2PV = enPolarity;
-            break;
-        case SpiSsChannel3:
-            SPIx->CFG1_f.SS3PV = enPolarity;
-            break;
-        default:
-            break;
+        DDL_ASSERT(IS_VALID_SS_CHANNEL(enChannel));
+        DDL_ASSERT(IS_VALID_SS_POLARITY(enPolarity));
+
+        switch (enChannel)
+        {
+            case SpiSsChannel0:
+                SPIx->CFG1_f.SS0PV = enPolarity;
+                break;
+            case SpiSsChannel1:
+                SPIx->CFG1_f.SS1PV = enPolarity;
+                break;
+            case SpiSsChannel2:
+                SPIx->CFG1_f.SS2PV = enPolarity;
+                break;
+            case SpiSsChannel3:
+                SPIx->CFG1_f.SS3PV = enPolarity;
+                break;
+            default:
+                break;
+        }
+        enRet = Ok;
     }
 
     return enRet;
@@ -710,17 +752,22 @@ en_result_t SPI_SetSsPolarity(M4_SPI_TypeDef *SPIx, en_spi_ss_channel_t enChanne
  ** \arg SpiSsChannel3                  SS3 channel
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - SPIx is invalid
  **
  ******************************************************************************/
 en_result_t SPI_SetSsValidChannel(M4_SPI_TypeDef *SPIx, en_spi_ss_channel_t enChannel)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
-    DDL_ASSERT(IS_VALID_SS_CHANNEL(enChannel));
+    if(IS_VALID_SPI_UNIT(SPIx))
+    {
+        DDL_ASSERT(IS_VALID_SS_CHANNEL(enChannel));
 
-    SPIx->CFG2_f.SSA = enChannel;
+        SPIx->CFG2_f.SSA = enChannel;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -740,17 +787,22 @@ en_result_t SPI_SetSsValidChannel(M4_SPI_TypeDef *SPIx, en_spi_ss_channel_t enCh
  ** \arg SpiReadSendBuffer              Read send buffer(must be read when TDEF=1)
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - SPIx is invalid
  **
  ******************************************************************************/
 en_result_t SPI_SetReadDataRegObject(M4_SPI_TypeDef *SPIx, en_spi_read_object_t enObject)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
-    DDL_ASSERT(IS_VALID_READ_DATA_REG_OBJECT(enObject));
+    if(IS_VALID_SPI_UNIT(SPIx))
+    {
+        DDL_ASSERT(IS_VALID_READ_DATA_REG_OBJECT(enObject));
 
-    SPIx->CFG1_f.SPRDTD = enObject;
+        SPIx->CFG1_f.SPRDTD = enObject;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -772,17 +824,22 @@ en_result_t SPI_SetReadDataRegObject(M4_SPI_TypeDef *SPIx, en_spi_read_object_t 
  ** \arg SpiFrameNumber4                4 frame data
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - SPIx is invalid
  **
  ******************************************************************************/
 en_result_t SPI_SetFrameNumber(M4_SPI_TypeDef *SPIx, en_spi_frame_number_t enFrameNum)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
-    DDL_ASSERT(IS_VALID_FRAME_NUMBER(enFrameNum));
+    if(IS_VALID_SPI_UNIT(SPIx))
+    {
+        DDL_ASSERT(IS_VALID_FRAME_NUMBER(enFrameNum));
 
-    SPIx->CFG1_f.FTHLV = enFrameNum;
+        SPIx->CFG1_f.FTHLV = enFrameNum;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -816,17 +873,22 @@ en_result_t SPI_SetFrameNumber(M4_SPI_TypeDef *SPIx, en_spi_frame_number_t enFra
  ** \arg SpiDataLengthBit32             32 bits
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - SPIx is invalid
  **
  ******************************************************************************/
 en_result_t SPI_SetDataLength(M4_SPI_TypeDef *SPIx, en_spi_data_length_t enDataLength)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
-    DDL_ASSERT(IS_VALID_DATA_LENGTH(enDataLength));
+    if(IS_VALID_SPI_UNIT(SPIx))
+    {
+        DDL_ASSERT(IS_VALID_DATA_LENGTH(enDataLength));
 
-    SPIx->CFG2_f.DSIZE = enDataLength;
+        SPIx->CFG2_f.DSIZE = enDataLength;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -846,17 +908,63 @@ en_result_t SPI_SetDataLength(M4_SPI_TypeDef *SPIx, en_spi_data_length_t enDataL
  ** \arg SpiFirstBitPositionLSB         Spi first bit to LSB
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - SPIx is invalid
  **
  ******************************************************************************/
 en_result_t SPI_SetFirstBitPosition(M4_SPI_TypeDef *SPIx, en_spi_first_bit_position_t enPosition)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
-    DDL_ASSERT(IS_VALID_FIRST_BIT_POSITION(enPosition));
+    if(IS_VALID_SPI_UNIT(SPIx))
+    {
+        DDL_ASSERT(IS_VALID_FIRST_BIT_POSITION(enPosition));
 
-    SPIx->CFG2_f.LSBF = enPosition;
+        SPIx->CFG2_f.LSBF = enPosition;
+        enRet = Ok;
+    }
+
+    return enRet;
+}
+
+/**
+ *******************************************************************************
+ ** \brief SPI set clock division
+ **
+ ** \param [in] SPIx                    Pointer to SPI unit configuration address
+ ** \arg M4_SPI1                        SPI unit 1 configuration Address
+ ** \arg M4_SPI2                        SPI unit 2 configuration Address
+ ** \arg M4_SPI3                        SPI unit 3 configuration Address
+ ** \arg M4_SPI4                        SPI unit 4 configuration Address
+ **
+ ** \param [in] enClkDiv                Clock division
+ ** \arg SpiClkDiv2                     Spi pckl1 division 2
+ ** \arg SpiClkDiv4                     Spi pckl1 division 4
+ ** \arg SpiClkDiv8                     Spi pckl1 division 8
+ ** \arg SpiClkDiv16                    Spi pckl1 division 16
+ ** \arg SpiClkDiv32                    Spi pckl1 division 32
+ ** \arg SpiClkDiv64                    Spi pckl1 division 64
+ ** \arg SpiClkDiv128                   Spi pckl1 division 128
+ ** \arg SpiClkDiv256                   Spi pckl1 division 256
+ **
+ ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - SPIx is invalid
+ **
+ ******************************************************************************/
+en_result_t SPI_SetClockDiv(M4_SPI_TypeDef *SPIx, en_spi_clk_div_t enClkDiv)
+{
+    en_result_t enRet = ErrorInvalidParameter;
+
+    /* Check parameters */
+    if(IS_VALID_SPI_UNIT(SPIx))
+    {
+        DDL_ASSERT(IS_VALID_CLK_DIV(enClkDiv));
+
+        SPIx->CFG2_f.MBR = enClkDiv;
+        enRet = Ok;
+    }
 
     return enRet;
 }
@@ -882,34 +990,39 @@ en_result_t SPI_SetFirstBitPosition(M4_SPI_TypeDef *SPIx, en_spi_first_bit_posit
  ** \arg Enable                         Enable interrupt request
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - SPIx is invalid
  **
  ******************************************************************************/
 en_result_t SPI_IrqCmd(M4_SPI_TypeDef *SPIx, en_spi_irq_type_t enIrq,
                        en_functional_state_t enNewSta)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
-    DDL_ASSERT(IS_VALID_IRQ_TYPE(enIrq));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
-
-    switch (enIrq)
+    if(IS_VALID_SPI_UNIT(SPIx))
     {
-        case SpiIrqIdel:
-            SPIx->CR1_f.IDIE = enNewSta;
-            break;
-        case SpiIrqReceive:
-            SPIx->CR1_f.RXIE = enNewSta;
-            break;
-        case SpiIrqSend:
-            SPIx->CR1_f.TXIE = enNewSta;
-            break;
-        case SpiIrqError:
-            SPIx->CR1_f.EIE = enNewSta;
-            break;
-        default:
-            break;
+        DDL_ASSERT(IS_VALID_IRQ_TYPE(enIrq));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
+
+        switch (enIrq)
+        {
+            case SpiIrqIdel:
+                SPIx->CR1_f.IDIE = enNewSta;
+                break;
+            case SpiIrqReceive:
+                SPIx->CR1_f.RXIE = enNewSta;
+                break;
+            case SpiIrqSend:
+                SPIx->CR1_f.TXIE = enNewSta;
+                break;
+            case SpiIrqError:
+                SPIx->CR1_f.EIE = enNewSta;
+                break;
+            default:
+                break;
+        }
+        enRet = Ok;
     }
 
     return enRet;
@@ -943,34 +1056,36 @@ en_flag_status_t SPI_GetFlag(M4_SPI_TypeDef *SPIx, en_spi_flag_type_t enFlag)
     en_flag_status_t enFlagSta = Reset;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
-    DDL_ASSERT(IS_VALID_FLAG_TYPE(enFlag));
-
-    switch (enFlag)
+    if (IS_VALID_SPI_UNIT(SPIx))
     {
-        case SpiFlagReceiveBufferFull:
-            enFlagSta = (1u == SPIx->SR_f.RDFF) ? Set : Reset;
-            break;
-        case SpiFlagSendBufferEmpty:
-            enFlagSta = (1u == SPIx->SR_f.TDEF) ? Set : Reset;
-            break;
-        case SpiFlagUnderloadError:
-            enFlagSta = (1u == SPIx->SR_f.UDRERF) ? Set : Reset;
-            break;
-        case SpiFlagParityError:
-            enFlagSta = (1u == SPIx->SR_f.PERF) ? Set : Reset;
-            break;
-        case SpiFlagModeFaultError:
-            enFlagSta = (1u == SPIx->SR_f.MODFERF) ? Set : Reset;
-            break;
-        case SpiFlagSpiIdle:
-            enFlagSta = (0u == SPIx->SR_f.IDLNF) ? Set : Reset;
-            break;
-        case SpiFlagOverloadError:
-            enFlagSta = (1u == SPIx->SR_f.OVRERF) ? Set : Reset;
-            break;
-        default:
-            break;
+        DDL_ASSERT(IS_VALID_FLAG_TYPE(enFlag));
+
+        switch (enFlag)
+        {
+            case SpiFlagReceiveBufferFull:
+                enFlagSta = (en_flag_status_t)SPIx->SR_f.RDFF;
+                break;
+            case SpiFlagSendBufferEmpty:
+                enFlagSta = (en_flag_status_t)SPIx->SR_f.TDEF;
+                break;
+            case SpiFlagUnderloadError:
+                enFlagSta = (en_flag_status_t)SPIx->SR_f.UDRERF;
+                break;
+            case SpiFlagParityError:
+                enFlagSta = (en_flag_status_t)SPIx->SR_f.PERF;
+                break;
+            case SpiFlagModeFaultError:
+                enFlagSta = (en_flag_status_t)SPIx->SR_f.MODFERF;
+                break;
+            case SpiFlagSpiIdle:
+                enFlagSta = (en_flag_status_t)(bool)(!SPIx->SR_f.IDLNF);
+                break;
+            case SpiFlagOverloadError:
+                enFlagSta = (en_flag_status_t)SPIx->SR_f.OVRERF;
+                break;
+            default:
+                break;
+        }
     }
 
     return enFlagSta;
@@ -996,41 +1111,46 @@ en_flag_status_t SPI_GetFlag(M4_SPI_TypeDef *SPIx, en_spi_flag_type_t enFlag)
  ** \arg SpiFlagOverloadErro            Overload error flag
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       If one of following cases matches:
+ **                                     - SPIx is invalid
  **
  ******************************************************************************/
 en_result_t SPI_ClearFlag(M4_SPI_TypeDef *SPIx, en_spi_flag_type_t enFlag)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameters */
-    DDL_ASSERT(IS_VALID_SPI_UNIT(SPIx));
-    DDL_ASSERT(IS_VALID_FLAG_TYPE(enFlag));
-
-    switch (enFlag)
+    if(IS_VALID_SPI_UNIT(SPIx))
     {
-        case SpiFlagReceiveBufferFull:
-            SPIx->SR_f.RDFF = 0u;
-            break;
-        case SpiFlagSendBufferEmpty:
-            SPIx->SR_f.TDEF = 0u;
-            break;
-        case SpiFlagUnderloadError:
-            SPIx->SR_f.UDRERF = 0u;
-            break;
-        case SpiFlagParityError:
-            SPIx->SR_f.PERF = 0u;
-            break;
-        case SpiFlagModeFaultError:
-            SPIx->SR_f.MODFERF = 0u;
-            break;
-        case SpiFlagSpiIdle:
-            SPIx->SR_f.IDLNF = 0u;
-            break;
-        case SpiFlagOverloadError:
-            SPIx->SR_f.OVRERF = 0u;
-            break;
-        default:
-            break;
+        DDL_ASSERT(IS_VALID_FLAG_TYPE(enFlag));
+
+        switch (enFlag)
+        {
+            case SpiFlagReceiveBufferFull:
+                SPIx->SR_f.RDFF = 0u;
+                break;
+            case SpiFlagSendBufferEmpty:
+                SPIx->SR_f.TDEF = 0u;
+                break;
+            case SpiFlagUnderloadError:
+                SPIx->SR_f.UDRERF = 0u;
+                break;
+            case SpiFlagParityError:
+                SPIx->SR_f.PERF = 0u;
+                break;
+            case SpiFlagModeFaultError:
+                SPIx->SR_f.MODFERF = 0u;
+                break;
+            case SpiFlagSpiIdle:
+                SPIx->SR_f.IDLNF = 0u;
+                break;
+            case SpiFlagOverloadError:
+                SPIx->SR_f.OVRERF = 0u;
+                break;
+            default:
+                break;
+        }
+        enRet = Ok;
     }
 
     return enRet;

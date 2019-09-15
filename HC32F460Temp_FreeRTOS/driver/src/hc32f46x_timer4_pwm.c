@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -110,11 +110,11 @@
     (PwmPlckDiv128 == (x)))
 
 /*!< Get the specified register address of the specified Timer4 unit */
-#define TMR4_RCSRx(__TMR4x__)               ((uint32_t)&__TMR4x__->RCSR)
-#define TMR4_POCRx(__TMR4x__, __CH__)       ((uint32_t)&__TMR4x__->POCRU + ((uint32_t)__CH__)*8)
-#define TMR4_PDARx(__TMR4x__, __CH__)       ((uint32_t)&__TMR4x__->PDARU + ((uint32_t)__CH__)*8)
-#define TMR4_PDBRx(__TMR4x__, __CH__)       ((uint32_t)&__TMR4x__->PDBRU + ((uint32_t)__CH__)*8)
-#define TMR4_PFSRx(__TMR4x__, __CH__)       ((uint32_t)&__TMR4x__->PFSRU + ((uint32_t)__CH__)*8)
+#define TMR4_RCSRx(__TMR4x__)               ((uint32_t)&(__TMR4x__)->RCSR)
+#define TMR4_POCRx(__TMR4x__, __CH__)       ((uint32_t)&(__TMR4x__)->POCRU + ((uint32_t)(__CH__))*4ul)
+#define TMR4_PDARx(__TMR4x__, __CH__)       ((uint32_t)&(__TMR4x__)->PDARU + ((uint32_t)(__CH__))*8ul)
+#define TMR4_PDBRx(__TMR4x__, __CH__)       ((uint32_t)&(__TMR4x__)->PDBRU + ((uint32_t)(__CH__))*8ul)
+#define TMR4_PFSRx(__TMR4x__, __CH__)       ((uint32_t)&(__TMR4x__)->PFSRU + ((uint32_t)(__CH__))*8ul)
 
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
@@ -159,112 +159,55 @@ en_result_t TIMER4_PWM_Init(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_pwm_ch_t enCh,
                                 const stc_timer4_pwm_init_t *pstcInitCfg)
 {
-    __IO stc_tmr4_pocru_field_t *pstcPOCR_f;
-    __IO stc_tmr4_rcsr_field_t *pstcRCSR_f;
+    __IO stc_tmr4_pocr_field_t *pstcPOCR_f = NULL;
+    __IO stc_tmr4_rcsr_field_t *pstcRCSR_f = NULL;
+    en_result_t enRet = Ok;
 
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_PWM_CH(enCh));
-    DDL_ASSERT(IS_VALID_PWM_MODE(pstcInitCfg->enMode));
-    DDL_ASSERT(IS_VALID_PWM_CLK_DIV(pstcInitCfg->enClkDiv));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enRtIntMaskCmd));
-    DDL_ASSERT(IS_VALID_PWM_OUTPUT_STATE(pstcInitCfg->enOutputState));
-
-    /* Check TMR4x pointer */
-    if ((!IS_VALID_TIMER4(TMR4x)) || (NULL == pstcInitCfg))
+    /* Check TMR4x && pstcInitCfg pointer */
+    if ((IS_VALID_TIMER4(TMR4x)) && (NULL != pstcInitCfg))
     {
-        return ErrorInvalidParameter;
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_PWM_MODE(pstcInitCfg->enMode));
+        DDL_ASSERT(IS_VALID_PWM_CLK_DIV(pstcInitCfg->enClkDiv));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enRtIntMaskCmd));
+        DDL_ASSERT(IS_VALID_PWM_OUTPUT_STATE(pstcInitCfg->enOutputState));
+
+        /* Get pointer of current channel PWM register address */
+        pstcRCSR_f = (__IO stc_tmr4_rcsr_field_t*)TMR4_RCSRx(TMR4x);
+        pstcPOCR_f = (__IO stc_tmr4_pocr_field_t*)TMR4_POCRx(TMR4x, enCh);
+
+        /* Configure PWM mode */
+        pstcPOCR_f->PWMMD = (uint16_t)(pstcInitCfg->enMode);
+
+        /* Configure PWM mode */
+        pstcPOCR_f->LVLS = (uint16_t)(pstcInitCfg->enOutputState);
+
+        /* Set timer clock division */
+        pstcPOCR_f->DIVCK = (uint16_t)(pstcInitCfg->enClkDiv);
+
+        /* Set interrupt mask */
+        switch (enCh)
+        {
+            case Timer4PwmU:
+                pstcRCSR_f->RTIDU = (uint16_t)(pstcInitCfg->enRtIntMaskCmd);
+                break;
+            case Timer4PwmV:
+                pstcRCSR_f->RTIDV = (uint16_t)(pstcInitCfg->enRtIntMaskCmd);
+                break;
+            case Timer4PwmW:
+                pstcRCSR_f->RTIDW = (uint16_t)(pstcInitCfg->enRtIntMaskCmd);
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
     }
     else
     {
+        enRet = ErrorInvalidParameter;
     }
 
-    /* Get pointer of current channel PWM register address */
-    pstcRCSR_f = (__IO stc_tmr4_rcsr_field_t*)TMR4_RCSRx(TMR4x);
-    pstcPOCR_f = (__IO stc_tmr4_pocru_field_t*)TMR4_POCRx(TMR4x, enCh);
-
-    /* Configure PWM mode */
-    switch (pstcInitCfg->enMode)
-    {
-        case PwmThroughMode:
-            pstcPOCR_f->PWMMDU = 0u;
-            break;
-        case PwmDeadTimerMode:
-            pstcPOCR_f->PWMMDU = 1u;
-            break;
-        case PwmDeadTimerFilterMode:
-            pstcPOCR_f->PWMMDU = 2u;
-            break;
-        default:
-            return ErrorInvalidParameter;
-    }
-
-    /* Configure PWM mode */
-    switch (pstcInitCfg->enOutputState)
-    {
-        case PwmHPwmLHold:
-            pstcPOCR_f->LVLSU = 0u;
-            break;
-        case PwmHPwmLReverse:
-            pstcPOCR_f->LVLSU = 1u;
-            break;
-        case PwmHReversePwmLHold:
-            pstcPOCR_f->LVLSU = 2u;
-            break;
-        case PwmHHoldPwmLReverse:
-            pstcPOCR_f->LVLSU = 3u;
-            break;
-        default:
-            return ErrorInvalidParameter;
-    }
-
-    /* Set timer clock division */
-    switch (pstcInitCfg->enClkDiv)
-    {
-        case PwmPlckDiv1:
-            pstcPOCR_f->DIVCKU = 0u;
-            break;
-        case PwmPlckDiv2:
-            pstcPOCR_f->DIVCKU = 1u;
-            break;
-        case PwmPlckDiv4:
-            pstcPOCR_f->DIVCKU = 2u;
-            break;
-        case PwmPlckDiv8:
-            pstcPOCR_f->DIVCKU = 3u;
-            break;
-        case PwmPlckDiv16:
-            pstcPOCR_f->DIVCKU = 4u;
-            break;
-        case PwmPlckDiv32:
-            pstcPOCR_f->DIVCKU = 5u;
-            break;
-        case PwmPlckDiv64:
-            pstcPOCR_f->DIVCKU = 6u;
-            break;
-        case PwmPlckDiv128:
-            pstcPOCR_f->DIVCKU = 7u;
-            break;
-        default:
-            return ErrorInvalidParameter;
-    }
-
-    /* Set interrupt mask */
-    switch (enCh)
-    {
-        case Timer4PwmU:
-            pstcRCSR_f->RTIDU = (Enable == pstcInitCfg->enRtIntMaskCmd) ? 1u:0u;
-            break;
-        case Timer4PwmV:
-            pstcRCSR_f->RTIDV = (Enable == pstcInitCfg->enRtIntMaskCmd) ? 1u:0u;
-            break;
-        case Timer4PwmW:
-            pstcRCSR_f->RTIDW = (Enable == pstcInitCfg->enRtIntMaskCmd) ? 1u:0u;
-            break;
-        default:
-            return ErrorInvalidParameter;
-    }
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -290,52 +233,48 @@ en_result_t TIMER4_PWM_DeInit(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_pwm_ch_t enCh)
 {
     en_result_t enRet = Ok;
-    __IO uint16_t *pu16PDAR;
-    __IO uint16_t *pu16PDBR;
-    __IO uint16_t *pu16PFSR;
-    __IO stc_tmr4_pocru_field_t *pstcPOCR_f;
-    __IO stc_tmr4_rcsr_field_t *pstcRCSR_f;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_PWM_CH(enCh));
+    __IO uint16_t *pu16PDAR = NULL;
+    __IO uint16_t *pu16PDBR = NULL;
+    __IO uint16_t *pu16PFSR = NULL;
+    __IO stc_tmr4_pocr_field_t *pstcPOCR_f = NULL;
+    __IO stc_tmr4_rcsr_field_t *pstcRCSR_f = NULL;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
+        /* Get pointer of current channel PWM register address */
+        pu16PDAR = (__IO uint16_t*)TMR4_PDARx(TMR4x, enCh);
+        pu16PDBR = (__IO uint16_t*)TMR4_PDBRx(TMR4x, enCh);
+        pu16PFSR = (__IO uint16_t*)TMR4_PFSRx(TMR4x, enCh);
+        pstcRCSR_f = (__IO stc_tmr4_rcsr_field_t*)TMR4_RCSRx(TMR4x);
+        pstcPOCR_f = (__IO stc_tmr4_pocr_field_t*)TMR4_POCRx(TMR4x, enCh);
+
+        *pu16PDAR = (uint16_t)0u;
+        *pu16PDBR = (uint16_t)0u;
+        *pu16PFSR = (uint16_t)0u;
+        pstcPOCR_f->DIVCK = (uint16_t)0u;
+        pstcPOCR_f->LVLS = (uint16_t)0u;
+        pstcPOCR_f->PWMMD = (uint16_t)0u;
+
+        switch (enCh)
+        {
+            case Timer4PwmU:
+                pstcRCSR_f->RTIDU = (uint16_t)0u;
+                break;
+            case Timer4PwmV:
+                pstcRCSR_f->RTIDV = (uint16_t)0u;
+                break;
+            case Timer4PwmW:
+                pstcRCSR_f->RTIDW = (uint16_t)0u;
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
     }
     else
     {
-    }
-
-    /* Get pointer of current channel PWM register address */
-    pu16PDAR = (__IO uint16_t*)TMR4_PDARx(TMR4x, enCh);
-    pu16PDBR = (__IO uint16_t*)TMR4_PDBRx(TMR4x, enCh);
-    pu16PFSR = (__IO uint16_t*)TMR4_PFSRx(TMR4x, enCh);
-    pstcRCSR_f = (__IO stc_tmr4_rcsr_field_t*)TMR4_RCSRx(TMR4x);
-    pstcPOCR_f = (__IO stc_tmr4_pocru_field_t*)TMR4_POCRx(TMR4x, enCh);
-
-    *pu16PDAR = 0u;
-    *pu16PDBR = 0u;
-    *pu16PFSR = 0u;
-    pstcPOCR_f->DIVCKU = 0u;
-    pstcPOCR_f->LVLSU = 0u;
-    pstcPOCR_f->PWMMDU = 0u;
-
-    switch (enCh)
-    {
-        case Timer4PwmU:
-            pstcRCSR_f->RTIDU = 0u;
-            break;
-        case Timer4PwmV:
-            pstcRCSR_f->RTIDV = 0u;
-            break;
-        case Timer4PwmW:
-            pstcRCSR_f->RTIDW = 0u;
-            break;
-        default:
-            enRet = ErrorInvalidParameter;
-            break;
+        enRet = ErrorInvalidParameter;
     }
 
     return enRet;
@@ -363,38 +302,31 @@ en_result_t TIMER4_PWM_DeInit(M4_TMR4_TypeDef *TMR4x,
 en_result_t TIMER4_PWM_StartTimer(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_pwm_ch_t enCh)
 {
-    en_result_t enRet = Ok;
-    __IO stc_tmr4_rcsr_field_t *pstcRCSR_f;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_PWM_CH(enCh));
+    en_result_t enRet = ErrorInvalidParameter;
+    __IO stc_tmr4_rcsr_field_t *pstcRCSR_f = NULL;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
+        enRet = Ok;
+        /* Get pointer of current channel PWM register address */
+        pstcRCSR_f = (__IO stc_tmr4_rcsr_field_t*)TMR4_RCSRx(TMR4x);
 
-    /* Get pointer of current channel PWM register address */
-    pstcRCSR_f = (__IO stc_tmr4_rcsr_field_t*)TMR4_RCSRx(TMR4x);
-
-    switch (enCh)
-    {
-        case Timer4PwmU:
-            pstcRCSR_f->RTEU = 1u;
-            break;
-        case Timer4PwmV:
-            pstcRCSR_f->RTEV = 1u;
-            break;
-        case Timer4PwmW:
-            pstcRCSR_f->RTEW = 1u;
-            break;
-        default:
-            enRet = ErrorInvalidParameter;
-            break;
+        switch (enCh)
+        {
+            case Timer4PwmU:
+                pstcRCSR_f->RTEU = (uint16_t)1u;
+                break;
+            case Timer4PwmV:
+                pstcRCSR_f->RTEV = (uint16_t)1u;
+                break;
+            case Timer4PwmW:
+                pstcRCSR_f->RTEW = (uint16_t)1u;
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
     }
 
     return enRet;
@@ -422,38 +354,34 @@ en_result_t TIMER4_PWM_StartTimer(M4_TMR4_TypeDef *TMR4x,
 en_result_t TIMER4_PWM_StopTimer(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_pwm_ch_t enCh)
 {
-    en_result_t enRet = Ok;
-    __IO stc_tmr4_rcsr_field_t *pstcRCSR_f;
+    en_result_t enRet = ErrorInvalidParameter;
+    __IO stc_tmr4_rcsr_field_t *pstcRCSR_f = NULL;
 
     /* Check parameters */
     DDL_ASSERT(IS_VALID_PWM_CH(enCh));
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
+        enRet = Ok;
 
-    /* Get pointer of current channel PWM register address */
-    pstcRCSR_f = (__IO stc_tmr4_rcsr_field_t*)TMR4_RCSRx(TMR4x);
-
-    switch (enCh)
-    {
-        case Timer4PwmU:
-            pstcRCSR_f->RTSU = 1u;
-            break;
-        case Timer4PwmV:
-            pstcRCSR_f->RTSV = 1u;
-            break;
-        case Timer4PwmW:
-            pstcRCSR_f->RTSW = 1u;
-            break;
-        default:
-            enRet = ErrorInvalidParameter;
-            break;
+        /* Get pointer of current channel PWM register address */
+        pstcRCSR_f = (__IO stc_tmr4_rcsr_field_t*)TMR4_RCSRx(TMR4x);
+        switch (enCh)
+        {
+            case Timer4PwmU:
+                pstcRCSR_f->RTSU = (uint16_t)1u;
+                break;
+            case Timer4PwmV:
+                pstcRCSR_f->RTSV = (uint16_t)1u;
+                break;
+            case Timer4PwmW:
+                pstcRCSR_f->RTSW = (uint16_t)1u;
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
     }
 
     return enRet;
@@ -479,8 +407,8 @@ en_result_t TIMER4_PWM_StopTimer(M4_TMR4_TypeDef *TMR4x,
 en_flag_status_t TIMER4_PWM_GetIrqFlag(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_pwm_ch_t enCh)
 {
-    uint8_t u8Flag = 0;
-    __IO stc_tmr4_rcsr_field_t *pstcRCSR_f;
+    uint16_t u16Flag = 0u;
+    __IO stc_tmr4_rcsr_field_t *pstcRCSR_f = NULL;
 
     /* Check parameters */
     DDL_ASSERT(IS_VALID_PWM_CH(enCh));
@@ -492,19 +420,19 @@ en_flag_status_t TIMER4_PWM_GetIrqFlag(M4_TMR4_TypeDef *TMR4x,
     switch (enCh)
     {
         case Timer4PwmU:
-            u8Flag = pstcRCSR_f->RTIFU;
+            u16Flag = pstcRCSR_f->RTIFU;
             break;
         case Timer4PwmV:
-            u8Flag = pstcRCSR_f->RTIFV;
+            u16Flag = pstcRCSR_f->RTIFV;
             break;
         case Timer4PwmW:
-            u8Flag = pstcRCSR_f->RTIFW;
+            u16Flag = pstcRCSR_f->RTIFW;
             break;
         default:
             break;
     }
 
-    return ((1u == u8Flag) ? Set : Reset);
+    return (en_flag_status_t)u16Flag;
 }
 
 /**
@@ -529,39 +457,33 @@ en_flag_status_t TIMER4_PWM_GetIrqFlag(M4_TMR4_TypeDef *TMR4x,
 en_result_t TIMER4_PWM_ClearIrqFlag(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_pwm_ch_t enCh)
 {
-    en_result_t enRet = Ok;
-    __IO stc_tmr4_rcsr_field_t *pstcRCSR_f;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_PWM_CH(enCh));
+    en_result_t enRet = ErrorInvalidParameter;
+    __IO stc_tmr4_rcsr_field_t *pstcRCSR_f = NULL;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_PWM_CH(enCh));
 
-    /* Get pointer of current channel PWM register address */
-    pstcRCSR_f = (__IO stc_tmr4_rcsr_field_t*)TMR4_RCSRx(TMR4x);
-
-    /* set register value */
-    switch (enCh)
-    {
-        case Timer4PwmU:
-            pstcRCSR_f->RTICU = 1u;
-            break;
-        case Timer4PwmV:
-            pstcRCSR_f->RTICV = 1u;
-            break;
-        case Timer4PwmW:
-            pstcRCSR_f->RTICW = 1u;
-            break;
-        default:
-            enRet = ErrorInvalidParameter;
-            break;
+        enRet = Ok;
+        /* Get pointer of current channel PWM register address */
+        pstcRCSR_f = (__IO stc_tmr4_rcsr_field_t*)TMR4_RCSRx(TMR4x);
+        switch (enCh)
+        {
+            case Timer4PwmU:
+                pstcRCSR_f->RTICU = (uint16_t)1u;
+                break;
+            case Timer4PwmV:
+                pstcRCSR_f->RTICV = (uint16_t)1u;
+                break;
+            case Timer4PwmW:
+                pstcRCSR_f->RTICW = (uint16_t)1u;
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
     }
 
     return enRet;
@@ -593,30 +515,28 @@ en_result_t TIMER4_PWM_WriteDeadRegionValue(M4_TMR4_TypeDef *TMR4x,
                                 uint16_t u16PDAR,
                                 uint16_t u16PDBR)
 {
-    __IO uint16_t *pu16PDAR;
-    __IO uint16_t *pu16PDBR;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_PWM_CH(enCh));
+    __IO uint16_t *pu16PDAR = NULL;
+    __IO uint16_t *pu16PDBR = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_PWM_CH(enCh));
+
+        /* Get pointer of current channel PWM register address */
+        pu16PDAR = (__IO uint16_t *)TMR4_PDARx(TMR4x, enCh);
+        pu16PDBR = (__IO uint16_t *)TMR4_PDBRx(TMR4x, enCh);
+
+        /* set the register */
+        *pu16PDAR = u16PDAR;
+        *pu16PDBR = u16PDBR;
+
+        enRet = Ok;
     }
-    else
-    {
-    }
 
-    /* Get pointer of current channel PWM register address */
-    pu16PDAR = (__IO uint16_t *)TMR4_PDARx(TMR4x, enCh);
-    pu16PDBR = (__IO uint16_t *)TMR4_PDBRx(TMR4x, enCh);
-
-    /* set the register */
-    *pu16PDAR = u16PDAR;
-    *pu16PDBR = u16PDBR;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -645,23 +565,22 @@ en_result_t TIMER4_PWM_ReadDeadRegionValue(M4_TMR4_TypeDef *TMR4x,
                                 uint16_t *u16PDAR,
                                 uint16_t *u16PDBR)
 {
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_PWM_CH(enCh));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_PWM_CH(enCh));
+
+        /* Get pointer of current channel PWM register address */
+        *u16PDAR = *(__IO uint16_t *)TMR4_PDARx(TMR4x, enCh);
+        *u16PDBR = *(__IO uint16_t *)TMR4_PDBRx(TMR4x, enCh);
+
+        enRet = Ok;
     }
 
-    /* Get pointer of current channel PWM register address */
-    *u16PDAR = *(__IO uint16_t *)TMR4_PDARx(TMR4x, enCh);
-    *u16PDBR = *(__IO uint16_t *)TMR4_PDBRx(TMR4x, enCh);
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -687,25 +606,23 @@ en_result_t TIMER4_PWM_SetFilterCountValue(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_pwm_ch_t enCh,
                                 uint16_t u16Count)
 {
-    __IO uint16_t *pu16PFSR;
-
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_PWM_CH(enCh));
+    __IO uint16_t *pu16PFSR = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check TMR4x pointer */
-    if (!IS_VALID_TIMER4(TMR4x))
+    if (IS_VALID_TIMER4(TMR4x))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_PWM_CH(enCh));
+
+        /* Get pointer of current channel PWM register address */
+        pu16PFSR = (__IO uint16_t*)TMR4_PFSRx(TMR4x, enCh);
+        *pu16PFSR =u16Count;
+
+        enRet = Ok;
     }
 
-    /* Get pointer of current channel PWM register address */
-    pu16PFSR = (__IO uint16_t*)TMR4_PFSRx(TMR4x, enCh);
-    *pu16PFSR =u16Count;
-
-    return Ok;
+    return enRet;
 }
 
 //@} // Timer4PwmGroup

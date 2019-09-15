@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -139,16 +139,16 @@
 /*                                     MPU                                    */
 /******************************************************************************/
 /*!< Get the RGD register address of the specified MPU region */
-#define MPU_RGDx(__REGION_NUM__)            ((uint32_t)(&M4_MPU->RGD0) + ((uint32_t)__REGION_NUM__) * 4u)
+#define MPU_RGDx(__REGION_NUM__)            ((uint32_t)(&M4_MPU->RGD0) + ((uint32_t)(__REGION_NUM__)) * 4u)
 
 /*!< Get the RGCR register address of the specified MPU region */
-#define MPU_RGCRx(__REGION_NUM__)           ((uint32_t)(&M4_MPU->RGCR0) + ((uint32_t)__REGION_NUM__) * 4u)
+#define MPU_RGCRx(__REGION_NUM__)           ((uint32_t)(&M4_MPU->RGCR0) + ((uint32_t)(__REGION_NUM__)) * 4u)
 
 /*!< MPU RGD register: RGADDR position */
 #define MPU_RGD_RGADDR_Pos                  (5u)                                /*!< MPU_RGD: RGADDR Position */
 
 /*!< MPU write protection key */
-#define MPU_WRITE_PROT_KEY                  (0x96A4u)
+#define MPU_WRITE_PROT_KEY                  (0x96A4ul)
 
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
@@ -185,83 +185,75 @@
 en_result_t MPU_ProtRegionInit(en_mpu_region_num_t enRegionNum,
                                 const stc_mpu_prot_region_init_t *pstcInitCfg)
 {
+    en_result_t enRet = ErrorInvalidParameter;
     uint32_t u32WriteProt = M4_MPU->WP;
     stc_mpu_rgd0_field_t *RGD_f = NULL;
     stc_mpu_rgcr0_field_t *RGCR_f = NULL;
 
-    DDL_ASSERT(IS_VALID_MPU_REGION_NUM(enRegionNum));
-    DDL_ASSERT(IS_VALID_MPU_REGION_SIZE(pstcInitCfg->enRegionSize));
-    DDL_ASSERT(IS_VALID_MPU_ACTION(pstcInitCfg->stcSMPU1Permission.enAction));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU1Permission.enRegionEnable));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU1Permission.enWriteEnable));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU1Permission.enReadEnable));
-    DDL_ASSERT(IS_VALID_MPU_ACTION(pstcInitCfg->stcSMPU2Permission.enAction));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU2Permission.enRegionEnable));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU2Permission.enWriteEnable));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU2Permission.enReadEnable));
-    DDL_ASSERT(IS_VALID_MPU_ACTION(pstcInitCfg->stcFMPUPermission.enAction));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcFMPUPermission.enRegionEnable));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcFMPUPermission.enWriteEnable));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcFMPUPermission.enReadEnable));
-
     /* Check pointer parameters */
-    if (NULL == pstcInitCfg)
+    if (NULL != pstcInitCfg)
     {
-        return ErrorInvalidParameter;
+        DDL_ASSERT(IS_VALID_MPU_REGION_NUM(enRegionNum));
+        DDL_ASSERT(IS_VALID_MPU_REGION_SIZE(pstcInitCfg->enRegionSize));
+        DDL_ASSERT(IS_VALID_MPU_ACTION(pstcInitCfg->stcSMPU1Permission.enAction));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU1Permission.enRegionEnable));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU1Permission.enWriteEnable));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU1Permission.enReadEnable));
+        DDL_ASSERT(IS_VALID_MPU_ACTION(pstcInitCfg->stcSMPU2Permission.enAction));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU2Permission.enRegionEnable));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU2Permission.enWriteEnable));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU2Permission.enReadEnable));
+        DDL_ASSERT(IS_VALID_MPU_ACTION(pstcInitCfg->stcFMPUPermission.enAction));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcFMPUPermission.enRegionEnable));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcFMPUPermission.enWriteEnable));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcFMPUPermission.enReadEnable));
+
+        /* Check base address and region size */
+        if (!(pstcInitCfg->u32RegionBaseAddress & (~ (0xFFFFFFFFUL << ((uint32_t)pstcInitCfg->enRegionSize + 1UL)))))
+        {
+            /* Disable write protection of MPU register */
+            M4_MPU->WP = (MPU_WRITE_PROT_KEY | 1ul);
+
+            /*  Get RGD && RGCR register address */
+            RGD_f = (stc_mpu_rgd0_field_t *)MPU_RGDx(enRegionNum);
+            RGCR_f = (stc_mpu_rgcr0_field_t *)MPU_RGCRx(enRegionNum);
+
+            /* Disable region protection function */
+            RGCR_f->FRG0E = (uint32_t)0ul;
+            RGCR_f->S1RG0E = (uint32_t)0ul;
+            RGCR_f->S2RG0E = (uint32_t)0ul;
+
+            /* Set region size */
+            RGD_f->MPURG0SIZE = (uint32_t)(pstcInitCfg->enRegionSize);
+
+            /* Set region base address */
+            RGD_f->MPURG0ADDR = (pstcInitCfg->u32RegionBaseAddress >> MPU_RGD_RGADDR_Pos);
+
+            /* Set region FMPU */
+            RGCR_f->FRG0RP = (pstcInitCfg->stcFMPUPermission.enReadEnable) ? 0ul : 1ul;
+            RGCR_f->FRG0WP = (pstcInitCfg->stcFMPUPermission.enWriteEnable) ? 0ul : 1ul;
+            RGCR_f->FRG0E  = (uint32_t)(pstcInitCfg->stcFMPUPermission.enRegionEnable);
+            M4_MPU->CR_f.FMPUACT = (uint32_t)(pstcInitCfg->stcFMPUPermission.enAction);
+
+            /* Set region SMPU1 */
+            RGCR_f->S1RG0RP = (pstcInitCfg->stcSMPU1Permission.enReadEnable) ? 0ul : 1ul;
+            RGCR_f->S1RG0WP = (pstcInitCfg->stcSMPU1Permission.enWriteEnable) ? 0ul : 1ul;
+            RGCR_f->S1RG0E  = (uint32_t)(pstcInitCfg->stcSMPU1Permission.enRegionEnable);
+            M4_MPU->CR_f.SMPU1ACT = (uint32_t)(pstcInitCfg->stcSMPU1Permission.enAction);
+
+            /* Set region SMPU2 */
+            RGCR_f->S2RG0RP = (pstcInitCfg->stcSMPU2Permission.enReadEnable) ? 0ul : 1ul;
+            RGCR_f->S2RG0WP = (pstcInitCfg->stcSMPU2Permission.enWriteEnable) ? 0ul : 1ul;
+            RGCR_f->S2RG0E  = (uint32_t)(pstcInitCfg->stcSMPU2Permission.enRegionEnable);
+            M4_MPU->CR_f.SMPU2ACT = (uint32_t)(pstcInitCfg->stcSMPU2Permission.enAction);
+
+            /* Recover write protection of MPU register */
+            M4_MPU->WP = (MPU_WRITE_PROT_KEY | u32WriteProt);
+            enRet = Ok;
+        }
     }
-    else
-    {
-    }
 
-    /* Check base address and region size */
-    if (pstcInitCfg->u32RegionBaseAddress & (~ (0xFFFFFFFF << ((uint32_t)pstcInitCfg->enRegionSize + 1))))
-    {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
-
-    /* Disable write protection of MPU register */
-    M4_MPU->WP = (MPU_WRITE_PROT_KEY | 1u);
-
-    /*  Get RGD && RGCR register address */
-    RGD_f = (stc_mpu_rgd0_field_t *)MPU_RGDx(enRegionNum);
-    RGCR_f = (stc_mpu_rgcr0_field_t *)MPU_RGCRx(enRegionNum);
-
-    /* Disable region protection function */
-    RGCR_f->FRG0E = 0u;
-    RGCR_f->S1RG0E = 0u;
-    RGCR_f->S2RG0E = 0u;
-
-    /* Set region size */
-    RGD_f->MPURG0SIZE = pstcInitCfg->enRegionSize;
-
-    /* Set region base address */
-    RGD_f->MPURG0ADDR = (pstcInitCfg->u32RegionBaseAddress >> MPU_RGD_RGADDR_Pos);
-
-    /* Set region FMPU */
-    RGCR_f->FRG0RP = (Enable == pstcInitCfg->stcFMPUPermission.enReadEnable) ? 0u : 1u;
-    RGCR_f->FRG0WP = (Enable == pstcInitCfg->stcFMPUPermission.enWriteEnable) ? 0u : 1u;
-    RGCR_f->FRG0E  = (Enable == pstcInitCfg->stcFMPUPermission.enRegionEnable) ? 1u : 0u;
-    M4_MPU->CR_f.FMPUACT = pstcInitCfg->stcFMPUPermission.enAction;
-
-    /* Set region SMPU1 */
-    RGCR_f->S1RG0RP = (Enable == pstcInitCfg->stcSMPU1Permission.enReadEnable) ? 0u : 1u;
-    RGCR_f->S1RG0WP = (Enable == pstcInitCfg->stcSMPU1Permission.enWriteEnable) ? 0u : 1u;
-    RGCR_f->S1RG0E  = (Enable == pstcInitCfg->stcSMPU1Permission.enRegionEnable) ? 1u : 0u;
-    M4_MPU->CR_f.SMPU1ACT = pstcInitCfg->stcSMPU1Permission.enAction;
-
-    /* Set region SMPU2 */
-    RGCR_f->S2RG0RP = (Enable == pstcInitCfg->stcSMPU2Permission.enReadEnable) ? 0u : 1u;
-    RGCR_f->S2RG0WP = (Enable == pstcInitCfg->stcSMPU2Permission.enWriteEnable) ? 0u : 1u;
-    RGCR_f->S2RG0E  = (Enable == pstcInitCfg->stcSMPU2Permission.enRegionEnable) ? 1u : 0u;
-    M4_MPU->CR_f.SMPU2ACT = pstcInitCfg->stcSMPU2Permission.enAction;
-
-    /* Recover write protection of MPU register */
-    M4_MPU->WP = (MPU_WRITE_PROT_KEY | u32WriteProt);
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -281,42 +273,39 @@ en_result_t MPU_ProtRegionInit(en_mpu_region_num_t enRegionNum,
 en_result_t MPU_BkgdRegionInit(const stc_mpu_bkgd_region_init_t *pstcInitCfg)
 {
     uint32_t u32WriteProt = M4_MPU->WP;
-
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU1BkgdPermission.enWriteEnable));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU1BkgdPermission.enReadEnable));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU2BkgdPermission.enWriteEnable));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU2BkgdPermission.enReadEnable));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcFMPUBkgdPermission.enWriteEnable));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcFMPUBkgdPermission.enReadEnable));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check pointer parameters */
-    if (NULL == pstcInitCfg)
+    if (NULL != pstcInitCfg)
     {
-        return ErrorInvalidParameter;
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU1BkgdPermission.enWriteEnable));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU1BkgdPermission.enReadEnable));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU2BkgdPermission.enWriteEnable));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcSMPU2BkgdPermission.enReadEnable));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcFMPUBkgdPermission.enWriteEnable));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->stcFMPUBkgdPermission.enReadEnable));
+
+        /* Disable write protection of MPU register */
+        M4_MPU->WP = (MPU_WRITE_PROT_KEY | 1ul);
+
+        /* Set SMPU1 */
+        M4_MPU->CR_f.SMPU1BWP = (pstcInitCfg->stcSMPU1BkgdPermission.enWriteEnable) ? 0ul : 1ul;
+        M4_MPU->CR_f.SMPU1BRP = (pstcInitCfg->stcSMPU1BkgdPermission.enReadEnable) ? 0ul : 1ul;
+
+        /* Set SMPU2 */
+        M4_MPU->CR_f.SMPU2BWP = (pstcInitCfg->stcSMPU2BkgdPermission.enWriteEnable) ? 0ul : 1ul;
+        M4_MPU->CR_f.SMPU2BRP = (pstcInitCfg->stcSMPU2BkgdPermission.enReadEnable) ? 0ul : 1ul;
+
+        /* Set FMPU */
+        M4_MPU->CR_f.FMPUBWP = (pstcInitCfg->stcFMPUBkgdPermission.enWriteEnable) ? 0ul : 1ul;
+        M4_MPU->CR_f.FMPUBRP = (pstcInitCfg->stcFMPUBkgdPermission.enReadEnable) ? 0ul : 1ul;
+
+        /* Recover write protection of MPU register */
+        M4_MPU->WP = (MPU_WRITE_PROT_KEY | u32WriteProt);
+        enRet = Ok;
     }
-    else
-    {
-    }
 
-    /* Disable write protection of MPU register */
-    M4_MPU->WP = (MPU_WRITE_PROT_KEY | 1u);
-
-    /* Set SMPU1 */
-    M4_MPU->CR_f.SMPU1BWP = (Enable == pstcInitCfg->stcSMPU1BkgdPermission.enWriteEnable) ? 0u : 1u;
-    M4_MPU->CR_f.SMPU1BRP = (Enable == pstcInitCfg->stcSMPU1BkgdPermission.enReadEnable) ? 0u : 1u;
-
-    /* Set SMPU2 */
-    M4_MPU->CR_f.SMPU2BWP = (Enable == pstcInitCfg->stcSMPU2BkgdPermission.enWriteEnable) ? 0u : 1u;
-    M4_MPU->CR_f.SMPU2BRP = (Enable == pstcInitCfg->stcSMPU2BkgdPermission.enReadEnable) ? 0u : 1u;
-
-    /* Set FMPU */
-    M4_MPU->CR_f.FMPUBWP = (Enable == pstcInitCfg->stcFMPUBkgdPermission.enWriteEnable) ? 0u : 1u;
-    M4_MPU->CR_f.FMPUBRP = (Enable == pstcInitCfg->stcFMPUBkgdPermission.enReadEnable) ? 0u : 1u;
-
-    /* Recover write protection of MPU register */
-    M4_MPU->WP = (MPU_WRITE_PROT_KEY | u32WriteProt);
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -340,7 +329,7 @@ en_result_t MPU_SetRegionSize(en_mpu_region_num_t enRegionNum,
     DDL_ASSERT(IS_VALID_MPU_REGION_SIZE(enRegionSize));
 
     RGD_f = (stc_mpu_rgd0_field_t *)MPU_RGDx(enRegionNum);
-    RGD_f->MPURG0SIZE = enRegionSize;
+    RGD_f->MPURG0SIZE = (uint32_t)enRegionSize;
 
     return Ok;
 }
@@ -363,7 +352,7 @@ en_mpu_region_size_t MPU_GetRegionSize(en_mpu_region_num_t enRegionNum)
 
     RGD_f = (stc_mpu_rgd0_field_t *)MPU_RGDx(enRegionNum);
 
-    return (en_mpu_region_size_t)RGD_f->MPURG0SIZE;
+    return (en_mpu_region_size_t)(RGD_f->MPURG0SIZE);
 }
 
 /**
@@ -408,7 +397,7 @@ uint32_t MPU_GetRegionBaseAddress(en_mpu_region_num_t enRegionNum)
 
     RGD_f = (stc_mpu_rgd0_field_t *)MPU_RGDx(enRegionNum);
 
-    return RGD_f->MPURG0ADDR << MPU_RGD_RGADDR_Pos;
+    return (RGD_f->MPURG0ADDR << MPU_RGD_RGADDR_Pos);
 }
 
 /**
@@ -493,7 +482,7 @@ en_mpu_action_sel_t MPU_GetNoPermissionAcessAction(en_mpu_region_type_t enMpuReg
             break;
     }
 
-    return ((en_mpu_action_sel_t)u32ActionSel);
+    return (en_mpu_action_sel_t)(u32ActionSel);
 }
 
 /**
@@ -521,7 +510,6 @@ en_result_t MPU_ProtRegionCmd(en_mpu_region_num_t enRegionNum,
 {
     en_result_t enRet = Ok;
     stc_mpu_rgcr0_field_t *RGCR_f = NULL;
-    uint32_t u32State = ((Enable == enState) ? 1u : 0u);
 
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enState));
     DDL_ASSERT(IS_VALID_MPU_REGION_NUM(enRegionNum));
@@ -532,13 +520,13 @@ en_result_t MPU_ProtRegionCmd(en_mpu_region_num_t enRegionNum,
     switch (enMpuRegionType)
     {
         case SMPU1Region:
-            RGCR_f->S1RG0E = u32State;
+            RGCR_f->S1RG0E = (uint32_t)enState;
             break;
         case SMPU2Region:
-            RGCR_f->S2RG0E = u32State;
+            RGCR_f->S2RG0E = (uint32_t)enState;
             break;
         case FMPURegion:
-            RGCR_f->FRG0E = u32State;
+            RGCR_f->FRG0E = (uint32_t)enState;
             break;
         default:
             enRet = ErrorInvalidParameter;
@@ -569,7 +557,6 @@ en_result_t MPU_RegionTypeCmd(en_mpu_region_type_t enMpuRegionType,
                                 en_functional_state_t enState)
 {
     en_result_t enRet = Ok;
-    uint32_t u32State = ((Enable == enState) ? 1u : 0u);
 
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enState));
     DDL_ASSERT(IS_VALID_MPU_REGION_TYPE(enMpuRegionType));
@@ -577,13 +564,13 @@ en_result_t MPU_RegionTypeCmd(en_mpu_region_type_t enMpuRegionType,
     switch (enMpuRegionType)
     {
         case SMPU1Region:
-            M4_MPU->CR_f.SMPU1E = u32State;
+            M4_MPU->CR_f.SMPU1E = (uint32_t)enState;
             break;
         case SMPU2Region:
-            M4_MPU->CR_f.SMPU2E = u32State;
+            M4_MPU->CR_f.SMPU2E = (uint32_t)enState;
             break;
         case FMPURegion:
-            M4_MPU->CR_f.FMPUE = u32State;
+            M4_MPU->CR_f.FMPUE = (uint32_t)enState;
             break;
         default:
             enRet = ErrorInvalidParameter;
@@ -608,26 +595,26 @@ en_result_t MPU_RegionTypeCmd(en_mpu_region_type_t enMpuRegionType,
  ******************************************************************************/
 en_flag_status_t MPU_GetStatus(en_mpu_region_type_t enMpuRegionType)
 {
-    uint8_t u8Flag = 0;
+    uint32_t u32Flag = 0ul;
 
     DDL_ASSERT(IS_VALID_MPU_REGION_TYPE(enMpuRegionType));
 
     switch (enMpuRegionType)
     {
         case SMPU1Region:
-            u8Flag = M4_MPU->SR_f.SMPU1EAF;
+            u32Flag = M4_MPU->SR_f.SMPU1EAF;
             break;
         case SMPU2Region:
-            u8Flag = M4_MPU->SR_f.SMPU2EAF;
+            u32Flag = M4_MPU->SR_f.SMPU2EAF;
             break;
         case FMPURegion:
-            u8Flag = M4_MPU->SR_f.FMPUEAF;
+            u32Flag = M4_MPU->SR_f.FMPUEAF;
             break;
         default:
             break;
     }
 
-    return (u8Flag ? Set : Reset);
+    return (en_flag_status_t)(u32Flag);
 }
 
 /**
@@ -692,7 +679,6 @@ en_result_t MPU_SetProtRegionReadPermission(en_mpu_region_num_t enRegionNum,
 {
     en_result_t enRet = Ok;
     stc_mpu_rgcr0_field_t *RGCR_f = NULL;
-    uint32_t u32State = ((Enable == enState) ? 0u : 1u);
 
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enState));
     DDL_ASSERT(IS_VALID_MPU_REGION_NUM(enRegionNum));
@@ -703,13 +689,13 @@ en_result_t MPU_SetProtRegionReadPermission(en_mpu_region_num_t enRegionNum,
     switch (enMpuRegionType)
     {
         case SMPU1Region:
-            RGCR_f->FRG0RP = u32State;
+            RGCR_f->S1RG0RP = (Enable == enState) ? 0ul : 1ul;
             break;
         case SMPU2Region:
-            RGCR_f->S1RG0RP = u32State;
+            RGCR_f->S2RG0RP = (Enable == enState) ? 0ul : 1ul;
             break;
         case FMPURegion:
-            RGCR_f->S2RG0RP = u32State;
+            RGCR_f->FRG0RP = (Enable == enState) ? 0ul : 1ul;
             break;
         default:
             enRet = ErrorInvalidParameter;
@@ -748,19 +734,19 @@ en_functional_state_t MPU_GetProtRegionReadPermission(en_mpu_region_num_t enRegi
     switch (enMpuRegionType)
     {
         case SMPU1Region:
-            u32State = RGCR_f->FRG0RP;
-            break;
-        case SMPU2Region:
             u32State = RGCR_f->S1RG0RP;
             break;
-        case FMPURegion:
+        case SMPU2Region:
             u32State = RGCR_f->S2RG0RP;
+            break;
+        case FMPURegion:
+            u32State = RGCR_f->FRG0RP;
             break;
         default:
             break;
     }
 
-    return (u32State ? Enable : Disable);
+    return (u32State ? Disable : Enable);
 }
 
 /**
@@ -787,7 +773,6 @@ en_result_t MPU_SetProtRegionWritePermission(en_mpu_region_num_t enRegionNum,
 {
     en_result_t enRet = Ok;
     stc_mpu_rgcr0_field_t *RGCR_f = NULL;
-    uint32_t u32State = ((Enable == enState) ? 0u : 1u);
 
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enState));
     DDL_ASSERT(IS_VALID_MPU_REGION_NUM(enRegionNum));
@@ -798,13 +783,13 @@ en_result_t MPU_SetProtRegionWritePermission(en_mpu_region_num_t enRegionNum,
     switch (enMpuRegionType)
     {
         case SMPU1Region:
-            RGCR_f->FRG0WP = u32State;
+            RGCR_f->S1RG0WP = ((Enable == enState) ? 0ul : 1ul);
             break;
         case SMPU2Region:
-            RGCR_f->S1RG0WP = u32State;
+            RGCR_f->S2RG0WP = ((Enable == enState) ? 0ul : 1ul);
             break;
         case FMPURegion:
-            RGCR_f->S2RG0WP = u32State;
+            RGCR_f->FRG0WP = ((Enable == enState) ? 0ul : 1ul);
             break;
         default:
             enRet = ErrorInvalidParameter;
@@ -843,19 +828,19 @@ en_functional_state_t MPU_GetProtRegionWritePermission(en_mpu_region_num_t enReg
     switch (enMpuRegionType)
     {
         case SMPU1Region:
-            u32State = RGCR_f->FRG0WP;
-            break;
-        case SMPU2Region:
             u32State = RGCR_f->S1RG0WP;
             break;
-        case FMPURegion:
+        case SMPU2Region:
             u32State = RGCR_f->S2RG0WP;
+            break;
+        case FMPURegion:
+            u32State = RGCR_f->FRG0WP;
             break;
         default:
             break;
     }
 
-    return (u32State ? Enable : Disable);
+    return (u32State ? Disable : Enable);
 }
 
 /**
@@ -878,7 +863,6 @@ en_result_t MPU_SetBkgdRegionReadPermission(en_mpu_region_type_t enMpuRegionType
                                 en_functional_state_t enState)
 {
     en_result_t enRet = Ok;
-    uint32_t u32State = ((Enable == enState) ? 0u : 1u);
 
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enState));
     DDL_ASSERT(IS_VALID_MPU_REGION_TYPE(enMpuRegionType));
@@ -886,13 +870,13 @@ en_result_t MPU_SetBkgdRegionReadPermission(en_mpu_region_type_t enMpuRegionType
     switch (enMpuRegionType)
     {
         case SMPU1Region:
-            M4_MPU->CR_f.SMPU1BRP = u32State;
+            M4_MPU->CR_f.SMPU1BRP = ((Enable == enState) ? 0ul : 1ul);
             break;
         case SMPU2Region:
-            M4_MPU->CR_f.SMPU2BRP = u32State;
+            M4_MPU->CR_f.SMPU2BRP = ((Enable == enState) ? 0ul : 1ul);
             break;
         case FMPURegion:
-            M4_MPU->CR_f.FMPUBRP = u32State;
+            M4_MPU->CR_f.FMPUBRP = ((Enable == enState) ? 0ul : 1ul);
             break;
         default:
             enRet = ErrorInvalidParameter;
@@ -936,7 +920,7 @@ en_functional_state_t MPU_GetBkgdRegionReadPermission(en_mpu_region_type_t enMpu
             break;
     }
 
-    return (u32State ? Enable : Disable);
+    return (u32State ? Disable : Enable);
 }
 
 /**
@@ -959,7 +943,6 @@ en_result_t MPU_SetBkgdRegionWritePermission(en_mpu_region_type_t enMpuRegionTyp
                                 en_functional_state_t enState)
 {
     en_result_t enRet = Ok;
-    uint32_t u32State = ((Enable == enState) ? 0u : 1u);
 
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enState));
     DDL_ASSERT(IS_VALID_MPU_REGION_TYPE(enMpuRegionType));
@@ -967,13 +950,13 @@ en_result_t MPU_SetBkgdRegionWritePermission(en_mpu_region_type_t enMpuRegionTyp
     switch (enMpuRegionType)
     {
         case SMPU1Region:
-            M4_MPU->CR_f.SMPU1BWP = u32State;
+            M4_MPU->CR_f.SMPU1BWP = ((Enable == enState) ? 0ul : 1ul);
             break;
         case SMPU2Region:
-            M4_MPU->CR_f.SMPU2BWP = u32State;
+            M4_MPU->CR_f.SMPU2BWP = ((Enable == enState) ? 0ul : 1ul);
             break;
         case FMPURegion:
-            M4_MPU->CR_f.FMPUBWP = u32State;
+            M4_MPU->CR_f.FMPUBWP = ((Enable == enState) ? 0ul : 1ul);
             break;
         default:
             enRet = ErrorInvalidParameter;
@@ -1017,7 +1000,7 @@ en_functional_state_t MPU_GetBkgdRegionWritePermission(en_mpu_region_type_t enMp
             break;
     }
 
-    return (u32State ? Enable : Disable);
+    return (u32State ? Disable : Enable);
 }
 
 /**
@@ -1035,7 +1018,7 @@ en_result_t MPU_WriteProtCmd(en_functional_state_t enState)
 {
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enState));
 
-    M4_MPU->WP = (MPU_WRITE_PROT_KEY | ((Enable == enState) ? 0u : 1u));
+    M4_MPU->WP = (MPU_WRITE_PROT_KEY | ((Enable == enState) ? 0ul : 1ul));
 
     return Ok;
 }

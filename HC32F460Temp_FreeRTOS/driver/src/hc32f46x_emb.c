@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -130,29 +130,34 @@ en_result_t EMB_ConfigIrq(M4_EMB_TypeDef *EMBx,
                                 en_emb_irq_type_t enEMBIrq,
                                 bool bEn)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_EMB_UNIT(EMBx));
-    DDL_ASSERT(IS_VALID_EMB_IRQ(enEMBIrq));
-
-    switch (enEMBIrq)
+    if (IS_VALID_EMB_UNIT(EMBx))
     {
-        case PORTBrkIrq:
-            EMBx->INTEN_f.PORTINTEN = bEn;
-            break;
-        case PWMSmBrkIrq:
-            EMBx->INTEN_f.PWMINTEN = bEn;
-            break;
-        case CMPBrkIrq:
-            EMBx->INTEN_f.CMPINTEN = bEn;
-            break;
-        case OSCFailBrkIrq:
-            EMBx->INTEN_f.OSINTEN = bEn;
-            break;
-        default:
-            break;
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_EMB_IRQ(enEMBIrq));
+
+        enRet = Ok;
+        switch (enEMBIrq)
+        {
+            case PORTBrkIrq:
+                EMBx->INTEN_f.PORTINTEN = (uint32_t)bEn;
+                break;
+            case PWMSmBrkIrq:
+                EMBx->INTEN_f.PWMINTEN = (uint32_t)bEn;
+                break;
+            case CMPBrkIrq:
+                EMBx->INTEN_f.CMPINTEN = (uint32_t)bEn;
+                break;
+            case OSCFailBrkIrq:
+                EMBx->INTEN_f.OSINTEN = (uint32_t)bEn;
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
     }
+
     return enRet;
 }
 
@@ -216,28 +221,32 @@ bool EMB_GetStatus(M4_EMB_TypeDef *EMBx, en_emb_status_t enStatus)
 en_result_t EMB_ClrStatus(M4_EMB_TypeDef *EMBx,
                                 en_emb_status_clr_t enStatusClr)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
 
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_EMB_UNIT(EMBx));
-    DDL_ASSERT(IS_VALID_EMB_STATUS_CLR(enStatusClr));
-
-    switch (enStatusClr)
+    if (IS_VALID_EMB_UNIT(EMBx))
     {
-        case EMBPortInFlagClr:
-            EMBx->STATCLR_f.PORTINFCLR = 1;
-            break;
-        case EMBPWMSameFlagCLr:
-            EMBx->STATCLR_f.PWMSFCLR = 1;
-            break;
-        case EMBCmpFlagClr:
-            EMBx->STATCLR_f.CMPFCLR = 1;
-            break;
-        case EMBOSCFailFlagCLr:
-            EMBx->STATCLR_f.OSFCLR = 1;
-            break;
-        default:
-            break;
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_EMB_STATUS_CLR(enStatusClr));
+
+        enRet = Ok;
+        switch (enStatusClr)
+        {
+            case EMBPortInFlagClr:
+                EMBx->STATCLR_f.PORTINFCLR = 1ul;
+                break;
+            case EMBPWMSameFlagCLr:
+                EMBx->STATCLR_f.PWMSFCLR = 1ul;
+                break;
+            case EMBCmpFlagClr:
+                EMBx->STATCLR_f.CMPFCLR = 1ul;
+                break;
+            case EMBOSCFailFlagCLr:
+                EMBx->STATCLR_f.OSFCLR = 1ul;
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
     }
 
     return enRet;
@@ -254,71 +263,70 @@ en_result_t EMB_ClrStatus(M4_EMB_TypeDef *EMBx,
  ******************************************************************************/
 en_result_t EMB_Config_CR_Timer6(const stc_emb_ctrl_timer6_t* pstcEMBConfigCR)
 {
-    en_result_t enRet = Ok;
-    uint32_t u32Val = 0;
+    uint32_t u32Val = 0ul;
+    en_result_t enRet = ErrorInvalidParameter;
 
-    if (NULL == pstcEMBConfigCR)
+    if (NULL != pstcEMBConfigCR)
     {
-        return ErrorInvalidParameter;
-    }
+        if (pstcEMBConfigCR->bEnPortBrake)
+        {
+            u32Val |= 1ul;
+        }
+        if (pstcEMBConfigCR->bEnCmp1Brake)
+        {
+            u32Val |= 1ul << 1;
+        }
+        if (pstcEMBConfigCR->bEnCmp2Brake)
+        {
+            u32Val |= 1ul << 2;
+        }
+        if (pstcEMBConfigCR->bEnCmp3Brake)
+        {
+            u32Val |= 1ul << 3;
+        }
+        if (pstcEMBConfigCR->bEnOSCFailBrake)
+        {
+            u32Val |= 1ul << 5;
+        }
+        if (pstcEMBConfigCR->bEnTimer61PWMSBrake)
+        {
+            u32Val |= 1ul << 6;
+        }
+        if (pstcEMBConfigCR->bEnTimer62PWMSBrake)
+        {
+            u32Val |= 1ul << 7;
+        }
+        if (pstcEMBConfigCR->bEnTimer63PWMSBrake)
+        {
+            u32Val |= 1ul << 8;
+        }
+        if (EMBPortFltDiv0 == pstcEMBConfigCR->enPortInFltClkSel)
+        {
+        }
+        if (EMBPortFltDiv8 == pstcEMBConfigCR->enPortInFltClkSel)
+        {
+            u32Val |= 1ul << 28;
+        }
+        if (EMBPortFltDiv32 == pstcEMBConfigCR->enPortInFltClkSel)
+        {
+            u32Val |= 2ul << 28;
+        }
+        if (EMBPortFltDiv128 == pstcEMBConfigCR->enPortInFltClkSel)
+        {
+            u32Val |= 3ul << 28;
+        }
+        if (pstcEMBConfigCR->bEnPorInFlt)
+        {
+            u32Val |= 1ul << 30;
+        }
+        if (pstcEMBConfigCR->bEnPortInLevelSel_Low)
+        {
+            u32Val |= 1ul << 31;
+        }
 
-    if (pstcEMBConfigCR->bEnPortBrake)
-    {
-        u32Val |= 1u;
+        M4_EMB1->CTL = u32Val;
+        enRet = Ok;
     }
-    if (pstcEMBConfigCR->bEnCmp1Brake)
-    {
-        u32Val |= 1u << 1;
-    }
-    if (pstcEMBConfigCR->bEnCmp2Brake)
-    {
-        u32Val |= 1u << 2;
-    }
-    if (pstcEMBConfigCR->bEnCmp3Brake)
-    {
-        u32Val |= 1u << 3;
-    }
-    if (pstcEMBConfigCR->bEnOSCFailBrake)
-    {
-        u32Val |= 1u << 5;
-    }
-    if (pstcEMBConfigCR->bEnTimer61PWMSBrake)
-    {
-        u32Val |= 1u << 6;
-    }
-    if (pstcEMBConfigCR->bEnTimer62PWMSBrake)
-    {
-        u32Val |= 1u << 7;
-    }
-    if (pstcEMBConfigCR->bEnTimer63PWMSBrake)
-    {
-        u32Val |= 1u << 8;
-    }
-    if (EMBPortFltDiv0 == pstcEMBConfigCR->enPortInFltClkSel)
-    {
-    }
-    if (EMBPortFltDiv8 == pstcEMBConfigCR->enPortInFltClkSel)
-    {
-        u32Val |= 1u << 28;
-    }
-    if (EMBPortFltDiv32 == pstcEMBConfigCR->enPortInFltClkSel)
-    {
-        u32Val |= 2u << 28;
-    }
-    if (EMBPortFltDiv128 == pstcEMBConfigCR->enPortInFltClkSel)
-    {
-        u32Val |= 3u << 28;
-    }
-    if (pstcEMBConfigCR->bEnPorInFlt)
-    {
-        u32Val |= 1u << 30;
-    }
-    if (pstcEMBConfigCR->bEnPortInLevelSel_Low)
-    {
-        u32Val |= 1u << 31;
-    }
-
-    M4_EMB1->CTL = u32Val;
 
     return enRet;
 }
@@ -336,76 +344,72 @@ en_result_t EMB_Config_CR_Timer6(const stc_emb_ctrl_timer6_t* pstcEMBConfigCR)
 en_result_t EMB_Config_CR_Timer4(M4_EMB_TypeDef *EMBx,
                                 const stc_emb_ctrl_timer4_t* pstcEMBConfigCR)
 {
-    en_result_t enRet = Ok;
-    uint32_t u32Val = 0;
+    uint32_t u32Val = 0ul;
+    en_result_t enRet = ErrorInvalidParameter;
 
-    DDL_ASSERT(IS_VALID_EMB_UNIT(EMBx));
-    if (M4_EMB1 == EMBx)
+    if ((M4_EMB1 != EMBx)           && \
+        (IS_VALID_EMB_UNIT(EMBx))   && \
+        (NULL != pstcEMBConfigCR))
     {
-        return ErrorInvalidParameter;
-    }
-    if (NULL == pstcEMBConfigCR)
-    {
-        return ErrorInvalidParameter;
-    }
+        if (pstcEMBConfigCR->bEnPortBrake)
+        {
+            u32Val |= 1ul;
+        }
+        if (pstcEMBConfigCR->bEnCmp1Brake)
+        {
+            u32Val |= 1ul << 1;
+        }
+        if (pstcEMBConfigCR->bEnCmp2Brake)
+        {
+            u32Val |= 1ul << 2;
+        }
+        if (pstcEMBConfigCR->bEnCmp3Brake)
+        {
+            u32Val |= 1ul << 3;
+        }
+        if (pstcEMBConfigCR->bEnOSCFailBrake)
+        {
+            u32Val |= 1ul << 5;
+        }
+        if (pstcEMBConfigCR->bEnTimer4xWHLSammeBrake)
+        {
+            u32Val |= 1ul << 6;
+        }
+        if (pstcEMBConfigCR->bEnTimer4xVHLSammeBrake)
+        {
+            u32Val |= 1ul << 7;
+        }
+        if (pstcEMBConfigCR->bEnTimer4xUHLSammeBrake)
+        {
+            u32Val |= 1ul << 8;
+        }
+        if (EMBPortFltDiv0 == pstcEMBConfigCR->enPortInFltClkSel)
+        {
+        }
+        if (EMBPortFltDiv8 == pstcEMBConfigCR->enPortInFltClkSel)
+        {
+            u32Val |= 1ul << 28;
+        }
+        if (EMBPortFltDiv32 == pstcEMBConfigCR->enPortInFltClkSel)
+        {
+            u32Val |= 2ul << 28;
+        }
+        if (EMBPortFltDiv128 == pstcEMBConfigCR->enPortInFltClkSel)
+        {
+            u32Val |= 3ul << 28;
+        }
+        if (pstcEMBConfigCR->bEnPorInFlt)
+        {
+            u32Val |= 1ul << 30;
+        }
+        if (pstcEMBConfigCR->bEnPortInLevelSel_Low)
+        {
+            u32Val |= 1ul << 31;
+        }
 
-    if (pstcEMBConfigCR->bEnPortBrake)
-    {
-        u32Val |= 1u;
+        EMBx->CTL = u32Val;
+        enRet = Ok;
     }
-    if (pstcEMBConfigCR->bEnCmp1Brake)
-    {
-        u32Val |= 1u << 1;
-    }
-    if (pstcEMBConfigCR->bEnCmp2Brake)
-    {
-        u32Val |= 1u << 2;
-    }
-    if (pstcEMBConfigCR->bEnCmp3Brake)
-    {
-        u32Val |= 1u << 3;
-    }
-    if (pstcEMBConfigCR->bEnOSCFailBrake)
-    {
-        u32Val |= 1u << 5;
-    }
-    if (pstcEMBConfigCR->bEnTimer4xWHLSammeBrake)
-    {
-        u32Val |= 1u << 6;
-    }
-    if (pstcEMBConfigCR->bEnTimer4xVHLSammeBrake)
-    {
-        u32Val |= 1u << 7;
-    }
-    if (pstcEMBConfigCR->bEnTimer4xUHLSammeBrake)
-    {
-        u32Val |= 1u << 8;
-    }
-    if (EMBPortFltDiv0 == pstcEMBConfigCR->enPortInFltClkSel)
-    {
-    }
-    if (EMBPortFltDiv8 == pstcEMBConfigCR->enPortInFltClkSel)
-    {
-        u32Val |= 1u << 28;
-    }
-    if (EMBPortFltDiv32 == pstcEMBConfigCR->enPortInFltClkSel)
-    {
-        u32Val |= 2u << 28;
-    }
-    if (EMBPortFltDiv128 == pstcEMBConfigCR->enPortInFltClkSel)
-    {
-        u32Val |= 3u << 28;
-    }
-    if (pstcEMBConfigCR->bEnPorInFlt)
-    {
-        u32Val |= 1u << 30;
-    }
-    if (pstcEMBConfigCR->bEnPortInLevelSel_Low)
-    {
-        u32Val |= 1u << 31;
-    }
-
-    EMBx->CTL = u32Val;
 
     return enRet;
 }
@@ -421,28 +425,27 @@ en_result_t EMB_Config_CR_Timer4(M4_EMB_TypeDef *EMBx,
  ******************************************************************************/
 en_result_t EMB_PWMLv_Timer6(const stc_emb_pwm_level_timer6_t* pstcEMBPWMlv)
 {
-    en_result_t enRet = Ok;
-    uint32_t u32Val = 0;
+    uint32_t u32Val = 0ul;
+    en_result_t enRet = ErrorInvalidParameter;
 
-    if (NULL == pstcEMBPWMlv)
+    if (NULL != pstcEMBPWMlv)
     {
-        return ErrorInvalidParameter;
-    }
+        if (pstcEMBPWMlv->bEnTimer61HighLevelDect)
+        {
+            u32Val |= 0x1ul;
+        }
+        if (pstcEMBPWMlv->bEnTimer62HighLevelDect)
+        {
+            u32Val |= 0x2ul;
+        }
+        if (pstcEMBPWMlv->bEnTimer63HighLevelDect)
+        {
+            u32Val |= 0x4ul;
+        }
 
-    if (pstcEMBPWMlv->bEnTimer61HighLevelDect)
-    {
-        u32Val |= 0x1;
+        M4_EMB1->PWMLV = u32Val;
+        enRet = Ok;
     }
-    if (pstcEMBPWMlv->bEnTimer62HighLevelDect)
-    {
-        u32Val |= 0x2;
-    }
-    if (pstcEMBPWMlv->bEnTimer63HighLevelDect)
-    {
-        u32Val |= 0x4;
-    }
-
-    M4_EMB1->PWMLV = u32Val;
 
     return enRet;
 }
@@ -460,33 +463,29 @@ en_result_t EMB_PWMLv_Timer6(const stc_emb_pwm_level_timer6_t* pstcEMBPWMlv)
 en_result_t EMB_PWMLv_Timer4(M4_EMB_TypeDef *EMBx,
                                 const stc_emb_pwm_level_timer4_t* pstcEMBPWMlv)
 {
-    en_result_t enRet = Ok;
-    uint32_t u32Val = 0;
+    uint32_t u32Val = 0ul;
+    en_result_t enRet = ErrorInvalidParameter;
 
-    DDL_ASSERT(IS_VALID_EMB_UNIT(EMBx));
-    if (M4_EMB1 == EMBx)
+    if ((IS_VALID_EMB_UNIT(EMBx))   && \
+        (M4_EMB1 != EMBx)           && \
+        (NULL != pstcEMBPWMlv))
     {
-        return ErrorInvalidParameter;
-    }
-    if (NULL == pstcEMBPWMlv)
-    {
-        return ErrorInvalidParameter;
-    }
+        if (pstcEMBPWMlv->bEnWHLphaseHighLevelDect)
+        {
+            u32Val |= 0x1ul;
+        }
+        if (pstcEMBPWMlv->bEnVHLPhaseHighLevelDect)
+        {
+            u32Val |= 0x2ul;
+        }
+        if (pstcEMBPWMlv->bEnUHLPhaseHighLevelDect)
+        {
+            u32Val |= 0x4ul;
+        }
 
-    if (pstcEMBPWMlv->bEnWHLphaseHighLevelDect)
-    {
-        u32Val |= 0x1;
+        EMBx->PWMLV = u32Val;
+        enRet = Ok;
     }
-    if (pstcEMBPWMlv->bEnVHLPhaseHighLevelDect)
-    {
-        u32Val |= 0x2;
-    }
-    if (pstcEMBPWMlv->bEnUHLPhaseHighLevelDect)
-    {
-        u32Val |= 0x4;
-    }
-
-    EMBx->PWMLV = u32Val;
 
     return enRet;
 }
@@ -504,14 +503,12 @@ en_result_t EMB_PWMLv_Timer4(M4_EMB_TypeDef *EMBx,
  ******************************************************************************/
 en_result_t EMB_SwBrake(M4_EMB_TypeDef *EMBx, bool bEn)
 {
-    en_result_t enRet = Ok;
-
     /* Check parameters */
     DDL_ASSERT(IS_VALID_EMB_UNIT(EMBx));
 
-    EMBx->SOE_f.SOE = bEn;
+    EMBx->SOE_f.SOE = (uint32_t)bEn;
 
-    return enRet;
+    return Ok;
 }
 
 //@} // EMBGroup

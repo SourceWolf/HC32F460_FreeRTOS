@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -70,13 +70,13 @@
 /*******************************************************************************
  * Local pre-processor symbols/macros ('#define')
  ******************************************************************************/
-#define GPIO_BASE       0x40053800
-#define PODR_BASE       0x0004
-#define POER_BASE       0x0006
-#define POSR_BASE       0x0008
-#define PORR_BASE       0x000A
-#define PCR_BASE        0x0400
-#define PFSR_BASE       0x0402
+#define GPIO_BASE       (0x40053800ul)
+#define PODR_BASE       (0x0004ul)
+#define POER_BASE       (0x0006ul)
+#define POSR_BASE       (0x0008ul)
+#define PORR_BASE       (0x000Aul)
+#define PCR_BASE        (0x0400ul)
+#define PFSR_BASE       (0x0402ul)
 
 /*! Parameter validity check for port group. */
 #define IS_VALID_PORT(x)                                                        \
@@ -106,10 +106,7 @@
     ((x) == Pin14)                              ||                              \
     ((x) == Pin15))
 
-/*! Parameter validity check for pin source. */
-//#define IS_VALID_PINSOURCE(x)   ((x) <= 0xFFFFu)  // always true
-
-
+/*! Parameter validity check for debug pins. */
 #define IS_VALID_DEBUGPIN(x)                    ((x) <= 0x1Fu)
 
 /*! Parameter validity check for pin mode. */
@@ -272,7 +269,7 @@ en_result_t PORT_Init(en_port_t enPort, uint16_t u16Pin, const stc_port_init_t *
 {
     stc_port_pcr_field_t *PCRx;
     stc_port_pfsr_field_t * PFSRx;
-    uint8_t u8PinPos = 0;
+    uint8_t u8PinPos = 0u;
 
     /* parameter check */
     DDL_ASSERT(IS_VALID_PORT(enPort));
@@ -287,14 +284,14 @@ en_result_t PORT_Init(en_port_t enPort, uint16_t u16Pin, const stc_port_init_t *
     DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcPortInit->enPinSubFunc));
 
     PORT_Unlock();
-    for (u8PinPos = 0; u8PinPos < 16; u8PinPos ++)
+    for (u8PinPos = 0u; u8PinPos < 16u; u8PinPos ++)
     {
-        if (u16Pin & (1<<u8PinPos))
+        if (u16Pin & (1ul<<u8PinPos))
         {
             PCRx = (stc_port_pcr_field_t *)((uint32_t)(&M4_PORT->PCRA0) +      \
-                                            enPort * 0x40 + u8PinPos * 0x04);
+                                            enPort * 0x40ul + u8PinPos * 0x04ul);
             PFSRx = (stc_port_pfsr_field_t *)((uint32_t)(&M4_PORT->PFSRA0) +   \
-                                              enPort * 0x40 + u8PinPos * 0x04);
+                                              enPort * 0x40ul + u8PinPos * 0x04ul);
 
             /* Input latch function setting */
             PCRx->LTE = pstcPortInit->enLatch;
@@ -318,24 +315,21 @@ en_result_t PORT_Init(en_port_t enPort, uint16_t u16Pin, const stc_port_init_t *
             switch (pstcPortInit->enPinMode)
             {
                 case Pin_Mode_In:
-                    PCRx->DDIS = 0;
-                    PCRx->POUTE = 0;
+                    PCRx->DDIS  = 0u;
+                    PCRx->POUTE = 0u;
                 break;
                 case Pin_Mode_Out:
-                    PCRx->DDIS = 0;
-                    PCRx->POUTE = 1;
+                    PCRx->DDIS  = 0u;
+                    PCRx->POUTE = 1u;
                 break;
                 case Pin_Mode_Ana:
-                    PCRx->DDIS = 1;
+                    PCRx->DDIS  = 1u;
                 break;
                 default:
                 break;
             }
             /* Sub function enable setting */
             PFSRx->BFE = pstcPortInit->enPinSubFunc;
-
-            /* Set to GPIO function */
-            //PFSRx->FSEL = Func_Gpio;
         }
     }
     PORT_Lock();
@@ -358,23 +352,23 @@ en_result_t PORT_DeInit(void)
 
     for (u8PortIdx = PortA; u8PortIdx <= PortH; u8PortIdx++)
     {
-        *(uint16_t *)(GPIO_BASE + PODR_BASE + u8PortIdx * 0x10) = 0;
-        *(uint16_t *)(GPIO_BASE + POER_BASE + u8PortIdx * 0x10) = 0;
-        *(uint16_t *)(GPIO_BASE + POSR_BASE + u8PortIdx * 0x10) = 0;
-        *(uint16_t *)(GPIO_BASE + PORR_BASE + u8PortIdx * 0x10) = 0;
-        for (u8PinIdx = 0; u8PinIdx < 16; u8PinIdx++)
+        *(uint16_t *)(GPIO_BASE + PODR_BASE + u8PortIdx * 0x10ul) = 0u;
+        *(uint16_t *)(GPIO_BASE + POER_BASE + u8PortIdx * 0x10ul) = 0u;
+        *(uint16_t *)(GPIO_BASE + POSR_BASE + u8PortIdx * 0x10ul) = 0u;
+        *(uint16_t *)(GPIO_BASE + PORR_BASE + u8PortIdx * 0x10ul) = 0u;
+        for (u8PinIdx = 0u; u8PinIdx < 16u; u8PinIdx++)
         {
-            if (PortH == u8PortIdx && 3 == u8PinIdx)
+            if ((PortH == u8PortIdx) && (3u == u8PinIdx))
             {
                 break;
             }
-            *(uint16_t *)(GPIO_BASE + PCR_BASE + u8PortIdx * 0x40 + u8PinIdx * 0x4) = 0;
-            *(uint16_t *)(GPIO_BASE + PFSR_BASE + u8PortIdx * 0x40 + u8PinIdx * 0x4) = 0;
+            *(uint16_t *)(GPIO_BASE + PCR_BASE + u8PortIdx * 0x40ul + u8PinIdx * 0x4ul) = 0u;
+            *(uint16_t *)(GPIO_BASE + PFSR_BASE + u8PortIdx * 0x40ul + u8PinIdx * 0x4ul) = 0u;
         }
     }
-    M4_PORT->PCCR = 0;
-    M4_PORT->PINAER = 0;
-    M4_PORT->PSPCR = 0x1F;
+    M4_PORT->PCCR   = 0u;
+    M4_PORT->PINAER = 0u;
+    M4_PORT->PSPCR  = 0x1Fu;
 
     PORT_Lock();
     return Ok;
@@ -404,11 +398,11 @@ en_result_t PORT_DebugPortSetting(uint8_t u8DebugPort, en_functional_state_t enF
 
     if (Enable == enFunc)
     {
-        M4_PORT->PSPCR |= (u8DebugPort & 0x1Fu);
+        M4_PORT->PSPCR |= (uint16_t)(u8DebugPort & 0x1Ful);
     }
     else
     {
-        M4_PORT->PSPCR &= ~(u8DebugPort & 0x1Fu);
+        M4_PORT->PSPCR &= (uint16_t)(~(u8DebugPort & 0x1Ful));
     }
 
     PORT_Lock();
@@ -453,7 +447,7 @@ en_result_t PORT_PubSetting(const stc_port_pub_set_t *pstcPortPubSet)
  ******************************************************************************/
 void PORT_Unlock(void)
 {
-    M4_PORT->PWPR = 0xA501;
+    M4_PORT->PWPR = 0xA501u;
 }
 
 /**
@@ -467,7 +461,7 @@ void PORT_Unlock(void)
  ******************************************************************************/
 void PORT_Lock(void)
 {
-    M4_PORT->PWPR = 0xA500;
+    M4_PORT->PWPR = 0xA500u;
 }
 
 /**
@@ -487,7 +481,7 @@ uint16_t PORT_GetData(en_port_t enPort)
 
     uint32_t *PIDRx;
     PIDRx = (uint32_t *)((uint32_t)(&M4_PORT->PIDRA) + 0x10 * enPort);
-    return *PIDRx;
+    return (uint16_t)(*PIDRx);
 }
 
 /**
@@ -510,7 +504,7 @@ en_flag_status_t PORT_GetBit(en_port_t enPort, en_pin_t enPin)
     DDL_ASSERT(IS_VALID_PIN(enPin));
 
     PIDRx = (uint32_t *)((uint32_t)(&M4_PORT->PIDRA) + 0x10 * enPort);
-    return (en_flag_status_t)(!!(*PIDRx & (enPin)));
+    return (en_flag_status_t)((bool)(!!(*PIDRx & (enPin))));
 }
 
 /**
@@ -533,7 +527,7 @@ en_result_t PORT_SetPortData(en_port_t enPort, uint16_t u16Pin)
     DDL_ASSERT(IS_VALID_PORT(enPort));
 
     PODRx = (uint32_t *)((uint32_t)(&M4_PORT->PODRA) + 0x10 * enPort);
-    *PODRx |= u16Pin;
+    *PODRx |= u16Pin & 0x0000FFFFul;
     return Ok;
 }
 
@@ -557,7 +551,7 @@ en_result_t PORT_ResetPortData(en_port_t enPort, uint16_t u16Pin)
     DDL_ASSERT(IS_VALID_PORT(enPort));
 
     PODRx = (uint32_t *)((uint32_t)(&M4_PORT->PODRA) + 0x10 * enPort);
-    *PODRx &= ~u16Pin;
+    *PODRx &= (~(uint32_t)u16Pin) & 0x0000FFFFul;
     return Ok;
 }
 
@@ -580,14 +574,14 @@ en_result_t PORT_OE(en_port_t enPort, uint16_t u16Pin, en_functional_state_t enN
     /* parameter check */
     DDL_ASSERT(IS_VALID_PORT(enPort));
 
-    POERx = (uint32_t *)((uint32_t)(&M4_PORT->POERA) + 0x10 * enPort);
+    POERx = (uint32_t *)((uint32_t)(&M4_PORT->POERA) + 0x10ul * enPort);
     if (Enable == enNewState)
     {
-        *POERx |= u16Pin;
+        *POERx |= u16Pin & 0x0000FFFFul;
     }
     else
     {
-        *POERx &= (~u16Pin) & 0xFFFF;;
+        *POERx &= (~(uint32_t)u16Pin) & 0x0000FFFFul;
     }
     return Ok;
 
@@ -612,7 +606,7 @@ en_result_t PORT_SetBits(en_port_t enPort, uint16_t u16Pin)
     DDL_ASSERT(IS_VALID_PORT(enPort));
 
     POSRx = (uint32_t *)((uint32_t)(&M4_PORT->POSRA) + 0x10 * enPort);
-    *POSRx |= u16Pin;
+    *POSRx |= u16Pin & 0x0000FFFFul;
     return Ok;
 
 }
@@ -636,7 +630,7 @@ en_result_t PORT_ResetBits(en_port_t enPort, uint16_t u16Pin)
     DDL_ASSERT(IS_VALID_PORT(enPort));
 
     PORRx = (uint32_t *)((uint32_t)(&M4_PORT->PORRA) + 0x10 * enPort);
-    *PORRx |= u16Pin;
+    *PORRx |= u16Pin & 0x0000FFFFul;
     return Ok;
 }
 
@@ -659,7 +653,7 @@ en_result_t PORT_Toggle(en_port_t enPort, uint16_t u16Pin)
     DDL_ASSERT(IS_VALID_PORT(enPort));
 
     POTRx = (uint32_t *)((uint32_t)(&M4_PORT->POTRA) + 0x10 * enPort);
-    *POTRx |= u16Pin;
+    *POTRx |= u16Pin & 0x0000FFFFul;
     return Ok;
 }
 
@@ -688,9 +682,9 @@ en_result_t PORT_AlwaysOn(en_port_t enPort, en_functional_state_t enNewState)
     {
         M4_PORT->PINAER |= Enable << (uint8_t)enPort;
     }
-    else if (Disable == enNewState)
+    else
     {
-        M4_PORT->PINAER &= (~(Enable << (uint8_t)enPort)) & 0x1Fu;
+        M4_PORT->PINAER &= (uint16_t)(~(((1ul << (uint8_t)enPort)) & 0x1Ful));
     }
 
     PORT_Lock();
@@ -719,7 +713,7 @@ en_result_t PORT_SetFunc(en_port_t enPort, uint16_t u16Pin, en_port_func_t enFun
                   en_functional_state_t enSubFunc)
 {
     stc_port_pfsr_field_t *PFSRx;
-    uint8_t u8PinPos = 0;
+    uint8_t u8PinPos = 0u;
 
     /* parameter check */
     DDL_ASSERT(IS_VALID_PORT(enPort));
@@ -728,12 +722,12 @@ en_result_t PORT_SetFunc(en_port_t enPort, uint16_t u16Pin, en_port_func_t enFun
 
     PORT_Unlock();
 
-    for (u8PinPos = 0; u8PinPos < 16; u8PinPos ++)
+    for (u8PinPos = 0u; u8PinPos < 16u; u8PinPos ++)
     {
-        if (u16Pin & (1<<u8PinPos))
+        if (u16Pin & (uint16_t)(1ul<<u8PinPos))
         {
             PFSRx = (stc_port_pfsr_field_t *)((uint32_t)(&M4_PORT->PFSRA0) \
-                    + 0x40 * enPort + 0x4 * u8PinPos);
+                    + 0x40ul * enPort + 0x4ul * u8PinPos);
 
             /* main function setting */
             PFSRx->FSEL = enFuncSel;

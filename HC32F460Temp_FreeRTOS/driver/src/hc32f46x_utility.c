@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -69,7 +69,6 @@
 /*******************************************************************************
  * Local pre-processor symbols/macros ('#define')
  ******************************************************************************/
-#define UART_DEBUG_PRINTF
 
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
@@ -97,7 +96,10 @@
 void DebugOutput(uint8_t u8Data)
 {
     M4_USART3->DR = u8Data;
-    while (0 == M4_USART3->SR_f.TC);
+    while (0ul == M4_USART3->SR_f.TC)
+    {
+        ;
+    }
 }
 
 /**
@@ -124,102 +126,65 @@ int32_t fputc(int32_t ch, FILE *f)
  ******************************************************************************/
 static en_result_t SetUartBaudrate(uint32_t u32Baudrate)
 {
+    en_result_t enRet = Ok;
     uint32_t B;
     uint32_t C;
     uint32_t OVER8;
-    float32_t DIV = 0.0;
-    uint32_t u32Tmp = 0u;
+    float32_t DIV = 0.0f;
+    uint64_t u64Tmp = 0u;
     uint32_t DIV_Integer = 0u;
     uint32_t DIV_Fraction = 0xFFFFFFFFul;
 
     uint32_t u32PClk1 = 0u;
     uint32_t u32UartClk = 0u;
 
-    u32PClk1 = SystemCoreClock / (1u << M4_SYSREG->CMU_SCFGR_f.PCLK1S);
-    u32UartClk = u32PClk1 / (1u << (2 * M4_USART3->PR_f.PSC));
+    u32PClk1 = SystemCoreClock / (1ul << (M4_SYSREG->CMU_SCFGR_f.PCLK1S));
+    u32UartClk = u32PClk1 / (1ul << (2ul * (M4_USART3->PR_f.PSC)));
 
     B = u32Baudrate;
     C = u32UartClk;
-    OVER8 = M4_USART3->CR1_f.OVER8;
 
-    /* FBME = 0 Calculation formula */
-    /* B = C / (8 * (2 - OVER8) * (DIV_Integer + 1)) */
-    /* DIV_Integer = (C / (B * 8 * (2 - OVER8))) - 1 */
-    DIV = (C / (B * 8.0 * (2.0 - OVER8))) - 1.0;
-    DIV_Integer = (uint32_t)(DIV);
-
-    if ((DIV < 0) || (DIV_Integer > 0xFFu))
+    if (0ul == C)
     {
-        DDL_ASSERT(false);
-        return ErrorInvalidParameter;
-    }
-
-    if (DIV != DIV_Integer)
-    {
-        /* FBME = 1 Calculation formula */
-        /* B = C * (128 + DIV_Fraction) / (8 * (2 - OVER8) * (DIV_Integer + 1) * 256) */
-        /* DIV_Fraction = ((8 * (2 - OVER8) * (DIV_Integer + 1) * 256 * B) / C) - 128 */
-        /* E = (C * (128 + DIV_Fraction) / (8 * (2 - OVER8) * (DIV_Integer + 1) * 256 * B)) - 1 */
-        /* DIV_Fraction = (((2 - OVER8) * (DIV_Integer + 1) * 2048 * B) / C) - 128 */
-        u32Tmp = (2 - OVER8) * (DIV_Integer + 1) * B;
-
-        if (u32Tmp <= 0x001FFFFFul)           /* 2048 * u32Tmp < 0xFFFFFFFF*/
-        {
-            DIV_Fraction = (1 * (2048 * u32Tmp / C)) - 128;
-        }
-        else if (u32Tmp <= 0x003FFFFFul)      /* 1024 * u32Tmp < 0xFFFFFFFF*/
-        {
-            DIV_Fraction = (2 *(1024 * u32Tmp/ C)) - 128;
-        }
-        else if (u32Tmp <= 0x007FFFFFul)      /* 512 * u32Tmp < 0xFFFFFFFF*/
-        {
-            DIV_Fraction = (4 * (512 * u32Tmp / C)) - 128;
-        }
-        else if (u32Tmp <= 0x00FFFFFFul)      /* 256 * u32Tmp < 0xFFFFFFFF*/
-        {
-            DIV_Fraction = (8 * (256 * u32Tmp / C)) - 128;
-        }
-        else if (u32Tmp <= 0x01FFFFFFul)      /* 128 * u32Tmp < 0xFFFFFFFF*/
-        {
-            DIV_Fraction = (16 * (128 * u32Tmp / C)) - 128;
-        }
-        else if (u32Tmp <= 0x03FFFFFFul)      /* 64 * u32Tmp < 0xFFFFFFFF*/
-        {
-            DIV_Fraction = (32 * (64 * u32Tmp / C)) - 128;
-        }
-        else if (u32Tmp <= 0x07FFFFFFul)      /* 32 * u32Tmp < 0xFFFFFFFF*/
-        {
-            DIV_Fraction = (64 *(32 * u32Tmp/ C)) - 128;
-        }
-        else if (u32Tmp <= 0x0FFFFFFFul)      /* 16 * u32Tmp < 0xFFFFFFFF*/
-        {
-            DIV_Fraction = (128 * (16 * u32Tmp / C)) - 128;
-        }
-        else if (u32Tmp <= 0x1FFFFFFFul)      /* 8 * u32Tmp < 0xFFFFFFFF*/
-        {
-            DIV_Fraction = (256 * (8 * u32Tmp / C)) - 128;
-        }
-        else if (u32Tmp <= 0x3FFFFFFFul)      /* 4 * u32Tmp < 0xFFFFFFFF*/
-        {
-            DIV_Fraction = (512 *(4 * u32Tmp/ C)) - 128;
-        }
-        else if (u32Tmp <= 0x7FFFFFFFul)      /* 2 * u32Tmp < 0xFFFFFFFF*/
-        {
-            DIV_Fraction = (1024 * (2 * u32Tmp / C)) - 128;
-        }
-        else                                  /* 1 * u32Tmp < 0xFFFFFFFF*/
-        {
-            DIV_Fraction = (2048 *(1 * u32Tmp/ C)) - 128;
-        }
+        enRet = ErrorInvalidParameter;
     }
     else
     {
-    }
+        OVER8 = M4_USART3->CR1_f.OVER8;
 
-    M4_USART3->CR1_f.FBME = (0xFFFFFFFFul == DIV_Fraction) ? 0u : 1u;
-    M4_USART3->BRR_f.DIV_FRACTION = DIV_Fraction;
-    M4_USART3->BRR_f.DIV_MANTISSA = DIV_Integer;
-    return Ok;
+        /* FBME = 0 Calculation formula */
+        /* B = C / (8 * (2 - OVER8) * (DIV_Integer + 1)) */
+        /* DIV_Integer = (C / (B * 8 * (2 - OVER8))) - 1 */
+        DIV = ((float)C / ((float)B * 8.0f * (2.0f - (float)OVER8))) - 1.0f;
+        DIV_Integer = (uint32_t)(DIV);
+
+        if ((DIV < 0.0f) || (DIV_Integer > 0xFFul))
+        {
+            enRet = ErrorInvalidParameter;
+        }
+        else
+        {
+            if ((DIV - (float32_t)DIV_Integer) > 0.00001f)
+            {
+                /* FBME = 1 Calculation formula */
+                /* B = C * (128 + DIV_Fraction) / (8 * (2 - OVER8) * (DIV_Integer + 1) * 256) */
+                /* DIV_Fraction = ((8 * (2 - OVER8) * (DIV_Integer + 1) * 256 * B) / C) - 128 */
+                /* E = (C * (128 + DIV_Fraction) / (8 * (2 - OVER8) * (DIV_Integer + 1) * 256 * B)) - 1 */
+                /* DIV_Fraction = (((2 - OVER8) * (DIV_Integer + 1) * 2048 * B) / C) - 128 */
+                u64Tmp = (2u - (uint64_t)OVER8) * ((uint64_t)DIV_Integer + 1u) * (uint64_t)B;
+                DIV_Fraction = (uint32_t)(2048ul * u64Tmp/C - 128ul);
+            }
+            else
+            {
+            }
+
+            M4_USART3->CR1_f.FBME = (0xFFFFFFFFul == DIV_Fraction) ? 0ul : 1ul;
+            M4_USART3->BRR_f.DIV_FRACTION = DIV_Fraction;
+            M4_USART3->BRR_f.DIV_INTEGER = DIV_Integer;
+            enRet = Ok;
+        }
+    }
+    return enRet;
 }
 
 
@@ -233,37 +198,38 @@ static en_result_t SetUartBaudrate(uint32_t u32Baudrate)
 en_result_t Ddl_UartInit(void)
 {
     en_result_t enRet = Ok;
-    volatile uint8_t u8ReloadVal = 0;
 
     /* unlock */
-    M4_PORT->PWPR = 0xA501;
+    M4_PORT->PWPR = 0xA501u;
     /* usart3_tx gpio  PE5 */
-    M4_PORT->PFSRE5_f.FSEL  = 32;
+    M4_PORT->PFSRE5_f.FSEL  = 32u;
     /* lock */
-    M4_PORT->PWPR = 0xA500;
+    M4_PORT->PWPR = 0xA500u;
     /* enable usart3 */
-    M4_MSTP->FCG1_f.USART3 = 0;
+    M4_MSTP->FCG1_f.USART3 = 0ul;
     /* usart3 init */
 
-    M4_USART3->CR1_f.ML = 0;    // LSB
-    M4_USART3->CR1_f.MS = 0;    // UART mode
-    M4_USART3->CR1_f.OVER8 = 1; // 16bit sampling mode
-    M4_USART3->CR1_f.M = 0;     // 8 bit data length
-    M4_USART3->CR1_f.PCE = 0;   // no parity bit
+    M4_USART3->CR1_f.ML = 0ul;    // LSB
+    M4_USART3->CR1_f.MS = 0ul;    // UART mode
+    M4_USART3->CR1_f.OVER8 = 1ul; // 8bit sampling mode
+    M4_USART3->CR1_f.M = 0ul;     // 8 bit data length
+    M4_USART3->CR1_f.PCE = 0ul;   // no parity bit
 
     /* baudrate set */
-    if( Ok != SetUartBaudrate(115200))
+    if( Ok != SetUartBaudrate(115200ul))
     {
-        return Error;
+        enRet = Error;
     }
+    else
+    {
+        /* 1 stop bit, single uart mode */
+        M4_USART3->CR2 = 0ul;
 
-    /* 1 stop bit, single uart mode */
-    M4_USART3->CR2 = 0;
+        /* CTS disable, Smart Card mode disable */
+        M4_USART3->CR3 = 0ul;
 
-    /* CTS disable, Smart Card mode disable */
-    M4_USART3->CR3 = 0;
-
-    M4_USART3->CR1_f.TE = 1;    // TX enable
+        M4_USART3->CR1_f.TE = 1ul;    // TX enable
+    }
 
     return enRet;
 }
@@ -275,27 +241,59 @@ en_result_t Ddl_UartInit(void)
  **
  ** \param [in]  u32Cnt                 ms
  **
- ** \retval Ok                          Process successfully done
+ ** \retval none
  **
  ******************************************************************************/
-en_result_t Ddl_Delay1ms(uint32_t u32Cnt)
+void Ddl_Delay1ms(uint32_t u32Cnt)
 {
-    en_result_t enRet = Ok;
-    volatile uint32_t i = 0;
-    uint32_t u32Cyc = 0;
+    volatile uint32_t i = 0ul;
+    uint32_t u32Cyc = 0ul;
 
     u32Cyc = SystemCoreClock;
-    u32Cyc = u32Cyc / 10000;
-    while (u32Cnt-- > 0)
+    u32Cyc = u32Cyc / 10000ul;
+    while (u32Cnt-- > 0ul)
     {
         i = u32Cyc;
-        while (i-- > 0)
+        while (i-- > 0ul)
         {
             ;
         }
     }
+}
 
-    return enRet;
+/**
+ *******************************************************************************
+ ** \brief Delay function, delay 1us approximately
+ **
+ ** \param [in]  u32Cnt                 us
+ **
+ ** \retval none
+ **
+ ******************************************************************************/
+void Ddl_Delay1us(uint32_t u32Cnt)
+{
+    uint32_t u32Cyc = 1ul;
+    volatile uint32_t i = 0ul;
+
+    if(SystemCoreClock > 10000000ul)
+    {
+        u32Cyc = SystemCoreClock / 10000000ul;
+        while(u32Cnt-- > 0ul)
+        {
+            i = u32Cyc;
+            while (i-- > 0ul)
+            {
+                ;
+            }
+        }
+    }
+    else
+    {
+         while(u32Cnt-- > 0ul)
+         {
+            ;
+         }
+    }
 }
 
 /**
@@ -307,10 +305,13 @@ en_result_t Ddl_Delay1ms(uint32_t u32Cnt)
  **
  ******************************************************************************/
 #ifdef __DEBUG
-__WEAKDEF void Ddl_AssertHandler(uint8_t *file, uint32_t line)
+__WEAKDEF void Ddl_AssertHandler(uint8_t *file, int16_t line)
 {
     printf("Wrong parameters value: file %s on line %d\r\n", file, line);
-    while (1);
+    while (1)
+    {
+        ;
+    }
 }
 #endif /* __DEBUG */
 

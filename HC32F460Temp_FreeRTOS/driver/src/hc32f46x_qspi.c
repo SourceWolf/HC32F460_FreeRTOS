@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -72,38 +72,8 @@
  ******************************************************************************/
 /*!< Parameter valid check for clock division */
 #define IS_VALID_CLK_DIV(x)                                                    \
-(   ((x) == QspiHclkDiv2)  || ((x) == QspiHclkDiv3)  ||                        \
-    ((x) == QspiHclkDiv4)  || ((x) == QspiHclkDiv5)  ||                        \
-    ((x) == QspiHclkDiv6)  || ((x) == QspiHclkDiv7)  ||                        \
-    ((x) == QspiHclkDiv8)  || ((x) == QspiHclkDiv9)  ||                        \
-    ((x) == QspiHclkDiv10) || ((x) == QspiHclkDiv11) ||                        \
-    ((x) == QspiHclkDiv12) || ((x) == QspiHclkDiv13) ||                        \
-    ((x) == QspiHclkDiv14) || ((x) == QspiHclkDiv15) ||                        \
-    ((x) == QspiHclkDiv16) || ((x) == QspiHclkDiv17) ||                        \
-    ((x) == QspiHclkDiv18) || ((x) == QspiHclkDiv19) ||                        \
-    ((x) == QspiHclkDiv20) || ((x) == QspiHclkDiv21) ||                        \
-    ((x) == QspiHclkDiv22) || ((x) == QspiHclkDiv23) ||                        \
-    ((x) == QspiHclkDiv24) || ((x) == QspiHclkDiv25) ||                        \
-    ((x) == QspiHclkDiv26) || ((x) == QspiHclkDiv27) ||                        \
-    ((x) == QspiHclkDiv28) || ((x) == QspiHclkDiv29) ||                        \
-    ((x) == QspiHclkDiv30) || ((x) == QspiHclkDiv31) ||                        \
-    ((x) == QspiHclkDiv32) || ((x) == QspiHclkDiv33) ||                        \
-    ((x) == QspiHclkDiv34) || ((x) == QspiHclkDiv35) ||                        \
-    ((x) == QspiHclkDiv36) || ((x) == QspiHclkDiv37) ||                        \
-    ((x) == QspiHclkDiv38) || ((x) == QspiHclkDiv39) ||                        \
-    ((x) == QspiHclkDiv40) || ((x) == QspiHclkDiv41) ||                        \
-    ((x) == QspiHclkDiv42) || ((x) == QspiHclkDiv43) ||                        \
-    ((x) == QspiHclkDiv44) || ((x) == QspiHclkDiv45) ||                        \
-    ((x) == QspiHclkDiv46) || ((x) == QspiHclkDiv47) ||                        \
-    ((x) == QspiHclkDiv48) || ((x) == QspiHclkDiv49) ||                        \
-    ((x) == QspiHclkDiv50) || ((x) == QspiHclkDiv51) ||                        \
-    ((x) == QspiHclkDiv52) || ((x) == QspiHclkDiv53) ||                        \
-    ((x) == QspiHclkDiv54) || ((x) == QspiHclkDiv55) ||                        \
-    ((x) == QspiHclkDiv56) || ((x) == QspiHclkDiv57) ||                        \
-    ((x) == QspiHclkDiv58) || ((x) == QspiHclkDiv59) ||                        \
-    ((x) == QspiHclkDiv60) || ((x) == QspiHclkDiv61) ||                        \
-    ((x) == QspiHclkDiv62) || ((x) == QspiHclkDiv63) ||                        \
-    ((x) == QspiHclkDiv64))
+(   ((x) == QspiHclkDiv2)                       ||                             \
+    (((x) >= QspiHclkDiv3) && ((x) <= QspiHclkDiv64)))
 
 /*!< Parameter valid check for spi mode */
 #define IS_VALID_SPI_MODE(x)                                                   \
@@ -222,7 +192,7 @@
     (QspiAddressByteFour == (x)))
 
 /*!< Parameter valid check for extend address */
-#define IS_VALID_SET_EXTEND_ADDR(x)             ((x) <= 0x3F)
+#define IS_VALID_SET_EXTEND_ADDR(x)             ((x) <= 0x3Fu)
 
 /*!< Parameter valid check for get flag type */
 #define IS_VALID_GET_FLAG_TYPE(x)                                              \
@@ -236,15 +206,15 @@
 #define IS_VALID_CLEAR_FLAG_TYPE(x)             (QspiFlagRomAccessError == (x))
 
 /*!< QSPI registers reset value */
-#define QSPI_REG_CR_RESET_VALUE                 0x003F0000ul
-#define QSPI_REG_CSCR_RESET_VALUE               0x0000000Ful
-#define QSPI_REG_FCR_RESET_VALUE                0x000080B3ul
-#define QSPI_REG_SR_RESET_VALUE                 0x00008000ul
-#define QSPI_REG_CCMD_RESET_VALUE               0x00000000ul
-#define QSPI_REG_XCMD_RESET_VALUE               0x000000FFul
-#define QSPI_REG_EXAR_RESET_VALUE               0x00000000ul
-#define QSPI_REG_SR2_RESET_VALUE                0x00000000ul
-#define QSPI_REG_DCOM_RESET_VALUE               0x00000000ul
+#define QSPI_REG_CR_RESET_VALUE                 (0x003F0000ul)
+#define QSPI_REG_CSCR_RESET_VALUE               (0x0000000Ful)
+#define QSPI_REG_FCR_RESET_VALUE                (0x000080B3ul)
+#define QSPI_REG_SR_RESET_VALUE                 (0x00008000ul)
+#define QSPI_REG_CCMD_RESET_VALUE               (0x00000000ul)
+#define QSPI_REG_XCMD_RESET_VALUE               (0x000000FFul)
+#define QSPI_REG_EXAR_RESET_VALUE               (0x00000000ul)
+#define QSPI_REG_SR2_RESET_VALUE                (0x00000000ul)
+#define QSPI_REG_DCOM_RESET_VALUE               (0x00000000ul)
 
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
@@ -299,78 +269,86 @@ en_result_t QSPI_DeInit(void)
  ** \arg See the struct #stc_qspi_init_t
  **
  ** \retval Ok                          Process successfully done
+ ** \retval Error                       Parameter error
  **
  ******************************************************************************/
 en_result_t QSPI_Init(const stc_qspi_init_t *pstcQspiInitCfg)
 {
     en_result_t enRet = Ok;
 
-    /* Check parameters */
-    DDL_ASSERT(IS_VALID_CLK_DIV(pstcQspiInitCfg->enClkDiv));
-    DDL_ASSERT(IS_VALID_SPI_MODE(pstcQspiInitCfg->enSpiMode));
-    DDL_ASSERT(IS_VALID_BUS_COMM_MODE(pstcQspiInitCfg->enBusCommMode));
-    DDL_ASSERT(IS_VALID_PREFETCH_STOP_LOCATION(pstcQspiInitCfg->enPrefetchMode));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcQspiInitCfg->enPrefetchFuncEn));
-    DDL_ASSERT(IS_VALID_RECE_DATA_PROTOCOL(pstcQspiInitCfg->stcCommProtocol.enReceProtocol));
-    DDL_ASSERT(IS_VALID_TRANS_ADDR_PROTOCOL(pstcQspiInitCfg->stcCommProtocol.enTransAddrProtocol));
-    DDL_ASSERT(IS_VALID_TRANS_INSTRUCT_PROTOCOL(pstcQspiInitCfg->stcCommProtocol.enTransInstrProtocol));
-    DDL_ASSERT(IS_VALID_INTERFACE_READ_MODE(pstcQspiInitCfg->stcCommProtocol.enReadMode));
-    DDL_ASSERT(IS_VALID_QSSN_VALID_EXTEND_TIME(pstcQspiInitCfg->enQssnValidExtendTime));
-    DDL_ASSERT(IS_VALID_QSSN_INTERVAL_TIME(pstcQspiInitCfg->enQssnIntervalTime));
-    DDL_ASSERT(IS_VALID_QSCK_DUTY_CORR(pstcQspiInitCfg->enQsckDutyCorr));
-    DDL_ASSERT(IS_VALID_VIRTUAL_CYCLES(pstcQspiInitCfg->enVirtualPeriod));
-    DDL_ASSERT(IS_VALID_WP_OUTPUT_LEVEL(pstcQspiInitCfg->enWpPinLevel));
-    DDL_ASSERT(IS_VALID_QSSN_SETUP_DELAY(pstcQspiInitCfg->enQssnSetupDelayTime));
-    DDL_ASSERT(IS_VALID_QSSN_HOLD_TIME(pstcQspiInitCfg->enQssnHoldDelayTime));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcQspiInitCfg->enFourByteAddrReadEn));
-    DDL_ASSERT(IS_VALID_INTERFACE_ADDR_WIDTH(pstcQspiInitCfg->enAddrWidth));
-
-    /* Configure control register */
-    M4_QSPI->CR_f.DIV = pstcQspiInitCfg->enClkDiv;
-    M4_QSPI->CR_f.SPIMD3 = pstcQspiInitCfg->enSpiMode;
-    M4_QSPI->CR_f.PFE = pstcQspiInitCfg->enPrefetchFuncEn;
-    M4_QSPI->CR_f.PFSAE = pstcQspiInitCfg->enPrefetchMode;
-    M4_QSPI->CR_f.MDSEL = pstcQspiInitCfg->stcCommProtocol.enReadMode;
-
-    /* Custom read mode */
-    if ((QspiReadModeCustomFast == pstcQspiInitCfg->stcCommProtocol.enReadMode) ||
-        (QspiReadModeCustomStandard == pstcQspiInitCfg->stcCommProtocol.enReadMode))
+    if (NULL == pstcQspiInitCfg)
     {
-        M4_QSPI->CR_f.IPRSL = pstcQspiInitCfg->stcCommProtocol.enTransInstrProtocol;
-        M4_QSPI->CR_f.APRSL = pstcQspiInitCfg->stcCommProtocol.enTransAddrProtocol;
-        M4_QSPI->CR_f.DPRSL = pstcQspiInitCfg->stcCommProtocol.enReceProtocol;
+        enRet = Error;
     }
     else
     {
-        M4_QSPI->CR_f.IPRSL = QspiProtocolExtendSpi;
-        M4_QSPI->CR_f.APRSL = QspiProtocolExtendSpi;
-        M4_QSPI->CR_f.DPRSL = QspiProtocolExtendSpi;
-    }
+        /* Check parameters */
+        DDL_ASSERT(IS_VALID_CLK_DIV(pstcQspiInitCfg->enClkDiv));
+        DDL_ASSERT(IS_VALID_SPI_MODE(pstcQspiInitCfg->enSpiMode));
+        DDL_ASSERT(IS_VALID_BUS_COMM_MODE(pstcQspiInitCfg->enBusCommMode));
+        DDL_ASSERT(IS_VALID_PREFETCH_STOP_LOCATION(pstcQspiInitCfg->enPrefetchMode));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcQspiInitCfg->enPrefetchFuncEn));
+        DDL_ASSERT(IS_VALID_RECE_DATA_PROTOCOL(pstcQspiInitCfg->stcCommProtocol.enReceProtocol));
+        DDL_ASSERT(IS_VALID_TRANS_ADDR_PROTOCOL(pstcQspiInitCfg->stcCommProtocol.enTransAddrProtocol));
+        DDL_ASSERT(IS_VALID_TRANS_INSTRUCT_PROTOCOL(pstcQspiInitCfg->stcCommProtocol.enTransInstrProtocol));
+        DDL_ASSERT(IS_VALID_INTERFACE_READ_MODE(pstcQspiInitCfg->stcCommProtocol.enReadMode));
+        DDL_ASSERT(IS_VALID_QSSN_VALID_EXTEND_TIME(pstcQspiInitCfg->enQssnValidExtendTime));
+        DDL_ASSERT(IS_VALID_QSSN_INTERVAL_TIME(pstcQspiInitCfg->enQssnIntervalTime));
+        DDL_ASSERT(IS_VALID_QSCK_DUTY_CORR(pstcQspiInitCfg->enQsckDutyCorr));
+        DDL_ASSERT(IS_VALID_VIRTUAL_CYCLES(pstcQspiInitCfg->enVirtualPeriod));
+        DDL_ASSERT(IS_VALID_WP_OUTPUT_LEVEL(pstcQspiInitCfg->enWpPinLevel));
+        DDL_ASSERT(IS_VALID_QSSN_SETUP_DELAY(pstcQspiInitCfg->enQssnSetupDelayTime));
+        DDL_ASSERT(IS_VALID_QSSN_HOLD_TIME(pstcQspiInitCfg->enQssnHoldDelayTime));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcQspiInitCfg->enFourByteAddrReadEn));
+        DDL_ASSERT(IS_VALID_INTERFACE_ADDR_WIDTH(pstcQspiInitCfg->enAddrWidth));
 
-    /* Configure chip select control register */
-    M4_QSPI->CSCR_f.SSNW = pstcQspiInitCfg->enQssnValidExtendTime;
-    M4_QSPI->CSCR_f.SSHW = pstcQspiInitCfg->enQssnIntervalTime;
+        /* Configure control register */
+        M4_QSPI->CR_f.DIV = pstcQspiInitCfg->enClkDiv;
+        M4_QSPI->CR_f.SPIMD3 = pstcQspiInitCfg->enSpiMode;
+        M4_QSPI->CR_f.PFE = pstcQspiInitCfg->enPrefetchFuncEn;
+        M4_QSPI->CR_f.PFSAE = pstcQspiInitCfg->enPrefetchMode;
+        M4_QSPI->CR_f.MDSEL = pstcQspiInitCfg->stcCommProtocol.enReadMode;
 
-    /* Configure format control register */
-    if (((pstcQspiInitCfg->enClkDiv % 2) != 0) &&
-        (pstcQspiInitCfg->enQsckDutyCorr != QspiQsckDutyCorrNot))
-    {
-        M4_QSPI->FCR_f.DUTY = QspiQsckDutyCorrNot;
-    }
-    else
-    {
-        M4_QSPI->FCR_f.DUTY = pstcQspiInitCfg->enQsckDutyCorr;
-    }
-    M4_QSPI->FCR_f.DMCYCN = pstcQspiInitCfg->enVirtualPeriod;
-    M4_QSPI->FCR_f.WPOL = pstcQspiInitCfg->enWpPinLevel;
-    M4_QSPI->FCR_f.SSNLD = pstcQspiInitCfg->enQssnSetupDelayTime;
-    M4_QSPI->FCR_f.SSNHD = pstcQspiInitCfg->enQssnHoldDelayTime;
-    M4_QSPI->FCR_f.FOUR_BIC = pstcQspiInitCfg->enFourByteAddrReadEn;
-    M4_QSPI->FCR_f.AWSL = pstcQspiInitCfg->enAddrWidth;
-    M4_QSPI->CR_f.DCOME = pstcQspiInitCfg->enBusCommMode;
+        /* Custom read mode */
+        if ((QspiReadModeCustomFast == pstcQspiInitCfg->stcCommProtocol.enReadMode) ||
+            (QspiReadModeCustomStandard == pstcQspiInitCfg->stcCommProtocol.enReadMode))
+        {
+            M4_QSPI->CR_f.IPRSL = pstcQspiInitCfg->stcCommProtocol.enTransInstrProtocol;
+            M4_QSPI->CR_f.APRSL = pstcQspiInitCfg->stcCommProtocol.enTransAddrProtocol;
+            M4_QSPI->CR_f.DPRSL = pstcQspiInitCfg->stcCommProtocol.enReceProtocol;
+        }
+        else
+        {
+            M4_QSPI->CR_f.IPRSL = QspiProtocolExtendSpi;
+            M4_QSPI->CR_f.APRSL = QspiProtocolExtendSpi;
+            M4_QSPI->CR_f.DPRSL = QspiProtocolExtendSpi;
+        }
 
-    /* Configure ROM access instruction */
-    M4_QSPI->CCMD = pstcQspiInitCfg->u8RomAccessInstr;
+        /* Configure chip select control register */
+        M4_QSPI->CSCR_f.SSNW = pstcQspiInitCfg->enQssnValidExtendTime;
+        M4_QSPI->CSCR_f.SSHW = pstcQspiInitCfg->enQssnIntervalTime;
+
+        /* Configure format control register */
+        if (((pstcQspiInitCfg->enClkDiv % 2) != 0) &&
+            (pstcQspiInitCfg->enQsckDutyCorr != QspiQsckDutyCorrNot))
+        {
+            M4_QSPI->FCR_f.DUTY = QspiQsckDutyCorrNot;
+        }
+        else
+        {
+            M4_QSPI->FCR_f.DUTY = pstcQspiInitCfg->enQsckDutyCorr;
+        }
+        M4_QSPI->FCR_f.DMCYCN = pstcQspiInitCfg->enVirtualPeriod;
+        M4_QSPI->FCR_f.WPOL = pstcQspiInitCfg->enWpPinLevel;
+        M4_QSPI->FCR_f.SSNLD = pstcQspiInitCfg->enQssnSetupDelayTime;
+        M4_QSPI->FCR_f.SSNHD = pstcQspiInitCfg->enQssnHoldDelayTime;
+        M4_QSPI->FCR_f.FOUR_BIC = pstcQspiInitCfg->enFourByteAddrReadEn;
+        M4_QSPI->FCR_f.AWSL = pstcQspiInitCfg->enAddrWidth;
+        M4_QSPI->CR_f.DCOME = pstcQspiInitCfg->enBusCommMode;
+
+        /* Configure ROM access instruction */
+        M4_QSPI->CCMD = pstcQspiInitCfg->u8RomAccessInstr;
+    }
 
     return enRet;
 }
@@ -383,32 +361,167 @@ en_result_t QSPI_Init(const stc_qspi_init_t *pstcQspiInitCfg)
  ** \arg See the struct #stc_qspi_comm_protocol_t
  **
  ** \retval Ok                          Process successfully done
+ ** \retval Error                       Parameter error
  **
  ******************************************************************************/
 en_result_t QSPI_CommProtocolConfig(const stc_qspi_comm_protocol_t *pstcCommProtocol)
 {
     en_result_t enRet = Ok;
 
-    DDL_ASSERT(IS_VALID_RECE_DATA_PROTOCOL(pstcCommProtocol->enReceProtocol));
-    DDL_ASSERT(IS_VALID_TRANS_ADDR_PROTOCOL(pstcCommProtocol->enTransAddrProtocol));
-    DDL_ASSERT(IS_VALID_TRANS_INSTRUCT_PROTOCOL(pstcCommProtocol->enTransInstrProtocol));
-    DDL_ASSERT(IS_VALID_INTERFACE_READ_MODE(pstcCommProtocol->enReadMode));
-
-    M4_QSPI->CR_f.MDSEL = pstcCommProtocol->enReadMode;
-    /* Custom read mode */
-    if ((QspiReadModeCustomFast == pstcCommProtocol->enReadMode) ||
-        (QspiReadModeCustomStandard == pstcCommProtocol->enReadMode))
+    if (NULL == pstcCommProtocol)
     {
-        M4_QSPI->CR_f.IPRSL = pstcCommProtocol->enTransInstrProtocol;
-        M4_QSPI->CR_f.APRSL = pstcCommProtocol->enTransAddrProtocol;
-        M4_QSPI->CR_f.DPRSL = pstcCommProtocol->enReceProtocol;
+        enRet = Error;
     }
     else
     {
-        M4_QSPI->CR_f.IPRSL = QspiProtocolExtendSpi;
-        M4_QSPI->CR_f.APRSL = QspiProtocolExtendSpi;
-        M4_QSPI->CR_f.DPRSL = QspiProtocolExtendSpi;
+        DDL_ASSERT(IS_VALID_RECE_DATA_PROTOCOL(pstcCommProtocol->enReceProtocol));
+        DDL_ASSERT(IS_VALID_TRANS_ADDR_PROTOCOL(pstcCommProtocol->enTransAddrProtocol));
+        DDL_ASSERT(IS_VALID_TRANS_INSTRUCT_PROTOCOL(pstcCommProtocol->enTransInstrProtocol));
+        DDL_ASSERT(IS_VALID_INTERFACE_READ_MODE(pstcCommProtocol->enReadMode));
+
+        M4_QSPI->CR_f.MDSEL = pstcCommProtocol->enReadMode;
+        /* Custom read mode */
+        if ((QspiReadModeCustomFast == pstcCommProtocol->enReadMode) ||
+            (QspiReadModeCustomStandard == pstcCommProtocol->enReadMode))
+        {
+            M4_QSPI->CR_f.IPRSL = pstcCommProtocol->enTransInstrProtocol;
+            M4_QSPI->CR_f.APRSL = pstcCommProtocol->enTransAddrProtocol;
+            M4_QSPI->CR_f.DPRSL = pstcCommProtocol->enReceProtocol;
+        }
+        else
+        {
+            M4_QSPI->CR_f.IPRSL = QspiProtocolExtendSpi;
+            M4_QSPI->CR_f.APRSL = QspiProtocolExtendSpi;
+            M4_QSPI->CR_f.DPRSL = QspiProtocolExtendSpi;
+        }
     }
+
+    return enRet;
+}
+
+/**
+ *******************************************************************************
+ ** \brief Enable or disable prefetch function
+ **
+ ** \param [in] enNewSta                The function new state
+ ** \arg Disable                        Disable prefetch function
+ ** \arg Enable                         Enable prefetch function
+ **
+ ** \retval Ok                          Process successfully done
+ **
+ ******************************************************************************/
+en_result_t QSPI_PrefetchCmd(en_functional_state_t enNewSta)
+{
+    en_result_t enRet = Ok;
+
+    DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
+
+    M4_QSPI->CR_f.PFSAE = enNewSta;
+
+    return enRet;
+}
+
+/**
+ *******************************************************************************
+ ** \brief Set clock division
+ **
+ ** \param [in] enClkDiv                Clock division
+ ** \arg QspiHclkDiv2                   Clock source: HCLK/2
+ ** \arg QspiHclkDiv3                   Clock source: HCLK/3
+ ** \arg QspiHclkDiv4                   Clock source: HCLK/4
+ ** \arg QspiHclkDiv5                   Clock source: HCLK/5
+ ** \arg QspiHclkDiv6                   Clock source: HCLK/6
+ ** \arg QspiHclkDiv7                   Clock source: HCLK/7
+ ** \arg QspiHclkDiv8                   Clock source: HCLK/8
+ ** \arg QspiHclkDiv9                   Clock source: HCLK/9
+ ** \arg QspiHclkDiv10                  Clock source: HCLK/10
+ ** \arg QspiHclkDiv11                  Clock source: HCLK/11
+ ** \arg QspiHclkDiv12                  Clock source: HCLK/12
+ ** \arg QspiHclkDiv13                  Clock source: HCLK/13
+ ** \arg QspiHclkDiv14                  Clock source: HCLK/14
+ ** \arg QspiHclkDiv15                  Clock source: HCLK/15
+ ** \arg QspiHclkDiv16                  Clock source: HCLK/16
+ ** \arg QspiHclkDiv17                  Clock source: HCLK/17
+ ** \arg QspiHclkDiv18                  Clock source: HCLK/18
+ ** \arg QspiHclkDiv19                  Clock source: HCLK/19
+ ** \arg QspiHclkDiv20                  Clock source: HCLK/20
+ ** \arg QspiHclkDiv21                  Clock source: HCLK/21
+ ** \arg QspiHclkDiv22                  Clock source: HCLK/22
+ ** \arg QspiHclkDiv23                  Clock source: HCLK/23
+ ** \arg QspiHclkDiv24                  Clock source: HCLK/24
+ ** \arg QspiHclkDiv25                  Clock source: HCLK/25
+ ** \arg QspiHclkDiv26                  Clock source: HCLK/26
+ ** \arg QspiHclkDiv27                  Clock source: HCLK/27
+ ** \arg QspiHclkDiv28                  Clock source: HCLK/28
+ ** \arg QspiHclkDiv29                  Clock source: HCLK/29
+ ** \arg QspiHclkDiv30                  Clock source: HCLK/30
+ ** \arg QspiHclkDiv31                  Clock source: HCLK/31
+ ** \arg QspiHclkDiv32                  Clock source: HCLK/32
+ ** \arg QspiHclkDiv33                  Clock source: HCLK/33
+ ** \arg QspiHclkDiv34                  Clock source: HCLK/34
+ ** \arg QspiHclkDiv35                  Clock source: HCLK/35
+ ** \arg QspiHclkDiv36                  Clock source: HCLK/36
+ ** \arg QspiHclkDiv37                  Clock source: HCLK/37
+ ** \arg QspiHclkDiv38                  Clock source: HCLK/38
+ ** \arg QspiHclkDiv39                  Clock source: HCLK/39
+ ** \arg QspiHclkDiv40                  Clock source: HCLK/40
+ ** \arg QspiHclkDiv41                  Clock source: HCLK/41
+ ** \arg QspiHclkDiv42                  Clock source: HCLK/42
+ ** \arg QspiHclkDiv43                  Clock source: HCLK/43
+ ** \arg QspiHclkDiv44                  Clock source: HCLK/44
+ ** \arg QspiHclkDiv45                  Clock source: HCLK/45
+ ** \arg QspiHclkDiv46                  Clock source: HCLK/46
+ ** \arg QspiHclkDiv47                  Clock source: HCLK/47
+ ** \arg QspiHclkDiv48                  Clock source: HCLK/48
+ ** \arg QspiHclkDiv49                  Clock source: HCLK/49
+ ** \arg QspiHclkDiv50                  Clock source: HCLK/50
+ ** \arg QspiHclkDiv51                  Clock source: HCLK/51
+ ** \arg QspiHclkDiv52                  Clock source: HCLK/52
+ ** \arg QspiHclkDiv53                  Clock source: HCLK/53
+ ** \arg QspiHclkDiv54                  Clock source: HCLK/54
+ ** \arg QspiHclkDiv55                  Clock source: HCLK/55
+ ** \arg QspiHclkDiv56                  Clock source: HCLK/56
+ ** \arg QspiHclkDiv57                  Clock source: HCLK/57
+ ** \arg QspiHclkDiv58                  Clock source: HCLK/58
+ ** \arg QspiHclkDiv59                  Clock source: HCLK/59
+ ** \arg QspiHclkDiv60                  Clock source: HCLK/60
+ ** \arg QspiHclkDiv61                  Clock source: HCLK/61
+ ** \arg QspiHclkDiv62                  Clock source: HCLK/62
+ ** \arg QspiHclkDiv63                  Clock source: HCLK/63
+ ** \arg QspiHclkDiv64                  Clock source: HCLK/64
+ **
+ ** \retval Ok                          Process successfully done
+ **
+ ******************************************************************************/
+en_result_t QSPI_SetClockDiv(en_qspi_clk_div_t enClkDiv)
+{
+    en_result_t enRet = Ok;
+
+    DDL_ASSERT(IS_VALID_CLK_DIV(enClkDiv));
+
+    M4_QSPI->CR_f.DIV = enClkDiv;
+
+    return enRet;
+}
+
+/**
+ *******************************************************************************
+ ** \brief Set WP Pin level
+ **
+ ** \param [in] enWpLevel               WP pin level
+ ** \arg QspiWpPinOutputLow             WP pin(QIO2) output low level
+ ** \arg QspiWpPinOutputHigh            WP pin(QIO2) output high level
+ **
+ ** \retval Ok                          Process successfully done
+ **
+ ******************************************************************************/
+en_result_t QSPI_SetWPPinLevel(en_qspi_wp_pin_level_t enWpLevel)
+{
+    en_result_t enRet = Ok;
+
+    DDL_ASSERT(IS_VALID_WP_OUTPUT_LEVEL(enWpLevel));
+
+    M4_QSPI->FCR_f.WPOL = enWpLevel;
 
     return enRet;
 }
@@ -528,6 +641,8 @@ en_result_t QSPI_XipModeCmd(uint8_t u8Instr, en_functional_state_t enNewSta)
 {
     en_result_t enRet = Ok;
 
+    DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
+
     M4_QSPI->XCMD = u8Instr;
     if (Enable == enNewSta)
     {
@@ -617,19 +732,19 @@ en_flag_status_t QSPI_GetFlag(en_qspi_flag_type_t enFlag)
     switch (enFlag)
     {
         case QspiFlagBusBusy:
-            enFlagSta = (1u == M4_QSPI->SR_f.BUSY) ? Set : Reset;
+            enFlagSta = (en_flag_status_t)M4_QSPI->SR_f.BUSY;
             break;
         case QspiFlagXipMode:
-            enFlagSta = (1u == M4_QSPI->SR_f.XIPF) ? Set : Reset;
+            enFlagSta = (en_flag_status_t)M4_QSPI->SR_f.XIPF;
             break;
         case QspiFlagRomAccessError:
-            enFlagSta = (1u == M4_QSPI->SR_f.RAER) ? Set : Reset;
+            enFlagSta = (en_flag_status_t)M4_QSPI->SR_f.RAER;
             break;
         case QspiFlagPrefetchBufferFull:
-            enFlagSta = (1u == M4_QSPI->SR_f.PFFUL) ? Set : Reset;
+            enFlagSta = (en_flag_status_t)M4_QSPI->SR_f.PFFUL;
             break;
         case QspiFlagPrefetchStop:
-            enFlagSta = (1u == M4_QSPI->SR_f.PFAN) ? Set : Reset;
+            enFlagSta = (en_flag_status_t)M4_QSPI->SR_f.PFAN;
             break;
         default:
             break;
@@ -646,17 +761,20 @@ en_flag_status_t QSPI_GetFlag(en_qspi_flag_type_t enFlag)
  ** \arg QspiFlagRomAccessError         Trigger rom access error flag in direct communication mode
  **
  ** \retval Ok                          Process successfully done
+ ** \retval ErrorInvalidParameter       Parameter error
  **
  ******************************************************************************/
 en_result_t QSPI_ClearFlag(en_qspi_flag_type_t enFlag)
 {
     en_result_t enRet = Ok;
 
-    DDL_ASSERT(IS_VALID_CLEAR_FLAG_TYPE(enFlag));
-
     if (QspiFlagRomAccessError == enFlag)
     {
         M4_QSPI->SR2_f.RAERCLR = 1u;
+    }
+    else
+    {
+        enRet = ErrorInvalidParameter;
     }
 
     return enRet;

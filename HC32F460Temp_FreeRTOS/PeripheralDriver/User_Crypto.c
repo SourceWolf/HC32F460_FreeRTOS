@@ -28,7 +28,7 @@ static uint8_t u8Plaintext[128];
 
 void User_CryptoEngine_Init(void)
 {
-    AES_Init();
+    //AES_Init();
     HASH_Init();
 }
 
@@ -38,7 +38,7 @@ void User_TestHashandAES(void)
 		uint32_t u32CiphertextSize;
     memset(u8Ciphertext, 0u, sizeof(u8Ciphertext));
     printf("source Text:\r\n%s\r\n",pu8Plaintext2);
-    AES_Encrypt(pu8Plaintext2, strlen((char *)pu8Plaintext2), AesPadding_ANSIX923, pu8AesKey, u8Ciphertext, &u32CiphertextSize);
+    AES_Encrypt(pu8Plaintext2, strlen((char *)pu8Plaintext2), pu8AesKey, u8Ciphertext);
     printf("Ciphertext:\r\n%s\r\n", u8Ciphertext);
     AES_Decrypt(u8Ciphertext, strlen((char *)u8Ciphertext), pu8AesKey, u8Plaintext);
     printf("Plaintext:\r\n%s\r\n",u8Plaintext);

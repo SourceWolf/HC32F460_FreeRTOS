@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -82,17 +82,8 @@
     ((COUNT) == TrngShiftCount_128)             ||                              \
     ((COUNT) == TrngShiftCount_256))
 
-/* Turn on/off the TRNG. */
-#define TRNG_TURN_ON()                  M4_TRNG->CR_f.EN     = 1u
-#define TRNG_TURN_OFF()                 M4_TRNG->CR_f.EN     = 0u
 
-/* Start/stop the TRNG. */
-#define TRNG_START_GENERATING()         M4_TRNG->CR_f.RUN    = 1u
-#define TRNG_STOP_GENERATING()          M4_TRNG->CR_f.RUN    = 0u
-
-/* Check the TRNG. */
-#define IS_TRNG_GENERATING()            M4_TRNG->CR_f.RUN    == 1u
-#define IS_TRNG_GENERATED_DONE()        M4_TRNG->CR_f.RUN    == 0u
+#define RANDOM_NUM_LENGTH                       (2u)
 
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
@@ -132,25 +123,27 @@
  ******************************************************************************/
 en_result_t TRNG_Init(const stc_trng_init_t *pstcInit)
 {
-    if (NULL == pstcInit)
+    en_result_t enRet = ErrorInvalidParameter;
+
+    if (NULL != pstcInit)
     {
-        return ErrorInvalidParameter;
+        /* Parameter validity check */
+        DDL_ASSERT(IS_TRNG_LOAD_CTRL(pstcInit->enLoadCtrl));
+        DDL_ASSERT(IS_TRNG_SHIFT_COUNT(pstcInit->enShiftCount));
+
+        /* Stop TRNG generating*/
+        bM4_TRNG_CR_RUN = 0u;
+
+        /* Turn off TRNG circuit */
+        bM4_TRNG_CR_EN = 0u;
+
+        M4_TRNG->MR_f.LOAD = pstcInit->enLoadCtrl;
+        M4_TRNG->MR_f.CNT  = pstcInit->enShiftCount;
+
+        enRet = Ok;
     }
 
-    /* Parameter validity check */
-    DDL_ASSERT(IS_TRNG_LOAD_CTRL(pstcInit->enLoadCtrl));
-    DDL_ASSERT(IS_TRNG_SHIFT_COUNT(pstcInit->enShiftCount));
-
-    /* Stop TRNG generating*/
-    TRNG_STOP_GENERATING();
-
-    /* Turn off TRNG circuit */
-    TRNG_TURN_OFF();
-
-    M4_TRNG->MR_f.LOAD = pstcInit->enLoadCtrl;
-    M4_TRNG->MR_f.CNT  = pstcInit->enShiftCount;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -165,10 +158,10 @@ en_result_t TRNG_Init(const stc_trng_init_t *pstcInit)
 void TRNG_DeInit(void)
 {
     /* Stop TRNG generating*/
-    TRNG_STOP_GENERATING();
+    bM4_TRNG_CR_RUN = 0u;
 
     /* Turn off TRNG circuit */
-    TRNG_TURN_OFF();
+    bM4_TRNG_CR_EN = 0u;
 
     /* Set the value of all registers to the reset value. */
     M4_TRNG->CR  = 0u;
@@ -183,7 +176,10 @@ void TRNG_DeInit(void)
  **
  ** \param [out] pu32Random             The destination address where the random
  **                                     number will be stored.
- **
+ ** \param [in] u8Length                Random number length(in word).
+ **                                     TRNG generates two random numbers(2 words) at one time.
+ **                                     u8Length >= 2, both random numbers will be read.
+ **                                     u8Length < 2, only one random number will be read.
  ** \param [in] u32Timeout              Timeout value(millisecond).
  **
  ** \retval Ok                          No error occurred.
@@ -191,53 +187,54 @@ void TRNG_DeInit(void)
  ** \retval ErrorInvalidParameter       Parameter error.
  **
  ******************************************************************************/
-en_result_t TRNG_Generate(uint32_t *pu32Random, uint32_t u32Timeout)
+en_result_t TRNG_Generate(uint32_t *pu32Random, uint8_t u8Length, uint32_t u32Timeout)
 {
-    en_result_t   enRet;
-    uint32_t      u32TimeCount;
+    en_result_t   enRet = ErrorInvalidParameter;
     uint32_t      u32TrngTimeout;
+    __IO uint32_t u32TimeCount;
 
-    if ((NULL == pu32Random) || (0u == u32Timeout))
+    if ((NULL != pu32Random) && (0u != u32Timeout) && (0u != u8Length))
     {
-        return ErrorInvalidParameter;
-    }
+        /* 10 is the number of required instructions cycles for the below loop statement. */
+        u32TrngTimeout = u32Timeout * (SystemCoreClock / 10u / 1000u);
 
-    /* 10 is the number of required instructions cycles for the below loop statement. */
-    u32TrngTimeout = u32Timeout * (SystemCoreClock / 10u / 1000u);
+        /* Turn on TRNG circuit. */
+        bM4_TRNG_CR_EN = 1u;
 
-    /* Turn on TRNG circuit. */
-    TRNG_TURN_ON();
+        /* Start TRNG to generate random number. */
+        bM4_TRNG_CR_RUN = 1u;
 
-    /* Start TRNG to generate random number. */
-    TRNG_START_GENERATING();
-
-    /* wait generation done and check if timeout. */
-    u32TimeCount = 0u;
-    enRet = ErrorTimeout;
-    while (u32TimeCount < u32TrngTimeout)
-    {
-        if (IS_TRNG_GENERATED_DONE())
+        /* wait generation done and check if timeout. */
+        u32TimeCount = 0u;
+        enRet = ErrorTimeout;
+        while (u32TimeCount < u32TrngTimeout)
         {
-            enRet = Ok;
-            break;
+            if (bM4_TRNG_CR_RUN == 0u)
+            {
+                enRet = Ok;
+                break;
+            }
+            u32TimeCount++;
         }
-        u32TimeCount++;
+
+        if (Ok == enRet)
+        {
+            /* read the random number. */
+            pu32Random[0u] = M4_TRNG->DR0;
+            if (u8Length >= RANDOM_NUM_LENGTH)
+            {
+                pu32Random[1u] = M4_TRNG->DR1;
+            }
+        }
+
+        /* Stop TRNG generating. */
+        bM4_TRNG_CR_RUN = 0u;
+
+        /* Turn off TRNG circuit. */
+        bM4_TRNG_CR_EN = 0u;
     }
 
-    if (Ok == enRet)
-    {
-        /* read the random number. */
-        pu32Random[0u] = M4_TRNG->DR0;
-        pu32Random[1u] = M4_TRNG->DR1;
-    }
-
-    /* Stop TRNG generating. */
-    TRNG_STOP_GENERATING();
-
-    /* Turn off TRNG circuit. */
-    TRNG_TURN_OFF();
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -252,10 +249,10 @@ en_result_t TRNG_Generate(uint32_t *pu32Random, uint32_t u32Timeout)
 void TRNG_StartIT(void)
 {
     /* Turn on TRNG circuit. */
-    TRNG_TURN_ON();
+    bM4_TRNG_CR_EN = 1u;
 
     /* Start TRNG to generate random number. */
-    TRNG_START_GENERATING();
+    bM4_TRNG_CR_RUN = 1u;
 }
 
 /**
@@ -264,20 +261,30 @@ void TRNG_StartIT(void)
  **
  ** \param  [out] pu32Random            The destination address where the random
  **                                     number will be stored.
+ ** \param [in] u8Length                Random number length(in word).
+ **                                     TRNG generates two random numbers(2 words) at one time.
+ **                                     u8Length >= 2, both random numbers will be read.
+ **                                     u8Length < 2, only one random number will be read.
  **
  ** \retval None.
  **
  ******************************************************************************/
-void TRNG_GetRandomNum(uint32_t *pu32Random)
+void TRNG_GetRandomNum(uint32_t *pu32Random, uint8_t u8Length)
 {
-    pu32Random[0u] = M4_TRNG->DR0;
-    pu32Random[1u] = M4_TRNG->DR1;
+    if ((NULL != pu32Random) && (0u != u8Length))
+    {
+        pu32Random[0u] = M4_TRNG->DR0;
+        if (u8Length >= RANDOM_NUM_LENGTH)
+        {
+            pu32Random[1u] = M4_TRNG->DR1;
+        }
 
-    /* Stop TRNG generating */
-    TRNG_STOP_GENERATING();
+        /* Stop TRNG generating */
+        bM4_TRNG_CR_RUN = 0u;
 
-    /* Turn off TRNG circuit */
-    TRNG_TURN_OFF();
+        /* Turn off TRNG circuit */
+        bM4_TRNG_CR_EN  = 0u;
+    }
 }
 
 //@} // TrngGroup

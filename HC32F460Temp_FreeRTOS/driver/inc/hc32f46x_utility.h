@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -79,6 +79,7 @@ extern "C"
 /*******************************************************************************
  * Global pre-processor symbols/macros ('#define')
  ******************************************************************************/
+#define UART_DEBUG_PRINTF
 
 /*******************************************************************************
  * Global variable definitions ('extern')
@@ -91,7 +92,8 @@ extern "C"
 en_result_t Ddl_UartInit(void);
 
 /* A approximate delay */
-en_result_t Ddl_Delay1ms(uint32_t u32Cnt);
+void Ddl_Delay1ms(uint32_t u32Cnt);
+void Ddl_Delay1us(uint32_t u32Cnt);
 
 /*! Ddl assert, you can add your own assert functions by implement the function
 Ddl_AssertHook definition follow the function Ddl_AssertHook declaration */
@@ -101,7 +103,7 @@ do{                                                                            \
     ((x) ? (void)0 : Ddl_AssertHandler((uint8_t *)__FILE__, __LINE__));        \
 }while(0)
 /* Exported function */
-void Ddl_AssertHandler(uint8_t *file, uint32_t line);
+void Ddl_AssertHandler(uint8_t *file, int16_t line);
 #else
 #define DDL_ASSERT(x)                               (void)(x)
 #endif /* __DEBUG */

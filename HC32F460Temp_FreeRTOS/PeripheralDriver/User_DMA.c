@@ -1,7 +1,7 @@
 #include "hc32_ddl.h"
 #include "User_Uart.h"
 #include "User_ADC.h"
-
+#include "System_InterruptCFG_Def.h"
 
 #define DMA_UNIT                (M4_DMA1)
 #define DMA_CH                  (DmaCh0)

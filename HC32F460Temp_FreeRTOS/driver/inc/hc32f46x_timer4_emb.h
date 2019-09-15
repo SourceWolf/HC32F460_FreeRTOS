@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -130,9 +130,9 @@ en_result_t TIMER4_EMB_DeInit(M4_TMR4_TypeDef *TMR4x);
 en_result_t TIMER4_EMB_SetHoldMode(M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_emb_hold_mode_t enHoldMode);
 en_timer4_emb_hold_mode_t TIMER4_EMB_GetHoldMode(M4_TMR4_TypeDef *TMR4x);
-en_result_t TIMER4_EMB_SetState(M4_TMR4_TypeDef *TMR4x,
+en_result_t TIMER4_EMB_SetState(const M4_TMR4_TypeDef *TMR4x,
                                 en_timer4_emb_state_t enEmbState);
-en_timer4_emb_state_t TIMER4_EMB_GetState(M4_TMR4_TypeDef *TMR4x);
+en_timer4_emb_state_t TIMER4_EMB_GetState(const M4_TMR4_TypeDef *TMR4x);
 
 //@} // Timer4EmbGroup
 

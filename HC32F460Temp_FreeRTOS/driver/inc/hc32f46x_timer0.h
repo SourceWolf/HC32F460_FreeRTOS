@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -56,8 +56,8 @@
  * Include files
  ******************************************************************************/
 
+#include "hc32_common.h"
 #include "ddl_config.h"
-#include "hc32_ddl.h"
 
 #if (DDL_TIMER0_ENABLE == DDL_ON)
 
@@ -83,8 +83,8 @@
  ******************************************************************************/
 typedef enum en_tim0_channel
 {
-    Tim0_ChannelA = 0x00,
-    Tim0_ChannelB = 0x01
+    Tim0_ChannelA = 0x00u,
+    Tim0_ChannelB = 0x01u
 }en_tim0_channel_t;
 
 /**
@@ -94,8 +94,8 @@ typedef enum en_tim0_channel
  ******************************************************************************/
 typedef enum en_tim0_async_clock_src
 {
-    Tim0_LRC    = 0x00,
-    Tim0_XTAL32 = 0x01
+    Tim0_LRC    = 0x00u,
+    Tim0_XTAL32 = 0x01u
 }en_tim0_async_clock_src_t;
 
 /**
@@ -105,8 +105,8 @@ typedef enum en_tim0_async_clock_src
  ******************************************************************************/
 typedef enum en_tim0_sync_clock_src
 {
-    Tim0_Pclk1          = 0x00,
-    Tim0_InsideHardTrig = 0x01
+    Tim0_Pclk1          = 0x00u,
+    Tim0_InsideHardTrig = 0x01u
 }en_tim0_sync_clock_src_t;
 
 /**
@@ -116,8 +116,8 @@ typedef enum en_tim0_sync_clock_src
  ******************************************************************************/
 typedef enum en_tim0_counter_mode
 {
-    Tim0_Sync  = 0x00,
-    Tim0_Async = 0x01
+    Tim0_Sync  = 0x00u,
+    Tim0_Async = 0x01u
 }en_tim0_counter_mode_t;
 
 /**
@@ -127,8 +127,8 @@ typedef enum en_tim0_counter_mode
  ******************************************************************************/
 typedef enum en_tim0_function
 {
-    Tim0_OutputCapare = 0x00,
-    Tim0_InputCaptrue = 0x01
+    Tim0_OutputCapare = 0x00u,
+    Tim0_InputCaptrue = 0x01u
 }en_tim0_function_t;
 
 /**
@@ -138,7 +138,7 @@ typedef enum en_tim0_function
  ******************************************************************************/
 typedef enum en_tim0_clock_div
 {
-    Tim0_ClkDiv0 = 0,
+    Tim0_ClkDiv0 = 0u,
     Tim0_ClkDiv2,
     Tim0_ClkDiv4,
     Tim0_ClkDiv8,
@@ -207,12 +207,12 @@ uint16_t TIMER0_GetCntReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh);
 void TIMER0_WriteCntReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,uint16_t u16Cnt);
 uint16_t TIMER0_GetCmpReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh);
 void TIMER0_WriteCmpReg(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,uint16_t u16Cnt);
-void TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
+en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
                        const stc_tim0_base_init_t* pstcBaseInit);
 void TIMER0_DeInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh);
-void TIMER0_HardTriggerInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
+en_result_t TIMER0_HardTriggerInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
                                 const stc_tim0_trigger_init_t* pStcInit);
-void TIMER0_SetTriggerSrc(M4_TMR0_TypeDef* pstcTim0Reg, en_event_src_t enEvent);
+void TIMER0_SetTriggerSrc(en_event_src_t enEvent);
 
 //@} // Timer0Group
 

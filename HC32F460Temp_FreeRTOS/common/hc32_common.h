@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -172,10 +172,10 @@ typedef enum en_result
 
 /*! Weak and Align compiler definition */
 #if defined (__ICCARM__)                ///< IAR Compiler
-#define __WEAKDEF                       __WEAK __ATTRIBUTES
+#define __WEAKDEF                       __weak
 #define __ALIGN_BEGIN                   _Pragma("data_alignment=4")
 #elif defined (__CC_ARM)                ///< ARM Compiler
-#define __WEAKDEF                       __weak
+#define __WEAKDEF                       __attribute__((weak))
 #define __ALIGN_BEGIN                   __align(4)
 #else
 #error  "unsupported compiler!!"
@@ -187,13 +187,15 @@ typedef enum en_result
 #endif
 
 /*! Memory clear */
-#define MEM_ZERO_STRUCT(x)              memset((void*)&(x), 0x00, (sizeof(x)))
+#define MEM_ZERO_STRUCT(x)              do {                                   \
+                                        memset((void*)&(x), 0l, (sizeof(x)));  \
+                                        }while(0)
 
 /*! Decimal to BCD */
-#define DEC2BCD(x)                      ((((x) / 10) << 4) + ((x) % 10))
+#define DEC2BCD(x)                      ((((x) / 10u) << 4u) + ((x) % 10u))
 
 /*! BCD to decimal */
-#define BCD2DEC(x)                      ((((x) >> 4) * 10) + ((x) & 0x0F))
+#define BCD2DEC(x)                      ((((x) >> 4u) * 10u) + ((x) & 0x0Fu))
 
 /*! Returns the minimum value out of two values */
 #define MIN(x, y)                       ((x) < (y) ? (x) : (y))
@@ -202,7 +204,7 @@ typedef enum en_result
 #define MAX(x, y)                       ((x) > (y) ? (x) : (y))
 
 /*! Returns the dimension of an array */
-#define ARRAY_SZ(X)                     (sizeof(X) / sizeof(X[0]))
+#define ARRAY_SZ(X)                     (sizeof((X)) / sizeof((X)[0]))
 
 /*! Check if it is a functional state */
 #define IS_FUNCTIONAL_STATE(state)      (((state) == Disable) || ((state) == Enable))
@@ -213,7 +215,7 @@ typedef enum en_result
 
 #define BIT_READ(value,bit)             ((value) & (bit))
 
-#define BIT_VALUE(index)                (1 << index)
+#define BIT_VALUE(index)                (1ul << (index))
 
 /*******************************************************************************
  * Global variable definitions ('extern')

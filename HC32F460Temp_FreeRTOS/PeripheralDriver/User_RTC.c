@@ -1,4 +1,6 @@
 #include "hc32_ddl.h"
+#include "System_InterruptCFG_Def.h"
+
 uint8_t secdata;
 void RTC_GetTime(uint8_t *sec);
 volatile bool flag_RTC_interrupt;

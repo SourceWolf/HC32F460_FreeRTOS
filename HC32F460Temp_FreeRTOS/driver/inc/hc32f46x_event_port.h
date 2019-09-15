@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -173,7 +173,7 @@ extern en_result_t EVENTPORT_SetTriggerSrc(en_event_port_t enEventPort,        \
                                            en_event_src_t enTriggerSrc);
 extern uint16_t EVENTPORT_GetData(en_event_port_t enEventPort);
 extern en_flag_status_t EVENTPORT_GetBit(en_event_port_t enEventPort,          \
-                                         en_event_pin_t u16EventPin);
+                                         en_event_pin_t enEventPin);
 extern en_result_t EVENTPORT_SetBits(en_event_port_t enEventPort,              \
                                     en_event_pin_t u16EventPin);
 extern en_result_t EVENTPORT_ResetBits(en_event_port_t enEventPort,            \

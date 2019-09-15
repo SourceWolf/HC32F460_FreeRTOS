@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -79,7 +79,7 @@ extern "C"
  * Global type definitions ('typedef')
  ******************************************************************************/
 ///< SRAM wait cycle register, parity/ECC check register protect code definition
-#define SRAM_PROTECT_CODE   0x0000003Bu
+#define SRAM_PROTECT_CODE   (0x0000003Bu)
 
 /*******************************************************************************
                 Start addr.     End addr.       Size    Function
@@ -90,19 +90,19 @@ extern "C"
   SRAM_HS       0x1FFF8000      0x1FFFFFFF      32KB    Even Parity Check
  ******************************************************************************/
 ///< SRAM1 base address definition
-#define SRAM1_BASE_ADDR     *((volatile unsigned int*)(0x20000000UL))
+#define SRAM1_BASE_ADDR     (*((volatile unsigned int*)(0x20000000UL)))
 
 ///< SRAM2 base address definition
-#define SRAM2_BASE_ADDR     *((volatile unsigned int*)(0x20010000UL))
+#define SRAM2_BASE_ADDR     (*((volatile unsigned int*)(0x20010000UL)))
 
 ///< SRAM3 base address definition
-#define SRAM3_BASE_ADDR     *((volatile unsigned int*)(0x20020000UL))
+#define SRAM3_BASE_ADDR     (*((volatile unsigned int*)(0x20020000UL)))
 
 ///< Retention SRAM base address definition
-#define SRAMRET_BASE_ADDR   *((volatile unsigned int*)(0x200F0000UL))
+#define SRAMRET_BASE_ADDR   (*((volatile unsigned int*)(0x200F0000UL)))
 
 ///< High speed SRAM base address definition
-#define SRAMHS_BASE_ADDR    *((volatile unsigned int*)(0x1FFF8000UL))
+#define SRAMHS_BASE_ADDR    (*((volatile unsigned int*)(0x1FFF8000UL)))
 
 
 typedef enum en_sram_index

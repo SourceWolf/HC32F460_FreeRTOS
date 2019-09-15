@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -86,7 +86,8 @@ void SystemInit(void)
 
 void SystemCoreClockUpdate(void)  // Update SystemCoreClock variable
 {
-    uint8_t tmp = 0, plln = 19, pllp = 1, pllm = 0, pllsource = 0;
+    uint8_t tmp = 0u;
+    uint32_t plln = 19u, pllp = 1u, pllm = 0u, pllsource = 0u;
 
     tmp = M4_SYSREG->CMU_CKSWR_f.CKSW;
     switch (tmp)
@@ -113,14 +114,18 @@ void SystemCoreClockUpdate(void)  // Update SystemCoreClock variable
             pllp = M4_SYSREG->CMU_PLLCFGR_f.MPLLP;
             pllm = M4_SYSREG->CMU_PLLCFGR_f.MPLLM;
             /* use exteranl high speed OSC as PLL source */
-            if (0 == pllsource)
+            if (0ul == pllsource)
             {
-                SystemCoreClock = (XTAL_VALUE) / (pllm + 1) * (plln + 1) / (pllp + 1);
+                SystemCoreClock = (XTAL_VALUE) / (pllm + 1ul) * (plln + 1ul) / (pllp + 1ul);
             }
             /* use interanl high RC as PLL source */
-            else if (1 == pllsource)
+            else if (1ul == pllsource)
             {
-                SystemCoreClock = (HRC_VALUE) / (pllm + 1) * (plln + 1) / (pllp + 1);
+                SystemCoreClock = (HRC_VALUE) / (pllm + 1ul) * (plln + 1ul) / (pllp + 1ul);
+            }
+            else
+            {
+                /* Reserved */
             }
             break;
     }

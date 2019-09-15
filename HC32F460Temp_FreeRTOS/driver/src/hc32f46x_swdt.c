@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -149,10 +149,10 @@ en_flag_status_t SWDT_GetFlag(en_swdt_flag_type_t enFlag)
     switch (enFlag)
     {
         case SwdtFlagCountUnderflow:
-            enFlagSta = (1u == M4_SWDT->SR_f.UDF) ? Set : Reset;
+            enFlagSta = (en_flag_status_t)M4_SWDT->SR_f.UDF;
             break;
         case SwdtFlagRefreshError:
-            enFlagSta = (1u == M4_SWDT->SR_f.REF) ? Set : Reset;
+            enFlagSta = (en_flag_status_t)M4_SWDT->SR_f.REF;
             break;
         default:
             break;

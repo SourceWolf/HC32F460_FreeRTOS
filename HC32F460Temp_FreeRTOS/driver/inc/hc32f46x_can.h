@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -248,8 +248,8 @@ typedef enum
  ******************************************************************************/
 typedef enum
 {
-    CanRxBufOverwritten = 1,        ///< The oldest message will be overwritten
-    CanRxBufNotStored   = 0,        ///< The new message will not be stored
+    CanRxBufOverwritten = 0,        ///< The oldest message will be overwritten
+    CanRxBufNotStored   = 1,        ///< The new message will not be stored
 }en_can_rx_buf_mode_en_t;
 
 /**
@@ -321,10 +321,10 @@ typedef struct stc_can_bt
 typedef struct
 {
 uint32_t DLC                     : 4;        ///< Data length code
-uint32_t RESERVED0               : 2;        ///< Ignore â€¦â??
+uint32_t RESERVED0               : 2;        ///< Ignore
 uint32_t RTR                     : 1;        ///< Remote transmission request
 uint32_t IDE                     : 1;        ///< IDentifier extension
-uint32_t RESERVED1               : 24;        ///< Ignore â€¦â??
+uint32_t RESERVED1               : 24;       ///< Ignore
 }stc_can_txcontrol_t;
 
 /**
@@ -335,18 +335,18 @@ typedef struct stc_can_txframe
 {
     union
     {
-        uint32_t TBUF32_0;                  ///< Ignore â€¦â??
+        uint32_t TBUF32_0;                  ///< Ignore
         uint32_t StdID;                     ///< Standard ID
         uint32_t ExtID;                     ///< Extended ID
     };
     union
     {
-        uint32_t TBUF32_1;                  ///< Ignore â€¦â??
+        uint32_t TBUF32_1;                  ///< Ignore
         stc_can_txcontrol_t Control_f;      ///< CAN Tx Control
     };
     union
     {
-        uint32_t TBUF32_2[2];               ///< Ignore â€¦â??
+        uint32_t TBUF32_2[2];               ///< Ignore
         uint8_t  Data[8];                   ///< CAN data
     };
     en_can_buffer_sel_t     enBufferSel;    ///< CAN Tx buffer select
@@ -360,7 +360,7 @@ typedef struct stc_can_txframe
 typedef struct
 {
     uint8_t DLC          : 4;       ///< Data length code
-    uint8_t RESERVED0    : 2;       ///< Ignore â€¦â??
+    uint8_t RESERVED0    : 2;       ///< Ignore
     uint8_t RTR          : 1;       ///< Remote transmission request
     uint8_t IDE          : 1;       ///< IDentifier extension
 }stc_can_rxcontrol_t;
@@ -371,7 +371,7 @@ typedef struct
  ******************************************************************************/
 typedef struct
 {
-    uint8_t RESERVED0    : 4;       ///< Ignore â€¦â??
+    uint8_t RESERVED0    : 4;       ///< Ignore
     uint8_t TX           : 1;       ///< TX is set to 1 if the loop back mode is activated
     uint8_t KOER         : 3;       ///< Kind of error
 }stc_can_status_t;
@@ -395,18 +395,18 @@ typedef struct stc_can_rxframe
 {
     union
     {
-        uint32_t RBUF32_0;              ///< Ignore â€¦â??
+        uint32_t RBUF32_0;              ///< Ignore
         uint32_t StdID;                 ///< Standard ID
         uint32_t ExtID;                 ///< Extended ID
     };
     union
     {
-        uint32_t        RBUF32_1;       ///< Ignore â€¦â??
+        uint32_t        RBUF32_1;       ///< Ignore
         stc_can_cst_t   Cst;            ///< @ref stc_can_cst_t
     };
     union
     {
-        uint32_t RBUF32_2[2];           ///< Ignore â€¦â??
+        uint32_t RBUF32_2[2];           ///< Ignore
         uint8_t  Data[8];               ///< CAN data
     };
 
@@ -518,11 +518,10 @@ void CAN_ModeConfig(en_can_mode_t enMode, en_functional_state_t enNewState);
 en_can_error_t CAN_ErrorStatusGet(void);
 bool CAN_StatusGet(en_can_status_t enCanStatus);
 
-void CAN_FilterConfig(stc_can_filter_t *pstcFilter, en_functional_state_t enNewState);
+void CAN_FilterConfig(const stc_can_filter_t *pstcFilter, en_functional_state_t enNewState);
 void CAN_SetFrame(stc_can_txframe_t *pstcTxFrame);
 en_can_tx_buf_status_t CAN_TransmitCmd(en_can_tx_cmd_t enTxCmd);
 en_can_rx_buf_status_t CAN_Receive(stc_can_rxframe_t *pstcRxFrame);
-
 
 uint8_t CAN_ArbitrationLostCap(void);
 uint8_t CAN_RxErrorCntGet(void);

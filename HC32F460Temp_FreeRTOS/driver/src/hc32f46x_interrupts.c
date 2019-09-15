@@ -17,7 +17,7 @@
 *
 * Disclaimer:
 * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
-* REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+* REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
 * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
 * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
 * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -74,8 +74,36 @@
 /*! Parameter validity check for null pointer. */
 #define     IS_NULL_POINT(x)        (NULL != (x))
 
+/*! Parameter validity check for valid wakeup source from stop mode. */
+#define     IS_VALID_WKUP_SRC(x)                                                \
+(   ((x) == INT_USART1_WUPI)                    ||                              \
+    ((x) == INT_TMR01_GCMA)                     ||                              \
+    ((x) == INT_RTC_ALM)                        ||                              \
+    ((x) == INT_RTC_PRD)                        ||                              \
+    ((x) == INT_WKTM_PRD)                       ||                              \
+    ((x) == INT_ACMP1)                          ||                              \
+    ((x) == INT_PVD_PVD1)                       ||                              \
+    ((x) == INT_PVD_PVD2)                       ||                              \
+    ((x) == INT_SWDT_REFUDF)                    ||                              \
+    ((x) == INT_PORT_EIRQ0)                     ||                              \
+    ((x) == INT_PORT_EIRQ1)                     ||                              \
+    ((x) == INT_PORT_EIRQ2)                     ||                              \
+    ((x) == INT_PORT_EIRQ3)                     ||                              \
+    ((x) == INT_PORT_EIRQ4)                     ||                              \
+    ((x) == INT_PORT_EIRQ5)                     ||                              \
+    ((x) == INT_PORT_EIRQ6)                     ||                              \
+    ((x) == INT_PORT_EIRQ7)                     ||                              \
+    ((x) == INT_PORT_EIRQ8)                     ||                              \
+    ((x) == INT_PORT_EIRQ9)                     ||                              \
+    ((x) == INT_PORT_EIRQ10)                    ||                              \
+    ((x) == INT_PORT_EIRQ11)                    ||                              \
+    ((x) == INT_PORT_EIRQ12)                    ||                              \
+    ((x) == INT_PORT_EIRQ13)                    ||                              \
+    ((x) == INT_PORT_EIRQ14)                    ||                              \
+    ((x) == INT_PORT_EIRQ15))
+
 /*! Max IRQ Handler. */
-#define     IRQ_NUM_MAX             128u
+#define     IRQ_NUM_MAX             (128u)
 
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
@@ -101,32 +129,75 @@ func_ptr_t IrqHandler[IRQ_NUM_MAX] = {NULL};
  ** param [in]                          pstcIrqRegiConf, IRQ registration
  **                                     configure structure
  **
- ** retval                              Ok
+ ** retval                              Ok, IRQ register successfully.
  **                                     ErrorInvalidParameter, IRQ No. and
- **                                     Vector No. are not match
+ **                                     Vector No. are not match.
+ **                                     ErrorUninitialized, Make sure the
+ **                                     Interrupt select register (INTSEL) is
+ **                                     default value (0x1FFu) before setting.
  **
- ******************************************************************************/
+ *****************************************************************************/
 en_result_t enIrqRegistration(const stc_irq_regi_conf_t *pstcIrqRegiConf)
 {
     // todo, assert ...
     stc_intc_sel_field_t *stcIntSel;
+    en_result_t enRet = Ok;
 
     //DDL_ASSERT(NULL != pstcIrqRegiConf->pfnCallback);
     DDL_ASSERT(IS_NULL_POINT(pstcIrqRegiConf->pfnCallback));
 
     /* IRQ032~128 whether out of range */
-    if (((((pstcIrqRegiConf->enIntSrc/32)*6 + 32) > pstcIrqRegiConf->enIRQn) || \
-        (((pstcIrqRegiConf->enIntSrc/32)*6 + 37) < pstcIrqRegiConf->enIRQn)) && \
-        pstcIrqRegiConf->enIRQn >= 32)
+    if (((((pstcIrqRegiConf->enIntSrc/32u)*6u + 32u) > pstcIrqRegiConf->enIRQn) || \
+        (((pstcIrqRegiConf->enIntSrc/32u)*6u + 37u) < pstcIrqRegiConf->enIRQn)) && \
+        (pstcIrqRegiConf->enIRQn >= 32u))
     {
-        return ErrorInvalidParameter;
+        enRet = ErrorInvalidParameter;
     }
+    else
+    {
+        stcIntSel = (stc_intc_sel_field_t *)((uint32_t)(&M4_INTC->SEL0)         +   \
+                                             (4u * pstcIrqRegiConf->enIRQn));
+        if (0x1FFu == stcIntSel->INTSEL)
+        {
+            stcIntSel->INTSEL = pstcIrqRegiConf->enIntSrc;
+            IrqHandler[pstcIrqRegiConf->enIRQn] = pstcIrqRegiConf->pfnCallback;
+        }
+        else
+        {
+            enRet = ErrorUninitialized;
+        }
+    }
+    return enRet;
+}
 
-    stcIntSel = (stc_intc_sel_field_t *)((uint32_t)(&M4_INTC->SEL0)         +   \
-                                         (4 * pstcIrqRegiConf->enIRQn));
-    stcIntSel->INTSEL = pstcIrqRegiConf->enIntSrc;
-    IrqHandler[pstcIrqRegiConf->enIRQn] = pstcIrqRegiConf->pfnCallback;
-    return Ok;
+/**
+ *******************************************************************************
+ ** \brief IRQ Resign
+ **
+ ** param [in]                          enIRQn, IRQ enumunation (Int000_IRQn ~
+ **                                     Int127_IRQn
+ **
+ ** retval                              Ok, IRQ resign sucessfully.
+ **                                     ErrorInvalidParameter, IRQ No. is out
+ **                                     of range
+ **
+ *****************************************************************************/
+en_result_t enIrqResign(IRQn_Type enIRQn)
+{
+    stc_intc_sel_field_t *stcIntSel;
+    en_result_t enRet = Ok;
+
+    if ((enIRQn < Int000_IRQn) || (enIRQn > Int127_IRQn))
+    {
+        enRet = ErrorInvalidParameter;
+    }
+    else
+    {
+        stcIntSel = (stc_intc_sel_field_t *)((uint32_t)(&M4_INTC->SEL0) + (4ul * enIRQn));
+        stcIntSel->INTSEL = 0x1FFu;
+        IrqHandler[enIRQn] = NULL;
+    }
+    return enRet;
 }
 
 /**
@@ -145,8 +216,8 @@ en_result_t enShareIrqEnable(en_int_src_t enIntSrc)
 
     //todo assert
 
-    VSSELx = (uint32_t *)(((uint32_t)&M4_INTC->VSSEL128) + (4 * (enIntSrc/32)));
-    *VSSELx |= (1u << (enIntSrc%32));
+    VSSELx = (uint32_t *)(((uint32_t)&M4_INTC->VSSEL128) + (4u * (enIntSrc/32u)));
+    *VSSELx |= (uint32_t)(1ul << (enIntSrc & 0x1Fu));
 
     return Ok;
 }
@@ -167,8 +238,8 @@ en_result_t enShareIrqDisable(en_int_src_t enIntSrc)
 
     //todo assert
 
-    VSSELx = (uint32_t *)(((uint32_t)&M4_INTC->VSSEL128) + (4 * (enIntSrc/32)));
-    *VSSELx &= ~(1u << (enIntSrc%32));
+    VSSELx = (uint32_t *)(((uint32_t)&M4_INTC->VSSEL128) + (4u * (enIntSrc/32u)));
+    *VSSELx &= ~(uint32_t)(1ul << (enIntSrc & 0x1Fu));
 
     return Ok;
 }
@@ -187,12 +258,16 @@ en_result_t enShareIrqDisable(en_int_src_t enIntSrc)
  ******************************************************************************/
 en_result_t enIntWakeupEnable(uint32_t u32WakeupSrc)
 {
-    if (0 != (u32WakeupSrc & 0xFD000000u))
+    en_result_t enRet = Ok;
+    if (0ul != (u32WakeupSrc & 0xFD000000ul))
     {
-        return ErrorInvalidParameter;
+        enRet = ErrorInvalidParameter;
     }
-    M4_INTC->WUPEN |= u32WakeupSrc;
-    return Ok;
+    else
+    {
+        M4_INTC->WUPEN |= u32WakeupSrc;
+    }
+    return enRet;
 }
 
 /**
@@ -209,12 +284,16 @@ en_result_t enIntWakeupEnable(uint32_t u32WakeupSrc)
  ******************************************************************************/
 en_result_t enIntWakeupDisable(uint32_t u32WakeupSrc)
 {
-    if (0 != (u32WakeupSrc & 0xFD000000u))
+    en_result_t enRet = Ok;
+    if (0ul != (u32WakeupSrc & 0xFD000000u))
     {
-        return ErrorInvalidParameter;
+        enRet = ErrorInvalidParameter;
     }
-    M4_INTC->WUPEN &= ~u32WakeupSrc;
-    return Ok;
+    else
+    {
+        M4_INTC->WUPEN &= ~u32WakeupSrc;
+    }
+    return enRet;
 }
 
 /**
@@ -368,7 +447,7 @@ void DebugMon_Handler(void)
  ******************************************************************************/
 void SysTick_Handler(void)
 {
-    SysTick_IrqHandler();
+    //SysTick_IrqHandler();
     osSystickHandler();
 }
 
@@ -2044,83 +2123,85 @@ void IRQ127_Handler(void)
  ******************************************************************************/
 void IRQ128_Handler(void)
 {
+    uint32_t VSSEL128 = M4_INTC->VSSEL128;
+
     /* external interrupt 00 */
-    if ((true == M4_INTC->VSSEL128_f.VSEL0) && (true == M4_INTC->EIFR_f.EIFR0))
+    if ((Set == bM4_INTC_EIFR_EIFR0) && (VSSEL128 & BIT_MASK_00))
     {
         Extint00_IrqHandler();
     }
     /* external interrupt 01 */
-    if ((true == M4_INTC->VSSEL128_f.VSEL1) && (true == M4_INTC->EIFR_f.EIFR1))
+    if ((Set == bM4_INTC_EIFR_EIFR1) && (VSSEL128 & BIT_MASK_01))
     {
         Extint01_IrqHandler();
     }
     /* external interrupt 02 */
-    if ((true == M4_INTC->VSSEL128_f.VSEL2) && (true == M4_INTC->EIFR_f.EIFR2))
+    if ((Set == bM4_INTC_EIFR_EIFR2) && (VSSEL128 & BIT_MASK_02))
     {
         Extint02_IrqHandler();
     }
     /* external interrupt 03 */
-    if ((true == M4_INTC->VSSEL128_f.VSEL3) && (true == M4_INTC->EIFR_f.EIFR3))
+    if ((Set == bM4_INTC_EIFR_EIFR3) && (VSSEL128 & BIT_MASK_03))
     {
         Extint03_IrqHandler();
     }
     /* external interrupt 04 */
-    if ((true == M4_INTC->VSSEL128_f.VSEL4) && (true == M4_INTC->EIFR_f.EIFR4))
+    if ((Set == bM4_INTC_EIFR_EIFR4) && (VSSEL128 & BIT_MASK_04))
     {
         Extint04_IrqHandler();
     }
     /* external interrupt 05 */
-    if ((true == M4_INTC->VSSEL128_f.VSEL5) && (true == M4_INTC->EIFR_f.EIFR5))
+    if ((Set == bM4_INTC_EIFR_EIFR5) && (VSSEL128 & BIT_MASK_05))
     {
         Extint05_IrqHandler();
     }
     /* external interrupt 06 */
-    if ((true == M4_INTC->VSSEL128_f.VSEL6) && (true == M4_INTC->EIFR_f.EIFR6))
+    if ((Set == bM4_INTC_EIFR_EIFR6) && (VSSEL128 & BIT_MASK_06))
     {
         Extint06_IrqHandler();
     }
     /* external interrupt 07 */
-    if ((true == M4_INTC->VSSEL128_f.VSEL7) && (true == M4_INTC->EIFR_f.EIFR7))
+    if ((Set == bM4_INTC_EIFR_EIFR7) && (VSSEL128 & BIT_MASK_07))
     {
         Extint07_IrqHandler();
     }
     /* external interrupt 08 */
-    if ((true == M4_INTC->VSSEL128_f.VSEL8) && (true == M4_INTC->EIFR_f.EIFR8))
+    if ((Set == bM4_INTC_EIFR_EIFR8) && (VSSEL128 & BIT_MASK_08))
     {
         Extint08_IrqHandler();
     }
     /* external interrupt 09 */
-    if ((true == M4_INTC->VSSEL128_f.VSEL9) && (true == M4_INTC->EIFR_f.EIFR9))
+    if ((Set == bM4_INTC_EIFR_EIFR9) && (VSSEL128 & BIT_MASK_09))
     {
         Extint09_IrqHandler();
     }
     /* external interrupt 10 */
-    if ((true == M4_INTC->VSSEL128_f.VSEL10) && (true == M4_INTC->EIFR_f.EIFR10))
+    if ((Set == bM4_INTC_EIFR_EIFR10) && (VSSEL128 & BIT_MASK_10))
     {
         Extint10_IrqHandler();
     }
     /* external interrupt 11 */
-    if ((true == M4_INTC->VSSEL128_f.VSEL11) && (true == M4_INTC->EIFR_f.EIFR11))
+    if ((Set == bM4_INTC_EIFR_EIFR11) && (VSSEL128 & BIT_MASK_11))
     {
         Extint11_IrqHandler();
     }
     /* external interrupt 12 */
-    if ((true == M4_INTC->VSSEL128_f.VSEL12) && (true == M4_INTC->EIFR_f.EIFR12))
+    if ((Set == bM4_INTC_EIFR_EIFR12) && (VSSEL128 & BIT_MASK_12))
     {
         Extint12_IrqHandler();
     }
     /* external interrupt 13 */
-    if ((true == M4_INTC->VSSEL128_f.VSEL13) && (true == M4_INTC->EIFR_f.EIFR13))
+    if ((Set == bM4_INTC_EIFR_EIFR13) && (VSSEL128 & BIT_MASK_13))
     {
         Extint13_IrqHandler();
     }
     /* external interrupt 14 */
-    if ((true == M4_INTC->VSSEL128_f.VSEL14) && (true == M4_INTC->EIFR_f.EIFR14))
+    if ((Set == bM4_INTC_EIFR_EIFR14) && (VSSEL128 & BIT_MASK_14))
     {
         Extint14_IrqHandler();
     }
     /* external interrupt 15 */
-    if ((true == M4_INTC->VSSEL128_f.VSEL15) && (true == M4_INTC->EIFR_f.EIFR15))
+    if ((Set == bM4_INTC_EIFR_EIFR15) && (VSSEL128 & BIT_MASK_15))
     {
         Extint15_IrqHandler();
     }
@@ -2134,144 +2215,205 @@ void IRQ128_Handler(void)
  ******************************************************************************/
 void IRQ129_Handler(void)
 {
-    uint8_t u8Tmp = 0;
+    uint32_t VSSEL129 =M4_INTC->VSSEL129;
+    uint32_t u32Tmp1 = 0ul;
+    uint32_t u32Tmp2 = 0ul;
     /* DMA1 ch.0 Tx completed */
-    if ((true == M4_INTC->VSSEL129_f.VSEL0) && (true == !!(M4_DMA1->INTSTAT1_f.TC & 0x01u)))
+    if (Reset == bM4_DMA1_INTMASK1_MSKTC0)
     {
-        Dma1Tc0_IrqHandler();
+        if ((Set == bM4_DMA1_INTSTAT1_TC0) && (VSSEL129 & BIT_MASK_00))
+        {
+            Dma1Tc0_IrqHandler();
+        }
     }
     /* DMA1 ch.1 Tx completed */
-    if ((true == M4_INTC->VSSEL129_f.VSEL1) && (true == !!(M4_DMA1->INTSTAT1_f.TC & 0x02u)))
+    if (Reset == bM4_DMA1_INTMASK1_MSKTC1)
     {
-        Dma1Tc1_IrqHandler();
+        if ((Set == bM4_DMA1_INTSTAT1_TC1)  && (VSSEL129 & BIT_MASK_01))
+        {
+            Dma1Tc1_IrqHandler();
+        }
     }
     /* DMA1 ch.2 Tx completed */
-    if ((true == M4_INTC->VSSEL129_f.VSEL2) && (true == !!(M4_DMA1->INTSTAT1_f.TC & 0x04u)))
+    if (Reset == bM4_DMA1_INTMASK1_MSKTC2)
     {
-        Dma1Tc2_IrqHandler();
+        if ((Set == bM4_DMA1_INTSTAT1_TC2)  && (VSSEL129 & BIT_MASK_02))
+        {
+            Dma1Tc2_IrqHandler();
+        }
     }
     /* DMA1 ch.3 Tx completed */
-    if ((true == M4_INTC->VSSEL129_f.VSEL3) && (true == !!(M4_DMA1->INTSTAT1_f.TC & 0x08u)))
+    if (Reset == bM4_DMA1_INTMASK1_MSKTC3)
     {
-        Dma1Tc3_IrqHandler();
+        if ((Set == bM4_DMA1_INTSTAT1_TC3)  && (VSSEL129 & BIT_MASK_03))
+        {
+            Dma1Tc3_IrqHandler();
+        }
     }
     /* DMA2 ch.0 Tx completed */
-    if ((true == M4_INTC->VSSEL129_f.VSEL4) && (Set == !!(M4_DMA2->INTSTAT1_f.TC & 0x01u)))
+    if (Reset == bM4_DMA2_INTMASK1_MSKTC0)
     {
-        Dma2Tc0_IrqHandler();
+        if ((Set == bM4_DMA2_INTSTAT1_TC0) && (VSSEL129 & BIT_MASK_04))
+        {
+            Dma2Tc0_IrqHandler();
+        }
     }
     /* DMA2 ch.1 Tx completed */
-    if ((true == M4_INTC->VSSEL129_f.VSEL5) && (true == !!(M4_DMA2->INTSTAT1_f.TC & 0x02u)))
+    if (Reset == bM4_DMA2_INTMASK1_MSKTC1)
     {
-        Dma2Tc1_IrqHandler();
+        if ((Set == bM4_DMA2_INTSTAT1_TC1) && (VSSEL129 & BIT_MASK_05))
+        {
+            Dma2Tc1_IrqHandler();
+        }
     }
     /* DMA2 ch.2 Tx completed */
-    if ((true == M4_INTC->VSSEL129_f.VSEL6) && (true == !!(M4_DMA2->INTSTAT1_f.TC & 0x04u)))
+    if (Reset == bM4_DMA2_INTMASK1_MSKTC2)
     {
-        Dma2Tc2_IrqHandler();
+        if ((Set == bM4_DMA2_INTSTAT1_TC2) && (VSSEL129 & BIT_MASK_06))
+        {
+            Dma2Tc2_IrqHandler();
+        }
     }
     /* DMA2 ch.3 Tx completed */
-    if ((true == M4_INTC->VSSEL129_f.VSEL7) && (true == !!(M4_DMA2->INTSTAT1_f.TC & 0x08u)))
+    if (Reset == bM4_DMA2_INTMASK1_MSKTC3)
     {
-        Dma2Tc3_IrqHandler();
+        if ((Set == bM4_DMA2_INTSTAT1_TC3) && (VSSEL129 & BIT_MASK_07))
+        {
+            Dma2Tc3_IrqHandler();
+        }
     }
-
     /* DMA1 ch.0 Block Tx completed */
-    if ((true == M4_INTC->VSSEL129_f.VSEL8) && (true == !!(M4_DMA1->INTSTAT1_f.BTC & 0x01u)))
+    if (Reset == bM4_DMA1_INTMASK1_MSKBTC0)
     {
-        Dma1Btc0_IrqHandler();
+        if ((Set == bM4_DMA1_INTSTAT1_BTC0) && (VSSEL129 & BIT_MASK_08))
+        {
+            Dma1Btc0_IrqHandler();
+        }
     }
     /* DMA1 ch.1 Block Tx completed */
-    if ((true == M4_INTC->VSSEL129_f.VSEL9) && (true == !!(M4_DMA1->INTSTAT1_f.BTC & 0x02u)))
+    if (Reset == bM4_DMA1_INTMASK1_MSKBTC1)
     {
-        Dma1Btc1_IrqHandler();
+        if ((Set == bM4_DMA1_INTSTAT1_BTC1) && (VSSEL129 & BIT_MASK_09))
+        {
+            Dma1Btc1_IrqHandler();
+        }
     }
     /* DMA1 ch.2 Block Tx completed */
-    if ((true == M4_INTC->VSSEL129_f.VSEL10) && (true == !!(M4_DMA1->INTSTAT1_f.BTC & 0x04u)))
+    if (Reset == bM4_DMA1_INTMASK1_MSKBTC2)
     {
-        Dma1Btc2_IrqHandler();
+        if ((Set == bM4_DMA1_INTSTAT1_BTC2) && (VSSEL129 & BIT_MASK_10))
+        {
+            Dma1Btc2_IrqHandler();
+        }
     }
     /* DMA1 ch.3 Block Tx completed */
-    if ((true == M4_INTC->VSSEL129_f.VSEL11) && (true == !!(M4_DMA1->INTSTAT1_f.BTC & 0x08u)))
+    if (Reset == bM4_DMA1_INTMASK1_MSKBTC3)
     {
-        Dma1Btc3_IrqHandler();
+        if ((Set == bM4_DMA1_INTSTAT1_BTC3) && (VSSEL129 & BIT_MASK_11))
+        {
+            Dma1Btc3_IrqHandler();
+        }
     }
     /* DMA2 ch.0 Block Tx completed */
-    if ((true == M4_INTC->VSSEL129_f.VSEL12) && (true == !!(M4_DMA2->INTSTAT1_f.BTC & 0x01u)))
+    if (Reset == bM4_DMA2_INTMASK1_MSKBTC0)
     {
-        Dma2Btc0_IrqHandler();
+        if ((Set == bM4_DMA2_INTSTAT1_BTC0) && (VSSEL129 & BIT_MASK_12))
+        {
+            Dma2Btc0_IrqHandler();
+        }
     }
     /* DMA2 ch.1 Block Tx completed */
-    if ((true == M4_INTC->VSSEL129_f.VSEL13) && (true == !!(M4_DMA2->INTSTAT1_f.BTC & 0x02u)))
+    if (Reset == bM4_DMA2_INTMASK1_MSKBTC1)
     {
-        Dma2Btc1_IrqHandler();
+        if ((Set == bM4_DMA1_INTSTAT1_BTC1) && (VSSEL129 & BIT_MASK_13))
+        {
+            Dma2Btc1_IrqHandler();
+        }
     }
     /* DMA2 ch.2 Block Tx completed */
-    if ((true == M4_INTC->VSSEL129_f.VSEL14) && (true == !!(M4_DMA2->INTSTAT1_f.BTC & 0x04u)))
+    if (Reset == bM4_DMA2_INTMASK1_MSKBTC2)
     {
-        Dma2Btc2_IrqHandler();
+        if ((Set == bM4_DMA1_INTSTAT1_BTC2) && (VSSEL129 & BIT_MASK_14))
+        {
+            Dma2Btc2_IrqHandler();
+        }
     }
     /* DMA2 ch.3 Block Tx completed */
-    if ((true == M4_INTC->VSSEL129_f.VSEL15) && (true == !!(M4_DMA2->INTSTAT1_f.BTC & 0x08u)))
+    if (Reset == bM4_DMA2_INTMASK1_MSKBTC3)
     {
-        Dma2Btc3_IrqHandler();
+        if ((Set == bM4_DMA1_INTSTAT1_BTC3) && (VSSEL129 & BIT_MASK_15))
+        {
+            Dma2Btc3_IrqHandler();
+        }
     }
-    /* DMA1 Error */
-    if ((true == M4_INTC->VSSEL129_f.VSEL16) && (true == !!(M4_DMA1->INTSTAT0 & 0x000F000Fu)))
+    /* DMA1 Transfer/Request Error */
+    u32Tmp1 = M4_DMA1->INTSTAT0 & 0x000F000Ful;
+    u32Tmp2 = (uint32_t)(~(M4_DMA1->INTMASK0) & 0x000F000Ful);
+    if ((u32Tmp1 & u32Tmp2) && (VSSEL129 & BIT_MASK_16))
     {
         Dma1Err_IrqHandler();
     }
-    /* DMA2 Error */
-    if ((true == M4_INTC->VSSEL129_f.VSEL17) && (true == !!(M4_DMA2->INTSTAT0 & 0x000F000Fu)))
+    /* DMA2 Transfer/Request Error */
+    u32Tmp1 = M4_DMA2->INTSTAT0 & 0x000F000Ful;
+    u32Tmp2 = (uint32_t)(~(M4_DMA2->INTMASK0) & 0x000F000Ful);
+    if ((u32Tmp1 & u32Tmp2) && (VSSEL129 & BIT_MASK_17))
     {
         Dma2Err_IrqHandler();
     }
-    /* EFM page erase Error */
-    if ((true == M4_INTC->VSSEL129_f.VSEL18) && (true == !!(M4_EFM->FSR & 0x0Fu)))
+    /* EFM program/erase Error */
+    if (Set == bM4_EFM_FITE_PEERRITE)
     {
-        EfmPageEraseErr_IrqHandler();
+        if ((M4_EFM->FSR & 0x0Fu) && (VSSEL129 & BIT_MASK_18))
+        {
+            EfmPgmEraseErr_IrqHandler();
+        }
     }
     /* EFM collision Error */
-    if ((true == M4_INTC->VSSEL129_f.VSEL19) && (true == M4_EFM->FSR_f.RDCOLERR))
+    if (Set == bM4_EFM_FITE_RDCOLERRITE)
     {
-        EfmColErr_IrqHandler();
+        if ((Set == bM4_EFM_FSR_RDCOLERR) && (VSSEL129 & BIT_MASK_19))
+        {
+            EfmColErr_IrqHandler();
+        }
     }
-    /* EFM opertae end */
-    if ((true == M4_INTC->VSSEL129_f.VSEL20) && (true == M4_EFM->FSR_f.OPTEND))
+    /* EFM operate end */
+    if (Set == bM4_EFM_FITE_OPTENDITE)
     {
-        EfmOpEnd_IrqHandler();
+        if ((Set == bM4_EFM_FSR_OPTEND) && (VSSEL129 & BIT_MASK_20))
+        {
+            EfmOpEnd_IrqHandler();
+        }
     }
-    /* USB SOF detected */
-    //if ((true == M4_INTC->VSSEL129_f.VSEL21) && (true == !!(xx)))
-    //{
-    //    UsbSOF_IrqHandler();
-    //}
     /* QSPI interrupt */
-    if ((true == M4_INTC->VSSEL129_f.VSEL22) && (true == M4_QSPI->SR_f.RAER))
+    if ((Set == M4_QSPI->SR_f.RAER) && (VSSEL129 & BIT_MASK_22))
     {
         QspiInt_IrqHandler();
     }
     /* DCU ch.1 */
-    u8Tmp = M4_DCU1->INTSEL;
-    if ((true == M4_INTC->VSSEL129_f.VSEL23) && (true == !!((M4_DCU1->FLAG & u8Tmp) & 0x7Fu)))
+    u32Tmp1 = M4_DCU1->INTSEL;
+    u32Tmp2 = M4_DCU1->FLAG;
+    if ((u32Tmp1 & u32Tmp2 & 0x7Ful) && (VSSEL129 & BIT_MASK_23))
     {
         Dcu1_IrqHandler();
     }
     /* DCU ch.2 */
-    u8Tmp = M4_DCU2->INTSEL;
-    if ((true == M4_INTC->VSSEL129_f.VSEL24) && (true == !!((M4_DCU2->FLAG & u8Tmp) & 0x7Fu)))
+    u32Tmp1 = M4_DCU2->INTSEL;
+    u32Tmp2 = M4_DCU2->FLAG;
+    if ((u32Tmp1 & u32Tmp2 & 0x7Ful) && (VSSEL129 & BIT_MASK_24))
     {
         Dcu2_IrqHandler();
     }
     /* DCU ch.3 */
-    u8Tmp = M4_DCU3->INTSEL;
-    if ((true == M4_INTC->VSSEL129_f.VSEL25) && (true == !!((M4_DCU3->FLAG & u8Tmp) & 0x7Fu)))
+    u32Tmp1 = M4_DCU3->INTSEL;
+    u32Tmp2 = M4_DCU3->FLAG;
+    if ((u32Tmp1 & u32Tmp2 & 0x7Ful) && (VSSEL129 & BIT_MASK_25))
     {
         Dcu3_IrqHandler();
     }
     /* DCU ch.4 */
-    u8Tmp = M4_DCU4->INTSEL;
-    if ((true == M4_INTC->VSSEL129_f.VSEL26) && (true == !!((M4_DCU4->FLAG & u8Tmp) & 0x7Fu)))
+    u32Tmp1 = M4_DCU4->INTSEL;
+    u32Tmp2 = M4_DCU4->FLAG;
+    if ((u32Tmp1 & u32Tmp2 & 0x7Ful) && (VSSEL129 & BIT_MASK_26))
     {
         Dcu4_IrqHandler();
     }
@@ -2284,48 +2426,54 @@ void IRQ129_Handler(void)
  ******************************************************************************/
 void IRQ130_Handler(void)
 {
+    uint32_t VSSEL130 = M4_INTC->VSSEL130;
     /* Timer0 Ch. 1 A compare match */
-    if ((true == M4_INTC->VSSEL130_f.VSEL0) && (true == M4_TMR01->STFLR_f.CMAF))
+    if (Set == bM4_TMR01_BCONR_INTENA)
     {
-        Timer01GCMA_IrqHandler();
+        if ((Set == bM4_TMR01_STFLR_CMAF) && (VSSEL130 & BIT_MASK_00))
+        {
+            Timer01GCMA_IrqHandler();
+        }
     }
     /* Timer0 Ch. 1 B compare match */
-    if ((true == M4_INTC->VSSEL130_f.VSEL1) && (true == M4_TMR01->STFLR_f.CMBF))
+    if (Set == bM4_TMR01_BCONR_INTENB)
     {
-        Timer01GCMB_IrqHandler();
+        if ((Set == bM4_TMR01_STFLR_CMBF) && (VSSEL130 & BIT_MASK_01))
+        {
+            Timer01GCMB_IrqHandler();
+        }
     }
     /* Timer0 Ch. 2 A compare match */
-    if ((true == M4_INTC->VSSEL130_f.VSEL2) && (true == M4_TMR02->STFLR_f.CMAF))
+    if (Set == bM4_TMR02_BCONR_INTENA)
     {
-        Timer02GCMA_IrqHandler();
+        if ((Set == bM4_TMR02_STFLR_CMAF) && (VSSEL130 & BIT_MASK_02))
+        {
+            Timer02GCMA_IrqHandler();
+        }
     }
     /* Timer0 Ch. 2 B compare match */
-    if ((true == M4_INTC->VSSEL130_f.VSEL3) && (true == M4_TMR02->STFLR_f.CMBF))
+    if (Set == bM4_TMR02_BCONR_INTENB)
     {
-        Timer02GCMB_IrqHandler();
-    }
-    /* RTC alarm */
-    if ((true == M4_INTC->VSSEL130_f.VSEL17) && (true == M4_RTC->CR2_f.ALMF))
-    {
-        RtcAlarm_IrqHandler();
-    }
-    /* RTC period */
-    if ((true == M4_INTC->VSSEL130_f.VSEL18) && (true == M4_RTC->CR2_f.PRDF))
-    {
-        RtcPeriod_IrqHandler();
+        if ((Set == bM4_TMR02_STFLR_CMBF) && (VSSEL130 & BIT_MASK_03))
+        {
+            Timer02GCMB_IrqHandler();
+        }
     }
     /* Main-OSC stop */
-    if ((true == M4_INTC->VSSEL130_f.VSEL21) && (true == M4_SYSREG->CMU_XTALSTDSR_f.XTALSTDF))
+    if (Set == bM4_SYSREG_CMU_XTALSTDCR_XTALSTDIE)
     {
-        MainOscStop_IrqHandler();
+        if ((Set == bM4_SYSREG_CMU_XTALSTDSR_XTALSTDF) && (VSSEL130 & BIT_MASK_21))
+        {
+            MainOscStop_IrqHandler();
+        }
     }
     /* Wakeup timer */
-    if ((true == M4_INTC->VSSEL130_f.VSEL22) && (true == M4_WKTM->CR_f.WKOVF))
+    if ((Set == bM4_WKTM_CR_WKOVF) && (VSSEL130 & BIT_MASK_22))
     {
         WakeupTimer_IrqHandler();
     }
     /* SWDT */
-    if ((true == M4_INTC->VSSEL130_f.VSEL23) && (true == !!(M4_SWDT->SR & 0x00030000u)))
+    if ((M4_SWDT->SR & (BIT_MASK_16 | BIT_MASK_17)) && (VSSEL130 & BIT_MASK_23))
     {
         Swdt_IrqHandler();
     }
@@ -2338,113 +2486,178 @@ void IRQ130_Handler(void)
  ******************************************************************************/
 void IRQ131_Handler(void)
 {
+    uint32_t VSSEL131 = M4_INTC->VSSEL131;
+    uint32_t u32Tmp1 = 0ul;
+    uint32_t u32Tmp2 = 0ul;
     /* Timer6 Ch.1 A compare match */
-    if ((true == M4_INTC->VSSEL131_f.VSEL0) && (true == M4_TMR61->STFLR_f.CMAF))
+    if (Set == bM4_TMR61_ICONR_INTENA)
     {
-        Timer61GCMA_IrqHandler();
+        if ((Set == bM4_TMR61_STFLR_CMAF) && (VSSEL131 & BIT_MASK_00))
+        {
+            Timer61GCMA_IrqHandler();
+        }
     }
     /* Timer6 Ch.1 B compare match */
-    if ((true == M4_INTC->VSSEL131_f.VSEL1) && (true == M4_TMR61->STFLR_f.CMBF))
+    if (Set == bM4_TMR61_ICONR_INTENB)
     {
-        Timer61GCMB_IrqHandler();
+        if ((Set == bM4_TMR61_STFLR_CMBF) && (VSSEL131 & BIT_MASK_01))
+        {
+            Timer61GCMB_IrqHandler();
+        }
     }
     /* Timer6 Ch.1 C compare match */
-    if ((true == M4_INTC->VSSEL131_f.VSEL2) && (true == M4_TMR61->STFLR_f.CMCF))
+    if (Set == bM4_TMR61_ICONR_INTENC)
     {
-        Timer61GCMC_IrqHandler();
+        if ((Set == bM4_TMR61_STFLR_CMCF) && (VSSEL131 & BIT_MASK_02))
+        {
+            Timer61GCMC_IrqHandler();
+        }
     }
     /* Timer6 Ch.1 D compare match */
-    if ((true == M4_INTC->VSSEL131_f.VSEL3) && (true == M4_TMR61->STFLR_f.CMDF))
+    if (Set == bM4_TMR61_ICONR_INTEND)
     {
-        Timer61GCMD_IrqHandler();
+        if ((Set == bM4_TMR61_STFLR_CMDF) && (VSSEL131 & BIT_MASK_03))
+        {
+            Timer61GCMD_IrqHandler();
+        }
     }
     /* Timer6 Ch.1 E compare match */
-    if ((true == M4_INTC->VSSEL131_f.VSEL4) && (true == M4_TMR61->STFLR_f.CMEF))
+    if (Set == bM4_TMR61_ICONR_INTENE)
     {
-        Timer61GCME_IrqHandler();
+        if ((Set == bM4_TMR61_STFLR_CMEF) && (VSSEL131 & BIT_MASK_04))
+        {
+            Timer61GCME_IrqHandler();
+        }
     }
     /* Timer6 Ch.1 F compare match */
-    if ((true == M4_INTC->VSSEL131_f.VSEL5) && (true == M4_TMR61->STFLR_f.CMFF))
+    if (Set == bM4_TMR61_ICONR_INTENF)
     {
-        Timer61GCMF_IrqHandler();
+        if ((Set == bM4_TMR61_STFLR_CMFF) && (VSSEL131 & BIT_MASK_05))
+        {
+            Timer61GCMF_IrqHandler();
+        }
     }
     /* Timer6 Ch.1 overflow */
-    if ((true == M4_INTC->VSSEL131_f.VSEL6) && (true == M4_TMR61->STFLR_f.OVFF))
+    if (Set == bM4_TMR61_ICONR_INTENOVF)
     {
-        Timer61GOV_IrqHandler();
+        if ((Set == bM4_TMR61_STFLR_OVFF) && (VSSEL131 & BIT_MASK_06))
+        {
+            Timer61GOV_IrqHandler();
+        }
     }
     /* Timer6 Ch.1 underflow */
-    if ((true == M4_INTC->VSSEL131_f.VSEL7) && (true == M4_TMR61->STFLR_f.UDFF))
+    if (Set == bM4_TMR61_ICONR_INTENUDF)
     {
-        Timer61GUD_IrqHandler();
+        if ((Set == bM4_TMR61_STFLR_UDFF) && (VSSEL131 & BIT_MASK_07))
+        {
+            Timer61GUD_IrqHandler();
+        }
     }
     /* Timer6 Ch.1 dead time */
-    if ((true == M4_INTC->VSSEL131_f.VSEL8) && (true == M4_TMR61->STFLR_f.DTEF))
+    if (Set == bM4_TMR61_ICONR_INTENDTE)
     {
-        Timer61GDT_IrqHandler();
+        if (((Set == bM4_TMR61_STFLR_DTEF)) && (VSSEL131 & BIT_MASK_08))
+        {
+            Timer61GDT_IrqHandler();
+        }
     }
     /* Timer6 Ch.1 A up-down compare match */
-    if ((true == M4_INTC->VSSEL131_f.VSEL11) && (true == !!(M4_TMR61->STFLR & 0x00000600u)))
+    u32Tmp1 = (M4_TMR61->ICONR & (BIT_MASK_16 | BIT_MASK_17)) >> 7u;
+    u32Tmp2 = M4_TMR61->STFLR & (BIT_MASK_09 | BIT_MASK_10);
+    if ((u32Tmp1 & u32Tmp2) && (VSSEL131 & BIT_MASK_11))
     {
         Timer61SCMA_IrqHandler();
     }
     /* Timer6 Ch.1 B up-down compare match */
-    if ((true == M4_INTC->VSSEL131_f.VSEL12) && (true == !!(M4_TMR61->STFLR & 0x00001800u)))
+    u32Tmp1 = (M4_TMR61->ICONR & (BIT_MASK_18 | BIT_MASK_19)) >> 7u;
+    u32Tmp2 = M4_TMR61->STFLR & (BIT_MASK_11 | BIT_MASK_12);
+    if ((u32Tmp1 & u32Tmp2) && (VSSEL131 & BIT_MASK_12))
     {
         Timer61SCMB_IrqHandler();
     }
     /* Timer6 Ch.2 A compare match */
-    if ((true == M4_INTC->VSSEL131_f.VSEL16) && (true == M4_TMR62->STFLR_f.CMAF))
+    if (Set == bM4_TMR62_ICONR_INTENA)
     {
-        Timer62GCMA_IrqHandler();
+        if ((Set == bM4_TMR62_STFLR_CMAF) && (VSSEL131 & BIT_MASK_16))
+        {
+            Timer62GCMA_IrqHandler();
+        }
     }
     /* Timer6 Ch.2 B compare match */
-    if ((true == M4_INTC->VSSEL131_f.VSEL17) && (true == M4_TMR62->STFLR_f.CMBF))
+    if (Set == bM4_TMR62_ICONR_INTENB)
     {
-        Timer62GCMB_IrqHandler();
+        if ((Set == bM4_TMR62_STFLR_CMBF) && (VSSEL131 & BIT_MASK_17))
+        {
+            Timer62GCMB_IrqHandler();
+        }
     }
     /* Timer6 Ch.2 C compare match */
-    if ((true == M4_INTC->VSSEL131_f.VSEL18) && (true == M4_TMR62->STFLR_f.CMCF))
+    if (Set == bM4_TMR62_ICONR_INTENC)
     {
-        Timer62GCMC_IrqHandler();
+        if ((Set == bM4_TMR62_STFLR_CMCF) && (VSSEL131 & BIT_MASK_18))
+        {
+            Timer62GCMC_IrqHandler();
+        }
     }
     /* Timer6 Ch.2 D compare match */
-    if ((true == M4_INTC->VSSEL131_f.VSEL19) && (true == M4_TMR62->STFLR_f.CMDF))
+    if (Set == bM4_TMR62_ICONR_INTEND)
     {
-        Timer62GCMD_IrqHandler();
+        if ((Set == bM4_TMR62_STFLR_CMDF) && (VSSEL131 & BIT_MASK_19))
+        {
+            Timer62GCMD_IrqHandler();
+        }
     }
     /* Timer6 Ch.2 E compare match */
-    if ((true == M4_INTC->VSSEL131_f.VSEL20) && (true == M4_TMR62->STFLR_f.CMEF))
+    if (Set == bM4_TMR62_ICONR_INTENE)
     {
-        Timer62GCME_IrqHandler();
+        if ((Set == bM4_TMR62_STFLR_CMEF) && (VSSEL131 & BIT_MASK_20))
+        {
+            Timer62GCME_IrqHandler();
+        }
     }
     /* Timer6 Ch.2 F compare match */
-    if ((true == M4_INTC->VSSEL131_f.VSEL21) && (true == M4_TMR62->STFLR_f.CMFF))
+    if (Set == bM4_TMR62_ICONR_INTENF)
     {
-        Timer62GCMF_IrqHandler();
+        if ((Set == bM4_TMR62_STFLR_CMFF) && (VSSEL131 & BIT_MASK_21))
+        {
+            Timer62GCMF_IrqHandler();
+        }
     }
     /* Timer6 Ch.2 overflow */
-    if ((true == M4_INTC->VSSEL131_f.VSEL22) && (true == M4_TMR62->STFLR_f.OVFF))
+    if (Set == bM4_TMR62_ICONR_INTENOVF)
     {
-        Timer62GOV_IrqHandler();
+        if ((Set == bM4_TMR62_STFLR_OVFF) && (VSSEL131 & BIT_MASK_22))
+        {
+            Timer62GOV_IrqHandler();
+        }
     }
     /* Timer6 Ch.2 underflow */
-    if ((true == M4_INTC->VSSEL131_f.VSEL23) && (true == M4_TMR62->STFLR_f.UDFF))
+    if (Set == bM4_TMR62_ICONR_INTENUDF)
     {
-        Timer62GUD_IrqHandler();
+        if ((Set == bM4_TMR62_STFLR_UDFF) && (VSSEL131 & BIT_MASK_23))
+        {
+            Timer62GUD_IrqHandler();
+        }
     }
     /* Timer6 Ch.2 dead time */
-    if ((true == M4_INTC->VSSEL131_f.VSEL24) && (true == M4_TMR62->STFLR_f.DTEF))
+    if (Set == bM4_TMR62_ICONR_INTENDTE)
     {
-        Timer62GDT_IrqHandler();
+        if (((Set == bM4_TMR62_STFLR_DTEF)) && (VSSEL131 & BIT_MASK_24))
+        {
+            Timer62GDT_IrqHandler();
+        }
     }
     /* Timer6 Ch.2 A up-down compare match */
-    if ((true == M4_INTC->VSSEL131_f.VSEL27) && (true == !!(M4_TMR62->STFLR & 0x00000600u)))
+    u32Tmp1 = (M4_TMR62->ICONR & (BIT_MASK_16 | BIT_MASK_17)) >> 7u;
+    u32Tmp2 = M4_TMR62->STFLR & (BIT_MASK_09 | BIT_MASK_10);
+    if ((u32Tmp1 & u32Tmp2) && (VSSEL131 & BIT_MASK_27))
     {
         Timer62SCMA_IrqHandler();
     }
     /* Timer6 Ch.2 B up-down compare match */
-    if ((true == M4_INTC->VSSEL131_f.VSEL28) && (true == !!(M4_TMR62->STFLR & 0x00001800u)))
+    u32Tmp1 = (M4_TMR62->ICONR & (BIT_MASK_18 | BIT_MASK_19)) >> 7u;
+    u32Tmp2 = M4_TMR62->STFLR & (BIT_MASK_11 | BIT_MASK_12);
+    if ((u32Tmp1 & u32Tmp2) && (VSSEL131 & BIT_MASK_28))
     {
         Timer62SCMB_IrqHandler();
     }
@@ -2457,58 +2670,92 @@ void IRQ131_Handler(void)
  ******************************************************************************/
 void IRQ132_Handler(void)
 {
+    uint32_t VSSEL132 = M4_INTC->VSSEL132;
+    uint32_t u32Tmp1 = 0ul;
+    uint32_t u32Tmp2 = 0ul;
     /* Timer6 Ch.3 A compare match */
-    if ((true == M4_INTC->VSSEL132_f.VSEL0) && (true == M4_TMR63->STFLR_f.CMAF))
+    if (Set == bM4_TMR63_ICONR_INTENA)
     {
-        Timer63GCMA_IrqHandler();
+        if ((Set == bM4_TMR63_STFLR_CMAF) && (VSSEL132 & BIT_MASK_00))
+        {
+            Timer63GCMA_IrqHandler();
+        }
     }
     /* Timer6 Ch.3 B compare match */
-    if ((true == M4_INTC->VSSEL132_f.VSEL1) && (true == M4_TMR63->STFLR_f.CMBF))
+    if (Set == bM4_TMR63_ICONR_INTENB)
     {
-        Timer63GCMB_IrqHandler();
+        if ((Set == bM4_TMR63_STFLR_CMBF) && (VSSEL132 & BIT_MASK_01))
+        {
+            Timer63GCMB_IrqHandler();
+        }
     }
     /* Timer6 Ch.3 C compare match */
-    if ((true == M4_INTC->VSSEL132_f.VSEL2) && (true == M4_TMR63->STFLR_f.CMCF))
+    if (Set == bM4_TMR63_ICONR_INTENC)
     {
-        Timer63GCMC_IrqHandler();
+        if ((Set == bM4_TMR63_STFLR_CMCF) && (VSSEL132 & BIT_MASK_02))
+        {
+            Timer63GCMC_IrqHandler();
+        }
     }
     /* Timer6 Ch.3 D compare match */
-    if ((true == M4_INTC->VSSEL132_f.VSEL3) && (true == M4_TMR63->STFLR_f.CMDF))
+    if (Set == bM4_TMR63_ICONR_INTEND)
     {
-        Timer63GCMD_IrqHandler();
+        if ((Set == bM4_TMR63_STFLR_CMDF) && (VSSEL132 & BIT_MASK_03))
+        {
+            Timer63GCMD_IrqHandler();
+        }
     }
     /* Timer6 Ch.3 E compare match */
-    if ((true == M4_INTC->VSSEL132_f.VSEL4) && (true == M4_TMR63->STFLR_f.CMEF))
+    if (Set == bM4_TMR63_ICONR_INTENE)
     {
-        Timer63GCME_IrqHandler();
+        if ((Set == bM4_TMR63_STFLR_CMEF) && (VSSEL132 & BIT_MASK_04))
+        {
+            Timer63GCME_IrqHandler();
+        }
     }
     /* Timer6 Ch.3 F compare match */
-    if ((true == M4_INTC->VSSEL132_f.VSEL5) && (true == M4_TMR63->STFLR_f.CMFF))
+    if (Set == bM4_TMR63_ICONR_INTENF)
     {
-        Timer63GCMF_IrqHandler();
+        if ((Set == bM4_TMR63_STFLR_CMFF) && (VSSEL132 & BIT_MASK_05))
+        {
+            Timer63GCMF_IrqHandler();
+        }
     }
     /* Timer6 Ch.3 overflow */
-    if ((true == M4_INTC->VSSEL132_f.VSEL6) && (true == M4_TMR63->STFLR_f.OVFF))
+    if (Set == bM4_TMR63_ICONR_INTENOVF)
     {
-        Timer63GOV_IrqHandler();
+        if ((Set == bM4_TMR63_STFLR_OVFF) && (VSSEL132 & BIT_MASK_06))
+        {
+            Timer63GOV_IrqHandler();
+        }
     }
     /* Timer6 Ch.3 underflow */
-    if ((true == M4_INTC->VSSEL132_f.VSEL7) && (true == M4_TMR63->STFLR_f.UDFF))
+    if (Set == bM4_TMR63_ICONR_INTENUDF)
     {
-        Timer63GUD_IrqHandler();
+        if ((Set == bM4_TMR63_STFLR_UDFF) && (VSSEL132 & BIT_MASK_07))
+        {
+            Timer63GUD_IrqHandler();
+        }
     }
     /* Timer6 Ch.3 dead time */
-    if ((true == M4_INTC->VSSEL132_f.VSEL8) && (true == M4_TMR63->STFLR_f.DTEF))
+    if (Set == bM4_TMR63_ICONR_INTENDTE)
     {
-        Timer63GDT_IrqHandler();
+        if (((Set == bM4_TMR63_STFLR_DTEF)) && (VSSEL132 & BIT_MASK_08))
+        {
+            Timer63GDT_IrqHandler();
+        }
     }
     /* Timer6 Ch.3 A up-down compare match */
-    if ((true == M4_INTC->VSSEL132_f.VSEL11) && (true == !!(M4_TMR63->STFLR & 0x00000600u)))
+    u32Tmp1 = (M4_TMR63->ICONR & (BIT_MASK_16 | BIT_MASK_17)) >> 7u;
+    u32Tmp2 = M4_TMR63->STFLR & (BIT_MASK_09 | BIT_MASK_10);
+    if ((u32Tmp1 & u32Tmp2) && (VSSEL132 & BIT_MASK_11))
     {
         Timer63SCMA_IrqHandler();
     }
     /* Timer6 Ch.3 B up-down compare match */
-    if ((true == M4_INTC->VSSEL132_f.VSEL12) && (true == !!(M4_TMR63->STFLR & 0x00001800u)))
+    u32Tmp1 = (M4_TMR63->ICONR & (BIT_MASK_18 | BIT_MASK_19)) >> 7u;
+    u32Tmp2 = M4_TMR63->STFLR & (BIT_MASK_11 | BIT_MASK_12);
+    if ((u32Tmp1 & u32Tmp2) && (VSSEL132 & BIT_MASK_12))
     {
         Timer63SCMB_IrqHandler();
     }
@@ -2521,148 +2768,186 @@ void IRQ132_Handler(void)
  ******************************************************************************/
 void IRQ136_Handler(void)
 {
-    /* TiemrA Ch.1 overflow */
-    if ((true == M4_INTC->VSSEL136_f.VSEL0) && (true == M4_TMRA1->BCSTR_f.OVFF))
+    uint32_t u32Tmp1 = 0ul;
+    uint32_t u32Tmp2 = 0ul;
+    uint32_t VSSEL136 = M4_INTC->VSSEL136;
+
+    u32Tmp1 = M4_TMRA1->BCSTR;
+    /* TimerA Ch.1 overflow */
+    if ((u32Tmp1 & BIT_MASK_12) && (u32Tmp1 & BIT_MASK_14) && (VSSEL136 & BIT_MASK_00))
     {
         TimerA1OV_IrqHandler();
     }
-    /* TiemrA Ch.1 underflow */
-    if ((true == M4_INTC->VSSEL136_f.VSEL1) && (true == M4_TMRA1->BCSTR_f.UDFF))
+    /* TimerA Ch.1 underflow */
+    if ((u32Tmp1 & BIT_MASK_13) && (u32Tmp1 & BIT_MASK_15) && (VSSEL136 & BIT_MASK_01))
     {
-        TimerA1OV_IrqHandler();
+        TimerA1UD_IrqHandler();
     }
-    /* TiemrA Ch.1 compare match */
-    if ((true == M4_INTC->VSSEL136_f.VSEL2) && (true == !!(M4_TMRA1->STFLR & 0xFFu)))
+    u32Tmp1 = M4_TMRA1->ICONR;
+    u32Tmp2 = M4_TMRA1->STFLR;
+    /* TimerA Ch.1 compare match */
+    if ((u32Tmp1 & u32Tmp2 & 0xFFul) && (VSSEL136 & BIT_MASK_02))
     {
         TimerA1CMP_IrqHandler();
     }
-    /* TiemrA Ch.2 overflow */
-    if ((true == M4_INTC->VSSEL136_f.VSEL3) && (true == M4_TMRA2->BCSTR_f.OVFF))
+
+    u32Tmp1 = M4_TMRA2->BCSTR;
+    /* TimerA Ch.2 overflow */
+    if ((u32Tmp1 & BIT_MASK_12) && (u32Tmp1 & BIT_MASK_14) && (VSSEL136 & BIT_MASK_03))
     {
         TimerA2OV_IrqHandler();
     }
-    /* TiemrA Ch.2 underflow */
-    if ((true == M4_INTC->VSSEL136_f.VSEL4) && (true == M4_TMRA2->BCSTR_f.UDFF))
+    /* TimerA Ch.2 underflow */
+    if ((u32Tmp1 & BIT_MASK_13) && (u32Tmp1 & BIT_MASK_15) && (VSSEL136 & BIT_MASK_04))
     {
-        TimerA2OV_IrqHandler();
+        TimerA2UD_IrqHandler();
     }
-    /* TiemrA Ch.2 compare match */
-    if ((true == M4_INTC->VSSEL136_f.VSEL5) && (true == !!(M4_TMRA2->STFLR & 0xFFu)))
+    u32Tmp1 = M4_TMRA2->ICONR;
+    u32Tmp2 = M4_TMRA2->STFLR;
+    /* TimerA Ch.2 compare match */
+    if ((u32Tmp1 & u32Tmp2 & 0xFFul) && (VSSEL136 & BIT_MASK_05))
     {
         TimerA2CMP_IrqHandler();
     }
-    /* TiemrA Ch.3 overflow */
-    if ((true == M4_INTC->VSSEL136_f.VSEL6) && (true == M4_TMRA3->BCSTR_f.OVFF))
+
+    u32Tmp1 = M4_TMRA3->BCSTR;
+    /* TimerA Ch.3 overflow */
+    if ((u32Tmp1 & BIT_MASK_12) && (u32Tmp1 & BIT_MASK_14) && (VSSEL136 & BIT_MASK_06))
     {
         TimerA3OV_IrqHandler();
     }
-    /* TiemrA Ch.3 underflow */
-    if ((true == M4_INTC->VSSEL136_f.VSEL7) && (true == M4_TMRA3->BCSTR_f.UDFF))
+    /* TimerA Ch.3 underflow */
+    if ((u32Tmp1 & BIT_MASK_13) && (u32Tmp1 & BIT_MASK_15) && (VSSEL136 & BIT_MASK_07))
     {
-        TimerA3OV_IrqHandler();
+        TimerA3UD_IrqHandler();
     }
-    /* TiemrA Ch.3 compare match */
-    if ((true == M4_INTC->VSSEL136_f.VSEL8) && (true == !!(M4_TMRA3->STFLR & 0xFFu)))
+    u32Tmp1 = M4_TMRA3->ICONR;
+    u32Tmp2 = M4_TMRA3->STFLR;
+    /* TimerA Ch.3 compare match */
+    if ((u32Tmp1 & u32Tmp2 & 0xFFul) && (VSSEL136 & BIT_MASK_08))
     {
         TimerA3CMP_IrqHandler();
     }
-    /* TiemrA Ch.4 overflow */
-    if ((true == M4_INTC->VSSEL136_f.VSEL9) && (true == M4_TMRA4->BCSTR_f.OVFF))
+
+    u32Tmp1 = M4_TMRA4->BCSTR;
+    /* TimerA Ch.4 overflow */
+    if ((u32Tmp1 & BIT_MASK_12) && (u32Tmp1 & BIT_MASK_14) && (VSSEL136 & BIT_MASK_09))
     {
         TimerA4OV_IrqHandler();
     }
-    /* TiemrA Ch.4 underflow */
-    if ((true == M4_INTC->VSSEL136_f.VSEL10) && (true == M4_TMRA4->BCSTR_f.UDFF))
+    /* TimerA Ch.4 underflow */
+    if ((u32Tmp1 & BIT_MASK_13) && (u32Tmp1 & BIT_MASK_15) && (VSSEL136 & BIT_MASK_10))
     {
-        TimerA4OV_IrqHandler();
+        TimerA4UD_IrqHandler();
     }
-    /* TiemrA Ch.4 compare match */
-    if ((true == M4_INTC->VSSEL136_f.VSEL11) && (true == !!(M4_TMRA4->STFLR & 0xFFu)))
+    u32Tmp1 = M4_TMRA4->ICONR;
+    u32Tmp2 = M4_TMRA4->STFLR;
+    /* TimerA Ch.4 compare match */
+    if ((u32Tmp1 & u32Tmp2 & 0xFFul) && (VSSEL136 & BIT_MASK_11))
     {
         TimerA4CMP_IrqHandler();
     }
-    /* TiemrA Ch.5 overflow */
-    if ((true == M4_INTC->VSSEL136_f.VSEL12) && (true == M4_TMRA5->BCSTR_f.OVFF))
+
+    u32Tmp1 = M4_TMRA5->BCSTR;
+    /* TimerA Ch.5 overflow */
+    if ((u32Tmp1 & BIT_MASK_12) && (u32Tmp1 & BIT_MASK_14) && (VSSEL136 & BIT_MASK_12))
     {
         TimerA5OV_IrqHandler();
     }
-    /* TiemrA Ch.5 underflow */
-    if ((true == M4_INTC->VSSEL136_f.VSEL13) && (true == M4_TMRA5->BCSTR_f.UDFF))
+    /* TimerA Ch.5 underflow */
+    if ((u32Tmp1 & BIT_MASK_13) && (u32Tmp1 & BIT_MASK_15) && (VSSEL136 & BIT_MASK_13))
     {
-        TimerA5OV_IrqHandler();
+        TimerA5UD_IrqHandler();
     }
-    /* TiemrA Ch.5 compare match */
-    if ((true == M4_INTC->VSSEL136_f.VSEL14) && (true == !!(M4_TMRA5->STFLR & 0xFFu)))
+    u32Tmp1 = M4_TMRA5->ICONR;
+    u32Tmp2 = M4_TMRA5->STFLR;
+    /* TimerA Ch.5 compare match */
+    if ((u32Tmp1 & u32Tmp2 & 0xFFul) && (VSSEL136 & BIT_MASK_14))
     {
         TimerA5CMP_IrqHandler();
     }
-    /* TiemrA Ch.6 overflow */
-    if ((true == M4_INTC->VSSEL136_f.VSEL16) && (true == M4_TMRA6->BCSTR_f.OVFF))
+
+    u32Tmp1 = M4_TMRA6->BCSTR;
+    /* TimerA Ch.6 overflow */
+    if ((u32Tmp1 & BIT_MASK_12) && (u32Tmp1 & BIT_MASK_14) && (VSSEL136 & BIT_MASK_16))
     {
         TimerA6OV_IrqHandler();
     }
-    /* TiemrA Ch.6 underflow */
-    if ((true == M4_INTC->VSSEL136_f.VSEL17) && (true == M4_TMRA6->BCSTR_f.UDFF))
+    /* TimerA Ch.6 underflow */
+    if ((u32Tmp1 & BIT_MASK_13) && (u32Tmp1 & BIT_MASK_15) && (VSSEL136 & BIT_MASK_17))
     {
-        TimerA6OV_IrqHandler();
+        TimerA6UD_IrqHandler();
     }
-    /* TiemrA Ch.6 compare match */
-    if ((true == M4_INTC->VSSEL136_f.VSEL18) && (true == !!(M4_TMRA6->STFLR & 0xFFu)))
+    u32Tmp1 = M4_TMRA6->ICONR;
+    u32Tmp2 = M4_TMRA6->STFLR;
+    /* TimerA Ch.6 compare match */
+    if ((u32Tmp1 & u32Tmp2 & 0xFFul) && (VSSEL136 & BIT_MASK_18))
     {
         TimerA6CMP_IrqHandler();
     }
     /* USBFS global interrupt */
-    if ((true == M4_INTC->VSSEL136_f.VSEL19) && (true == !!(M4_USBFS->GINTSTS & 0xF77CFCFBu)))
+    if(Set == bM4_USBFS_GAHBCFG_GINTMSK)
     {
-        UsbGlobal_IrqHandler();
+        u32Tmp1 = M4_USBFS->GINTMSK & 0xF77CFCFBul;
+        u32Tmp2 = M4_USBFS->GINTSTS & 0xF77CFCFBul;
+        if ((u32Tmp1 & u32Tmp2) && (VSSEL136 & BIT_MASK_19))
+        {
+            UsbGlobal_IrqHandler();
+        }
     }
+
+    u32Tmp1 = M4_USART1->SR;
+    u32Tmp2 = M4_USART1->CR1;
     /* USART Ch.1 Receive error */
-    if ((true == M4_INTC->VSSEL136_f.VSEL22) && (true == !!(M4_USART1->SR & 0x0Bu)))
+    if ((u32Tmp2 & BIT_MASK_05) && (u32Tmp1 & (BIT_MASK_00 | BIT_MASK_01 | BIT_MASK_03)) && (VSSEL136 & BIT_MASK_22))
     {
         Usart1RxErr_IrqHandler();
     }
     /* USART Ch.1 Receive completed */
-    if ((true == M4_INTC->VSSEL136_f.VSEL23) && (true == M4_USART1->SR_f.RXNE))
+    if ((u32Tmp2 & u32Tmp1 & BIT_MASK_05) && (VSSEL136 & BIT_MASK_23))
     {
         Usart1RxEnd_IrqHandler();
     }
     /* USART Ch.1 Transmit data empty */
-    if ((true == M4_INTC->VSSEL136_f.VSEL24) && (true == M4_USART1->SR_f.TXE))
+    if ((u32Tmp2 & u32Tmp1 & BIT_MASK_07) && (VSSEL136 & BIT_MASK_24))
     {
         Usart1TxEmpty_IrqHandler();
     }
     /* USART Ch.1 Transmit completed */
-    if ((true == M4_INTC->VSSEL136_f.VSEL25) && (true == M4_USART1->SR_f.TC))
+    if ((u32Tmp2 & u32Tmp1 & BIT_MASK_06) && (VSSEL136 & BIT_MASK_25))
     {
         Usart1TxEnd_IrqHandler();
     }
     /* USART Ch.1 Receive timeout */
-    if ((true == M4_INTC->VSSEL136_f.VSEL26) && (true == M4_USART1->SR_f.RTOF))
+    if ((u32Tmp2 & BIT_MASK_01) && (u32Tmp1 & BIT_MASK_08) && (VSSEL136 & BIT_MASK_26))
     {
         Usart1RxTO_IrqHandler();
     }
+
+    u32Tmp1 = M4_USART2->SR;
+    u32Tmp2 = M4_USART2->CR1;
     /* USART Ch.2 Receive error */
-    if ((true == M4_INTC->VSSEL136_f.VSEL27) && (true == !!(M4_USART2->SR & 0x0Bu)))
+    if ((u32Tmp2 & BIT_MASK_05) && (u32Tmp1 & (BIT_MASK_00 | BIT_MASK_01 | BIT_MASK_03)) && (VSSEL136 & BIT_MASK_27))
     {
         Usart2RxErr_IrqHandler();
     }
     /* USART Ch.2 Receive completed */
-    if ((true == M4_INTC->VSSEL136_f.VSEL28) && (true == M4_USART2->SR_f.RXNE))
+    if ((u32Tmp2 & u32Tmp1 & BIT_MASK_05) && (VSSEL136 & BIT_MASK_28))
     {
         Usart2RxEnd_IrqHandler();
     }
     /* USART Ch.2 Transmit data empty */
-    if ((true == M4_INTC->VSSEL136_f.VSEL29) && (true == M4_USART2->SR_f.TXE))
+    if ((u32Tmp2 & u32Tmp1 & BIT_MASK_07) && (VSSEL136 & BIT_MASK_29))
     {
         Usart2TxEmpty_IrqHandler();
     }
     /* USART Ch.2 Transmit completed */
-    if ((true == M4_INTC->VSSEL136_f.VSEL30) && (true == M4_USART2->SR_f.TC))
+    if ((u32Tmp2 & u32Tmp1 & BIT_MASK_06) && (VSSEL136 & BIT_MASK_30))
     {
         Usart2TxEnd_IrqHandler();
     }
     /* USART Ch.2 Receive timeout */
-    if ((true == M4_INTC->VSSEL136_f.VSEL31) && (true == M4_USART2->SR_f.RTOF))
+    if ((u32Tmp2 & BIT_MASK_01) && (u32Tmp1 & BIT_MASK_08) && (VSSEL136 & BIT_MASK_31))
     {
         Usart2RxTO_IrqHandler();
     }
@@ -2675,135 +2960,164 @@ void IRQ136_Handler(void)
  ******************************************************************************/
 void IRQ137_Handler(void)
 {
+    uint32_t u32Tmp1 = 0ul;
+    uint32_t u32Tmp2 = 0ul;
+    uint32_t VSSEL137 = M4_INTC->VSSEL137;
+
+    u32Tmp1 = M4_USART3->SR;
+    u32Tmp2 = M4_USART3->CR1;
     /* USART Ch.3 Receive error */
-    if ((true == M4_INTC->VSSEL137_f.VSEL0) && (true == !!(M4_USART3->SR & 0x0Bu)))
+    if ((u32Tmp2 & BIT_MASK_05) && (u32Tmp1 & (BIT_MASK_00 | BIT_MASK_01 | BIT_MASK_03)) && (VSSEL137 & BIT_MASK_00))
     {
         Usart3RxErr_IrqHandler();
     }
     /* USART Ch.3 Receive completed */
-    if ((true == M4_INTC->VSSEL137_f.VSEL1) && (true == M4_USART3->SR_f.RXNE))
+    if ((u32Tmp2 & u32Tmp1 & BIT_MASK_05) && (VSSEL137 & BIT_MASK_01))
     {
         Usart3RxEnd_IrqHandler();
     }
     /* USART Ch.3 Transmit data empty */
-    if ((true == M4_INTC->VSSEL137_f.VSEL2) && (true == M4_USART3->SR_f.TXE))
+    if ((u32Tmp2 & u32Tmp1 & BIT_MASK_07) && (VSSEL137 & BIT_MASK_02))
     {
         Usart3TxEmpty_IrqHandler();
     }
     /* USART Ch.3 Transmit completed */
-    if ((true == M4_INTC->VSSEL137_f.VSEL3) && (true == M4_USART3->SR_f.TC))
+    if ((u32Tmp2 & u32Tmp1 & BIT_MASK_06) && (VSSEL137 & BIT_MASK_03))
     {
         Usart3TxEnd_IrqHandler();
     }
     /* USART Ch.3 Receive timeout */
-    if ((true == M4_INTC->VSSEL137_f.VSEL4) && (true == M4_USART3->SR_f.RTOF))
+    if ((u32Tmp2 & BIT_MASK_01) && (u32Tmp1 & BIT_MASK_08) && (VSSEL137 & BIT_MASK_04))
     {
         Usart3RxTO_IrqHandler();
     }
+
+    u32Tmp1 = M4_USART4->SR;
+    u32Tmp2 = M4_USART4->CR1;
     /* USART Ch.4 Receive error */
-    if ((true == M4_INTC->VSSEL137_f.VSEL5) && (true == !!(M4_USART4->SR & 0x0Bu)))
+    if ((u32Tmp2 & BIT_MASK_05) && (u32Tmp1 & (BIT_MASK_00 | BIT_MASK_01 | BIT_MASK_03)) && (VSSEL137 & BIT_MASK_05))
     {
         Usart4RxErr_IrqHandler();
     }
     /* USART Ch.4 Receive completed */
-    if ((true == M4_INTC->VSSEL137_f.VSEL6) && (true == M4_USART4->SR_f.RXNE))
+    if ((u32Tmp2 & u32Tmp1 & BIT_MASK_05) && (VSSEL137 & BIT_MASK_06))
     {
         Usart4RxEnd_IrqHandler();
     }
     /* USART Ch.4 Transmit data empty */
-    if ((true == M4_INTC->VSSEL137_f.VSEL7) && (true == M4_USART4->SR_f.TXE))
+    if ((u32Tmp2 & u32Tmp1 & BIT_MASK_07) && (VSSEL137 & BIT_MASK_07))
     {
         Usart4TxEmpty_IrqHandler();
     }
     /* USART Ch.4 Transmit completed */
-    if ((true == M4_INTC->VSSEL137_f.VSEL8) && (true == M4_USART4->SR_f.TC))
+    if ((u32Tmp2 & u32Tmp1 & BIT_MASK_06) && (VSSEL137 & BIT_MASK_08))
     {
         Usart4TxEnd_IrqHandler();
     }
     /* USART Ch.4 Receive timeout */
-    if ((true == M4_INTC->VSSEL137_f.VSEL9) && (true == M4_USART4->SR_f.RTOF))
+    if ((u32Tmp2 & BIT_MASK_01) && (u32Tmp1 & BIT_MASK_08) && (VSSEL137 & BIT_MASK_09))
     {
         Usart4RxTO_IrqHandler();
     }
+
+    u32Tmp1 = M4_SPI1->CR1;
+    u32Tmp2 = M4_SPI1->SR;
     /* SPI Ch.1 Receive completed */
-    if ((true == M4_INTC->VSSEL137_f.VSEL11) && (true == M4_SPI1->SR_f.RDFF))
+    if ((u32Tmp1 & BIT_MASK_10) && (u32Tmp2 & BIT_MASK_07) && (VSSEL137 & BIT_MASK_11))
     {
         Spi1RxEnd_IrqHandler();
     }
-    /* SPI Ch.1 Receive completed */
-    if ((true == M4_INTC->VSSEL137_f.VSEL12) && (true == M4_SPI1->SR_f.TDEF))
+    /* SPI Ch.1 Transmit buf empty */
+    if ((u32Tmp1 & BIT_MASK_09) && (u32Tmp2 & BIT_MASK_05) && (VSSEL137 & BIT_MASK_12))
     {
         Spi1TxEmpty_IrqHandler();
     }
-    /* SPI Ch.1 parity/overflow/underflow/mode error */   //todo
-    if ((true == M4_INTC->VSSEL137_f.VSEL13) && (true == !!(M4_SPI1->SR & 0x1Du)))
-    {
-        Spi1Err_IrqHandler();
-    }
     /* SPI Ch.1 bus idle */
-    if ((true == M4_INTC->VSSEL137_f.VSEL14) && (true == M4_SPI1->SR_f.IDLNF))
+    if ((u32Tmp1 & BIT_MASK_11) && (!(u32Tmp2 & BIT_MASK_00)) && (VSSEL137 & BIT_MASK_13))
     {
         Spi1Idle_IrqHandler();
     }
+    /* SPI Ch.1 parity/overflow/underflow/mode error */
+    if ((u32Tmp1 & BIT_MASK_08)                                                 &&  \
+        ((u32Tmp2 & (BIT_MASK_00 | BIT_MASK_02 | BIT_MASK_03 | BIT_MASK_04)))   &&  \
+        (VSSEL137 & BIT_MASK_14))
+    {
+        Spi1Err_IrqHandler();
+    }
+
+    u32Tmp1 = M4_SPI2->CR1;
+    u32Tmp2 = M4_SPI2->SR;
     /* SPI Ch.2 Receive completed */
-    if ((true == M4_INTC->VSSEL137_f.VSEL16) && (true == M4_SPI2->SR_f.RDFF))
+    if ((u32Tmp1 & BIT_MASK_10) && (u32Tmp2 & BIT_MASK_07) && (VSSEL137 & BIT_MASK_16))
     {
         Spi2RxEnd_IrqHandler();
     }
-    /* SPI Ch.2 Receive completed */
-    if ((true == M4_INTC->VSSEL137_f.VSEL17) && (true == M4_SPI2->SR_f.TDEF))
+    /* SPI Ch.2 Transmit buf empty */
+    if ((u32Tmp1 & BIT_MASK_09) && (u32Tmp2 & BIT_MASK_05) && (VSSEL137 & BIT_MASK_17))
     {
         Spi2TxEmpty_IrqHandler();
     }
-    /* SPI Ch.2 parity/overflow/underflow/mode error */   //todo
-    if ((true == M4_INTC->VSSEL137_f.VSEL18) && (true == !!(M4_SPI2->SR & 0x1Du)))
-    {
-        Spi2Err_IrqHandler();
-    }
     /* SPI Ch.2 bus idle */
-    if ((true == M4_INTC->VSSEL137_f.VSEL19) && (true == M4_SPI2->SR_f.IDLNF))
+    if ((u32Tmp1 & BIT_MASK_11) && (!(u32Tmp2 & BIT_MASK_00)) && (VSSEL137 & BIT_MASK_18))
     {
         Spi2Idle_IrqHandler();
     }
+    /* SPI Ch.2 parity/overflow/underflow/mode error */
+    if ((u32Tmp1 & BIT_MASK_08)                                                 &&  \
+        ((u32Tmp2 & (BIT_MASK_00 | BIT_MASK_02 | BIT_MASK_03 | BIT_MASK_04)))   &&  \
+        (VSSEL137 & BIT_MASK_19))
+    {
+        Spi2Err_IrqHandler();
+    }
+
+    u32Tmp1 = M4_SPI3->CR1;
+    u32Tmp2 = M4_SPI3->SR;
     /* SPI Ch.3 Receive completed */
-    if ((true == M4_INTC->VSSEL137_f.VSEL21) && (true == M4_SPI3->SR_f.RDFF))
+    if ((u32Tmp1 & BIT_MASK_10) && (u32Tmp2 & BIT_MASK_07) && (VSSEL137 & BIT_MASK_21))
     {
         Spi3RxEnd_IrqHandler();
     }
-    /* SPI Ch.3 Receive completed */
-    if ((true == M4_INTC->VSSEL137_f.VSEL22) && (true == M4_SPI3->SR_f.TDEF))
+    /* SPI Ch.3 Transmit buf empty */
+    if ((u32Tmp1 & BIT_MASK_09) && (u32Tmp2 & BIT_MASK_05) && (VSSEL137 & BIT_MASK_22))
     {
         Spi3TxEmpty_IrqHandler();
     }
-    /* SPI Ch.3 parity/overflow/underflow/mode error */   //todo
-    if ((true == M4_INTC->VSSEL137_f.VSEL23) && (true == !!(M4_SPI3->SR & 0x1Du)))
-    {
-        Spi3Err_IrqHandler();
-    }
     /* SPI Ch.3 bus idle */
-    if ((true == M4_INTC->VSSEL137_f.VSEL24) && (true == M4_SPI3->SR_f.IDLNF))
+    if ((u32Tmp1 & BIT_MASK_11) && (!(u32Tmp2 & BIT_MASK_00)) && (VSSEL137 & BIT_MASK_23))
     {
         Spi3Idle_IrqHandler();
     }
-    /* SPI Ch.4 Receive completed */
-    if ((true == M4_INTC->VSSEL137_f.VSEL26) && (true == M4_SPI4->SR_f.RDFF))
+    /* SPI Ch.3 parity/overflow/underflow/mode error */
+    if ((u32Tmp1 & BIT_MASK_08)                                                 &&  \
+        ((u32Tmp2 & (BIT_MASK_00 | BIT_MASK_02 | BIT_MASK_03 | BIT_MASK_04)))   &&  \
+        (VSSEL137 & BIT_MASK_24))
+    {
+        Spi3Err_IrqHandler();
+    }
+
+    u32Tmp1 = M4_SPI4->CR1;
+    u32Tmp2 = M4_SPI4->SR;
+   /* SPI Ch.4 Receive completed */
+    if ((u32Tmp1 & BIT_MASK_10) && (u32Tmp2 & BIT_MASK_07) && (VSSEL137 & BIT_MASK_26))
     {
         Spi4RxEnd_IrqHandler();
     }
-    /* SPI Ch.4 Receive completed */
-    if ((true == M4_INTC->VSSEL137_f.VSEL27) && (true == M4_SPI4->SR_f.TDEF))
+    /* SPI Ch.4 Transmit buf empty */
+    if ((u32Tmp1 & BIT_MASK_09) && (u32Tmp2 & BIT_MASK_05) && (VSSEL137 & BIT_MASK_27))
     {
         Spi4TxEmpty_IrqHandler();
     }
-    /* SPI Ch.4 parity/overflow/underflow/mode error */   //todo
-    if ((true == M4_INTC->VSSEL137_f.VSEL28) && (true == !!(M4_SPI4->SR & 0x1Du)))
-    {
-        Spi4Err_IrqHandler();
-    }
     /* SPI Ch.4 bus idle */
-    if ((true == M4_INTC->VSSEL137_f.VSEL29) && (true == M4_SPI4->SR_f.IDLNF))
+    if ((u32Tmp1 & BIT_MASK_11) && (!(u32Tmp2 & BIT_MASK_00)) && (VSSEL137 & BIT_MASK_28))
     {
         Spi4Idle_IrqHandler();
+    }
+    /* SPI Ch.4 parity/overflow/underflow/mode error */
+    if ((u32Tmp1 & BIT_MASK_08)                                                 &&  \
+        ((u32Tmp2 & (BIT_MASK_00 | BIT_MASK_02 | BIT_MASK_03 | BIT_MASK_04)))   &&  \
+        (VSSEL137 & BIT_MASK_29))
+    {
+        Spi4Err_IrqHandler();
     }
 }
 
@@ -2814,113 +3128,135 @@ void IRQ137_Handler(void)
  ******************************************************************************/
 void IRQ138_Handler(void)
 {
+    uint32_t u32Tmp1 = 0u;
+    uint32_t VSSEL138 = M4_INTC->VSSEL138;
+
+    u32Tmp1 = M4_TMR41->OCSRU;
     /* Timer4 Ch.1 U phase higher compare match */
-    if ((true == M4_INTC->VSSEL138_f.VSEL0) && (true == M4_TMR41->OCSRU_f.OCFHU))
+    if ((VSSEL138 & BIT_MASK_00) && (u32Tmp1 & BIT_MASK_04) && (u32Tmp1 & BIT_MASK_06))
     {
         Timer41GCMUH_IrqHandler();
     }
     /* Timer4 Ch.1 U phase lower compare match */
-    if ((true == M4_INTC->VSSEL138_f.VSEL1) && (true == M4_TMR41->OCSRU_f.OCFLU))
+    if ((VSSEL138 & BIT_MASK_01) && (u32Tmp1 & BIT_MASK_05) && (u32Tmp1 & BIT_MASK_07))
     {
         Timer41GCMUL_IrqHandler();
     }
+
+    u32Tmp1 = M4_TMR41->OCSRV;
     /* Timer4 Ch.1 V phase higher compare match */
-    if ((true == M4_INTC->VSSEL138_f.VSEL2) && (true == M4_TMR41->OCSRV_f.OCFHV))
+    if ((VSSEL138 & BIT_MASK_02) && (u32Tmp1 & BIT_MASK_04) && (u32Tmp1 & BIT_MASK_06))
     {
         Timer41GCMVH_IrqHandler();
     }
     /* Timer4 Ch.1 V phase lower compare match */
-    if ((true == M4_INTC->VSSEL138_f.VSEL3) && (true == M4_TMR41->OCSRV_f.OCFLV))
+    if ((VSSEL138 & BIT_MASK_03) && (u32Tmp1 & BIT_MASK_05) && (u32Tmp1 & BIT_MASK_07))
     {
         Timer41GCMVL_IrqHandler();
     }
+
+    u32Tmp1 = M4_TMR41->OCSRW;
     /* Timer4 Ch.1 W phase higher compare match */
-    if ((true == M4_INTC->VSSEL138_f.VSEL4) && (true == M4_TMR41->OCSRW_f.OCFHW))
+    if ((VSSEL138 & BIT_MASK_04) && (u32Tmp1 & BIT_MASK_04) && (u32Tmp1 & BIT_MASK_06))
     {
         Timer41GCMWH_IrqHandler();
     }
     /* Timer4 Ch.1 W phase lower compare match */
-    if ((true == M4_INTC->VSSEL138_f.VSEL5) && (true == M4_TMR41->OCSRW_f.OCFLW))
+    if ((VSSEL138 & BIT_MASK_05) && (u32Tmp1 & BIT_MASK_05) && (u32Tmp1 & BIT_MASK_07))
     {
         Timer41GCMWL_IrqHandler();
     }
+
+    u32Tmp1 = M4_TMR41->CCSR;
     /* Timer4 Ch.1 overflow */
-    if ((true == M4_INTC->VSSEL138_f.VSEL6) && (true == M4_TMR41->CCSR_f.IRQPF))
+    if ((VSSEL138 & BIT_MASK_06) && (u32Tmp1 & BIT_MASK_08) && (u32Tmp1 & BIT_MASK_09))
     {
         Timer41GOV_IrqHandler();
     }
     /* Timer4 Ch.1 underflow */
-    if ((true == M4_INTC->VSSEL138_f.VSEL7) && (true == M4_TMR41->CCSR_f.IRQZF))
+    if ((VSSEL138 & BIT_MASK_07) && (u32Tmp1 & BIT_MASK_13) && (u32Tmp1 & BIT_MASK_14))
     {
         Timer41GUD_IrqHandler();
     }
+
+    u32Tmp1 = M4_TMR41->RCSR;
     /* Timer4 Ch.1 U phase reload */
-    if ((true == M4_INTC->VSSEL138_f.VSEL8) && (true == M4_TMR41->RCSR_f.RTIFU))
+    if ((VSSEL138 & BIT_MASK_08) && (u32Tmp1 & BIT_MASK_00) && (u32Tmp1 & BIT_MASK_04))
     {
         Timer41ReloadU_IrqHandler();
     }
     /* Timer4 Ch.1 V phase reload */
-    if ((true == M4_INTC->VSSEL138_f.VSEL9) && (true == M4_TMR41->RCSR_f.RTIFV))
+    if ((VSSEL138 & BIT_MASK_09) && (u32Tmp1 & BIT_MASK_01) && (u32Tmp1 & BIT_MASK_08))
     {
         Timer41ReloadV_IrqHandler();
     }
     /* Timer4 Ch.1 W phase reload */
-    if ((true == M4_INTC->VSSEL138_f.VSEL10) && (true == M4_TMR41->RCSR_f.RTIFW))
+    if ((VSSEL138 & BIT_MASK_10) && (u32Tmp1 & BIT_MASK_02) && (u32Tmp1 & BIT_MASK_12))
     {
         Timer41ReloadW_IrqHandler();
     }
+
+    u32Tmp1 = M4_TMR42->OCSRU;
     /* Timer4 Ch.2 U phase higher compare match */
-    if ((true == M4_INTC->VSSEL138_f.VSEL16) && (true == M4_TMR42->OCSRU_f.OCFHU))
+    if ((VSSEL138 & BIT_MASK_16) && (u32Tmp1 & BIT_MASK_04) && (u32Tmp1 & BIT_MASK_06))
     {
-        Timer42GCMUH_IrqHandler();
+        Timer41GCMUH_IrqHandler();
     }
     /* Timer4 Ch.2 U phase lower compare match */
-    if ((true == M4_INTC->VSSEL138_f.VSEL17) && (true == M4_TMR42->OCSRU_f.OCFLU))
+    if ((VSSEL138 & BIT_MASK_17) && (u32Tmp1 & BIT_MASK_05) && (u32Tmp1 & BIT_MASK_07))
     {
-        Timer42GCMUL_IrqHandler();
+        Timer41GCMUL_IrqHandler();
     }
+
+    u32Tmp1 = M4_TMR42->OCSRV;
     /* Timer4 Ch.2 V phase higher compare match */
-    if ((true == M4_INTC->VSSEL138_f.VSEL18) && (true == M4_TMR42->OCSRV_f.OCFHV))
+    if ((VSSEL138 & BIT_MASK_18) && (u32Tmp1 & BIT_MASK_04) && (u32Tmp1 & BIT_MASK_06))
     {
         Timer42GCMVH_IrqHandler();
     }
     /* Timer4 Ch.2 V phase lower compare match */
-    if ((true == M4_INTC->VSSEL138_f.VSEL19) && (true == M4_TMR42->OCSRV_f.OCFLV))
+    if ((VSSEL138 & BIT_MASK_19) && (u32Tmp1 & BIT_MASK_05) && (u32Tmp1 & BIT_MASK_07))
     {
         Timer42GCMVL_IrqHandler();
     }
+
+    u32Tmp1 = M4_TMR42->OCSRW;
     /* Timer4 Ch.2 W phase higher compare match */
-    if ((true == M4_INTC->VSSEL138_f.VSEL20) && (true == M4_TMR42->OCSRW_f.OCFHW))
+    if ((VSSEL138 & BIT_MASK_20) && (u32Tmp1 & BIT_MASK_04) && (u32Tmp1 & BIT_MASK_06))
     {
         Timer42GCMWH_IrqHandler();
     }
     /* Timer4 Ch.2 W phase lower compare match */
-    if ((true == M4_INTC->VSSEL138_f.VSEL21) && (true == M4_TMR42->OCSRW_f.OCFLW))
+    if ((VSSEL138 & BIT_MASK_21) && (u32Tmp1 & BIT_MASK_05) && (u32Tmp1 & BIT_MASK_07))
     {
         Timer42GCMWL_IrqHandler();
     }
+
+    u32Tmp1 = M4_TMR42->CCSR;
     /* Timer4 Ch.2 overflow */
-    if ((true == M4_INTC->VSSEL138_f.VSEL22) && (true == M4_TMR42->CCSR_f.IRQPF))
+    if ((VSSEL138 & BIT_MASK_22) && (u32Tmp1 & BIT_MASK_08) && (u32Tmp1 & BIT_MASK_09))
     {
         Timer42GOV_IrqHandler();
     }
     /* Timer4 Ch.2 underflow */
-    if ((true == M4_INTC->VSSEL138_f.VSEL23) && (true == M4_TMR42->CCSR_f.IRQZF))
+    if ((VSSEL138 & BIT_MASK_23) && (u32Tmp1 & BIT_MASK_13) && (u32Tmp1 & BIT_MASK_14))
     {
         Timer42GUD_IrqHandler();
     }
+
+    u32Tmp1 = M4_TMR42->RCSR;
     /* Timer4 Ch.2 U phase reload */
-    if ((true == M4_INTC->VSSEL138_f.VSEL24) && (true == M4_TMR42->RCSR_f.RTIFU))
+    if ((VSSEL138 & BIT_MASK_24) && (u32Tmp1 & BIT_MASK_00) && (u32Tmp1 & BIT_MASK_04))
     {
         Timer42ReloadU_IrqHandler();
     }
     /* Timer4 Ch.2 V phase reload */
-    if ((true == M4_INTC->VSSEL138_f.VSEL25) && (true == M4_TMR42->RCSR_f.RTIFV))
+    if ((VSSEL138 & BIT_MASK_25) && (u32Tmp1 & BIT_MASK_01) && (u32Tmp1 & BIT_MASK_08))
     {
         Timer42ReloadV_IrqHandler();
     }
     /* Timer4 Ch.2 W phase reload */
-    if ((true == M4_INTC->VSSEL138_f.VSEL26) && (true == M4_TMR42->RCSR_f.RTIFW))
+    if ((VSSEL138 & BIT_MASK_26) && (u32Tmp1 & BIT_MASK_02) && (u32Tmp1 & BIT_MASK_12))
     {
         Timer42ReloadW_IrqHandler();
     }
@@ -2933,58 +3269,70 @@ void IRQ138_Handler(void)
  ******************************************************************************/
 void IRQ139_Handler(void)
 {
+    uint32_t u32Tmp1 = 0u;
+    uint32_t VSSEL139 = M4_INTC->VSSEL139;
+
+    u32Tmp1 = M4_TMR43->OCSRU;
     /* Timer4 Ch.3 U phase higher compare match */
-    if ((true == M4_INTC->VSSEL139_f.VSEL0) && (true == M4_TMR43->OCSRU_f.OCFHU))
+    if ((VSSEL139 & BIT_MASK_00) && (u32Tmp1 & BIT_MASK_04) && (u32Tmp1 & BIT_MASK_06))
     {
         Timer43GCMUH_IrqHandler();
     }
     /* Timer4 Ch.3 U phase lower compare match */
-    if ((true == M4_INTC->VSSEL139_f.VSEL1) && (true == M4_TMR43->OCSRU_f.OCFLU))
+    if ((VSSEL139 & BIT_MASK_01) && (u32Tmp1 & BIT_MASK_05) && (u32Tmp1 & BIT_MASK_07))
     {
         Timer43GCMUL_IrqHandler();
     }
+
+    u32Tmp1 = M4_TMR43->OCSRV;
     /* Timer4 Ch.3 V phase higher compare match */
-    if ((true == M4_INTC->VSSEL139_f.VSEL2) && (true == M4_TMR43->OCSRV_f.OCFHV))
+    if ((VSSEL139 & BIT_MASK_02) && (u32Tmp1 & BIT_MASK_04) && (u32Tmp1 & BIT_MASK_06))
     {
         Timer43GCMVH_IrqHandler();
     }
     /* Timer4 Ch.3 V phase lower compare match */
-    if ((true == M4_INTC->VSSEL139_f.VSEL3) && (true == M4_TMR43->OCSRV_f.OCFLV))
+    if ((VSSEL139 & BIT_MASK_03) && (u32Tmp1 & BIT_MASK_05) && (u32Tmp1 & BIT_MASK_07))
     {
         Timer43GCMVL_IrqHandler();
     }
+
+    u32Tmp1 = M4_TMR43->OCSRW;
     /* Timer4 Ch.3 W phase higher compare match */
-    if ((true == M4_INTC->VSSEL139_f.VSEL4) && (true == M4_TMR43->OCSRW_f.OCFHW))
+    if ((VSSEL139 & BIT_MASK_04) && (u32Tmp1 & BIT_MASK_04) && (u32Tmp1 & BIT_MASK_06))
     {
         Timer43GCMWH_IrqHandler();
     }
     /* Timer4 Ch.3 W phase lower compare match */
-    if ((true == M4_INTC->VSSEL139_f.VSEL5) && (true == M4_TMR43->OCSRW_f.OCFLW))
+    if ((VSSEL139 & BIT_MASK_05) && (u32Tmp1 & BIT_MASK_05) && (u32Tmp1 & BIT_MASK_07))
     {
         Timer43GCMWL_IrqHandler();
     }
+
+    u32Tmp1 = M4_TMR43->CCSR;
     /* Timer4 Ch.3 overflow */
-    if ((true == M4_INTC->VSSEL139_f.VSEL6) && (true == M4_TMR43->CCSR_f.IRQPF))
+    if ((VSSEL139 & BIT_MASK_06) && (u32Tmp1 & BIT_MASK_08) && (u32Tmp1 & BIT_MASK_09))
     {
         Timer43GOV_IrqHandler();
     }
     /* Timer4 Ch.3 underflow */
-    if ((true == M4_INTC->VSSEL139_f.VSEL7) && (true == M4_TMR43->CCSR_f.IRQZF))
+    if ((VSSEL139 & BIT_MASK_07) && (u32Tmp1 & BIT_MASK_13) && (u32Tmp1 & BIT_MASK_14))
     {
         Timer43GUD_IrqHandler();
     }
+
+    u32Tmp1 = M4_TMR43->RCSR;
     /* Timer4 Ch.3 U phase reload */
-    if ((true == M4_INTC->VSSEL139_f.VSEL8) && (true == M4_TMR43->RCSR_f.RTIFU))
+    if ((VSSEL139 & BIT_MASK_08) && (u32Tmp1 & BIT_MASK_00) && (u32Tmp1 & BIT_MASK_04))
     {
-        Timer43ReloadU_IrqHandler();
+        Timer41ReloadU_IrqHandler();
     }
     /* Timer4 Ch.3 V phase reload */
-    if ((true == M4_INTC->VSSEL139_f.VSEL9) && (true == M4_TMR43->RCSR_f.RTIFV))
+    if ((VSSEL139 & BIT_MASK_09) && (u32Tmp1 & BIT_MASK_01) && (u32Tmp1 & BIT_MASK_08))
     {
         Timer43ReloadV_IrqHandler();
     }
     /* Timer4 Ch.3 W phase reload */
-    if ((true == M4_INTC->VSSEL139_f.VSEL10) && (true == M4_TMR43->RCSR_f.RTIFW))
+    if ((VSSEL139 & BIT_MASK_10) && (u32Tmp1 & BIT_MASK_02) && (u32Tmp1 & BIT_MASK_12))
     {
         Timer43ReloadW_IrqHandler();
     }
@@ -2997,85 +3345,133 @@ void IRQ139_Handler(void)
  ******************************************************************************/
 void IRQ140_Handler(void)
 {
-    /* EMB0 */
-    if ((true == M4_INTC->VSSEL140_f.VSEL6) && (true == !!(M4_EMB1->STAT & 0x0Fu)))
-    {
-        Emb0_IrqHandler();
-    }
+    uint32_t VSSEL140 = M4_INTC->VSSEL140;
+    uint32_t u32Tmp1 = 0u;
+    uint32_t u32Tmp2 = 0u;
     /* EMB1 */
-    if ((true == M4_INTC->VSSEL140_f.VSEL7) && (true == !!(M4_EMB2->STAT & 0x0Fu)))
+    u32Tmp1 = M4_EMB1->STAT & 0x0000000Ful;
+    u32Tmp2 = M4_EMB1->INTEN & 0x0000000Ful;
+    if ((u32Tmp1 & u32Tmp2) && (VSSEL140 & BIT_MASK_06))
     {
         Emb1_IrqHandler();
     }
     /* EMB2 */
-    if ((true == M4_INTC->VSSEL140_f.VSEL8) && (true == !!(M4_EMB3->STAT & 0x0Fu)))
+    u32Tmp1 = M4_EMB2->STAT & 0x0000000Ful;
+    u32Tmp2 = M4_EMB2->INTEN & 0x0000000Ful;
+    if ((u32Tmp1 & u32Tmp2) && (VSSEL140 & BIT_MASK_07))
     {
         Emb2_IrqHandler();
     }
     /* EMB3 */
-    if ((true == M4_INTC->VSSEL140_f.VSEL9) && (true == !!(M4_EMB4->STAT & 0x0Fu)))
+    u32Tmp1 = M4_EMB3->STAT & 0x0000000Ful;
+    u32Tmp2 = M4_EMB3->INTEN & 0x0000000Ful;
+    if ((u32Tmp1 & u32Tmp2) && (VSSEL140 & BIT_MASK_08))
     {
         Emb3_IrqHandler();
     }
-    /* I2S Ch.1 Transmit */
-    if ((true == M4_INTC->VSSEL140_f.VSEL16) && (true == M4_I2S1->SR_f.TXBA))
+    /* EMB4*/
+    u32Tmp1 = M4_EMB4->STAT & 0x0000000Ful;
+    u32Tmp2 = M4_EMB4->INTEN & 0x0000000Ful;
+    if ((u32Tmp1 & u32Tmp2) && (VSSEL140 & BIT_MASK_09))
     {
-        I2s1Tx_IrqHandler();
+        Emb4_IrqHandler();
+    }
+
+    /* I2S Ch.1 Transmit */
+    if(Set == bM4_I2S1_CTRL_TXIE)
+    {
+        if ((Set == bM4_I2S1_SR_TXBA) && (VSSEL140 & BIT_MASK_16))
+        {
+            I2s1Tx_IrqHandler();
+        }
     }
     /* I2S Ch.1 Receive */
-    if ((true == M4_INTC->VSSEL140_f.VSEL17) && (true == M4_I2S1->SR_f.RXBA))
+    if(Set == bM4_I2S1_CTRL_RXIE)
     {
-        I2s1Rx_IrqHandler();
+        if ((Set == bM4_I2S1_SR_RXBA) && (VSSEL140 & BIT_MASK_17))
+        {
+            I2s1Rx_IrqHandler();
+        }
     }
     /* I2S Ch.1 Error */
-    if ((true == M4_INTC->VSSEL140_f.VSEL18) && (true == !!(M4_I2S1->ER & 0x3u)))
+    if(Set == bM4_I2S1_CTRL_EIE)
     {
-        I2s1Err_IrqHandler();
+        if ((M4_I2S1->ER & (BIT_MASK_00 | BIT_MASK_01)) && (VSSEL140 & BIT_MASK_18))
+        {
+            I2s1Err_IrqHandler();
+        }
     }
     /* I2S Ch.2 Transmit */
-    if ((true == M4_INTC->VSSEL140_f.VSEL19) && (true == M4_I2S2->SR_f.TXBA))
+    if(Set == bM4_I2S2_CTRL_TXIE)
     {
-        I2s2Tx_IrqHandler();
+        if ((Set == bM4_I2S2_SR_TXBA) && (VSSEL140 & BIT_MASK_19))
+        {
+            I2s2Tx_IrqHandler();
+        }
     }
     /* I2S Ch.2 Receive */
-    if ((true == M4_INTC->VSSEL140_f.VSEL20) && (true == M4_I2S2->SR_f.RXBA))
+    if(Set == bM4_I2S2_CTRL_RXIE)
     {
-        I2s2Rx_IrqHandler();
+        if ((Set == bM4_I2S2_SR_RXBA) && (VSSEL140 & BIT_MASK_20))
+        {
+            I2s2Rx_IrqHandler();
+        }
     }
     /* I2S Ch.2 Error */
-    if ((true == M4_INTC->VSSEL140_f.VSEL21) && (true == !!(M4_I2S2->ER & 0x3u)))
+    if(Set == bM4_I2S2_CTRL_EIE)
     {
-        I2s2Err_IrqHandler();
+        if ((M4_I2S2->ER & (BIT_MASK_00 | BIT_MASK_01)) && (VSSEL140 & BIT_MASK_21))
+        {
+            I2s2Err_IrqHandler();
+        }
     }
     /* I2S Ch.3 Transmit */
-    if ((true == M4_INTC->VSSEL140_f.VSEL22) && (true == M4_I2S3->SR_f.TXBA))
+    if(Set == bM4_I2S3_CTRL_TXIE)
     {
-        I2s3Tx_IrqHandler();
+        if ((Set == bM4_I2S3_SR_TXBA) && (VSSEL140 & BIT_MASK_22))
+        {
+            I2s3Tx_IrqHandler();
+        }
     }
     /* I2S Ch.3 Receive */
-    if ((true == M4_INTC->VSSEL140_f.VSEL23) && (true == M4_I2S3->SR_f.RXBA))
+    if(Set == bM4_I2S3_CTRL_RXIE)
     {
-        I2s3Rx_IrqHandler();
+        if ((Set == bM4_I2S3_SR_RXBA) && (VSSEL140 & BIT_MASK_23))
+        {
+            I2s3Rx_IrqHandler();
+        }
     }
     /* I2S Ch.3 Error */
-    if ((true == M4_INTC->VSSEL140_f.VSEL24) && (true == !!(M4_I2S3->ER & 0x3u)))
+    if(Set == bM4_I2S3_CTRL_EIE)
     {
-        I2s3Err_IrqHandler();
+        if ((M4_I2S3->ER & (BIT_MASK_00 | BIT_MASK_01)) && (VSSEL140 & BIT_MASK_24))
+        {
+            I2s3Err_IrqHandler();
+        }
     }
     /* I2S Ch.4 Transmit */
-    if ((true == M4_INTC->VSSEL140_f.VSEL25) && (true == M4_I2S4->SR_f.TXBA))
+    if(Set == bM4_I2S4_CTRL_TXIE)
     {
-        I2s4Tx_IrqHandler();
+        if ((Set == bM4_I2S4_SR_TXBA) && (VSSEL140 & BIT_MASK_25))
+        {
+            I2s4Tx_IrqHandler();
+        }
     }
     /* I2S Ch.4 Receive */
-    if ((true == M4_INTC->VSSEL140_f.VSEL26) && (true == M4_I2S4->SR_f.RXBA))
+    if(Set == bM4_I2S4_CTRL_RXIE)
     {
-        I2s4Rx_IrqHandler();
+        if ((Set == bM4_I2S4_SR_RXBA) && (VSSEL140 & BIT_MASK_26))
+        {
+            I2s4Rx_IrqHandler();
+        }
     }
     /* I2S Ch.4 Error */
-    if ((true == M4_INTC->VSSEL140_f.VSEL27) && (true == !!(M4_I2S4->ER & 0x3u)))
+    if(Set == bM4_I2S4_CTRL_EIE)
     {
-        I2s4Err_IrqHandler();
+        if ((M4_I2S4->ER & (BIT_MASK_00 | BIT_MASK_01)) && (VSSEL140 & BIT_MASK_27))
+        {
+            I2s4Err_IrqHandler();
+        }
     }
 }
 
@@ -3086,95 +3482,141 @@ void IRQ140_Handler(void)
  ******************************************************************************/
 void IRQ141_Handler(void)
 {
+    uint32_t  VSSEL141 = M4_INTC->VSSEL141;
+    uint32_t u32Tmp1 = 0ul;
+    uint32_t u32Tmp2 = 0ul;
     /* I2C Ch.1 Receive completed */
-    if ((true == M4_INTC->VSSEL141_f.VSEL4) && (true == !!(M4_I2C1->SR_f.RFULLF)))
+    if(Set == bM4_I2C1_CR2_RFULLIE)
     {
-        I2c1RxEnd_IrqHandler();
+        if ((Set == bM4_I2C1_SR_RFULLF) && (VSSEL141 & BIT_MASK_04))
+        {
+            I2c1RxEnd_IrqHandler();
+        }
     }
     /* I2C Ch.1 Transmit completed */
-    if ((true == M4_INTC->VSSEL141_f.VSEL5) && (true == !!(M4_I2C1->SR_f.TENDF)))
+    if(Set == bM4_I2C1_CR2_TENDIE)
     {
-        I2c1TxEnd_IrqHandler();
+        if ((Set == bM4_I2C1_SR_TENDF) && (VSSEL141 & BIT_MASK_05))
+        {
+            I2c1TxEnd_IrqHandler();
+        }
     }
     /* I2C Ch.1 Transmit data empty */
-    if ((true == M4_INTC->VSSEL141_f.VSEL6) && (true == !!(M4_I2C1->SR_f.TEMPTYF)))
+    if(Set == bM4_I2C1_CR2_TEMPTYIE)
     {
-        I2c1TxEmpty_IrqHandler();
+        if ((Set == bM4_I2C1_SR_TEMPTYF) && (VSSEL141 & BIT_MASK_06))
+        {
+            I2c1TxEmpty_IrqHandler();
+        }
     }
     /* I2C Ch.1 Error */
-    if ((true == M4_INTC->VSSEL141_f.VSEL7) && (true == !!(M4_I2C1->SR & 0x00F05217u)))
+    u32Tmp1 = M4_I2C1->CR2 & 0x00F05217ul;
+    u32Tmp2 = M4_I2C1->SR & 0x00F05217ul;
+    if ((u32Tmp1 & u32Tmp2) && (VSSEL141 & BIT_MASK_07))
     {
         I2c1Err_IrqHandler();
     }
     /* I2C Ch.2 Receive completed */
-    if ((true == M4_INTC->VSSEL141_f.VSEL8) && (true == !!(M4_I2C2->SR_f.RFULLF)))
+    if(Set == bM4_I2C2_CR2_RFULLIE)
     {
-        I2c2RxEnd_IrqHandler();
+        if ((Set == bM4_I2C2_SR_RFULLF) && (VSSEL141 & BIT_MASK_08))
+        {
+            I2c2RxEnd_IrqHandler();
+        }
     }
     /* I2C Ch.2 Transmit completed */
-    if ((true == M4_INTC->VSSEL141_f.VSEL9) && (true == !!(M4_I2C2->SR_f.TENDF)))
+    if(Set == bM4_I2C2_CR2_TENDIE)
     {
-        I2c2TxEnd_IrqHandler();
+        if ((Set == bM4_I2C2_SR_TENDF)  && (VSSEL141 & BIT_MASK_09))
+        {
+            I2c2TxEnd_IrqHandler();
+        }
     }
     /* I2C Ch.2 Transmit data empty */
-    if ((true == M4_INTC->VSSEL141_f.VSEL10) && (true == !!(M4_I2C2->SR_f.TEMPTYF)))
+    if(Set == bM4_I2C2_CR2_TEMPTYIE)
     {
-        I2c2TxEmpty_IrqHandler();
+        if ((Set == bM4_I2C2_SR_TEMPTYF) && (VSSEL141 & BIT_MASK_10))
+        {
+            I2c2TxEmpty_IrqHandler();
+        }
     }
     /* I2C Ch.2 Error */
-    if ((true == M4_INTC->VSSEL141_f.VSEL11) && (true == !!(M4_I2C2->SR & 0x00F05217u)))
+    u32Tmp1 = M4_I2C2->CR2 & 0x00F05217ul;
+    u32Tmp2 = M4_I2C2->SR & 0x00F05217ul;
+    if ((u32Tmp1 & u32Tmp2) && (VSSEL141 & BIT_MASK_11))
     {
         I2c2Err_IrqHandler();
     }
     /* I2C Ch.3 Receive completed */
-    if ((true == M4_INTC->VSSEL141_f.VSEL12) && (true == !!(M4_I2C3->SR_f.RFULLF)))
+    if(Set == bM4_I2C3_CR2_RFULLIE)
     {
-        I2c3RxEnd_IrqHandler();
+        if ((Set == bM4_I2C3_SR_RFULLF) && (VSSEL141 & BIT_MASK_12))
+        {
+            I2c3RxEnd_IrqHandler();
+        }
     }
     /* I2C Ch.3 Transmit completed */
-    if ((true == M4_INTC->VSSEL141_f.VSEL13) && (true == !!(M4_I2C3->SR_f.TENDF)))
+    if(Set == bM4_I2C3_CR2_TENDIE)
     {
-        I2c3TxEnd_IrqHandler();
+        if ((Set == bM4_I2C3_SR_TENDF)  && (VSSEL141 & BIT_MASK_13))
+        {
+            I2c3TxEnd_IrqHandler();
+        }
     }
     /* I2C Ch.3 Transmit data empty */
-    if ((true == M4_INTC->VSSEL141_f.VSEL14) && (true == !!(M4_I2C3->SR_f.TEMPTYF)))
+    if(Set == bM4_I2C3_CR2_TEMPTYIE)
     {
-        I2c3TxEmpty_IrqHandler();
+        if ((Set == bM4_I2C3_SR_TEMPTYF) && (VSSEL141 & BIT_MASK_14))
+        {
+            I2c3TxEmpty_IrqHandler();
+        }
     }
     /* I2C Ch.3 Error */
-    if ((true == M4_INTC->VSSEL141_f.VSEL15) && (true == !!(M4_I2C3->SR & 0x00F05217u)))
+    u32Tmp1 = M4_I2C3->CR2 & 0x00F05217ul;
+    u32Tmp2 = M4_I2C3->SR & 0x00F05217ul;
+    if ((u32Tmp1 & u32Tmp2) && (VSSEL141 & BIT_MASK_15))
     {
         I2c3Err_IrqHandler();
     }
 
-    /* I2C Ch.1 detected */
-    if ((true == M4_INTC->VSSEL141_f.VSEL17) && (true == M4_SYSREG->PWR_PVDDSR_f.PVD1DETFLG))
+    /* LVD Ch.1 detected */
+    if((Set == bM4_SYSREG_PWR_PVDDSR_PVD1DETFLG) && (VSSEL141 & BIT_MASK_17))
     {
         Lvd1_IrqHandler();
     }
     /* LVD Ch.2 detected */
-    if ((true == M4_INTC->VSSEL141_f.VSEL18) && (true == M4_SYSREG->PWR_PVDDSR_f.PVD1DETFLG))
+    if((Set == bM4_SYSREG_PWR_PVDDSR_PVD2DETFLG) && (VSSEL141 & BIT_MASK_18))
     {
         Lvd2_IrqHandler();
     }
 
     /* Freq. calculate error detected */
-    if ((true == M4_INTC->VSSEL141_f.VSEL20) && (true == M4_FCM->SR_f.ERRF))
+    if(Set == bM4_FCM_RIER_ERRIE)
     {
-        FcmErr_IrqHandler();
+        if((Set == bM4_FCM_SR_ERRF) && (VSSEL141 & BIT_MASK_20))
+        {
+            FcmErr_IrqHandler();
+        }
     }
     /* Freq. calculate completed */
-    if ((true == M4_INTC->VSSEL141_f.VSEL21) && (true == M4_FCM->SR_f.MENDF))
+    if(Set == bM4_FCM_RIER_MENDIE)
     {
-        FcmEnd_IrqHandler();
+        if((Set == bM4_FCM_SR_MENDF) && (VSSEL141 & BIT_MASK_21))
+        {
+            FcmEnd_IrqHandler();
+        }
     }
     /* Freq. calculate overflow */
-    if ((true == M4_INTC->VSSEL141_f.VSEL22) && (true == M4_FCM->SR_f.OVF))
+    if(Set == bM4_FCM_RIER_OVFIE)
     {
-        FcmOV_IrqHandler();
+        if((Set == bM4_FCM_SR_OVF) && (VSSEL141 & BIT_MASK_22))
+        {
+            FcmOV_IrqHandler();
+        }
     }
+
     /* WDT */
-    if ((true == M4_INTC->VSSEL141_f.VSEL23) && (true == !!(M4_WDT->SR & 0x00030000u)))
+    if ((M4_WDT->SR & (BIT_MASK_16 | BIT_MASK_17)) && (VSSEL141 & BIT_MASK_23))
     {
         Wdt_IrqHandler();
     }
@@ -3187,50 +3629,73 @@ void IRQ141_Handler(void)
  ******************************************************************************/
 void IRQ142_Handler(void)
 {
+    uint32_t u32VSSEL142 = M4_INTC->VSSEL142;
+    uint16_t u16Tmp = 0u;
     /* ADC unit.1 seq. A */
-    if ((true == M4_INTC->VSSEL142_f.VSEL0) && (true == M4_ADC1->ISR_f.EOCAF))
+    if (Set == bM4_ADC1_ICR_EOCAIEN)
     {
-        ADC1A_IrqHandler();
+        if ((Set == bM4_ADC1_ISR_EOCAF) && (u32VSSEL142 & BIT_MASK_00))
+        {
+            ADC1A_IrqHandler();
+        }
     }
     /* ADC unit.1 seq. B */
-    if ((true == M4_INTC->VSSEL142_f.VSEL1) && (true == M4_ADC1->ISR_f.EOCBF))
+    if (Set == bM4_ADC1_ICR_EOCBIEN)
     {
-        ADC1B_IrqHandler();
+        if ((Set == bM4_ADC1_ISR_EOCBF) && (u32VSSEL142 & BIT_MASK_01))
+        {
+            ADC1B_IrqHandler();
+        }
     }
     /* ADC unit.1 seq. A */
-    if ((true == M4_INTC->VSSEL142_f.VSEL2)             &&                     \
-        ((true == !!(M4_ADC1->AWDSR0 & 0xFFFFu))        ||                     \
-         (true == M4_ADC1->AWDSR1_f.AWDF16)))
+    u16Tmp = M4_ADC1->AWDSR0;
+    if (Set == bM4_ADC1_AWDCR_AWDIEN)
     {
-        ADC1ChCmp_IrqHandler();
+        if (((Set == bM4_ADC1_AWDSR1_AWDF16) || (u16Tmp)) && (u32VSSEL142 & BIT_MASK_02))
+        {
+            ADC1ChCmp_IrqHandler();
+        }
     }
     /* ADC unit.1 seq. cmp */
-    if ((true == M4_INTC->VSSEL142_f.VSEL3)             &&                     \
-        ((true == !!(M4_ADC1->AWDSR0 & 0xFFFFu))        ||                     \
-         (true == M4_ADC1->AWDSR1_f.AWDF16)))
+    if (Set == bM4_ADC1_AWDCR_AWDIEN)
     {
-        ADC1SeqCmp_IrqHandler();
+        if (((Set == bM4_ADC1_AWDSR1_AWDF16) || (u16Tmp)) && (u32VSSEL142 & BIT_MASK_03))
+        {
+            ADC1SeqCmp_IrqHandler();
+        }
     }
 
     /* ADC unit.2 seq. A */
-    if ((true == M4_INTC->VSSEL142_f.VSEL4) && (true == M4_ADC2->ISR_f.EOCAF))
+    if (Set == bM4_ADC2_ICR_EOCAIEN)
     {
-        ADC2A_IrqHandler();
+        if ((Set == bM4_ADC2_ISR_EOCAF) && (u32VSSEL142 & BIT_MASK_04))
+        {
+            ADC2A_IrqHandler();
+        }
     }
     /* ADC unit.2 seq. B */
-    if ((true == M4_INTC->VSSEL142_f.VSEL5) && (true == M4_ADC2->ISR_f.EOCBF))
+    if (Set == bM4_ADC2_ICR_EOCBIEN)
     {
-        ADC2B_IrqHandler();
+        if ((Set == bM4_ADC2_ISR_EOCBF) && (u32VSSEL142 & BIT_MASK_05))
+        {
+            ADC2B_IrqHandler();
+        }
     }
     /* ADC unit.2 seq. A */
-    if ((true == M4_INTC->VSSEL142_f.VSEL6) && (true == !!(M4_ADC2->AWDSR0 & 0x1FFu)))
+    if (Set == bM4_ADC2_AWDCR_AWDIEN)
     {
-        ADC2ChCmp_IrqHandler();
+        if ((M4_ADC2->AWDSR0 & 0x1FFu) && (u32VSSEL142 & BIT_MASK_06))
+        {
+            ADC2ChCmp_IrqHandler();
+        }
     }
     /* ADC unit.2 seq. cmp */
-    if ((true == M4_INTC->VSSEL142_f.VSEL7) && (true == !!(M4_ADC2->AWDSR0 & 0x1FFu)))
+    if (Set == bM4_ADC2_AWDCR_AWDIEN)
     {
-        ADC2SeqCmp_IrqHandler();
+        if ((M4_ADC2->AWDSR0 & 0x1FFu) && (u32VSSEL142 & BIT_MASK_07))
+        {
+            ADC2SeqCmp_IrqHandler();
+        }
     }
 }
 
@@ -3241,27 +3706,61 @@ void IRQ142_Handler(void)
  ******************************************************************************/
 void IRQ143_Handler(void)
 {
+    uint8_t RTIF = 0u;
+    uint8_t RTIE = 0u;
+    uint8_t ERRINT = 0u;
+    uint8_t TTCFG = 0u;
+    uint16_t NORINTST = 0u;
+    uint16_t NORINTSGEN = 0u;
+    uint16_t ERRINTST = 0u;
+    uint16_t ERRINTSGEN = 0u;
+
     /* SDIO Ch.1 */
-    if ((true == M4_INTC->VSSEL143_f.VSEL2)             &&                     \
-        ((true == !!(M4_SDIOC1->NORINTST & 0x81F7u))    ||                     \
-         (true == !!(M4_SDIOC1->ERRINTST & 0x017Fu))))
+    if (Set == bM4_INTC_VSSEL143_VSEL2)
     {
-        Sdio1_IrqHandler();
+        NORINTST = M4_SDIOC1->NORINTST;
+        NORINTSGEN = M4_SDIOC1->NORINTSGEN;
+        ERRINTST = M4_SDIOC1->ERRINTST;
+        ERRINTSGEN = M4_SDIOC1->ERRINTSGEN;
+
+        if ((NORINTST & NORINTSGEN & 0x1F7u) || (ERRINTST & ERRINTSGEN & 0x017Fu))
+        {
+            Sdio1_IrqHandler();
+        }
     }
+
     /* SDIO Ch.2 */
-    if ((true == M4_INTC->VSSEL143_f.VSEL5)             &&                     \
-        ((true == !!(M4_SDIOC2->NORINTST & 0x81F7u))    ||                     \
-         (true == !!(M4_SDIOC2->ERRINTST & 0x017Fu))))
+    if (Set == bM4_INTC_VSSEL143_VSEL5)
     {
-        Sdio2_IrqHandler();
+        NORINTST = M4_SDIOC2->NORINTST;
+        NORINTSGEN = M4_SDIOC2->NORINTSGEN;
+        ERRINTST = M4_SDIOC2->ERRINTST;
+        ERRINTSGEN = M4_SDIOC2->ERRINTSGEN;
+
+        if ((NORINTST & NORINTSGEN & 0x1F7u) || (ERRINTST & ERRINTSGEN & 0x017Fu))
+        {
+            Sdio2_IrqHandler();
+        }
     }
+
     /* CAN */
-    if ((true == M4_INTC->VSSEL143_f.VSEL6)             &&                     \
-        ((true == !!(M4_CAN->RTIF & 0xFFu))             ||                     \
-         (true == !!(M4_CAN->ERRINT & 0x15u))           ||                     \
-         (true == !!(M4_CAN->TTCFG & 0x68u))))
+    if (Set == bM4_INTC_VSSEL143_VSEL6)
     {
-        Can_IrqHandler();
+        RTIF = M4_CAN->RTIF;
+        RTIE = M4_CAN->RTIE;
+        ERRINT = M4_CAN->ERRINT;
+        TTCFG = M4_CAN->TTCFG;
+        if ( (TTCFG & BIT_MASK_05)                                  ||         \
+             (RTIF & BIT_MASK_00)                                   ||         \
+             (RTIF & RTIE & 0xFEu)                                  ||         \
+             ((ERRINT & BIT_MASK_00) && (ERRINT & BIT_MASK_01))     ||         \
+             ((ERRINT & BIT_MASK_02) && (ERRINT & BIT_MASK_03))     ||         \
+             ((ERRINT & BIT_MASK_04) && (ERRINT & BIT_MASK_05))     ||         \
+             ((TTCFG & BIT_MASK_03) && (TTCFG & BIT_MASK_04))       ||         \
+             ((TTCFG & BIT_MASK_06) && (TTCFG & BIT_MASK_07)))
+        {
+            Can_IrqHandler();
+        }
     }
 }
 

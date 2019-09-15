@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -264,14 +264,14 @@ extern "C"
  ** \brief Enable or disable NMI digital filter function
  ******************************************************************************/
 #define NMI_DIGITAL_FILTER_DISABLE              ((uint8_t)0x00)   ///< Disable NMI digital filter
-#define NMI_DIGITAL_FILTER_ENABLE               ((uint8_t)0x40)   ///< Disable NMI digital filter
+#define NMI_DIGITAL_FILTER_ENABLE               ((uint8_t)0x40)   ///< Enable NMI digital filter
 
 /**
  *******************************************************************************
  ** \brief Enable or disable NMI pin ICG function
  ******************************************************************************/
-#define NMI_PIN_ICG_FUNCTION_DISABLE            ((uint8_t)0x00)   ///< Disable NMI pin ICG function
-#define NMI_PIN_ICG_FUNCTION_ENABLE             ((uint8_t)0x80)   ///< Disable NMI pin ICG function
+#define NMI_PIN_ICG_FUNCTION_DISABLE            ((uint8_t)0x80)   ///< Disable NMI pin ICG function
+#define NMI_PIN_ICG_FUNCTION_ENABLE             ((uint8_t)0x00)   ///< Enable NMI pin ICG function
 
 /**
  *******************************************************************************
@@ -290,15 +290,15 @@ extern "C"
  ** \brief SWDT hardware start configuration
  ******************************************************************************/
 /*!< Enable or disable SWDT hardware start */
-#define ICG0_SWDT_HARDWARE_START                ICG_FUNCTION_OFF
+#define ICG0_SWDT_HARDWARE_START                (ICG_FUNCTION_OFF)
 
 /*!< SWDT register config */
-#define ICG0_SWDT_AUTS                          SWDT_STOP_AFTER_RESET
-#define ICG0_SWDT_ITS                           SWDT_RESET_REQUEST
-#define ICG0_SWDT_PERI                          SWDT_COUNT_UNDERFLOW_CYCLE_16384
-#define ICG0_SWDT_CKS                           SWDT_COUNT_SWDTCLK_DIV2048
-#define ICG0_SWDT_WDPT                          SWDT_0To100PCT
-#define ICG0_SWDT_SLTPOFF                       SWDT_SPECIAL_MODE_COUNT_STOP
+#define ICG0_SWDT_AUTS                          (SWDT_STOP_AFTER_RESET)
+#define ICG0_SWDT_ITS                           (SWDT_RESET_REQUEST)
+#define ICG0_SWDT_PERI                          (SWDT_COUNT_UNDERFLOW_CYCLE_16384)
+#define ICG0_SWDT_CKS                           (SWDT_COUNT_SWDTCLK_DIV2048)
+#define ICG0_SWDT_WDPT                          (SWDT_0To100PCT)
+#define ICG0_SWDT_SLTPOFF                       (SWDT_SPECIAL_MODE_COUNT_STOP)
 
 /*!< SWDT register config value */
 #if ICG0_SWDT_HARDWARE_START == ICG_FUNCTION_ON
@@ -313,15 +313,15 @@ extern "C"
  ** \brief WDT hardware start configuration
  ******************************************************************************/
 /*!< Enable or disable WDT hardware start */
-#define ICG0_WDT_HARDWARE_START                 ICG_FUNCTION_OFF
+#define ICG0_WDT_HARDWARE_START                 (ICG_FUNCTION_OFF)
 
 /*!< WDT register config */
-#define ICG0_WDT_AUTS                           WDT_STOP_AFTER_RESET
-#define ICG0_WDT_ITS                            WDT_RESET_REQUEST
-#define ICG0_WDT_PERI                           WDT_COUNT_UNDERFLOW_CYCLE_16384
-#define ICG0_WDT_CKS                            WDT_COUNT_PCLK3_DIV8192
-#define ICG0_WDT_WDPT                           WDT_0To100PCT
-#define ICG0_WDT_SLPOFF                         WDT_SPECIAL_MODE_COUNT_STOP
+#define ICG0_WDT_AUTS                           (WDT_STOP_AFTER_RESET)
+#define ICG0_WDT_ITS                            (WDT_RESET_REQUEST)
+#define ICG0_WDT_PERI                           (WDT_COUNT_UNDERFLOW_CYCLE_16384)
+#define ICG0_WDT_CKS                            (WDT_COUNT_PCLK3_DIV8192)
+#define ICG0_WDT_WDPT                           (WDT_0To100PCT)
+#define ICG0_WDT_SLPOFF                         (WDT_SPECIAL_MODE_COUNT_STOP)
 
 /*!< WDT register config value */
 #if ICG0_WDT_HARDWARE_START == ICG_FUNCTION_ON
@@ -336,11 +336,11 @@ extern "C"
  ** \brief HRC hardware start configuration
  ******************************************************************************/
 /*!< Enable or disable HRC hardware start */
-#define ICG1_HRC_HARDWARE_START                 ICG_FUNCTION_OFF
+#define ICG1_HRC_HARDWARE_START                 (ICG_FUNCTION_OFF)
 
 /*!< HRC register config */
-#define ICG1_HRC_FREQSEL                        HRC_FREQUENCY_16MHZ
-#define ICG1_HRC_STOP                           HRC_OSCILLATION_START
+#define ICG1_HRC_FREQSEL                        (HRC_FREQUENCY_16MHZ)
+#define ICG1_HRC_STOP                           (HRC_OSCILLATION_START)
 
 /*!< HRC register config value */
 #if ICG1_HRC_HARDWARE_START == ICG_FUNCTION_ON
@@ -354,11 +354,11 @@ extern "C"
  ** \brief VDU0 hardware start configuration
  ******************************************************************************/
 /*!< Enable or disable VDU0 hardware start */
-#define ICG1_VDU0_HARDWARE_START                ICG_FUNCTION_OFF
+#define ICG1_VDU0_HARDWARE_START                (ICG_FUNCTION_OFF)
 
 /*!< VDU0 register config */
-#define ICG1_VDU0_BOR_LEV                       VDU0_VOLTAGE_THRESHOLD_2P3
-#define ICG1_VDU0_BORDIS                        VDU0_STOP_AFTER_RESET
+#define ICG1_VDU0_BOR_LEV                       (VDU0_VOLTAGE_THRESHOLD_2P3)
+#define ICG1_VDU0_BORDIS                        (VDU0_STOP_AFTER_RESET)
 
 /*!< VDU0 register config value */
 #if ICG1_VDU0_HARDWARE_START == ICG_FUNCTION_ON
@@ -372,14 +372,14 @@ extern "C"
  ** \brief NMI hardware start configuration
  ******************************************************************************/
 /*!< Enable or disable NMI hardware start */
-#define ICG1_NMI_HARDWARE_START                 ICG_FUNCTION_OFF
+#define ICG1_NMI_HARDWARE_START                 (ICG_FUNCTION_OFF)
 
 /*!< NMI register config */
-#define ICG1_NMI_SMPCLK                         NMI_PIN_FILTER_PCLK3_DIV1
-#define ICG1_NMI_TRG                            NMI_PIN_TRIGGER_EDGE_RISING
-#define ICG1_NMI_IMR                            NMI_PIN_IRQ_DISABLE
-#define ICG1_NMI_NFEN                           NMI_DIGITAL_FILTER_DISABLE
-#define ICG1_NMI_ICGENA                         NMI_PIN_ICG_FUNCTION_DISABLE
+#define ICG1_NMI_SMPCLK                         (NMI_PIN_FILTER_PCLK3_DIV1)
+#define ICG1_NMI_TRG                            (NMI_PIN_TRIGGER_EDGE_RISING)
+#define ICG1_NMI_IMR                            (NMI_PIN_IRQ_DISABLE)
+#define ICG1_NMI_NFEN                           (NMI_DIGITAL_FILTER_DISABLE)
+#define ICG1_NMI_ICGENA                         (NMI_PIN_ICG_FUNCTION_DISABLE)
 
 /*!< NMI register config value */
 #if ICG1_NMI_HARDWARE_START == ICG_FUNCTION_ON
@@ -401,12 +401,12 @@ extern "C"
                                                  ((uint32_t)ICG1_VDU0_REG_CONFIG << 16) | \
                                                  ((uint32_t)ICG1_HRC_REG_CONFIG))
 /*!< ICG2~7 register reserved value */
-#define ICG2_REGISTER_CONSTANT                  ((uint32_t)0xFFFFFFFF)
-#define ICG3_REGISTER_CONSTANT                  ((uint32_t)0xFFFFFFFF)
-#define ICG4_REGISTER_CONSTANT                  ((uint32_t)0xFFFFFFFF)
-#define ICG5_REGISTER_CONSTANT                  ((uint32_t)0xFFFFFFFF)
-#define ICG6_REGISTER_CONSTANT                  ((uint32_t)0xFFFFFFFF)
-#define ICG7_REGISTER_CONSTANT                  ((uint32_t)0xFFFFFFFF)
+#define ICG2_REGISTER_CONSTANT                  ((uint32_t)0xFFFFFFFFul)
+#define ICG3_REGISTER_CONSTANT                  ((uint32_t)0xFFFFFFFFul)
+#define ICG4_REGISTER_CONSTANT                  ((uint32_t)0xFFFFFFFFul)
+#define ICG5_REGISTER_CONSTANT                  ((uint32_t)0xFFFFFFFFul)
+#define ICG6_REGISTER_CONSTANT                  ((uint32_t)0xFFFFFFFFul)
+#define ICG7_REGISTER_CONSTANT                  ((uint32_t)0xFFFFFFFFul)
 
 /*******************************************************************************
  * Global variable definitions ('extern')

@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -237,8 +237,9 @@ en_result_t SRAM_ClrStatus(en_sram_err_status_t enSramErrStatus)
  ******************************************************************************/
 en_result_t SRAM_Init(const stc_sram_config_t *pstcSramConfig)
 {
-    uint8_t i = 0;
+    uint8_t i = 0u;
     uint8_t u8TmpIdx;
+    en_result_t enRet = Ok;
 
     DDL_ASSERT(IS_VALID_WAIT_CYCLE(pstcSramConfig->enSramRC));
     DDL_ASSERT(IS_VALID_WAIT_CYCLE(pstcSramConfig->enSramWC));
@@ -248,37 +249,39 @@ en_result_t SRAM_Init(const stc_sram_config_t *pstcSramConfig)
 
     u8TmpIdx = pstcSramConfig->u8SramIdx;
 
-    if (0 == u8TmpIdx)
+    if (0u == u8TmpIdx)
     {
-        return ErrorInvalidParameter;
+        enRet = ErrorInvalidParameter;
     }
-    SRAM_WT_Enable();
-    SRAM_CK_Enable();
-    for (i = 0; i < 4; i++)
-    {
-        if (true == (u8TmpIdx & 0x01))
-        {
-            M4_SRAMC->WTCR |= (pstcSramConfig->enSramRC                     |  \
-                             (pstcSramConfig->enSramWC << 4)) << (i * 8);
-            u8TmpIdx >>= 1;
-        }
-    }
-    /* SRAM3 ECC config */
-    if (true == (pstcSramConfig->u8SramIdx & Sram3Idx))
-    {
-        M4_SRAMC->CKCR_f.ECCMOD = pstcSramConfig->enSramEccMode;
-        M4_SRAMC->CKCR_f.ECCOAD = pstcSramConfig->enSramEccOp;
-    }
-    /* SRAM1/2/HS/Ret parity config */
     else
     {
-        M4_SRAMC->CKCR_f.PYOAD = pstcSramConfig->enSramPyOp;
+        SRAM_WT_Enable();
+        SRAM_CK_Enable();
+        for (i = 0u; i < 4u; i++)
+        {
+            if (true == (u8TmpIdx & 0x01u))
+            {
+                M4_SRAMC->WTCR |= (pstcSramConfig->enSramRC                 |   \
+                                 (pstcSramConfig->enSramWC << 4ul)) << (i * 8ul);
+            }
+            u8TmpIdx >>= 1u;
+        }
+        /* SRAM3 ECC config */
+        if (pstcSramConfig->u8SramIdx & Sram3Idx)
+        {
+            M4_SRAMC->CKCR_f.ECCMOD = pstcSramConfig->enSramEccMode;
+            M4_SRAMC->CKCR_f.ECCOAD = pstcSramConfig->enSramEccOp;
+        }
+        /* SRAM1/2/HS/Ret parity config */
+        else
+        {
+            M4_SRAMC->CKCR_f.PYOAD = pstcSramConfig->enSramPyOp;
+        }
+
+        SRAM_WT_Disable();
+        SRAM_CK_Disable();
     }
-
-    SRAM_WT_Disable();
-    SRAM_CK_Disable();
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -293,17 +296,17 @@ en_result_t SRAM_Init(const stc_sram_config_t *pstcSramConfig)
 en_result_t SRAM_DeInit(void)
 {
     /* SRAM R/W wait register */
-    M4_SRAMC->WTPR = 0x77u;
-    M4_SRAMC->WTCR = 0u;
-    M4_SRAMC->WTPR = 0x76u;
+    M4_SRAMC->WTPR = 0x77ul;
+    M4_SRAMC->WTCR = 0ul;
+    M4_SRAMC->WTPR = 0x76ul;
 
     /* SRAM check register */
-    M4_SRAMC->CKPR = 0x77u;
-    M4_SRAMC->CKCR = 0u;
-    M4_SRAMC->CKPR = 0x76u;
+    M4_SRAMC->CKPR = 0x77ul;
+    M4_SRAMC->CKCR = 0ul;
+    M4_SRAMC->CKPR = 0x76ul;
 
     /* SRAM status register */
-    M4_SRAMC->CKSR = 0x1Fu;
+    M4_SRAMC->CKSR = 0x1Ful;
 
     return Ok;
 }

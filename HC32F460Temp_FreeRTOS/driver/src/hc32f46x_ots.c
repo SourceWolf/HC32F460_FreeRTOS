@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -86,50 +86,39 @@
     ((CLK) == OtsClkSel_Hrc))
 
 /*! Parameter validity check for OTS trigger source event . */
-#define IS_OTS_TRIG_SRC_EVENT(EVT)                                              \
-(   (((EVT) >= EVT_PORT_EIRQ0) && ((EVT) <= EVT_PORT_EIRQ15))           ||      \
-    (((EVT) >= EVT_DMA1_TC0) && ((EVT) <= EVT_DMA2_BTC3))               ||      \
-    (((EVT) >= EVT_EFM_OPTEND) && ((EVT) <= EVT_USBFS_SOF))             ||      \
-    (((EVT) >= EVT_DCU1) && ((EVT) <= EVT_DCU4))                        ||      \
-    (((EVT) >= EVT_TMR01_GCMA) && ((EVT) <= EVT_TMR02_GCMB))            ||      \
-    (((EVT) >= EVT_RTC_ALM) && ((EVT) <= EVT_RTC_PRD))                  ||      \
-    (((EVT) >= EVT_TMR61_GCMA) && ((EVT) <= EVT_TMR61_GUDF))            ||      \
-    (((EVT) >= EVT_TMR61_SCMA) && ((EVT) <= EVT_TMR61_SCMB))            ||      \
-    (((EVT) >= EVT_TMR62_GCMA) && ((EVT) <= EVT_TMR62_GUDF))            ||      \
-    (((EVT) >= EVT_TMR62_SCMA) && ((EVT) <= EVT_TMR62_SCMB))            ||      \
-    (((EVT) >= EVT_TMR63_GCMA) && ((EVT) <= EVT_TMR63_GUDF))            ||      \
-    (((EVT) >= EVT_TMR63_SCMA) && ((EVT) <= EVT_TMR63_SCMB))            ||      \
-    (((EVT) >= EVT_TMRA1_OVF) && ((EVT) <= EVT_TMRA5_CMP))              ||      \
-    (((EVT) >= EVT_TMRA6_OVF) && ((EVT) <= EVT_TMRA6_CMP))              ||      \
-    (((EVT) >= EVT_USART1_EI) && ((EVT) <= EVT_USART4_RTO))             ||      \
-    (((EVT) >= EVT_SPI1_SRRI) && ((EVT) <= EVT_AOS_STRG))               ||      \
-    (((EVT) >= EVT_TMR41_SCMUH) && ((EVT) <= EVT_TMR42_SCMWL))          ||      \
-    (((EVT) >= EVT_TMR43_SCMUH) && ((EVT) <= EVT_TMR43_SCMWL))          ||      \
-    (((EVT) >= EVT_EVENT_PORT1)  && ((EVT) <= EVT_EVENT_PORT4))         ||      \
-    (((EVT) >= EVT_I2S1_TXIRQOUT)  && ((EVT) <= EVT_I2S1_RXIRQOUT))     ||      \
-    (((EVT) >= EVT_I2S2_TXIRQOUT)  && ((EVT) <= EVT_I2S2_RXIRQOUT))     ||      \
-    (((EVT) >= EVT_I2S3_TXIRQOUT)  && ((EVT) <= EVT_I2S3_RXIRQOUT))     ||      \
-    (((EVT) >= EVT_I2S4_TXIRQOUT)  && ((EVT) <= EVT_I2S4_RXIRQOUT))     ||      \
-    (((EVT) >= EVT_ACMP1)  && ((EVT) <= EVT_ACMP3))                     ||      \
-    (((EVT) >= EVT_I2C1_RXI) && ((EVT) <= EVT_I2C3_EE1))                ||      \
-    (((EVT) >= EVT_PVD_PVD1) && ((EVT) <= EVT_OTS))                     ||      \
-    ((EVT) == EVT_WDT_REFUDF)                                           ||      \
-    (((EVT) >= EVT_ADC1_EOCA) && ((EVT) <= EVT_TRNG_END))               ||      \
-    (((EVT) >= EVT_SDIOC1_DMAR) && ((EVT) <= EVT_SDIOC1_DMAW))          ||      \
-    (((EVT) >= EVT_SDIOC2_DMAR) && ((EVT) <= EVT_SDIOC2_DMAW))          ||      \
-    ((EVT) == EVT_MAX))
+#define IS_OTS_TRIG_SRC_EVENT(x)                                               \
+(   (((x) >= EVT_PORT_EIRQ0) && ((x) <= EVT_PORT_EIRQ15))           ||         \
+    (((x) >= EVT_DMA1_TC0) && ((x) <= EVT_DMA2_BTC3))               ||         \
+    (((x) >= EVT_EFM_OPTEND) && ((x) <= EVT_USBFS_SOF))             ||         \
+    (((x) >= EVT_DCU1) && ((x) <= EVT_DCU4))                        ||         \
+    (((x) >= EVT_TMR01_GCMA) && ((x) <= EVT_TMR02_GCMB))            ||         \
+    (((x) >= EVT_RTC_ALM) && ((x) <= EVT_RTC_PRD))                  ||         \
+    (((x) >= EVT_TMR61_GCMA) && ((x) <= EVT_TMR61_GUDF))            ||         \
+    (((x) >= EVT_TMR61_SCMA) && ((x) <= EVT_TMR61_SCMB))            ||         \
+    (((x) >= EVT_TMR62_GCMA) && ((x) <= EVT_TMR62_GUDF))            ||         \
+    (((x) >= EVT_TMR62_SCMA) && ((x) <= EVT_TMR62_SCMB))            ||         \
+    (((x) >= EVT_TMR63_GCMA) && ((x) <= EVT_TMR63_GUDF))            ||         \
+    (((x) >= EVT_TMR63_SCMA) && ((x) <= EVT_TMR63_SCMB))            ||         \
+    (((x) >= EVT_TMRA1_OVF) && ((x) <= EVT_TMRA5_CMP))              ||         \
+    (((x) >= EVT_TMRA6_OVF) && ((x) <= EVT_TMRA6_CMP))              ||         \
+    (((x) >= EVT_USART1_EI) && ((x) <= EVT_USART4_RTO))             ||         \
+    (((x) >= EVT_SPI1_SRRI) && ((x) <= EVT_AOS_STRG))               ||         \
+    (((x) >= EVT_TMR41_SCMUH) && ((x) <= EVT_TMR42_SCMWL))          ||         \
+    (((x) >= EVT_TMR43_SCMUH) && ((x) <= EVT_TMR43_SCMWL))          ||         \
+    (((x) >= EVT_EVENT_PORT1)  && ((x) <= EVT_EVENT_PORT4))         ||         \
+    (((x) >= EVT_I2S1_TXIRQOUT)  && ((x) <= EVT_I2S1_RXIRQOUT))     ||         \
+    (((x) >= EVT_I2S2_TXIRQOUT)  && ((x) <= EVT_I2S2_RXIRQOUT))     ||         \
+    (((x) >= EVT_I2S3_TXIRQOUT)  && ((x) <= EVT_I2S3_RXIRQOUT))     ||         \
+    (((x) >= EVT_I2S4_TXIRQOUT)  && ((x) <= EVT_I2S4_RXIRQOUT))     ||         \
+    (((x) >= EVT_ACMP1)  && ((x) <= EVT_ACMP3))                     ||         \
+    (((x) >= EVT_I2C1_RXI) && ((x) <= EVT_I2C3_EE1))                ||         \
+    (((x) >= EVT_PVD_PVD1) && ((x) <= EVT_OTS))                     ||         \
+    ((x)  == EVT_WDT_REFUDF)                                        ||         \
+    (((x) >= EVT_ADC1_EOCA) && ((x) <= EVT_TRNG_END))               ||         \
+    (((x) >= EVT_SDIOC1_DMAR) && ((x) <= EVT_SDIOC1_DMAW))          ||         \
+    (((x) >= EVT_SDIOC2_DMAR) && ((x) <= EVT_SDIOC2_DMAW))          ||         \
+    ((x) == EVT_MAX))
 
-/* Enable/disable OTS interrupt. */
-#define OTS_INT_ENABLE()                M4_OTS->CTL_f.OTSIE = 1u
-#define OTS_INT_DISABLE()               M4_OTS->CTL_f.OTSIE = 0u
-
-/* Start/stop OTS sampling. */
-#define OTS_START_SAMPLING()            M4_OTS->CTL_f.OTSST = 1u
-#define OTS_STOP_SAMPLING()             M4_OTS->CTL_f.OTSST = 0u
-
-/* Check OTS sampling. */
-#define IS_OTS_SAMPLING()               M4_OTS->CTL_f.OTSST == 1u
-#define IS_OTS_SAMPLED_DONE()           M4_OTS->CTL_f.OTSST == 0u
 
 #define EXPERIMENT_COUNT                ((uint8_t)10)
 
@@ -137,10 +126,10 @@
 #define OTS_TRIMMING
 
 #ifndef OTS_USE_DEFAULT_PARA
-#define OTS_XTAL_K                      737272.73f
-#define OTS_XTAL_M                      27.55f
-#define OTS_HRC_K                       3002.59f
-#define OTS_HRC_M                       27.92f
+#define OTS_XTAL_K                      (737272.73f)
+#define OTS_XTAL_M                      (27.55f)
+#define OTS_HRC_K                       (3002.59f)
+#define OTS_HRC_M                       (27.92f)
 #endif
 
 /*******************************************************************************
@@ -179,6 +168,8 @@ static float32_t m_f32OtsOffsetM = 0.0f;
  ******************************************************************************/
 en_result_t OTS_Init(const stc_ots_init_t *pstcInit)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
 #ifdef OTS_USE_DEFAULT_PARA
     struct
     {
@@ -187,44 +178,45 @@ en_result_t OTS_Init(const stc_ots_init_t *pstcInit)
     } stcPara;
 #endif
 
-    if (NULL == pstcInit)
+    if (NULL != pstcInit)
     {
-        return ErrorInvalidParameter;
-    }
-
-    DDL_ASSERT(IS_OTS_AUTO_OFF(pstcInit->enAutoOff));
-    DDL_ASSERT(IS_OTS_CLK_SEL(pstcInit->enClkSel));
+        DDL_ASSERT(IS_OTS_AUTO_OFF(pstcInit->enAutoOff));
+        DDL_ASSERT(IS_OTS_CLK_SEL(pstcInit->enClkSel));
 #ifdef OTS_TRIMMING
-    OTS_Trimming();
+        OTS_Trimming();
 #endif
-    OTS_STOP_SAMPLING();
+        /* Stop ots sampling. */
+        bM4_OTS_CTL_OTSST = 0u;
 
-    M4_OTS->CTL_f.TSSTP = pstcInit->enAutoOff;
-    /* Disable OTS interrupt default. */
-    M4_OTS->CTL_f.OTSIE = OtsInt_Disable;
-    M4_OTS->CTL_f.OTSCK = pstcInit->enClkSel;
-    m_u8OtsClkSel = pstcInit->enClkSel;
+        M4_OTS->CTL_f.TSSTP = pstcInit->enAutoOff;
+        /* Disable OTS interrupt default. */
+        M4_OTS->CTL_f.OTSIE = OtsInt_Disable;
+        M4_OTS->CTL_f.OTSCK = pstcInit->enClkSel;
+        m_u8OtsClkSel = pstcInit->enClkSel;
 
 #ifdef OTS_USE_DEFAULT_PARA
-    stcPara.s32K = M4_OTS->LPR_f.TSSLP;
-    stcPara.s32M = M4_OTS->LPR_f.TSOFS;
+        stcPara.s32K = M4_OTS->LPR_f.TSSLP;
+        stcPara.s32M = M4_OTS->LPR_f.TSOFS;
 
-    m_f32OtsSlopeK  = ((float)(stcPara.s32K * pstcInit->u8ClkFreq)) / 8.0f;
-    m_f32OtsOffsetM = (float32_t)stcPara.s32M;
+        m_f32OtsSlopeK  = ((float)(stcPara.s32K * pstcInit->u8ClkFreq)) / 8.0f;
+        m_f32OtsOffsetM = (float32_t)stcPara.s32M;
 #else
-    if (OtsClkSel_Xtal == pstcInit->enClkSel)
-    {
-        m_f32OtsSlopeK  = OTS_XTAL_K;
-        m_f32OtsOffsetM = OTS_XTAL_M;
-    }
-    else
-    {
-        m_f32OtsSlopeK  = OTS_HRC_K;
-        m_f32OtsOffsetM = OTS_HRC_M;
-    }
+        if (OtsClkSel_Xtal == pstcInit->enClkSel)
+        {
+            m_f32OtsSlopeK  = OTS_XTAL_K;
+            m_f32OtsOffsetM = OTS_XTAL_M;
+        }
+        else
+        {
+            m_f32OtsSlopeK  = OTS_HRC_K;
+            m_f32OtsOffsetM = OTS_HRC_M;
+        }
 #endif
 
-    return Ok;
+        enRet = Ok;
+    }
+
+    return enRet;
 }
 
 /**
@@ -238,7 +230,8 @@ en_result_t OTS_Init(const stc_ots_init_t *pstcInit)
  ******************************************************************************/
 void OTS_DeInit(void)
 {
-    OTS_STOP_SAMPLING();
+    /* Stop ots sampling. */
+    bM4_OTS_CTL_OTSST = 0u;
 
     /* Set the value of all registers to the reset value. */
     M4_OTS->CTL = 0u;
@@ -262,9 +255,17 @@ void OTS_DeInit(void)
  ******************************************************************************/
 en_result_t OTS_StartGetTemp(float32_t *pf32Temp, uint32_t u32Timeout)
 {
-    OTS_START_SAMPLING();
+    en_result_t enRet = ErrorInvalidParameter;
 
-    return OTS_CheckSample(pf32Temp, u32Timeout);
+    if ((NULL != pf32Temp) && (0u != u32Timeout))
+    {
+        /* Start ots sampling. */
+        bM4_OTS_CTL_OTSST = 1u;
+
+        enRet = OTS_CheckSample(pf32Temp, u32Timeout);
+    }
+
+    return enRet;
 }
 
 /**
@@ -278,7 +279,9 @@ en_result_t OTS_StartGetTemp(float32_t *pf32Temp, uint32_t u32Timeout)
  ******************************************************************************/
 void OTS_ITCmd(en_functional_state_t enState)
 {
-    M4_OTS->CTL_f.OTSIE = ((Enable == enState) ? OtsInt_Enable : OtsInt_Disable);
+    DDL_ASSERT(IS_FUNCTIONAL_STATE(enState));
+
+    bM4_OTS_CTL_OTSIE = (uint32_t)enState;
 }
 
 /**
@@ -292,7 +295,8 @@ void OTS_ITCmd(en_functional_state_t enState)
  ******************************************************************************/
 void OTS_StartIT(void)
 {
-    OTS_START_SAMPLING();
+    /* Start ots sampling. */
+    bM4_OTS_CTL_OTSST = 1u;
 }
 
 /**
@@ -346,39 +350,38 @@ void OTS_SetTriggerSrc(en_event_src_t enEvent)
  ******************************************************************************/
 en_result_t OTS_CheckSample(float32_t *pf32Temp, uint32_t u32Timeout)
 {
-    en_result_t enRet;
-    uint32_t    u32TimeCount;
-    uint32_t    u32OtsTimeout;
-    float32_t   f32Dr1;
-    float32_t   f32Dr2;
-    float32_t   f32Ecr;
+    en_result_t   enRet = ErrorInvalidParameter;
+    uint32_t      u32OtsTimeout;
+    __IO uint32_t u32TimeCount;
+    float32_t     f32Dr1 = 0.0f;
+    float32_t     f32Dr2 = 0.0f;
+    float32_t     f32Ecr = 0.0f;
 
-    if ((NULL == pf32Temp) || (0u == u32Timeout))
+    if ((NULL != pf32Temp) && (0u != u32Timeout))
     {
-        return ErrorInvalidParameter;
-    }
-
-    /* 10 is the number of required instructions cycles for the below loop statement. */
-    u32OtsTimeout = u32Timeout * (SystemCoreClock / 10u / 1000u);
-    u32TimeCount  = 0u;
-    enRet = ErrorTimeout;
-    while (u32TimeCount < u32OtsTimeout)
-    {
-        if (IS_OTS_SAMPLED_DONE())
+        /* 10 is the number of required instructions cycles for the below loop statement. */
+        u32OtsTimeout = u32Timeout * (SystemCoreClock / 10u / 1000u);
+        u32TimeCount  = 0u;
+        enRet = ErrorTimeout;
+        while (u32TimeCount < u32OtsTimeout)
         {
-            enRet = Ok;
-            OTS_ReadData(&f32Dr1, &f32Dr2, &f32Ecr);
-            break;
+            if (bM4_OTS_CTL_OTSST == 0u)
+            {
+                enRet = Ok;
+                OTS_ReadData(&f32Dr1, &f32Dr2, &f32Ecr);
+                break;
+            }
+
+            u32TimeCount++;
         }
 
-        u32TimeCount++;
-    }
+        /* Stop ots sampling. */
+        bM4_OTS_CTL_OTSST = 0u;
 
-    OTS_STOP_SAMPLING();
-
-    if (Ok == enRet)
-    {
-        *pf32Temp = OTS_ComputeTemp(f32Dr1, f32Dr2, f32Ecr);
+        if (Ok == enRet)
+        {
+            *pf32Temp = OTS_ComputeTemp(f32Dr1, f32Dr2, f32Ecr);
+        }
     }
 
     return enRet;
@@ -405,26 +408,33 @@ void OTS_ScalingExperiment(uint16_t *pu16Dr1, uint16_t *pu16Dr2,
     float32_t f32Dr2;
     float32_t f32Ecr;
 
-    OTS_START_SAMPLING();
-
-    while (IS_OTS_SAMPLING());
-
-    *pu16Dr1 = M4_OTS->DR1;
-    *pu16Dr2 = M4_OTS->DR2;
-    *pu16Ecr = M4_OTS->ECR;
-
-    f32Dr1 = (float32_t)(*pu16Dr1);
-    f32Dr2 = (float32_t)(*pu16Dr2);
-    if (OtsClkSel_Hrc == m_u8OtsClkSel)
+    if ((NULL != pu16Dr1) && (NULL != pu16Dr2) && (NULL != pu16Ecr) && (NULL != pf32A))
     {
-        f32Ecr = (float32_t)(*pu16Ecr);
-    }
-    else
-    {
-        f32Ecr = 1.0f;
-    }
+        /* Start ots sampling. */
+        bM4_OTS_CTL_OTSST = 1u;
 
-    *pf32A = OTS_ComputeA(f32Dr1, f32Dr2, f32Ecr);
+        while ((bM4_OTS_CTL_OTSST & 0x1u) != 0u)
+        {
+            ;
+        }
+
+        *pu16Dr1 = M4_OTS->DR1;
+        *pu16Dr2 = M4_OTS->DR2;
+        *pu16Ecr = M4_OTS->ECR;
+
+        f32Dr1 = (float32_t)(*pu16Dr1);
+        f32Dr2 = (float32_t)(*pu16Dr2);
+        if (OtsClkSel_Hrc == m_u8OtsClkSel)
+        {
+            f32Ecr = (float32_t)(*pu16Ecr);
+        }
+        else
+        {
+            f32Ecr = 1.0f;
+        }
+
+        *pf32A = OTS_ComputeA(f32Dr1, f32Dr2, f32Ecr);
+    }
 }
 
 /**
@@ -447,13 +457,13 @@ void OTS_SetKM(float32_t f32K, float32_t f32M)
 **
 ******************************************************************************/
 #ifdef OTS_TRIMMING
-#define bM4_OTSCR2      *((__IO uint32_t*)(0x4004A410))
-#define bM4_OTSTMR      *((__IO uint32_t*)(0x4004A412))
+#define bM4_OTSCR2      (*((__IO uint32_t*)(0x4004A410)))
+#define bM4_OTSTMR      (*((__IO uint32_t*)(0x4004A412)))
 static void OTS_Trimming(void)
 {
     uint16_t m_u16OtsTrm;
 
-    m_u16OtsTrm = bM4_OTSTMR;
+    m_u16OtsTrm = (uint16_t)bM4_OTSTMR;
     bM4_OTSCR2  = (uint16_t)0x7841;
     bM4_OTSCR2  = (uint16_t)0x7841;
     bM4_OTSTMR  = m_u16OtsTrm;
@@ -493,10 +503,14 @@ static void OTS_ReadData(float32_t *pf32Dr1, float32_t *pf32Dr2, float32_t *pf32
 ******************************************************************************/
 static float OTS_ComputeA(float32_t f32Dr1, float32_t f32Dr2, float32_t f32Ecr)
 {
-    if ((0.0f == f32Dr1) || (0.0f == f32Dr2) || (0.0f == f32Ecr))
-        return 0.0f;
+    float32_t f32Ret = 0.f;
 
-    return (((1.0f / f32Dr1) - (1.0f / f32Dr2)) * f32Ecr);
+    if ((0.0f != f32Dr1) && (0.0f != f32Dr2) && (0.0f != f32Ecr))
+    {
+        f32Ret = (((1.0f / f32Dr1) - (1.0f / f32Dr2)) * f32Ecr);
+    }
+
+    return f32Ret;
 }
 
 /**
@@ -506,10 +520,14 @@ static float OTS_ComputeA(float32_t f32Dr1, float32_t f32Dr2, float32_t f32Ecr)
 ******************************************************************************/
 static float OTS_ComputeTemp(float32_t f32Dr1, float32_t f32Dr2, float32_t f32Ecr)
 {
-    if ((0.0f == f32Dr1) || (0.0f == f32Dr2) || (0.0f == f32Ecr))
-        return 0.0f;
+    float32_t f32Ret = 0.f;
 
-    return (m_f32OtsSlopeK * ((1.0f / f32Dr1) - (1.0f / f32Dr2)) * f32Ecr + m_f32OtsOffsetM);
+    if ((0.0f != f32Dr1) && (0.0f != f32Dr2) && (0.0f != f32Ecr))
+    {
+        f32Ret = m_f32OtsSlopeK * ((1.0f / f32Dr1) - (1.0f / f32Dr2)) * f32Ecr + m_f32OtsOffsetM;
+    }
+
+    return f32Ret;
 }
 
 //@} // OtsGroup

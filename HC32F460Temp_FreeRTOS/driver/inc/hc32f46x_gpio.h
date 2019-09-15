@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -308,8 +308,8 @@ extern en_result_t PORT_OE(en_port_t enPort, uint16_t u16Pin, en_functional_stat
 extern en_result_t PORT_SetBits(en_port_t enPort, uint16_t u16Pin);
 extern en_result_t PORT_ResetBits(en_port_t enPort, uint16_t u16Pin);
 extern en_result_t PORT_Toggle(en_port_t enPort, uint16_t u16Pin);
-extern en_result_t PORT_SetFunc(en_port_t enPort, uint16_t u16Pin,             \
-                         en_port_func_t enFuncSel, en_functional_state_t enNewState);
+extern en_result_t PORT_SetFunc(en_port_t enPort, uint16_t u16Pin,              \
+                        en_port_func_t enFuncSel, en_functional_state_t enSubFunc);
 extern en_result_t PORT_SetSubFunc(en_port_func_t enFuncSel);
 
 //@} // GpioGroup

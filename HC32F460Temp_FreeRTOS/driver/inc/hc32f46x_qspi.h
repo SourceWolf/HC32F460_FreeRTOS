@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -215,69 +215,69 @@ typedef enum en_qspi_flag_type
  ******************************************************************************/
 typedef enum en_qspi_clk_div
 {
-    QspiHclkDiv2  = 0u,                     ///< Clock source£º HCLK/2
-    QspiHclkDiv3  = 2u,                     ///< Clock source£º HCLK/3
-    QspiHclkDiv4  = 3u,                     ///< Clock source£º HCLK/4
-    QspiHclkDiv5  = 4u,                     ///< Clock source£º HCLK/5
-    QspiHclkDiv6  = 5u,                     ///< Clock source£º HCLK/6
-    QspiHclkDiv7  = 6u,                     ///< Clock source£º HCLK/7
-    QspiHclkDiv8  = 7u,                     ///< Clock source£º HCLK/8
-    QspiHclkDiv9  = 8u,                     ///< Clock source£º HCLK/9
-    QspiHclkDiv10 = 9u,                     ///< Clock source£º HCLK/10
-    QspiHclkDiv11 = 10u,                    ///< Clock source£º HCLK/11
-    QspiHclkDiv12 = 11u,                    ///< Clock source£º HCLK/12
-    QspiHclkDiv13 = 12u,                    ///< Clock source£º HCLK/13
-    QspiHclkDiv14 = 13u,                    ///< Clock source£º HCLK/14
-    QspiHclkDiv15 = 14u,                    ///< Clock source£º HCLK/15
-    QspiHclkDiv16 = 15u,                    ///< Clock source£º HCLK/16
-    QspiHclkDiv17 = 16u,                    ///< Clock source£º HCLK/17
-    QspiHclkDiv18 = 17u,                    ///< Clock source£º HCLK/18
-    QspiHclkDiv19 = 18u,                    ///< Clock source£º HCLK/19
-    QspiHclkDiv20 = 19u,                    ///< Clock source£º HCLK/20
-    QspiHclkDiv21 = 20u,                    ///< Clock source£º HCLK/21
-    QspiHclkDiv22 = 21u,                    ///< Clock source£º HCLK/22
-    QspiHclkDiv23 = 22u,                    ///< Clock source£º HCLK/23
-    QspiHclkDiv24 = 23u,                    ///< Clock source£º HCLK/24
-    QspiHclkDiv25 = 24u,                    ///< Clock source£º HCLK/25
-    QspiHclkDiv26 = 25u,                    ///< Clock source£º HCLK/26
-    QspiHclkDiv27 = 26u,                    ///< Clock source£º HCLK/27
-    QspiHclkDiv28 = 27u,                    ///< Clock source£º HCLK/28
-    QspiHclkDiv29 = 28u,                    ///< Clock source£º HCLK/29
-    QspiHclkDiv30 = 29u,                    ///< Clock source£º HCLK/30
-    QspiHclkDiv31 = 30u,                    ///< Clock source£º HCLK/31
-    QspiHclkDiv32 = 31u,                    ///< Clock source£º HCLK/32
-    QspiHclkDiv33 = 32u,                    ///< Clock source£º HCLK/33
-    QspiHclkDiv34 = 33u,                    ///< Clock source£º HCLK/34
-    QspiHclkDiv35 = 34u,                    ///< Clock source£º HCLK/35
-    QspiHclkDiv36 = 35u,                    ///< Clock source£º HCLK/36
-    QspiHclkDiv37 = 36u,                    ///< Clock source£º HCLK/37
-    QspiHclkDiv38 = 37u,                    ///< Clock source£º HCLK/38
-    QspiHclkDiv39 = 38u,                    ///< Clock source£º HCLK/39
-    QspiHclkDiv40 = 39u,                    ///< Clock source£º HCLK/40
-    QspiHclkDiv41 = 40u,                    ///< Clock source£º HCLK/41
-    QspiHclkDiv42 = 41u,                    ///< Clock source£º HCLK/42
-    QspiHclkDiv43 = 42u,                    ///< Clock source£º HCLK/43
-    QspiHclkDiv44 = 43u,                    ///< Clock source£º HCLK/44
-    QspiHclkDiv45 = 44u,                    ///< Clock source£º HCLK/45
-    QspiHclkDiv46 = 45u,                    ///< Clock source£º HCLK/46
-    QspiHclkDiv47 = 46u,                    ///< Clock source£º HCLK/47
-    QspiHclkDiv48 = 47u,                    ///< Clock source£º HCLK/48
-    QspiHclkDiv49 = 48u,                    ///< Clock source£º HCLK/49
-    QspiHclkDiv50 = 49u,                    ///< Clock source£º HCLK/50
-    QspiHclkDiv51 = 50u,                    ///< Clock source£º HCLK/51
-    QspiHclkDiv52 = 51u,                    ///< Clock source£º HCLK/52
-    QspiHclkDiv53 = 52u,                    ///< Clock source£º HCLK/53
-    QspiHclkDiv54 = 53u,                    ///< Clock source£º HCLK/54
-    QspiHclkDiv55 = 54u,                    ///< Clock source£º HCLK/55
-    QspiHclkDiv56 = 55u,                    ///< Clock source£º HCLK/56
-    QspiHclkDiv57 = 56u,                    ///< Clock source£º HCLK/57
-    QspiHclkDiv58 = 57u,                    ///< Clock source£º HCLK/58
-    QspiHclkDiv59 = 58u,                    ///< Clock source£º HCLK/59
-    QspiHclkDiv60 = 59u,                    ///< Clock source£º HCLK/60
-    QspiHclkDiv61 = 60u,                    ///< Clock source£º HCLK/61
-    QspiHclkDiv62 = 61u,                    ///< Clock source£º HCLK/62
-    QspiHclkDiv63 = 62u,                    ///< Clock source£º HCLK/63
-    QspiHclkDiv64 = 63u,                    ///< Clock source£º HCLK/64
+    QspiHclkDiv2  = 0u,                     ///< Clock source: HCLK/2
+    QspiHclkDiv3  = 2u,                     ///< Clock source: HCLK/3
+    QspiHclkDiv4  = 3u,                     ///< Clock source: HCLK/4
+    QspiHclkDiv5  = 4u,                     ///< Clock source: HCLK/5
+    QspiHclkDiv6  = 5u,                     ///< Clock source: HCLK/6
+    QspiHclkDiv7  = 6u,                     ///< Clock source: HCLK/7
+    QspiHclkDiv8  = 7u,                     ///< Clock source: HCLK/8
+    QspiHclkDiv9  = 8u,                     ///< Clock source: HCLK/9
+    QspiHclkDiv10 = 9u,                     ///< Clock source: HCLK/10
+    QspiHclkDiv11 = 10u,                    ///< Clock source: HCLK/11
+    QspiHclkDiv12 = 11u,                    ///< Clock source: HCLK/12
+    QspiHclkDiv13 = 12u,                    ///< Clock source: HCLK/13
+    QspiHclkDiv14 = 13u,                    ///< Clock source: HCLK/14
+    QspiHclkDiv15 = 14u,                    ///< Clock source: HCLK/15
+    QspiHclkDiv16 = 15u,                    ///< Clock source: HCLK/16
+    QspiHclkDiv17 = 16u,                    ///< Clock source: HCLK/17
+    QspiHclkDiv18 = 17u,                    ///< Clock source: HCLK/18
+    QspiHclkDiv19 = 18u,                    ///< Clock source: HCLK/19
+    QspiHclkDiv20 = 19u,                    ///< Clock source: HCLK/20
+    QspiHclkDiv21 = 20u,                    ///< Clock source: HCLK/21
+    QspiHclkDiv22 = 21u,                    ///< Clock source: HCLK/22
+    QspiHclkDiv23 = 22u,                    ///< Clock source: HCLK/23
+    QspiHclkDiv24 = 23u,                    ///< Clock source: HCLK/24
+    QspiHclkDiv25 = 24u,                    ///< Clock source: HCLK/25
+    QspiHclkDiv26 = 25u,                    ///< Clock source: HCLK/26
+    QspiHclkDiv27 = 26u,                    ///< Clock source: HCLK/27
+    QspiHclkDiv28 = 27u,                    ///< Clock source: HCLK/28
+    QspiHclkDiv29 = 28u,                    ///< Clock source: HCLK/29
+    QspiHclkDiv30 = 29u,                    ///< Clock source: HCLK/30
+    QspiHclkDiv31 = 30u,                    ///< Clock source: HCLK/31
+    QspiHclkDiv32 = 31u,                    ///< Clock source: HCLK/32
+    QspiHclkDiv33 = 32u,                    ///< Clock source: HCLK/33
+    QspiHclkDiv34 = 33u,                    ///< Clock source: HCLK/34
+    QspiHclkDiv35 = 34u,                    ///< Clock source: HCLK/35
+    QspiHclkDiv36 = 35u,                    ///< Clock source: HCLK/36
+    QspiHclkDiv37 = 36u,                    ///< Clock source: HCLK/37
+    QspiHclkDiv38 = 37u,                    ///< Clock source: HCLK/38
+    QspiHclkDiv39 = 38u,                    ///< Clock source: HCLK/39
+    QspiHclkDiv40 = 39u,                    ///< Clock source: HCLK/40
+    QspiHclkDiv41 = 40u,                    ///< Clock source: HCLK/41
+    QspiHclkDiv42 = 41u,                    ///< Clock source: HCLK/42
+    QspiHclkDiv43 = 42u,                    ///< Clock source: HCLK/43
+    QspiHclkDiv44 = 43u,                    ///< Clock source: HCLK/44
+    QspiHclkDiv45 = 44u,                    ///< Clock source: HCLK/45
+    QspiHclkDiv46 = 45u,                    ///< Clock source: HCLK/46
+    QspiHclkDiv47 = 46u,                    ///< Clock source: HCLK/47
+    QspiHclkDiv48 = 47u,                    ///< Clock source: HCLK/48
+    QspiHclkDiv49 = 48u,                    ///< Clock source: HCLK/49
+    QspiHclkDiv50 = 49u,                    ///< Clock source: HCLK/50
+    QspiHclkDiv51 = 50u,                    ///< Clock source: HCLK/51
+    QspiHclkDiv52 = 51u,                    ///< Clock source: HCLK/52
+    QspiHclkDiv53 = 52u,                    ///< Clock source: HCLK/53
+    QspiHclkDiv54 = 53u,                    ///< Clock source: HCLK/54
+    QspiHclkDiv55 = 54u,                    ///< Clock source: HCLK/55
+    QspiHclkDiv56 = 55u,                    ///< Clock source: HCLK/56
+    QspiHclkDiv57 = 56u,                    ///< Clock source: HCLK/57
+    QspiHclkDiv58 = 57u,                    ///< Clock source: HCLK/58
+    QspiHclkDiv59 = 58u,                    ///< Clock source: HCLK/59
+    QspiHclkDiv60 = 59u,                    ///< Clock source: HCLK/60
+    QspiHclkDiv61 = 60u,                    ///< Clock source: HCLK/61
+    QspiHclkDiv62 = 61u,                    ///< Clock source: HCLK/62
+    QspiHclkDiv63 = 62u,                    ///< Clock source: HCLK/63
+    QspiHclkDiv64 = 63u,                    ///< Clock source: HCLK/64
 } en_qspi_clk_div_t;
 
 /**
@@ -401,6 +401,9 @@ en_result_t QSPI_Init(const stc_qspi_init_t *pstcQspiInitCfg);
 en_result_t QSPI_SetAddrWidth(en_qspi_addr_width_t enAddrWidth);
 en_result_t QSPI_SetExtendAddress(uint8_t u8Addr);
 en_result_t QSPI_CommProtocolConfig(const stc_qspi_comm_protocol_t *pstcCommProtocol);
+en_result_t QSPI_PrefetchCmd(en_functional_state_t enNewSta);
+en_result_t QSPI_SetClockDiv(en_qspi_clk_div_t enClkDiv);
+en_result_t QSPI_SetWPPinLevel(en_qspi_wp_pin_level_t enWpLevel);
 
 /* Rom access mode functions */
 en_result_t QSPI_SetRomAccessInstruct(uint8_t u8Instr);

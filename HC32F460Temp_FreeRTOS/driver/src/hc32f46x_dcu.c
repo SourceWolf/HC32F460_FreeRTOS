@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -157,7 +157,7 @@
     ((x) == EVT_MAX))
 
 /*!< Get the specified DATA register address of the specified DCU unit */
-#define DCU_DATAx(__DCUx__, __DATAx__)            ((uint32_t)(&__DCUx__->DATA0) + ((uint32_t)__DATAx__) * 4u)
+#define DCU_DATAx(__DCUx__, __DATAx__)            ((uint32_t)(&(__DCUx__)->DATA0) + ((uint32_t)(__DATAx__)) * 4u)
 
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
@@ -166,7 +166,7 @@
 /*******************************************************************************
  * Local function prototypes ('static')
  ******************************************************************************/
-static __IO uint32_t* DCU_TRGSELx(M4_DCU_TypeDef *DCUx);
+static __IO uint32_t* DCU_TRGSELx(const M4_DCU_TypeDef *DCUx);
 
 /*******************************************************************************
  * Local variable definitions ('static')
@@ -196,43 +196,40 @@ static __IO uint32_t* DCU_TRGSELx(M4_DCU_TypeDef *DCUx);
  ******************************************************************************/
 en_result_t DCU_Init(M4_DCU_TypeDef *DCUx, const stc_dcu_init_t *pstcInitCfg)
 {
-    en_result_t enRet = Ok;
-
-    /* Check the parameters */
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enIntCmd));
-    DDL_ASSERT(IS_VALID_DCU_OPERATION(pstcInitCfg->enOperation));
-    DDL_ASSERT(IS_VALID_DCU_DATAZ_SIZE(pstcInitCfg->enDataSize));
-    DDL_ASSERT(IS_VALID_DCU_INT_WIN_MODE(pstcInitCfg->enIntWinMode));
-    DDL_ASSERT(IS_VALID_DCU_CMP_TRIG_MODE(pstcInitCfg->enCmpTriggerMode));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for DCUx && pstcInitCfg pointer */
-    if ((!IS_VALID_DCU(DCUx)) || (NULL == pstcInitCfg))
+    if ((IS_VALID_DCU(DCUx)) && (NULL != pstcInitCfg))
     {
-        return ErrorInvalidParameter;
+        /* Check the parameters */
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcInitCfg->enIntCmd));
+        DDL_ASSERT(IS_VALID_DCU_OPERATION(pstcInitCfg->enOperation));
+        DDL_ASSERT(IS_VALID_DCU_DATAZ_SIZE(pstcInitCfg->enDataSize));
+        DDL_ASSERT(IS_VALID_DCU_INT_WIN_MODE(pstcInitCfg->enIntWinMode));
+        DDL_ASSERT(IS_VALID_DCU_CMP_TRIG_MODE(pstcInitCfg->enCmpTriggerMode));
+        
+        /* De-initialize dcu register value */
+        DCUx->CTL = 0ul;
+        DCUx->INTSEL = 0ul;
+        DCUx->FLAGCLR = 0x7Ful;
+        
+        /* Set dcu operation mode */
+        DCUx->CTL_f.MODE = (uint32_t)pstcInitCfg->enOperation;
+        
+        /* Set dcu data sieze */
+        DCUx->CTL_f.DATASIZE = (uint32_t)pstcInitCfg->enDataSize;
+        
+        /* Set dcu compare trigger mode */
+        DCUx->CTL_f.COMP_TRG = (uint32_t)pstcInitCfg->enCmpTriggerMode;
+        
+        /* Set dcu interrupt window mode */
+        DCUx->INTSEL_f.INT_WIN = (uint32_t)pstcInitCfg->enIntWinMode;
+        
+        DCUx->INTSEL = pstcInitCfg->u32IntSel;
+        DCUx->CTL_f.INTEN = (uint32_t)(pstcInitCfg->enIntCmd);
+
+        enRet = Ok;
     }
-    else
-    {
-    }
-
-    /* De-initialize dcu register value */
-    DCUx->CTL = 0u;
-    DCUx->INTSEL = 0u;
-    DCUx->FLAGCLR = 0x7Fu;
-
-    /* Set dcu operation mode */
-    DCUx->CTL_f.MODE = pstcInitCfg->enOperation;
-
-    /* Set dcu data sieze */
-    DCUx->CTL_f.DATASIZE = pstcInitCfg->enDataSize;
-
-    /* Set dcu compare trigger mode */
-    DCUx->CTL_f.COMP_TRG = pstcInitCfg->enCmpTriggerMode;
-
-    /* Set dcu interrupt window mode */
-    DCUx->INTSEL_f.INT_WIN = pstcInitCfg->enIntWinMode;
-
-    DCUx->INTSEL = pstcInitCfg->u32IntSel;
-    DCUx->CTL_f.INTEN = ((Enable == pstcInitCfg->enIntCmd) ? 1u : 0u);
 
     return enRet;
 }
@@ -253,23 +250,19 @@ en_result_t DCU_Init(M4_DCU_TypeDef *DCUx, const stc_dcu_init_t *pstcInitCfg)
  ******************************************************************************/
 en_result_t DCU_DeInit(M4_DCU_TypeDef *DCUx)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
     __IO uint32_t *TRGSELx = DCU_TRGSELx(DCUx);
 
     /* Check for DCUx pointer */
-    if (!IS_VALID_DCU(DCUx))
+    if (IS_VALID_DCU(DCUx))
     {
-        return ErrorInvalidParameter;
+        /* De-initialize dcu register value */
+        DCUx->CTL = 0u;
+        DCUx->INTSEL = 0u;
+        DCUx->FLAGCLR = 0x7Fu;
+        *TRGSELx = EVT_MAX;
+        enRet = Ok;
     }
-    else
-    {
-    }
-
-    /* De-initialize dcu register value */
-    DCUx->CTL = 0u;
-    DCUx->INTSEL = 0u;
-    DCUx->FLAGCLR = 0x7Fu;
-    *TRGSELx = EVT_MAX;
 
     return enRet;
 }
@@ -298,21 +291,19 @@ en_result_t DCU_DeInit(M4_DCU_TypeDef *DCUx)
 en_result_t DCU_SetOperationMode(M4_DCU_TypeDef *DCUx,
                                 en_dcu_operation_mode_t enMode)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_DCU_OPERATION(enMode));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for DCUx pointer */
-    if (!IS_VALID_DCU(DCUx))
+    if (IS_VALID_DCU(DCUx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_DCU_OPERATION(enMode));
+
+        DCUx->CTL_f.MODE = (uint32_t)enMode;
+        enRet = Ok;
     }
 
-    DCUx->CTL_f.MODE = enMode;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -361,21 +352,19 @@ en_dcu_operation_mode_t DCU_GetOperationMode(M4_DCU_TypeDef *DCUx)
  ******************************************************************************/
 en_result_t DCU_SetDataSize(M4_DCU_TypeDef *DCUx, en_dcu_data_size_t enSize)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_DCU_DATAZ_SIZE(enSize));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for DCUx pointer */
-    if (!IS_VALID_DCU(DCUx))
+    if (IS_VALID_DCU(DCUx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_DCU_DATAZ_SIZE(enSize));
+
+        DCUx->CTL_f.DATASIZE = (uint32_t)enSize;
+        enRet = Ok;
     }
 
-    DCUx->CTL_f.DATASIZE = enSize;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -423,21 +412,19 @@ en_dcu_data_size_t DCU_GetDataSize(M4_DCU_TypeDef *DCUx)
 en_result_t DCU_SetIntWinMode(M4_DCU_TypeDef *DCUx,
                                 en_dcu_int_win_mode_t enIntWinMode)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check the parameters */
     DDL_ASSERT(IS_VALID_DCU_INT_WIN_MODE(enIntWinMode));
 
     /* Check for DCUx pointer */
-    if (!IS_VALID_DCU(DCUx))
+    if (IS_VALID_DCU(DCUx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        DCUx->INTSEL_f.INT_WIN = (uint32_t)enIntWinMode;
+        enRet = Ok;
     }
 
-    DCUx->INTSEL_f.INT_WIN = enIntWinMode;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -484,21 +471,19 @@ en_dcu_int_win_mode_t DCU_GetIntWinMode(M4_DCU_TypeDef *DCUx)
 en_result_t DCU_SetCmpTriggerMode(M4_DCU_TypeDef *DCUx,
                                 en_dcu_cmp_trigger_mode_t enTriggerMode)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_DCU_CMP_TRIG_MODE(enTriggerMode));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for DCUx pointer */
-    if (!IS_VALID_DCU(DCUx))
+    if (IS_VALID_DCU(DCUx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_DCU_CMP_TRIG_MODE(enTriggerMode));
+
+        DCUx->CTL_f.COMP_TRG = (uint32_t)enTriggerMode;
+        enRet = Ok;
     }
 
-    DCUx->CTL_f.COMP_TRG = enTriggerMode;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -542,21 +527,19 @@ en_dcu_cmp_trigger_mode_t DCU_GetCmpTriggerMode(M4_DCU_TypeDef *DCUx)
  ******************************************************************************/
 en_result_t DCU_IrqCmd(M4_DCU_TypeDef *DCUx, en_functional_state_t enCmd)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for DCUx pointer */
-    if (!IS_VALID_DCU(DCUx))
+    if (IS_VALID_DCU(DCUx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+
+        DCUx->CTL_f.INTEN = (uint32_t)(enCmd);
+        enRet = Ok;
     }
 
-    DCUx->CTL_f.INTEN = (Enable == enCmd ? 1u : 0u);
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -587,7 +570,7 @@ en_flag_status_t DCU_GetIrqFlag(M4_DCU_TypeDef *DCUx, en_dcu_flag_t enFlag)
     DDL_ASSERT(IS_VALID_DCU(DCUx));
     DDL_ASSERT(IS_VALID_DCU_INT(enFlag));
 
-    return ((DCUx->FLAG && enFlag) ? Set : Reset);
+    return ((DCUx->FLAG & enFlag) ? Set : Reset);
 }
 
 /**
@@ -614,21 +597,18 @@ en_flag_status_t DCU_GetIrqFlag(M4_DCU_TypeDef *DCUx, en_dcu_flag_t enFlag)
  ******************************************************************************/
 en_result_t DCU_ClearIrqFlag(M4_DCU_TypeDef *DCUx, en_dcu_flag_t enFlag)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_DCU_INT(enFlag));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for DCUx pointer */
-    if (!IS_VALID_DCU(DCUx))
+    if (IS_VALID_DCU(DCUx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_DCU_INT(enFlag));
+        DCUx->FLAGCLR = (uint32_t)enFlag;
+        enRet = Ok;
     }
 
-    DCUx->FLAGCLR = enFlag;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -662,48 +642,43 @@ en_result_t DCU_IrqSelCmd(M4_DCU_TypeDef *DCUx,
                                 en_dcu_int_sel_t enIntSel,
                                 en_functional_state_t enCmd)
 {
-    en_result_t enRet = Ok;
-    uint32_t u32State = (Enable == enCmd ? 1u : 0u);
-
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_DCU_INT(enIntSel));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for DCUx pointer */
-    if (!IS_VALID_DCU(DCUx))
+    if (IS_VALID_DCU(DCUx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_DCU_INT(enIntSel));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
 
-    switch(enIntSel)
-    {
-        case DcuIntOp:
-            DCUx->INTSEL_f.INT_OP = u32State;
-            break;
-        case DcuIntLs2:
-            DCUx->INTSEL_f.INT_LS2 = u32State;
-            break;
-        case DcuIntEq2:
-            DCUx->INTSEL_f.INT_EQ2 = u32State;
-            break;
-        case DcuIntGt2:
-            DCUx->INTSEL_f.INT_GT2 = u32State;
-            break;
-        case DcuIntLs1:
-            DCUx->INTSEL_f.INT_LS1 = u32State;
-            break;
-        case DcuIntEq1:
-            DCUx->INTSEL_f.INT_EQ1 = u32State;
-            break;
-        case DcuIntGt1:
-            DCUx->INTSEL_f.INT_GT1 = u32State;
-            break;
-        default:
-            enRet = ErrorInvalidParameter;
-            break;
+        enRet = Ok;
+        switch(enIntSel)
+        {
+            case DcuIntOp:
+                DCUx->INTSEL_f.INT_OP = (uint32_t)enCmd;
+                break;
+            case DcuIntLs2:
+                DCUx->INTSEL_f.INT_LS2 = (uint32_t)enCmd;
+                break;
+            case DcuIntEq2:
+                DCUx->INTSEL_f.INT_EQ2 = (uint32_t)enCmd;
+                break;
+            case DcuIntGt2:
+                DCUx->INTSEL_f.INT_GT2 = (uint32_t)enCmd;
+                break;
+            case DcuIntLs1:
+                DCUx->INTSEL_f.INT_LS1 = (uint32_t)enCmd;
+                break;
+            case DcuIntEq1:
+                DCUx->INTSEL_f.INT_EQ1 = (uint32_t)enCmd;
+                break;
+            case DcuIntGt1:
+                DCUx->INTSEL_f.INT_GT1 = (uint32_t)enCmd;
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
     }
 
     return enRet;
@@ -759,21 +734,19 @@ en_result_t DCU_WriteDataByte(M4_DCU_TypeDef *DCUx,
                                 en_dcu_data_register_t enDataReg,
                                 uint8_t u8Data)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_DCU_DATA_REG(enDataReg));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for DCUx pointer */
-    if (!IS_VALID_DCU(DCUx))
+    if (IS_VALID_DCU(DCUx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_DCU_DATA_REG(enDataReg));
+
+        *(uint8_t *)DCU_DATAx(DCUx, enDataReg) = u8Data;
+        enRet = Ok;
     }
 
-    *(uint8_t *)DCU_DATAx(DCUx, enDataReg) = u8Data;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -826,21 +799,19 @@ en_result_t DCU_WriteDataHalfWord(M4_DCU_TypeDef *DCUx,
                                 en_dcu_data_register_t enDataReg,
                                 uint16_t u16Data)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_DCU_DATA_REG(enDataReg));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for DCUx pointer */
-    if (!IS_VALID_DCU(DCUx))
+    if (IS_VALID_DCU(DCUx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_DCU_DATA_REG(enDataReg));
+
+        *(uint16_t *)DCU_DATAx(DCUx, enDataReg) = u16Data;
+        enRet = Ok;
     }
 
-    *(uint16_t *)DCU_DATAx(DCUx, enDataReg) = u16Data;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -893,21 +864,19 @@ en_result_t DCU_WriteDataWord(M4_DCU_TypeDef *DCUx,
                                 en_dcu_data_register_t enDataReg,
                                 uint32_t u32Data)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_DCU_DATA_REG(enDataReg));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for DCUx pointer */
-    if (!IS_VALID_DCU(DCUx))
+    if (IS_VALID_DCU(DCUx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_DCU_DATA_REG(enDataReg));
+
+        *(uint32_t *)DCU_DATAx(DCUx, enDataReg) = u32Data;
+        enRet = Ok;
     }
 
-    *(uint32_t *)DCU_DATAx(DCUx, enDataReg) = u32Data;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -929,19 +898,16 @@ en_result_t DCU_WriteDataWord(M4_DCU_TypeDef *DCUx,
 en_result_t DCU_SetTriggerSrc(M4_DCU_TypeDef *DCUx,
                                 en_event_src_t enTriggerSrc)
 {
-    en_result_t enRet = Ok;
+    en_result_t enRet = ErrorInvalidParameter;
     __IO uint32_t *TRGSELx = DCU_TRGSELx(DCUx);
-
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_TRG_SRC_EVENT(enTriggerSrc));
 
     if (NULL != TRGSELx)
     {
-        *TRGSELx = enTriggerSrc;
-    }
-    else
-    {
-        enRet = ErrorInvalidParameter;
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_TRG_SRC_EVENT(enTriggerSrc));
+
+        *TRGSELx = (uint32_t)enTriggerSrc;
+        enRet = Ok;
     }
 
     return enRet;
@@ -961,7 +927,7 @@ en_result_t DCU_SetTriggerSrc(M4_DCU_TypeDef *DCUx,
  ** \retval NULL                        DCUx is invalid
  **
  ******************************************************************************/
-static __IO uint32_t* DCU_TRGSELx(M4_DCU_TypeDef *DCUx)
+static __IO uint32_t* DCU_TRGSELx(const M4_DCU_TypeDef *DCUx)
 {
     __IO uint32_t *TRGSELx = NULL;
 
@@ -983,6 +949,7 @@ static __IO uint32_t* DCU_TRGSELx(M4_DCU_TypeDef *DCUx)
     }
     else
     {
+        TRGSELx = NULL;
     }
 
     return TRGSELx;

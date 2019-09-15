@@ -1,5 +1,6 @@
 #include "hc32_ddl.h"
 #include "Uart_DMA.h"
+#include "System_InterruptCFG_Def.h"
 uint8_t UART_RXbuff[UART3_DMA_TRNCNT];
 volatile uint8_t flag_Uart_status;
 void USART_RX_TimerOut_Callback(void)

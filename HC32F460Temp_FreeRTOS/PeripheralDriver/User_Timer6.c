@@ -1,4 +1,6 @@
 #include "hc32_ddl.h"
+#include "System_InterruptCFG_Def.h"
+
 uint16_t duty = 500;
 void Timer6_UnderFlow_CallBack(void)
 {

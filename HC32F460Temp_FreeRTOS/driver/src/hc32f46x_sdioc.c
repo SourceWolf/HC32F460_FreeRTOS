@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -246,21 +246,30 @@ typedef struct stc_sdioc_instance_data
 #define IS_VALID_SDIOC_BLKCNT(x)            ((x) != 0u)
 
 /*!< Parameter valid check for SDIOC data block size value. */
-#define IS_VALID_SDIOC_BLKSIZE(x)           (!((x) & 0xF000))
+#define IS_VALID_SDIOC_BLKSIZE(x)           (!((x) & 0xF000ul))
 
 /*!< Parameter valid check for SDIOC command value. */
-#define IS_VALID_SDIOC_CMD_VAL(x)           (!(0xC0 & (x)))
+#define IS_VALID_SDIOC_CMD_VAL(x)           (!(0xC0u & (x)))
+
+/*!< Parameter valid check for buffer address. */
+#define IS_VALID_TRANSFER_BUF_ALIGN(x)      (!((SDIOC_BUF_ALIGN_SIZE-1ul) & ((uint32_t)(x))))
+
+/*!< Parameter valid check for SDIOC command value. */
+#define IS_VALID_TRANSFER_BUF_LEN(x)        (!((SDIOC_BUF_ALIGN_SIZE-1ul) & ((uint32_t)(x))))
 
 /*!< SDIOC unit max count value. */
 #define SDIOC_UNIT_MAX_CNT                  (ARRAY_SZ(m_astcSdiocInstanceDataLut))
 
 /*!< SDIOC default sdclk frequency. */
-#define SDIOC_SDCLK_400K                    (400000u)
+#define SDIOC_SDCLK_400K                    (400000ul)
 
 /*!< Get the specified register address of the specified SDIOC unit */
-#define SDIOC_ARG01(__SDIOCx__)             ((uint32_t)(&__SDIOCx__->ARG0))
-#define SDIOC_BUF01(__SDIOCx__)             ((uint32_t)(&__SDIOCx__->BUF0))
-#define SDIOC_RESPx(__SDIOCx__, RESP_REG)   ((uint32_t)(__SDIOCx__) + (uint32_t)RESP_REG)
+#define SDIOC_ARG01(__SDIOCx__)             ((uint32_t)(&((__SDIOCx__)->ARG0)))
+#define SDIOC_BUF01(__SDIOCx__)             ((uint32_t)(&((__SDIOCx__)->BUF0)))
+#define SDIOC_RESPx(__SDIOCx__, RESP_REG)   ((uint32_t)(&((__SDIOCx__)->RESP0)) + (uint32_t)(RESP_REG))
+
+/* SDIOC buffer align size */
+#define SDIOC_BUF_ALIGN_SIZE                (4ul)
 
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
@@ -271,29 +280,11 @@ typedef struct stc_sdioc_instance_data
  ******************************************************************************/
 static en_sdioc_clk_div_t SdiocGetClkDiv(uint32_t u32Exclk,
                                 uint32_t u32SdiocClkFreq);
-static stc_sdioc_intern_data_t* SdiocGetInternDataPtr(M4_SDIOC_TypeDef *SDIOCx);
+static stc_sdioc_intern_data_t* SdiocGetInternDataPtr(const M4_SDIOC_TypeDef *SDIOCx);
 
 /*******************************************************************************
  * Local variable definitions ('static')
  ******************************************************************************/
-/* Look-up table for all enabled SDIOC instances and internal data */
-static stc_sdioc_instance_data_t m_astcSdiocInstanceDataLut[] =
-{
-    {
-        M4_SDIOC1,
-        {
-            0u,
-            0u,
-        }
-    },
-    {
-        M4_SDIOC2,
-        {
-            0u,
-            0u,
-        }
-    },
-};
 
 /*******************************************************************************
  * Function implementation - global ('extern') and local ('static')
@@ -320,54 +311,57 @@ static stc_sdioc_instance_data_t m_astcSdiocInstanceDataLut[] =
 static en_sdioc_clk_div_t SdiocGetClkDiv(uint32_t u32Exclk,
                                 uint32_t u32ClkFreq)
 {
-    uint32_t u32SdClkDiv = 0;
-    en_sdioc_clk_div_t enClockDiv;
+    uint32_t u32SdClkDiv = 0ul;
+    en_sdioc_clk_div_t enClockDiv = SdiocClkDiv_256;
 
-    u32SdClkDiv = u32Exclk / u32ClkFreq;
-    if (u32Exclk % u32ClkFreq)
+    if(0ul != u32ClkFreq)
     {
-        u32SdClkDiv++;
-    }
+        u32SdClkDiv = u32Exclk / u32ClkFreq;
+        if (u32Exclk % u32ClkFreq)
+        {
+            u32SdClkDiv++;
+        }
 
-    if ((128 < u32SdClkDiv) && (u32SdClkDiv <= 256))
-    {
-         enClockDiv = SdiocClkDiv_256;
-    }
-    else if ((64 < u32SdClkDiv) && (u32SdClkDiv <= 128))
-    {
-         enClockDiv = SdiocClkDiv_128;
-    }
-    else if ((32 < u32SdClkDiv) && (u32SdClkDiv <= 64))
-    {
-         enClockDiv = SdiocClkDiv_64;
-    }
-    else if ((16 < u32SdClkDiv) && (u32SdClkDiv <= 32))
-    {
-         enClockDiv = SdiocClkDiv_32;
-    }
-    else if ((16 < u32SdClkDiv) && (u32SdClkDiv <= 32))
-    {
-         enClockDiv = SdiocClkDiv_32;
-    }
-    else if ((8 < u32SdClkDiv) && (u32SdClkDiv <= 16))
-    {
-         enClockDiv = SdiocClkDiv_16;
-    }
-    else if ((4 < u32SdClkDiv) && (u32SdClkDiv <= 8))
-    {
-         enClockDiv = SdiocClkDiv_8;
-    }
-    else if ((2 < u32SdClkDiv) && (u32SdClkDiv <= 4))
-    {
-         enClockDiv = SdiocClkDiv_4;
-    }
-    else if ((1 < u32SdClkDiv) && (u32SdClkDiv <= 2))
-    {
-        enClockDiv = SdiocClkDiv_2;
-    }
-    else
-    {
-        enClockDiv = SdiocClkDiv_1;
+        if ((128ul < u32SdClkDiv) && (u32SdClkDiv <= 256ul))
+        {
+             enClockDiv = SdiocClkDiv_256;
+        }
+        else if ((64ul < u32SdClkDiv) && (u32SdClkDiv <= 128ul))
+        {
+             enClockDiv = SdiocClkDiv_128;
+        }
+        else if ((32ul < u32SdClkDiv) && (u32SdClkDiv <= 64ul))
+        {
+             enClockDiv = SdiocClkDiv_64;
+        }
+        else if ((16ul < u32SdClkDiv) && (u32SdClkDiv <= 32ul))
+        {
+             enClockDiv = SdiocClkDiv_32;
+        }
+        else if ((16ul < u32SdClkDiv) && (u32SdClkDiv <= 32ul))
+        {
+             enClockDiv = SdiocClkDiv_32;
+        }
+        else if ((8ul < u32SdClkDiv) && (u32SdClkDiv <= 16ul))
+        {
+             enClockDiv = SdiocClkDiv_16;
+        }
+        else if ((4ul < u32SdClkDiv) && (u32SdClkDiv <= 8ul))
+        {
+             enClockDiv = SdiocClkDiv_8;
+        }
+        else if ((2ul < u32SdClkDiv) && (u32SdClkDiv <= 4ul))
+        {
+             enClockDiv = SdiocClkDiv_4;
+        }
+        else if ((1ul < u32SdClkDiv) && (u32SdClkDiv <= 2ul))
+        {
+            enClockDiv = SdiocClkDiv_2;
+        }
+        else
+        {
+            enClockDiv = SdiocClkDiv_1;
+        }
     }
 
     return enClockDiv;
@@ -384,22 +378,28 @@ static en_sdioc_clk_div_t SdiocGetClkDiv(uint32_t u32Exclk,
  ** \retval Pointer to internal data or NULL if instance is not enabled (or not known)
  **
  ******************************************************************************/
-static stc_sdioc_intern_data_t* SdiocGetInternDataPtr(M4_SDIOC_TypeDef *SDIOCx)
+static stc_sdioc_intern_data_t* SdiocGetInternDataPtr(const M4_SDIOC_TypeDef *SDIOCx)
 {
     uint8_t i;
+    stc_sdioc_intern_data_t *pstcInternData = NULL;
+    static stc_sdioc_instance_data_t m_astcSdiocInstanceDataLut[2];
 
-    for (i = 0u; i < SDIOC_UNIT_MAX_CNT; i++)
+    m_astcSdiocInstanceDataLut[0].SDIOCx = M4_SDIOC1;
+    m_astcSdiocInstanceDataLut[1].SDIOCx = M4_SDIOC2;
+
+    if (NULL != SDIOCx)
     {
-        if (SDIOCx == m_astcSdiocInstanceDataLut[i].SDIOCx)
+        for (i = 0u; i < SDIOC_UNIT_MAX_CNT; i++)
         {
-            return &m_astcSdiocInstanceDataLut[i].stcInternData;
-        }
-        else
-        {
+            if (SDIOCx == m_astcSdiocInstanceDataLut[i].SDIOCx)
+            {
+                pstcInternData = &m_astcSdiocInstanceDataLut[i].stcInternData;
+                break;
+            }
         }
     }
 
-    return NULL;
+    return pstcInternData;
 }
 
 /**
@@ -418,154 +418,152 @@ void SDIOC_IrqHandler(M4_SDIOC_TypeDef *SDIOCx)
     stc_sdioc_intern_data_t *pstcSdiocInternData = SdiocGetInternDataPtr(SDIOCx);
 
     /* Check for NULL pointer */
-    if (NULL == pstcSdiocInternData)
+    if (NULL != pstcSdiocInternData)
     {
-        return;
-    }
-
-    /**************** Normal interrupt handler ****************/
-    if (1u == SDIOCx->NORINTST_f.CC)  /* Command complete */
-    {
-        SDIOCx->NORINTST_f.CC = 1u;  /* Clear interrupt flag */
-        if (NULL != pstcSdiocInternData->stcNormalIrqCb.pfnCommandCompleteIrqCb)
+        /**************** Normal interrupt handler ****************/
+        if (1u == SDIOCx->NORINTST_f.CC)  /* Command complete */
         {
-            pstcSdiocInternData->stcNormalIrqCb.pfnCommandCompleteIrqCb();
+            SDIOCx->NORINTST_f.CC = 1u;  /* Clear interrupt flag */
+            if (NULL != pstcSdiocInternData->stcNormalIrqCb.pfnCommandCompleteIrqCb)
+            {
+                pstcSdiocInternData->stcNormalIrqCb.pfnCommandCompleteIrqCb();
+            }
         }
-    }
 
-    if (1u == SDIOCx->NORINTST_f.TC)  /* Transfer complete */
-    {
-        SDIOCx->NORINTST_f.TC = 1u;  /* Clear interrupt flag */
-        if (NULL != pstcSdiocInternData->stcNormalIrqCb.pfnTransferCompleteIrqCb)
+        if (1u == SDIOCx->NORINTST_f.TC)  /* Transfer complete */
         {
-            pstcSdiocInternData->stcNormalIrqCb.pfnTransferCompleteIrqCb();
+            SDIOCx->NORINTST_f.TC = 1u;  /* Clear interrupt flag */
+            if (NULL != pstcSdiocInternData->stcNormalIrqCb.pfnTransferCompleteIrqCb)
+            {
+                pstcSdiocInternData->stcNormalIrqCb.pfnTransferCompleteIrqCb();
+            }
         }
-    }
 
-    if (1u == SDIOCx->NORINTST_f.BGE)  /* Block gap event */
-    {
-        SDIOCx->NORINTST_f.BGE = 1u;  /* Clear interrupt flag */
-        if (NULL != pstcSdiocInternData->stcNormalIrqCb.pfnBlockGapIrqCb)
+        if (1u == SDIOCx->NORINTST_f.BGE)  /* Block gap event */
         {
-            pstcSdiocInternData->stcNormalIrqCb.pfnBlockGapIrqCb();
+            SDIOCx->NORINTST_f.BGE = 1u;  /* Clear interrupt flag */
+            if (NULL != pstcSdiocInternData->stcNormalIrqCb.pfnBlockGapIrqCb)
+            {
+                pstcSdiocInternData->stcNormalIrqCb.pfnBlockGapIrqCb();
+            }
         }
-    }
 
-    if (1u == SDIOCx->NORINTST_f.BWR)  /* Buffer write ready */
-    {
-        SDIOCx->NORINTST_f.BWR = 1u;  /* Clear interrupt flag */
-        if (NULL != pstcSdiocInternData->stcNormalIrqCb.pfnBufferWriteReadyIrqCb)
+        if (1u == SDIOCx->NORINTST_f.BWR)  /* Buffer write ready */
         {
-            pstcSdiocInternData->stcNormalIrqCb.pfnBufferWriteReadyIrqCb();
+            SDIOCx->NORINTST_f.BWR = 1u;  /* Clear interrupt flag */
+            if (NULL != pstcSdiocInternData->stcNormalIrqCb.pfnBufferWriteReadyIrqCb)
+            {
+                pstcSdiocInternData->stcNormalIrqCb.pfnBufferWriteReadyIrqCb();
+            }
         }
-    }
 
-    if (1u == SDIOCx->NORINTST_f.BRR)  /* Buffer read ready */
-    {
-        SDIOCx->NORINTST_f.BRR = 1u;  /* Clear interrupt flag */
-        if (NULL != pstcSdiocInternData->stcNormalIrqCb.pfnBufferReadReadyIrqCb)
+        if (1u == SDIOCx->NORINTST_f.BRR)  /* Buffer read ready */
         {
-            pstcSdiocInternData->stcNormalIrqCb.pfnBufferReadReadyIrqCb();
+            SDIOCx->NORINTST_f.BRR = 1u;  /* Clear interrupt flag */
+            if (NULL != pstcSdiocInternData->stcNormalIrqCb.pfnBufferReadReadyIrqCb)
+            {
+                pstcSdiocInternData->stcNormalIrqCb.pfnBufferReadReadyIrqCb();
+            }
         }
-    }
 
-    if (1u == SDIOCx->NORINTST_f.CIST)  /* Card insertion */
-    {
-        SDIOCx->NORINTST_f.CIST = 1u;  /* Clear interrupt flag */
-        if (NULL != pstcSdiocInternData->stcNormalIrqCb.pfnCardInsertIrqCb)
+        if (1u == SDIOCx->NORINTST_f.CIST)  /* Card insertion */
         {
-            pstcSdiocInternData->stcNormalIrqCb.pfnCardInsertIrqCb();
+            SDIOCx->NORINTST_f.CIST = 1u;  /* Clear interrupt flag */
+            if (NULL != pstcSdiocInternData->stcNormalIrqCb.pfnCardInsertIrqCb)
+            {
+                pstcSdiocInternData->stcNormalIrqCb.pfnCardInsertIrqCb();
+            }
         }
-    }
 
-    if (1u == SDIOCx->NORINTST_f.CRM)  /* Card removal */
-    {
-        SDIOCx->NORINTST_f.CRM = 1u;  /* Clear interrupt flag */
-        if (NULL != pstcSdiocInternData->stcNormalIrqCb.pfnCardRemovalIrqCb)
+        if (1u == SDIOCx->NORINTST_f.CRM)  /* Card removal */
         {
-            pstcSdiocInternData->stcNormalIrqCb.pfnCardRemovalIrqCb();
+            SDIOCx->NORINTST_f.CRM = 1u;  /* Clear interrupt flag */
+            if (NULL != pstcSdiocInternData->stcNormalIrqCb.pfnCardRemovalIrqCb)
+            {
+                pstcSdiocInternData->stcNormalIrqCb.pfnCardRemovalIrqCb();
+            }
         }
-    }
 
-    if (1u == SDIOCx->NORINTST_f.CINT)  /* Card interrupt */
-    {
-        SDIOCx->NORINTST_f.CINT = 1u;  /* Clear interrupt flag */
-        if (NULL != pstcSdiocInternData->stcNormalIrqCb.pfnCardIrqCb)
+        if (1u == SDIOCx->NORINTST_f.CINT)  /* Card interrupt */
         {
-            pstcSdiocInternData->stcNormalIrqCb.pfnCardIrqCb();
+            SDIOCx->NORINTST_f.CINT = 1u;  /* Clear interrupt flag */
+            if (NULL != pstcSdiocInternData->stcNormalIrqCb.pfnCardIrqCb)
+            {
+                pstcSdiocInternData->stcNormalIrqCb.pfnCardIrqCb();
+            }
         }
-    }
 
-    /**************** Error interrupt handler ****************/
-    if (1u == SDIOCx->ERRINTST_f.CTOE)  /* Command timeout error */
-    {
-        SDIOCx->ERRINTST_f.CTOE = 1u;  /* Clear interrupt flag */
-        if (NULL != pstcSdiocInternData->stcErrorIrqCb.pfnCmdTimeoutErrIrqCb)
+        /**************** Error interrupt handler ****************/
+        if (1u == SDIOCx->ERRINTST_f.CTOE)  /* Command timeout error */
         {
-            pstcSdiocInternData->stcErrorIrqCb.pfnCmdTimeoutErrIrqCb();
+            SDIOCx->ERRINTST_f.CTOE = 1u;  /* Clear interrupt flag */
+            if (NULL != pstcSdiocInternData->stcErrorIrqCb.pfnCmdTimeoutErrIrqCb)
+            {
+                pstcSdiocInternData->stcErrorIrqCb.pfnCmdTimeoutErrIrqCb();
+            }
         }
-    }
 
-    if (1u == SDIOCx->ERRINTST_f.CCE)  /* Command CRC error */
-    {
-        SDIOCx->ERRINTST_f.CCE = 1u;  /* Clear interrupt flag */
-        if (NULL != pstcSdiocInternData->stcErrorIrqCb.pfnCmdCrcErrIrqCb)
+        if (1u == SDIOCx->ERRINTST_f.CCE)  /* Command CRC error */
         {
-            pstcSdiocInternData->stcErrorIrqCb.pfnCmdCrcErrIrqCb();
+            SDIOCx->ERRINTST_f.CCE = 1u;  /* Clear interrupt flag */
+            if (NULL != pstcSdiocInternData->stcErrorIrqCb.pfnCmdCrcErrIrqCb)
+            {
+                pstcSdiocInternData->stcErrorIrqCb.pfnCmdCrcErrIrqCb();
+            }
         }
-    }
 
-    if (1u == SDIOCx->ERRINTST_f.CEBE)  /* Command end bit error */
-    {
-        SDIOCx->ERRINTST_f.CEBE = 1u;  /* Clear interrupt flag */
-        if (NULL != pstcSdiocInternData->stcErrorIrqCb.pfnCmdEndBitErrIrqCb)
+        if (1u == SDIOCx->ERRINTST_f.CEBE)  /* Command end bit error */
         {
-            pstcSdiocInternData->stcErrorIrqCb.pfnCmdEndBitErrIrqCb();
+            SDIOCx->ERRINTST_f.CEBE = 1u;  /* Clear interrupt flag */
+            if (NULL != pstcSdiocInternData->stcErrorIrqCb.pfnCmdEndBitErrIrqCb)
+            {
+                pstcSdiocInternData->stcErrorIrqCb.pfnCmdEndBitErrIrqCb();
+            }
         }
-    }
 
-    if (1u == SDIOCx->ERRINTST_f.CIE)  /* Command index error */
-    {
-        SDIOCx->ERRINTST_f.CIE = 1u;  /* Clear interrupt flag */
-        if (NULL != pstcSdiocInternData->stcErrorIrqCb.pfnCmdIndexErrIrqCb)
+        if (1u == SDIOCx->ERRINTST_f.CIE)  /* Command index error */
         {
-            pstcSdiocInternData->stcErrorIrqCb.pfnCmdIndexErrIrqCb();
+            SDIOCx->ERRINTST_f.CIE = 1u;  /* Clear interrupt flag */
+            if (NULL != pstcSdiocInternData->stcErrorIrqCb.pfnCmdIndexErrIrqCb)
+            {
+                pstcSdiocInternData->stcErrorIrqCb.pfnCmdIndexErrIrqCb();
+            }
         }
-    }
 
-    if (1u == SDIOCx->ERRINTST_f.DTOE)  /* Data timeout error */
-    {
-        SDIOCx->ERRINTST_f.DTOE = 1u;  /* Clear interrupt flag */
-        if (NULL != pstcSdiocInternData->stcErrorIrqCb.pfnDataTimeoutErrIrqCb)
+        if (1u == SDIOCx->ERRINTST_f.DTOE)  /* Data timeout error */
         {
-            pstcSdiocInternData->stcErrorIrqCb.pfnDataTimeoutErrIrqCb();
+            SDIOCx->ERRINTST_f.DTOE = 1u;  /* Clear interrupt flag */
+            if (NULL != pstcSdiocInternData->stcErrorIrqCb.pfnDataTimeoutErrIrqCb)
+            {
+                pstcSdiocInternData->stcErrorIrqCb.pfnDataTimeoutErrIrqCb();
+            }
         }
-    }
 
-    if (1u == SDIOCx->ERRINTST_f.DEBE)  /* Data end bit error */
-    {
-        SDIOCx->ERRINTST_f.DEBE = 1u;  /* Clear interrupt flag */
-        if (NULL != pstcSdiocInternData->stcErrorIrqCb.pfnDataEndBitErrIrqCb)
+        if (1u == SDIOCx->ERRINTST_f.DEBE)  /* Data end bit error */
         {
-            pstcSdiocInternData->stcErrorIrqCb.pfnDataEndBitErrIrqCb();
+            SDIOCx->ERRINTST_f.DEBE = 1u;  /* Clear interrupt flag */
+            if (NULL != pstcSdiocInternData->stcErrorIrqCb.pfnDataEndBitErrIrqCb)
+            {
+                pstcSdiocInternData->stcErrorIrqCb.pfnDataEndBitErrIrqCb();
+            }
         }
-    }
 
-    if (1u == SDIOCx->ERRINTST_f.DCE)  /* Data CRC error */
-    {
-        SDIOCx->ERRINTST_f.DCE = 1u;  /* Clear interrupt flag */
-        if (NULL != pstcSdiocInternData->stcErrorIrqCb.pfnDataCrcErrIrqCb)
+        if (1u == SDIOCx->ERRINTST_f.DCE)  /* Data CRC error */
         {
-            pstcSdiocInternData->stcErrorIrqCb.pfnDataCrcErrIrqCb();
+            SDIOCx->ERRINTST_f.DCE = 1u;  /* Clear interrupt flag */
+            if (NULL != pstcSdiocInternData->stcErrorIrqCb.pfnDataCrcErrIrqCb)
+            {
+                pstcSdiocInternData->stcErrorIrqCb.pfnDataCrcErrIrqCb();
+            }
         }
-    }
 
-    if (1u == SDIOCx->ERRINTST_f.ACE)  /* Auto CMD12 error */
-    {
-        SDIOCx->ERRINTST_f.ACE = 1u;  /* Clear interrupt flag */
-        if (NULL != pstcSdiocInternData->stcErrorIrqCb.pfnAutoCmdErrIrqCb)
+        if (1u == SDIOCx->ERRINTST_f.ACE)  /* Auto CMD12 error */
         {
-            pstcSdiocInternData->stcErrorIrqCb.pfnAutoCmdErrIrqCb();
+            SDIOCx->ERRINTST_f.ACE = 1u;  /* Clear interrupt flag */
+            if (NULL != pstcSdiocInternData->stcErrorIrqCb.pfnAutoCmdErrIrqCb)
+            {
+                pstcSdiocInternData->stcErrorIrqCb.pfnAutoCmdErrIrqCb();
+            }
         }
     }
 }
@@ -581,6 +579,7 @@ void SDIOC_IrqHandler(M4_SDIOC_TypeDef *SDIOCx)
  ** \arg This parameter detail refer @ref stc_sdioc_init_t
  **
  ** \retval Ok                          SDIOC initialized normally
+ ** \retval ErrorTimeout                SDIOCx reset timeout
  ** \retval ErrorInvalidParameter       If one of following cases matches:
  **                                     - SDIOCx is invalid
  **                                     - pstcInitCfg == NULL
@@ -590,103 +589,91 @@ void SDIOC_IrqHandler(M4_SDIOC_TypeDef *SDIOCx)
 en_result_t SDIOC_Init(M4_SDIOC_TypeDef *SDIOCx,
                                 const stc_sdioc_init_t *pstcInitCfg)
 {
-    uint32_t u32Exclk = 0u;
+    __IO uint32_t i = 0ul;
+    uint32_t u32Exclk = 0ul;
+    uint32_t u32Cnt = SystemCoreClock / 100ul;
+    en_result_t enRet = ErrorInvalidParameter;
     stc_sdioc_intern_data_t *pstcSdiocInternData = NULL;
-
-    /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
-    {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
 
     /* Get pointer to internal data structure. */
     pstcSdiocInternData = SdiocGetInternDataPtr(SDIOCx);
-    if (NULL == pstcSdiocInternData)  /* Check for instance available or not */
+    if (NULL != pstcSdiocInternData)  /* Check for instance available or not */
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
-
-    /* Reset all */
-    SDIOCx->SFTRST_f.RSTA = 1u;
-    while (0u != SDIOCx->SFTRST_f.RSTA); /* Wait until reset finish */
-
-    /* Get EXCLK frequency */
-    u32Exclk = SystemCoreClock / (1u << M4_SYSREG->CMU_SCFGR_f.EXCKS);
-
-    SDIOCx->CLKCON_f.FS = SdiocGetClkDiv(u32Exclk, SdiocClk400K);
-    SDIOCx->CLKCON_f.CE = 1u;
-    SDIOCx->CLKCON_f.ICE = 1u;
-    SDIOCx->PWRCON_f.PWON = 1u;  /* Power on */
-
-    /* Enable all status */
-    SDIOCx->ERRINTST   = 0x017Fu;  /* Clear Error interrupt status */
-    SDIOCx->ERRINTSTEN = 0x017Fu;  /* Enable Error interrupt status */
-    SDIOCx->NORINTST   = 0x00F7u;  /* Clear Normal interrupt status */
-    SDIOCx->NORINTSTEN = 0x01F7u;  /* Enable Normal interrupt status */
-
-    /* Enable normal interrupt signal */
-    if (NULL != pstcInitCfg)
-    {
-        if (NULL != pstcInitCfg->pstcNormalIrqEn)
+        /* Reset all */
+        SDIOCx->SFTRST_f.RSTA = 1u;
+        while (0u != SDIOCx->SFTRST_f.RSTA)  /* Wait until reset finish */
         {
-            SDIOCx->NORINTSGEN = pstcInitCfg->pstcNormalIrqEn->u16NormalIntsgEn;
+            if (i++ > u32Cnt)
+            {
+                break;
+            }
+        }
+
+        if (i < u32Cnt)
+        {
+            /* Get EXCLK frequency */
+            u32Exclk = SystemCoreClock / (1ul << M4_SYSREG->CMU_SCFGR_f.EXCKS);
+
+            SDIOCx->CLKCON_f.FS = SdiocGetClkDiv(u32Exclk, SdiocClk400K);
+            SDIOCx->CLKCON_f.CE = (uint16_t)1u;
+            SDIOCx->CLKCON_f.ICE = (uint16_t)1u;
+            SDIOCx->PWRCON_f.PWON = (uint8_t)1u;  /* Power on */
+
+            /* Enable all status */
+            SDIOCx->ERRINTST   = (uint16_t)0x017Fu;  /* Clear Error interrupt status */
+            SDIOCx->ERRINTSTEN = (uint16_t)0x017Fu;  /* Enable Error interrupt status */
+            SDIOCx->NORINTST   = (uint16_t)0x00F7u;  /* Clear Normal interrupt status */
+            SDIOCx->NORINTSTEN = (uint16_t)0x01F7u;  /* Enable Normal interrupt status */
+
+            /* Enable normal interrupt signal */
+            if (NULL != pstcInitCfg)
+            {
+                if (NULL != pstcInitCfg->pstcNormalIrqEn)
+                {
+                    SDIOCx->NORINTSGEN = pstcInitCfg->pstcNormalIrqEn->u16NormalIntsgEn;
+                }
+
+                /* Set normal interrupt callback functions */
+                if (NULL != pstcInitCfg->pstcNormalIrqCb)
+                {
+                    pstcSdiocInternData->stcNormalIrqCb.pfnCommandCompleteIrqCb  = pstcInitCfg->pstcNormalIrqCb->pfnCommandCompleteIrqCb;
+                    pstcSdiocInternData->stcNormalIrqCb.pfnTransferCompleteIrqCb = pstcInitCfg->pstcNormalIrqCb->pfnTransferCompleteIrqCb;
+                    pstcSdiocInternData->stcNormalIrqCb.pfnBlockGapIrqCb         = pstcInitCfg->pstcNormalIrqCb->pfnBlockGapIrqCb;
+                    pstcSdiocInternData->stcNormalIrqCb.pfnBufferWriteReadyIrqCb = pstcInitCfg->pstcNormalIrqCb->pfnBufferWriteReadyIrqCb;
+                    pstcSdiocInternData->stcNormalIrqCb.pfnBufferReadReadyIrqCb  = pstcInitCfg->pstcNormalIrqCb->pfnBufferReadReadyIrqCb;
+                    pstcSdiocInternData->stcNormalIrqCb.pfnCardInsertIrqCb       = pstcInitCfg->pstcNormalIrqCb->pfnCardInsertIrqCb;
+                    pstcSdiocInternData->stcNormalIrqCb.pfnCardRemovalIrqCb      = pstcInitCfg->pstcNormalIrqCb->pfnCardRemovalIrqCb;
+                    pstcSdiocInternData->stcNormalIrqCb.pfnCardIrqCb             = pstcInitCfg->pstcNormalIrqCb->pfnCardIrqCb;
+                }
+
+                /* Enable error interrupt signal */
+                if (NULL != pstcInitCfg->pstcErrorIrqEn)
+                {
+                    SDIOCx->ERRINTSGEN = pstcInitCfg->pstcErrorIrqEn->u16ErrorIntsgEn;
+                }
+
+                /* Set error interrupt callback functions */
+                if (NULL != pstcInitCfg->pstcErrorIrqCb)
+                {
+                    pstcSdiocInternData->stcErrorIrqCb.pfnCmdTimeoutErrIrqCb  = pstcInitCfg->pstcErrorIrqCb->pfnCmdTimeoutErrIrqCb;
+                    pstcSdiocInternData->stcErrorIrqCb.pfnCmdCrcErrIrqCb      = pstcInitCfg->pstcErrorIrqCb->pfnCmdCrcErrIrqCb;
+                    pstcSdiocInternData->stcErrorIrqCb.pfnCmdEndBitErrIrqCb   = pstcInitCfg->pstcErrorIrqCb->pfnCmdEndBitErrIrqCb;
+                    pstcSdiocInternData->stcErrorIrqCb.pfnCmdIndexErrIrqCb    = pstcInitCfg->pstcErrorIrqCb->pfnCmdIndexErrIrqCb;
+                    pstcSdiocInternData->stcErrorIrqCb.pfnDataTimeoutErrIrqCb = pstcInitCfg->pstcErrorIrqCb->pfnDataTimeoutErrIrqCb;
+                    pstcSdiocInternData->stcErrorIrqCb.pfnDataEndBitErrIrqCb  = pstcInitCfg->pstcErrorIrqCb->pfnDataEndBitErrIrqCb;
+                    pstcSdiocInternData->stcErrorIrqCb.pfnDataCrcErrIrqCb     = pstcInitCfg->pstcErrorIrqCb->pfnDataCrcErrIrqCb;
+                    pstcSdiocInternData->stcErrorIrqCb.pfnAutoCmdErrIrqCb     = pstcInitCfg->pstcErrorIrqCb->pfnAutoCmdErrIrqCb;
+                }
+            }
+            enRet = Ok;
         }
         else
         {
-        }
-
-        /* Set normal interrupt callback functions */
-        if (NULL != pstcInitCfg->pstcNormalIrqCb)
-        {
-            pstcSdiocInternData->stcNormalIrqCb.pfnCommandCompleteIrqCb  = pstcInitCfg->pstcNormalIrqCb->pfnCommandCompleteIrqCb;
-            pstcSdiocInternData->stcNormalIrqCb.pfnTransferCompleteIrqCb = pstcInitCfg->pstcNormalIrqCb->pfnTransferCompleteIrqCb;
-            pstcSdiocInternData->stcNormalIrqCb.pfnBlockGapIrqCb         = pstcInitCfg->pstcNormalIrqCb->pfnBlockGapIrqCb;
-            pstcSdiocInternData->stcNormalIrqCb.pfnBufferWriteReadyIrqCb = pstcInitCfg->pstcNormalIrqCb->pfnBufferWriteReadyIrqCb;
-            pstcSdiocInternData->stcNormalIrqCb.pfnBufferReadReadyIrqCb  = pstcInitCfg->pstcNormalIrqCb->pfnBufferReadReadyIrqCb;
-            pstcSdiocInternData->stcNormalIrqCb.pfnCardInsertIrqCb       = pstcInitCfg->pstcNormalIrqCb->pfnCardInsertIrqCb;
-            pstcSdiocInternData->stcNormalIrqCb.pfnCardRemovalIrqCb      = pstcInitCfg->pstcNormalIrqCb->pfnCardRemovalIrqCb;
-            pstcSdiocInternData->stcNormalIrqCb.pfnCardIrqCb             = pstcInitCfg->pstcNormalIrqCb->pfnCardIrqCb;
-        }
-        else
-        {
-        }
-
-        /* Enable error interrupt signal */
-        if (NULL != pstcInitCfg->pstcErrorIrqEn)
-        {
-            SDIOCx->ERRINTSGEN = pstcInitCfg->pstcErrorIrqEn->u16ErrorIntsgEn;
-        }
-        else
-        {
-        }
-
-        /* Set error interrupt callback functions */
-        if (NULL != pstcInitCfg->pstcErrorIrqCb)
-        {
-            pstcSdiocInternData->stcErrorIrqCb.pfnCmdTimeoutErrIrqCb  = pstcInitCfg->pstcErrorIrqCb->pfnCmdTimeoutErrIrqCb;
-            pstcSdiocInternData->stcErrorIrqCb.pfnCmdCrcErrIrqCb      = pstcInitCfg->pstcErrorIrqCb->pfnCmdCrcErrIrqCb;
-            pstcSdiocInternData->stcErrorIrqCb.pfnCmdEndBitErrIrqCb   = pstcInitCfg->pstcErrorIrqCb->pfnCmdEndBitErrIrqCb;
-            pstcSdiocInternData->stcErrorIrqCb.pfnCmdIndexErrIrqCb    = pstcInitCfg->pstcErrorIrqCb->pfnCmdIndexErrIrqCb;
-            pstcSdiocInternData->stcErrorIrqCb.pfnDataTimeoutErrIrqCb = pstcInitCfg->pstcErrorIrqCb->pfnDataTimeoutErrIrqCb;
-            pstcSdiocInternData->stcErrorIrqCb.pfnDataEndBitErrIrqCb  = pstcInitCfg->pstcErrorIrqCb->pfnDataEndBitErrIrqCb;
-            pstcSdiocInternData->stcErrorIrqCb.pfnDataCrcErrIrqCb     = pstcInitCfg->pstcErrorIrqCb->pfnDataCrcErrIrqCb;
-            pstcSdiocInternData->stcErrorIrqCb.pfnAutoCmdErrIrqCb     = pstcInitCfg->pstcErrorIrqCb->pfnAutoCmdErrIrqCb;
-        }
-        else
-        {
+            enRet = ErrorTimeout;
         }
     }
-    else
-    {
-    }
 
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -698,54 +685,61 @@ en_result_t SDIOC_Init(M4_SDIOC_TypeDef *SDIOCx,
  ** \arg M4_SDIOC2                      SDIOC unit 2 instance register base
  **
  ** \retval Ok                          De-Initialize successfully.
+ ** \retval ErrorTimeout                SDIOCx reset timeout.
  ** \retval ErrorInvalidParameter       SDIOCx is invalid.
  **
  ******************************************************************************/
 en_result_t SDIOC_DeInit(M4_SDIOC_TypeDef *SDIOCx)
 {
+    __IO uint32_t i = 0ul;
+    uint32_t u32Cnt = SystemCoreClock / 100ul;
+    en_result_t enRet = ErrorInvalidParameter;
     stc_sdioc_intern_data_t *pstcSdiocInternData = NULL;
-
-    /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
-    {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
-    }
 
     /* Get pointer to internal data structure. */
     pstcSdiocInternData = SdiocGetInternDataPtr(SDIOCx);
-    if (NULL == pstcSdiocInternData)  /* Check for instance available or not */
+    if (NULL != pstcSdiocInternData)  /* Check for instance available or not */
     {
-        return ErrorInvalidParameter;
+        /* Reset all */
+        SDIOCx->SFTRST_f.RSTA = 1u;
+        while (0u != SDIOCx->SFTRST_f.RSTA)  /* Wait until reset finish */
+        {
+            if (i++ > u32Cnt)
+            {
+                break;
+            }
+        }
+
+        if (i < u32Cnt)
+        {
+            /* Set normal interrupt callback functions */
+            pstcSdiocInternData->stcNormalIrqCb.pfnCommandCompleteIrqCb  = NULL;
+            pstcSdiocInternData->stcNormalIrqCb.pfnTransferCompleteIrqCb = NULL;
+            pstcSdiocInternData->stcNormalIrqCb.pfnBlockGapIrqCb         = NULL;
+            pstcSdiocInternData->stcNormalIrqCb.pfnBufferWriteReadyIrqCb = NULL;
+            pstcSdiocInternData->stcNormalIrqCb.pfnBufferReadReadyIrqCb  = NULL;
+            pstcSdiocInternData->stcNormalIrqCb.pfnCardInsertIrqCb       = NULL;
+            pstcSdiocInternData->stcNormalIrqCb.pfnCardRemovalIrqCb      = NULL;
+            pstcSdiocInternData->stcNormalIrqCb.pfnCardIrqCb             = NULL;
+
+            /* Set error interrupt callback functions */
+            pstcSdiocInternData->stcErrorIrqCb.pfnCmdTimeoutErrIrqCb  = NULL;
+            pstcSdiocInternData->stcErrorIrqCb.pfnCmdCrcErrIrqCb      = NULL;
+            pstcSdiocInternData->stcErrorIrqCb.pfnCmdEndBitErrIrqCb   = NULL;
+            pstcSdiocInternData->stcErrorIrqCb.pfnCmdIndexErrIrqCb    = NULL;
+            pstcSdiocInternData->stcErrorIrqCb.pfnDataTimeoutErrIrqCb = NULL;
+            pstcSdiocInternData->stcErrorIrqCb.pfnDataEndBitErrIrqCb  = NULL;
+            pstcSdiocInternData->stcErrorIrqCb.pfnDataCrcErrIrqCb     = NULL;
+            pstcSdiocInternData->stcErrorIrqCb.pfnAutoCmdErrIrqCb     = NULL;
+            enRet = Ok;
+        }
+        else
+        {
+            enRet = ErrorTimeout;
+        }
     }
 
-    /* Reset all */
-    SDIOCx->SFTRST_f.RSTA = 1u;
-    while (0u != SDIOCx->SFTRST_f.RSTA); /* Wait until reset finish */
-
-    /* Set normal interrupt callback functions */
-    pstcSdiocInternData->stcNormalIrqCb.pfnCommandCompleteIrqCb  = NULL;
-    pstcSdiocInternData->stcNormalIrqCb.pfnTransferCompleteIrqCb = NULL;
-    pstcSdiocInternData->stcNormalIrqCb.pfnBlockGapIrqCb         = NULL;
-    pstcSdiocInternData->stcNormalIrqCb.pfnBufferWriteReadyIrqCb = NULL;
-    pstcSdiocInternData->stcNormalIrqCb.pfnBufferReadReadyIrqCb  = NULL;
-    pstcSdiocInternData->stcNormalIrqCb.pfnCardInsertIrqCb       = NULL;
-    pstcSdiocInternData->stcNormalIrqCb.pfnCardRemovalIrqCb      = NULL;
-    pstcSdiocInternData->stcNormalIrqCb.pfnCardIrqCb             = NULL;
-
-    /* Set error interrupt callback functions */
-    pstcSdiocInternData->stcErrorIrqCb.pfnCmdTimeoutErrIrqCb  = NULL;
-    pstcSdiocInternData->stcErrorIrqCb.pfnCmdCrcErrIrqCb      = NULL;
-    pstcSdiocInternData->stcErrorIrqCb.pfnCmdEndBitErrIrqCb   = NULL;
-    pstcSdiocInternData->stcErrorIrqCb.pfnCmdIndexErrIrqCb    = NULL;
-    pstcSdiocInternData->stcErrorIrqCb.pfnDataTimeoutErrIrqCb = NULL;
-    pstcSdiocInternData->stcErrorIrqCb.pfnDataEndBitErrIrqCb  = NULL;
-    pstcSdiocInternData->stcErrorIrqCb.pfnDataCrcErrIrqCb     = NULL;
-    pstcSdiocInternData->stcErrorIrqCb.pfnAutoCmdErrIrqCb     = NULL;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -769,68 +763,73 @@ en_result_t SDIOC_DeInit(M4_SDIOC_TypeDef *SDIOCx)
 en_result_t SDIOC_SendCommand(M4_SDIOC_TypeDef *SDIOCx,
                                 const stc_sdioc_cmd_cfg_t *pstcCmdCfg)
 {
+    uint32_t u32Addr;
     stc_sdioc_cmd_field_t stcCmdField;
-
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_SDIOC_CMD_VAL(pstcCmdCfg->u8CmdIndex));
-    DDL_ASSERT(IS_VALID_SDIOC_CMD_TYPE(pstcCmdCfg->enCmdType));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCmdCfg->enDataPresentEnable));
-    DDL_ASSERT(IS_VALID_SDIOC_RESP_TYPE_NAME(pstcCmdCfg->enRspIndex));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for NULL pointer */
-    if ((!IS_VALID_SDIOC(SDIOCx)) || (NULL == pstcCmdCfg))
+    if ((IS_VALID_SDIOC(SDIOCx)) && (NULL != pstcCmdCfg))
     {
-        return ErrorInvalidParameter;
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_SDIOC_CMD_VAL(pstcCmdCfg->u8CmdIndex));
+        DDL_ASSERT(IS_VALID_SDIOC_CMD_TYPE(pstcCmdCfg->enCmdType));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCmdCfg->enDataPresentEnable));
+        DDL_ASSERT(IS_VALID_SDIOC_RESP_TYPE_NAME(pstcCmdCfg->enRspIndex));
+
+        enRet = Ok;
+        switch (pstcCmdCfg->enRspIndex)
+        {
+            case SdiocCmdNoRsp:
+                stcCmdField.RESTYP = SdiocResponseNoneBit;
+                stcCmdField.CCE = 0u;
+                stcCmdField.ICE = 0u;
+                break;
+            case SdiocCmdRspR2:
+                stcCmdField.RESTYP = SdiocResponse136Bit;
+                stcCmdField.CCE = 1u;
+                stcCmdField.ICE = 0u;
+                break;
+            case SdiocCmdRspR3:
+            case SdiocCmdRspR4:
+                stcCmdField.RESTYP = SdiocResponse48Bit;
+                stcCmdField.CCE = 0u;
+                stcCmdField.ICE = 0u;
+                break;
+            case SdiocCmdRspR1:
+            case SdiocCmdRspR5:
+            case SdiocCmdRspR6:
+            case SdiocCmdRspR7:
+                stcCmdField.RESTYP = SdiocResponse48Bit;
+                stcCmdField.CCE = 1u;
+                stcCmdField.ICE = 1u;
+                break;
+            case SdiocCmdRspR1b:
+            case SdiocCmdRspR5b:
+                stcCmdField.RESTYP = SdiocResponse48BitCheckBusy;
+                stcCmdField.CCE = 1u;
+                stcCmdField.ICE = 1u;
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
+
+        if (enRet == Ok)
+        {
+            stcCmdField.RESERVED2 = (uint16_t)0u;
+            stcCmdField.TYP = (uint16_t)pstcCmdCfg->enCmdType;
+            stcCmdField.IDX = (uint16_t)pstcCmdCfg->u8CmdIndex;
+            stcCmdField.DAT = (uint16_t)(pstcCmdCfg->enDataPresentEnable);
+
+            u32Addr = SDIOC_ARG01(SDIOCx);
+            *(__IO uint32_t *)u32Addr = pstcCmdCfg->u32Argument;
+
+            u32Addr = (uint32_t)&stcCmdField;
+            SDIOCx->CMD = *(uint16_t *)u32Addr;
+        }
     }
-    else
-    {
-    }
 
-    switch (pstcCmdCfg->enRspIndex)
-    {
-        case SdiocCmdNoRsp:
-            stcCmdField.RESTYP = SdiocResponseNoneBit;
-            stcCmdField.CCE = 0u;
-            stcCmdField.ICE = 0u;
-            break;
-        case SdiocCmdRspR2:
-            stcCmdField.RESTYP = SdiocResponse136Bit;
-            stcCmdField.CCE = 1u;
-            stcCmdField.ICE = 0u;
-            break;
-        case SdiocCmdRspR3:
-        case SdiocCmdRspR4:
-            stcCmdField.RESTYP = SdiocResponse48Bit;
-            stcCmdField.CCE = 0u;
-            stcCmdField.ICE = 0u;
-            break;
-        case SdiocCmdRspR1:
-        case SdiocCmdRspR5:
-        case SdiocCmdRspR6:
-        case SdiocCmdRspR7:
-            stcCmdField.RESTYP = SdiocResponse48Bit;
-            stcCmdField.CCE = 1u;
-            stcCmdField.ICE = 1u;
-            break;
-        case SdiocCmdRspR1b:
-        case SdiocCmdRspR5b:
-            stcCmdField.RESTYP = SdiocResponse48BitCheckBusy;
-            stcCmdField.CCE = 1u;
-            stcCmdField.ICE = 1u;
-            break;
-        default:
-            return ErrorInvalidParameter;
-    }
-
-    stcCmdField.RESERVED2 = 0u;
-    stcCmdField.TYP = pstcCmdCfg->enCmdType;
-    stcCmdField.IDX = pstcCmdCfg->u8CmdIndex;
-    stcCmdField.DAT = ((Enable == pstcCmdCfg->enDataPresentEnable) ? 1u : 0u);
-
-    *(__IO uint32_t *)SDIOC_ARG01(SDIOCx) = pstcCmdCfg->u32Argument;
-    SDIOCx->CMD = *(uint16_t *)(&stcCmdField);
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -851,7 +850,7 @@ en_result_t SDIOC_SendCommand(M4_SDIOC_TypeDef *SDIOCx,
  ** \retval The Corresponding response register value
  **
  ******************************************************************************/
-uint32_t SDIOC_GetResponse(M4_SDIOC_TypeDef *SDIOCx,
+uint32_t SDIOC_GetResponse(const M4_SDIOC_TypeDef *SDIOCx,
                                 en_sdioc_response_reg_t enRespReg)
 {
     /* Check the parameters */
@@ -870,7 +869,7 @@ uint32_t SDIOC_GetResponse(M4_SDIOC_TypeDef *SDIOCx,
  ** \param [in] SDIOCx                  Pointer to SDIOC instance register base
  ** \arg M4_SDIOC1                      SDIOC unit 1 instance register base
  ** \arg M4_SDIOC2                      SDIOC unit 2 instance register base
- ** \param [in] pu8Data                 Pointer to buffer which will store SDIOC_BUFFER data
+ ** \param [in] au8Data                 Buffer which will store SDIOC_BUFFER data
  ** \param [in] u32Len                  Data length
  **
  ** \retval Ok                          Data is read normally
@@ -879,29 +878,30 @@ uint32_t SDIOC_GetResponse(M4_SDIOC_TypeDef *SDIOCx,
  **                                     - pu32Data == NULL
  **
  ******************************************************************************/
-uint32_t SDIOC_ReadBuffer(M4_SDIOC_TypeDef *SDIOCx,
-                                uint8_t *pu8Data,
+en_result_t SDIOC_ReadBuffer(M4_SDIOC_TypeDef *SDIOCx,
+                                uint8_t au8Data[],
                                 uint32_t u32Len)
 {
-    uint32_t i;
-    uint32_t u32WordsCnt = u32Len/4;
-    uint32_t *pu32TempData = (uint32_t *)pu8Data;
+    uint32_t i = 0ul;
+    __IO uint32_t *pu32SdiocBuf = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx && pu8Data pointer */
-    if ((!IS_VALID_SDIOC(SDIOCx)) || (NULL == pu8Data))
+    if ((NULL != au8Data)                   && \
+        (IS_VALID_SDIOC(SDIOCx))            && \
+        (IS_VALID_TRANSFER_BUF_LEN(u32Len)) && \
+        (IS_VALID_TRANSFER_BUF_ALIGN(au8Data)))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        pu32SdiocBuf = (__IO uint32_t *)SDIOC_BUF01(SDIOCx);
+
+        for (i = 0ul; i < u32Len; i += 4ul)
+        {
+            *(uint32_t*)(&au8Data[i]) = *pu32SdiocBuf;
+        }
+        enRet = Ok;
     }
 
-    for (i = 0; i < u32WordsCnt; i++)
-    {
-        pu32TempData[i] = *(__IO uint32_t *)SDIOC_BUF01(SDIOCx);
-    }
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -913,7 +913,7 @@ uint32_t SDIOC_ReadBuffer(M4_SDIOC_TypeDef *SDIOCx,
  ** \param [in] SDIOCx                  Pointer to SDIOC instance register base
  ** \arg M4_SDIOC1                      SDIOC unit 1 instance register base
  ** \arg M4_SDIOC2                      SDIOC unit 2 instance register base
- ** \param [in] pu8Data                 Pointer to buffer which will be wrote to SDIOC_BUFFER
+ ** \param [in] au8Data                 Buffer which will be wrote to SDIOC_BUFFER
  ** \param [in] u32Len                  Data length
  **
  ** \retval Ok                          Data is written normally
@@ -923,28 +923,29 @@ uint32_t SDIOC_ReadBuffer(M4_SDIOC_TypeDef *SDIOCx,
  **
  ******************************************************************************/
 en_result_t SDIOC_WriteBuffer(M4_SDIOC_TypeDef *SDIOCx,
-                                uint8_t *pu8Data,
+                                uint8_t au8Data[],
                                 uint32_t u32Len)
 {
-    uint32_t i;
-    uint32_t u32WordsCnt = u32Len/4;
-    uint32_t *pu32TempData = (uint32_t *)pu8Data;
+    uint32_t i = 0ul;
+    __IO uint32_t *pu32SdiocBuf = NULL;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx && pu8Data pointer */
-    if ((!IS_VALID_SDIOC(SDIOCx)) || (NULL == pu8Data))
+    if ((NULL != au8Data)                   && \
+        (IS_VALID_SDIOC(SDIOCx))            && \
+        (IS_VALID_TRANSFER_BUF_LEN(u32Len)) && \
+        (IS_VALID_TRANSFER_BUF_ALIGN(au8Data)))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        pu32SdiocBuf = (__IO uint32_t *)SDIOC_BUF01(SDIOCx);
+
+        for (i = 0ul; i < u32Len; i += 4ul)
+        {
+            *pu32SdiocBuf = *(uint32_t*)(&au8Data[i]);
+        }
+        enRet = Ok;
     }
 
-    for (i = 0; i < u32WordsCnt; i++)
-    {
-        *(__IO uint32_t *)SDIOC_BUF01(SDIOCx) = pu32TempData[i];
-    }
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -968,63 +969,67 @@ en_result_t SDIOC_WriteBuffer(M4_SDIOC_TypeDef *SDIOCx,
 en_result_t SDIOC_ConfigData(M4_SDIOC_TypeDef *SDIOCx,
                                 const stc_sdioc_data_cfg_t *pstcDataCfg)
 {
-    uint16_t u16BlkCnt = 0;
+    uint16_t u16BlkCnt = (uint16_t)0;
+    uint32_t u32Addr;
     stc_sdioc_transmode_field_t stcTransModeField = {0};
-
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_SDIOC_BLKCNT(pstcDataCfg->u16BlkCnt));
-    DDL_ASSERT(IS_VALID_SDIOC_BLKSIZE(pstcDataCfg->u16BlkSize));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcDataCfg->enAutoCmd12Enable));
-    DDL_ASSERT(IS_VALID_SDIOC_DATA_TIMEOUT(pstcDataCfg->enDataTimeOut));
-    DDL_ASSERT(IS_VALID_SDIOC_TRANSFER_DIR(pstcDataCfg->enTransferDir));
-    DDL_ASSERT(IS_VALID_SDIOC_TRANSFER_MODE(pstcDataCfg->enTransferMode));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx && pstcDataCfg pointer */
-    if ((!IS_VALID_SDIOC(SDIOCx)) || (NULL == pstcDataCfg))
+    if ((IS_VALID_SDIOC(SDIOCx)) && (NULL != pstcDataCfg))
     {
-        return ErrorInvalidParameter;
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_SDIOC_BLKCNT(pstcDataCfg->u16BlkCnt));
+        DDL_ASSERT(IS_VALID_SDIOC_BLKSIZE(pstcDataCfg->u16BlkSize));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcDataCfg->enAutoCmd12Enable));
+        DDL_ASSERT(IS_VALID_SDIOC_DATA_TIMEOUT(pstcDataCfg->enDataTimeOut));
+        DDL_ASSERT(IS_VALID_SDIOC_TRANSFER_DIR(pstcDataCfg->enTransferDir));
+        DDL_ASSERT(IS_VALID_SDIOC_TRANSFER_MODE(pstcDataCfg->enTransferMode));
+
+        enRet = Ok;
+
+        switch (pstcDataCfg->enTransferMode)
+        {
+            case SdiocTransferSingle:
+                stcTransModeField.MULB = 0u;
+                stcTransModeField.BCE = 0u;
+                break;
+            case SdiocTransferInfinite:
+                stcTransModeField.MULB = 1u;
+                stcTransModeField.BCE = 0u;
+                break;
+            case SdiocTransferMultiple:
+                u16BlkCnt = pstcDataCfg->u16BlkCnt;
+                stcTransModeField.MULB = 1u;
+                stcTransModeField.BCE = 1u;
+                break;
+            case SdiocTransferStopMultiple:
+                stcTransModeField.MULB = 1u;
+                stcTransModeField.BCE = 1u;
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
+
+        if (enRet == Ok)
+        {
+            stcTransModeField.RESERVED0 = (uint16_t)0u;
+            stcTransModeField.DDIR = (uint16_t)(pstcDataCfg->enTransferDir);
+            stcTransModeField.ATCEN = (uint16_t)(pstcDataCfg->enAutoCmd12Enable);
+
+            /* Set the SDIOC Data Transfer Timeout value */
+            SDIOCx->TOUTCON = (uint8_t)(pstcDataCfg->enDataTimeOut);
+            /* Set the SDIOC Block Count value */
+            SDIOCx->BLKCNT = u16BlkCnt;
+            /* Set the SDIOC Block Size value */
+            SDIOCx->BLKSIZE = pstcDataCfg->u16BlkSize;
+            /* Set the SDIOC Data Transfer Mode */
+            u32Addr = (uint32_t)&stcTransModeField;
+            SDIOCx->TRANSMODE = *(uint16_t *)u32Addr;
+        }
     }
-    else
-    {
-    }
 
-    switch (pstcDataCfg->enTransferMode)
-    {
-        case SdiocTransferSingle:
-            stcTransModeField.MULB = 0u;
-            stcTransModeField.BCE = 0u;
-            break;
-        case SdiocTransferInfinite:
-            stcTransModeField.MULB = 1u;
-            stcTransModeField.BCE = 0u;
-            break;
-        case SdiocTransferMultiple:
-            u16BlkCnt = pstcDataCfg->u16BlkCnt;
-            stcTransModeField.MULB = 1u;
-            stcTransModeField.BCE = 1u;
-            break;
-        case SdiocTransferStopMultiple:
-            stcTransModeField.MULB = 1u;
-            stcTransModeField.BCE = 1u;
-            break;
-        default:
-            return ErrorInvalidParameter;
-    }
-
-    stcTransModeField.RESERVED0 = 0u;
-    stcTransModeField.DDIR = pstcDataCfg->enTransferDir;
-    stcTransModeField.ATCEN = ((Enable == pstcDataCfg->enAutoCmd12Enable) ? 1u : 0u);
-
-    /* Set the SDIOC Data Transfer Timeout value */
-    SDIOCx->TOUTCON = pstcDataCfg->enDataTimeOut;
-    /* Set the SDIOC Block Count value */
-    SDIOCx->BLKCNT = u16BlkCnt;
-    /* Set the SDIOC Block Size value */
-    SDIOCx->BLKSIZE = pstcDataCfg->u16BlkSize;
-    /* Set the SDIOC Data Transfer Mode */
-    SDIOCx->TRANSMODE = *(uint16_t *)(&stcTransModeField);
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1047,21 +1052,19 @@ en_result_t SDIOC_ConfigData(M4_SDIOC_TypeDef *SDIOCx,
 en_result_t SDIOC_SdclkCmd(M4_SDIOC_TypeDef *SDIOCx,
                                 en_functional_state_t enCmd)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter ;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+
+        SDIOCx->CLKCON_f.CE = (uint16_t)(enCmd);
+        enRet = Ok;
     }
 
-    SDIOCx->CLKCON_f.CE = ((Enable == enCmd) ? 1u : 0u);
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1091,22 +1094,20 @@ en_result_t SDIOC_SdclkCmd(M4_SDIOC_TypeDef *SDIOCx,
 en_result_t SDIOC_SetClkDiv(M4_SDIOC_TypeDef *SDIOCx,
                                 en_sdioc_clk_div_t enClkDiv)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_SDIOC_CLK_DIV(enClkDiv));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter ;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_SDIOC_CLK_DIV(enClkDiv));
+
+        /* Set clock division */
+        SDIOCx->CLKCON_f.FS = (uint16_t)enClkDiv;
+        enRet = Ok;
     }
 
-    /* Set clock division */
-    SDIOCx->CLKCON_f.FS = enClkDiv;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1150,25 +1151,22 @@ en_sdioc_clk_div_t SDIOC_GetClkDiv(M4_SDIOC_TypeDef *SDIOCx)
  ******************************************************************************/
 en_result_t SDIOC_SetClk(M4_SDIOC_TypeDef *SDIOCx, uint32_t u32ClkFreq)
 {
-    uint32_t u32Exclk = 0u;
+    uint32_t u32Exclk = 0ul;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter ;
+        /* Get EXCLK frequency */
+        u32Exclk = SystemCoreClock / (1ul << M4_SYSREG->CMU_SCFGR_f.EXCKS);
+
+        SDIOCx->CLKCON_f.CE = (uint16_t)0u;
+        SDIOCx->CLKCON_f.FS = (uint16_t)SdiocGetClkDiv(u32Exclk, u32ClkFreq);
+        SDIOCx->CLKCON_f.CE = (uint16_t)1u;
+        enRet = Ok;
     }
-    else
-    {
-    }
 
-    /* Get EXCLK frequency */
-    u32Exclk = SystemCoreClock / (1u << M4_SYSREG->CMU_SCFGR_f.EXCKS);
-
-    SDIOCx->CLKCON_f.CE = 0u;
-    SDIOCx->CLKCON_f.FS = SdiocGetClkDiv(u32Exclk, u32ClkFreq);
-    SDIOCx->CLKCON_f.CE = 1u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1194,36 +1192,33 @@ en_result_t SDIOC_SetClk(M4_SDIOC_TypeDef *SDIOCx, uint32_t u32ClkFreq)
 en_result_t SDIOC_SetBusWidth(M4_SDIOC_TypeDef *SDIOCx,
                                 en_sdioc_bus_width_t enBusWidth)
 {
-    en_result_t enRet = Ok;
-
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_SDIOC_BUS_WIDTH(enBusWidth));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter ;
-    }
-    else
-    {
-    }
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_SDIOC_BUS_WIDTH(enBusWidth));
 
-    switch (enBusWidth)
-    {
-        case SdiocBusWidth1Bit:
-            SDIOCx->HOSTCON_f.EXDW = 0u;
-            SDIOCx->HOSTCON_f.DW = 0u;
-            break;
-        case SdiocBusWidth4Bit:
-            SDIOCx->HOSTCON_f.EXDW = 0u;
-            SDIOCx->HOSTCON_f.DW = 1u;
-            break;
-        case SdiocBusWidth8Bit:
-            SDIOCx->HOSTCON_f.EXDW = 1u;
-            break;
-        default:
-            enRet = ErrorInvalidParameter;
-            break;
+        enRet = Ok;
+
+        switch (enBusWidth)
+        {
+            case SdiocBusWidth1Bit:
+                SDIOCx->HOSTCON_f.EXDW = 0u;
+                SDIOCx->HOSTCON_f.DW = 0u;
+                break;
+            case SdiocBusWidth4Bit:
+                SDIOCx->HOSTCON_f.EXDW = 0u;
+                SDIOCx->HOSTCON_f.DW = 1u;
+                break;
+            case SdiocBusWidth8Bit:
+                SDIOCx->HOSTCON_f.EXDW = 1u;
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
     }
 
     return enRet;
@@ -1255,9 +1250,6 @@ en_sdioc_bus_width_t SDIOC_GetBusWidth(M4_SDIOC_TypeDef *SDIOCx)
         {
             enBusWidth = SdiocBusWidth1Bit;
         }
-        else
-        {
-        }
     }
     else
     {
@@ -1287,22 +1279,20 @@ en_sdioc_bus_width_t SDIOC_GetBusWidth(M4_SDIOC_TypeDef *SDIOCx)
 en_result_t SDIOC_SetSpeedMode(M4_SDIOC_TypeDef *SDIOCx,
                                 en_sdioc_speed_mode_t enSpeedMode)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_SDIOC_SPEED_MODE(enSpeedMode));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter ;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_SDIOC_SPEED_MODE(enSpeedMode));
+
+        /* Set high speed mode */
+        SDIOCx->HOSTCON_f.HSEN = ((SdiocHighSpeedMode == enSpeedMode) ? 1u : 0u);
+        enRet = Ok;
     }
 
-    /* Set high speed mode */
-    SDIOCx->HOSTCON_f.HSEN = ((SdiocHighSpeedMode == enSpeedMode) ? 1u : 0u);
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1322,7 +1312,7 @@ en_sdioc_speed_mode_t SDIOC_GetSpeedMode(M4_SDIOC_TypeDef *SDIOCx)
     /* Check the parameters */
     DDL_ASSERT(IS_VALID_SDIOC(SDIOCx));
 
-    return ((1u == SDIOCx->HOSTCON_f.HSEN) ? SdiocHighSpeedMode : SdiocNormalSpeedMode);
+    return ((SDIOCx->HOSTCON_f.HSEN) ? SdiocHighSpeedMode : SdiocNormalSpeedMode);
 }
 
 /**
@@ -1356,22 +1346,20 @@ en_sdioc_speed_mode_t SDIOC_GetSpeedMode(M4_SDIOC_TypeDef *SDIOCx)
 en_result_t SDIOC_SetDataTimeout(M4_SDIOC_TypeDef *SDIOCx,
                                 en_sdioc_data_timeout_t enTimeout)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_SDIOC_DATA_TIMEOUT(enTimeout));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter ;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_SDIOC_DATA_TIMEOUT(enTimeout));
+
+        /* Set data timeout */
+        SDIOCx->TOUTCON_f.DTO = (uint8_t)enTimeout;
+        enRet = Ok;
     }
 
-    /* Set data timeout */
-    SDIOCx->TOUTCON_f.DTO = enTimeout;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1425,21 +1413,18 @@ en_sdioc_data_timeout_t SDIOC_GetDataTimeout(M4_SDIOC_TypeDef *SDIOCx)
 en_result_t SDIOC_SetCardDetectSignal(M4_SDIOC_TypeDef *SDIOCx,
                                 en_sdioc_detect_signal_t enDetectSignal)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_SDIOC_DETECT_SIG(enDetectSignal));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_SDIOC_DETECT_SIG(enDetectSignal));
+        SDIOCx->HOSTCON_f.CDSS = (uint8_t)enDetectSignal;
+        enRet = Ok;
     }
 
-    SDIOCx->HOSTCON_f.CDSS = enDetectSignal;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1462,7 +1447,7 @@ en_flag_status_t SDIOC_GetCardDetectTestLevel(M4_SDIOC_TypeDef *SDIOCx)
     /* Check the parameters */
     DDL_ASSERT(IS_VALID_SDIOC(SDIOCx));
 
-    return ((1u == SDIOCx->HOSTCON_f.CDTL) ? Set : Reset);
+    return (en_flag_status_t)(SDIOCx->HOSTCON_f.CDTL);
 }
 
 /**
@@ -1481,18 +1466,16 @@ en_flag_status_t SDIOC_GetCardDetectTestLevel(M4_SDIOC_TypeDef *SDIOCx)
  ******************************************************************************/
 en_result_t SDIOC_BusPowerOn(M4_SDIOC_TypeDef *SDIOCx)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        SDIOCx->PWRCON_f.PWON = 1u;
+        enRet = Ok;
     }
 
-    SDIOCx->PWRCON_f.PWON = 1u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1511,18 +1494,16 @@ en_result_t SDIOC_BusPowerOn(M4_SDIOC_TypeDef *SDIOCx)
  ******************************************************************************/
 en_result_t SDIOC_BusPowerOff(M4_SDIOC_TypeDef *SDIOCx)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        SDIOCx->PWRCON_f.PWON = 0u;
+        enRet = Ok;
     }
 
-    SDIOCx->PWRCON_f.PWON = 0u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1545,21 +1526,18 @@ en_result_t SDIOC_BusPowerOff(M4_SDIOC_TypeDef *SDIOCx)
 en_result_t SDIOC_StopAtBlockGapCmd(M4_SDIOC_TypeDef *SDIOCx,
                                 en_functional_state_t enCmd)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+        SDIOCx->BLKGPCON_f.SABGR = (uint8_t)(enCmd);
+        enRet = Ok;
     }
 
-    SDIOCx->BLKGPCON_f.SABGR = (Enable == enCmd) ? 1u : 0u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1578,18 +1556,16 @@ en_result_t SDIOC_StopAtBlockGapCmd(M4_SDIOC_TypeDef *SDIOCx,
  ******************************************************************************/
 en_result_t SDIOC_RestartTransfer(M4_SDIOC_TypeDef *SDIOCx)
 {
+    en_result_t enRet = ErrorInvalidParameter;
+
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        SDIOCx->BLKGPCON_f.CR = 1u;
+        enRet = Ok;
     }
 
-    SDIOCx->BLKGPCON_f.CR = 1u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1610,21 +1586,18 @@ en_result_t SDIOC_RestartTransfer(M4_SDIOC_TypeDef *SDIOCx)
 en_result_t SDIOC_ReadWaitCmd(M4_SDIOC_TypeDef *SDIOCx,
                                 en_functional_state_t enCmd)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+        SDIOCx->BLKGPCON_f.RWC = (uint8_t)(enCmd);
+        enRet = Ok;
     }
 
-    SDIOCx->BLKGPCON_f.RWC = (Enable == enCmd) ? 1u : 0u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1645,21 +1618,18 @@ en_result_t SDIOC_ReadWaitCmd(M4_SDIOC_TypeDef *SDIOCx,
 en_result_t SDIOC_InterruptAtBlockGapCmd(M4_SDIOC_TypeDef *SDIOCx,
                                 en_functional_state_t enCmd)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+        SDIOCx->BLKGPCON_f.IABG = (uint8_t)(enCmd);
+        enRet = Ok;
     }
 
-    SDIOCx->BLKGPCON_f.IABG = (Enable == enCmd) ? 1u : 0u;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1677,6 +1647,7 @@ en_result_t SDIOC_InterruptAtBlockGapCmd(M4_SDIOC_TypeDef *SDIOCx,
  ** \arg SdiocSwResetDataLine           Only part of data circuit is reset.
  **
  ** \retval Ok                          Software reset is done normally
+ ** \retval ErrorTimeout                SDIOCx reset timeout
  ** \retval ErrorInvalidParameter       If one of following conditions are met:
  **                                     - SDIOCx is invalid
  **                                     - enSwResetType is invalid
@@ -1685,37 +1656,58 @@ en_result_t SDIOC_InterruptAtBlockGapCmd(M4_SDIOC_TypeDef *SDIOCx,
 en_result_t SDIOC_SoftwareReset(M4_SDIOC_TypeDef *SDIOCx,
                                 en_sdioc_sw_reset_t enSwResetType)
 {
-    en_result_t enRet = Ok;
-
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_SDIOC_SWRESETTYPE(enSwResetType));
+    __IO uint32_t i = 0ul;
+    uint32_t u32Cnt = SystemCoreClock / 100ul;
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter ;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_SDIOC_SWRESETTYPE(enSwResetType));
+
+        enRet = Ok;
+        switch (enSwResetType)
+        {
+            case SdiocSwResetAll:
+                SDIOCx->SFTRST_f.RSTA = (uint8_t)1u;
+                while(0u != SDIOCx->SFTRST_f.RSTA)  /* Wait until reset finish */
+                {
+                    if (i++ > u32Cnt)
+                    {
+                        break;
+                    }
+                }
+                break;
+            case SdiocSwResetCmdLine:
+                SDIOCx->SFTRST_f.RSTC = (uint8_t)1u;
+                while(0u != SDIOCx->SFTRST_f.RSTC)  /* Wait until reset finish */
+                {
+                    if (i++ > u32Cnt)
+                    {
+                        break;
+                    }
+                }
+                break;
+            case SdiocSwResetDatLine:
+                SDIOCx->SFTRST_f.RSTD = (uint8_t)1u;
+                while(0u != SDIOCx->SFTRST_f.RSTD)  /* Wait until reset finish */
+                {
+                    if (i++ > u32Cnt)
+                    {
+                        break;
+                    }
+                }
+                break;
+            default:
+                enRet = ErrorInvalidParameter;
+                break;
+        }
     }
 
-    switch (enSwResetType)
+    if (i > u32Cnt)
     {
-        case SdiocSwResetAll:
-            SDIOCx->SFTRST_f.RSTA = 1u;
-            while(0u != SDIOCx->SFTRST_f.RSTA); /* Wait until reset finish */
-            break;
-        case SdiocSwResetCmdLine:
-            SDIOCx->SFTRST_f.RSTC = 1u;
-            while(0u != SDIOCx->SFTRST_f.RSTC); /* Wait until reset finish */
-            break;
-        case SdiocSwResetDatLine:
-            SDIOCx->SFTRST_f.RSTD = 1u;
-            while(0u != SDIOCx->SFTRST_f.RSTD); /* Wait until reset finish */
-            break;
-        default:
-            enRet = ErrorInvalidParameter;
-            break;
+        enRet = ErrorTimeout;
     }
 
     return enRet;
@@ -1757,7 +1749,7 @@ en_flag_status_t SDIOC_GetStatus(M4_SDIOC_TypeDef *SDIOCx,
     DDL_ASSERT(IS_VALID_SDIOC(SDIOCx));
     DDL_ASSERT(IS_VALID_SDIOC_HOST_STATUS(enHostStatus));
 
-    return ((SDIOCx->PSTAT & enHostStatus) ? Set : Reset);
+    return ((SDIOCx->PSTAT & ((uint32_t)enHostStatus)) ? Set : Reset);
 }
 
 /**
@@ -1789,29 +1781,28 @@ en_result_t SDIOC_NormalIrqSignalCmd(M4_SDIOC_TypeDef *SDIOCx,
                                 en_sdioc_nor_int_sel_t enNorInt,
                                 en_functional_state_t enCmd)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
-    DDL_ASSERT(IS_VALID_SDIOC_NOR_INT(enNorInt));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter ;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+        DDL_ASSERT(IS_VALID_SDIOC_NOR_INT(enNorInt));
+
+        if (Enable == enCmd)
+        {
+            SDIOCx->NORINTSGEN |= (uint16_t)enNorInt;
+        }
+        else
+        {
+            SDIOCx->NORINTSGEN &= (uint16_t)(~((uint16_t)enNorInt));
+        }
+
+        enRet = Ok;
     }
 
-    if (Enable == enCmd)
-    {
-        SDIOCx->NORINTSGEN |= enNorInt;
-    }
-    else
-    {
-        SDIOCx->NORINTSGEN &= ~enNorInt;
-    }
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1843,29 +1834,28 @@ en_result_t SDIOC_NormalIrqStatusCmd(M4_SDIOC_TypeDef *SDIOCx,
                                 en_sdioc_nor_int_sel_t enNorInt,
                                 en_functional_state_t enCmd)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
-    DDL_ASSERT(IS_VALID_SDIOC_NOR_INT(enNorInt));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter ;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+        DDL_ASSERT(IS_VALID_SDIOC_NOR_INT(enNorInt));
+
+        if (Enable == enCmd)
+        {
+            SDIOCx->NORINTSTEN |= (uint16_t)enNorInt;
+        }
+        else
+        {
+            SDIOCx->NORINTSTEN &= (uint16_t)(~((uint16_t)enNorInt));
+        }
+
+        enRet = Ok;
     }
 
-    if (Enable == enCmd)
-    {
-        SDIOCx->NORINTSTEN |= enNorInt;
-    }
-    else
-    {
-        SDIOCx->NORINTSTEN &= ~enNorInt;
-    }
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1897,7 +1887,7 @@ en_flag_status_t SDIOC_GetNormalIrqFlag(M4_SDIOC_TypeDef *SDIOCx,
     DDL_ASSERT(IS_VALID_SDIOC(SDIOCx));
     DDL_ASSERT(IS_VALID_SDIOC_NOR_INT(enNorInt));
 
-    return ((SDIOCx->NORINTST & enNorInt) ? Set : Reset);
+    return ((SDIOCx->NORINTST & ((uint16_t)enNorInt)) ? Set : Reset);
 }
 
 /**
@@ -1925,21 +1915,18 @@ en_flag_status_t SDIOC_GetNormalIrqFlag(M4_SDIOC_TypeDef *SDIOCx,
 en_result_t SDIOC_ClearNormalIrqFlag(M4_SDIOC_TypeDef *SDIOCx,
                                 en_sdioc_nor_int_flag_t enNorInt)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_SDIOC_NOR_INT(enNorInt));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter ;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_SDIOC_NOR_INT(enNorInt));
+        SDIOCx->NORINTST = (uint16_t)enNorInt;
+        enRet = Ok;
     }
 
-    SDIOCx->NORINTST = enNorInt;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -1970,29 +1957,28 @@ en_result_t SDIOC_ErrIrqSignalCmd(M4_SDIOC_TypeDef *SDIOCx,
                                 en_sdioc_err_int_sel_t enErrInt,
                                 en_functional_state_t enCmd)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_SDIOC_ERR_INT(enErrInt));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter ;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_SDIOC_ERR_INT(enErrInt));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+
+        if (Enable == enCmd)
+        {
+            SDIOCx->ERRINTSGEN |= (uint16_t)enErrInt;
+        }
+        else
+        {
+            SDIOCx->ERRINTSGEN &= (uint16_t)enErrInt;
+        }
+
+        enRet = Ok;
     }
 
-    if (Enable == enCmd)
-    {
-        SDIOCx->ERRINTSGEN |= enErrInt;
-    }
-    else
-    {
-        SDIOCx->ERRINTSGEN &= enErrInt;
-    }
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -2023,29 +2009,28 @@ en_result_t SDIOC_ErrIrqStatusCmd(M4_SDIOC_TypeDef *SDIOCx,
                                 en_sdioc_err_int_sel_t enErrInt,
                                 en_functional_state_t enCmd)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_SDIOC_ERR_INT(enErrInt));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter ;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_SDIOC_ERR_INT(enErrInt));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(enCmd));
+
+        if (Enable == enCmd)
+        {
+            SDIOCx->ERRINTSTEN |= (uint16_t)enErrInt;
+        }
+        else
+        {
+            SDIOCx->ERRINTSTEN &= (uint16_t)enErrInt;
+        }
+
+        enRet = Ok;
     }
 
-    if (Enable == enCmd)
-    {
-        SDIOCx->ERRINTSTEN |= enErrInt;
-    }
-    else
-    {
-        SDIOCx->ERRINTSTEN &= enErrInt;
-    }
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -2076,7 +2061,7 @@ en_flag_status_t SDIOC_GetErrIrqFlag(M4_SDIOC_TypeDef *SDIOCx,
     DDL_ASSERT(IS_VALID_SDIOC(SDIOCx));
     DDL_ASSERT(IS_VALID_SDIOC_ERR_INT(enErrInt));
 
-    return ((SDIOCx->ERRINTST & enErrInt) ? Set : Reset);
+    return ((SDIOCx->ERRINTST & ((uint16_t)enErrInt)) ? Set : Reset);
 }
 
 /**
@@ -2103,21 +2088,18 @@ en_flag_status_t SDIOC_GetErrIrqFlag(M4_SDIOC_TypeDef *SDIOCx,
 en_result_t SDIOC_ClearErrIrqFlag(M4_SDIOC_TypeDef *SDIOCx,
                                 en_sdioc_err_int_flag_t enErrInt)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_SDIOC_ERR_INT(enErrInt));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter ;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_SDIOC_ERR_INT(enErrInt));
+        SDIOCx->ERRINTST = (uint16_t)enErrInt;
+        enRet = Ok;
     }
 
-    SDIOCx->ERRINTST = enErrInt;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -2144,21 +2126,18 @@ en_result_t SDIOC_ClearErrIrqFlag(M4_SDIOC_TypeDef *SDIOCx,
 en_result_t SDIOC_ForceErrIrqFlag(M4_SDIOC_TypeDef *SDIOCx,
                                 en_sdioc_err_int_sel_t enErrInt)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_SDIOC_ERR_INT(enErrInt));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter ;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_SDIOC_ERR_INT(enErrInt));
+        SDIOCx->FEE |= (uint16_t)enErrInt;
+        enRet = Ok;
     }
 
-    SDIOCx->FEE |= enErrInt;
-
-    return Ok;
+    return enRet;
 }
 
 /**
@@ -2187,7 +2166,7 @@ en_flag_status_t SDIOC_GetAutoCmdErrStatus(M4_SDIOC_TypeDef *SDIOCx,
     DDL_ASSERT(IS_VALID_SDIOC(SDIOCx));
     DDL_ASSERT(IS_VALID_SDIOC_AUTOCMD_ERR(enAutoCmdErr));
 
-    return ((SDIOCx->ATCERRST & enAutoCmdErr) ? Set : Reset);
+    return ((SDIOCx->ATCERRST & ((uint16_t)enAutoCmdErr)) ? Set : Reset);
 }
 
 /**
@@ -2212,21 +2191,18 @@ en_flag_status_t SDIOC_GetAutoCmdErrStatus(M4_SDIOC_TypeDef *SDIOCx,
 en_result_t SDIOC_ForceAutoCmdErr(M4_SDIOC_TypeDef *SDIOCx,
                                 en_sdioc_atuo_cmd_err_sel_t enAutoCmdErr)
 {
-    /* Check the parameters */
-    DDL_ASSERT(IS_VALID_SDIOC_AUTOCMD_ERR(enAutoCmdErr));
+    en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx pointer */
-    if (!IS_VALID_SDIOC(SDIOCx))
+    if (IS_VALID_SDIOC(SDIOCx))
     {
-        return ErrorInvalidParameter ;
-    }
-    else
-    {
+        /* Check the parameters */
+        DDL_ASSERT(IS_VALID_SDIOC_AUTOCMD_ERR(enAutoCmdErr));
+        SDIOCx->FEA |= (uint16_t)enAutoCmdErr;
+        enRet = Ok;
     }
 
-    SDIOCx->FEA |= enAutoCmdErr;
-
-    return Ok;
+    return enRet;
 }
 
 //@} // SdiocGroup

@@ -1,4 +1,6 @@
 #include "hc32_ddl.h"
+#include "System_InterruptCFG_Def.h"
+
 
 stc_pwc_pvd_cfg_t stcPwcPvdCfg;
 
