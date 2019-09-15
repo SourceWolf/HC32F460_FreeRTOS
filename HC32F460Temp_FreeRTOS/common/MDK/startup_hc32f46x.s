@@ -17,7 +17,7 @@
 ;*
 ;* Disclaimer:
 ;* HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
-;* REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+;* REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
 ;* ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
 ;* WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
 ;* WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -53,7 +53,7 @@
 ;   <o> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
 ; </h>
 
-Stack_Size      EQU     0x00001000
+Stack_Size      EQU     0x00000400
 
                 AREA    STACK, NOINIT, READWRITE, ALIGN=3
 Stack_Mem       SPACE   Stack_Size
@@ -64,7 +64,7 @@ __initial_sp
 ;   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
 ; </h>
 
-Heap_Size       EQU     0x00001000
+Heap_Size       EQU     0x00000200
 
                 AREA    HEAP, NOINIT, READWRITE, ALIGN=3
 __heap_base
@@ -259,17 +259,27 @@ Reset_Handler   PROC
                 EXPORT  Reset_Handler             [WEAK]
                 IMPORT  SystemInit
                 IMPORT  __main
-               ;reset NVIC if in rom debug
-                LDR     R0, =0x20000000
-                LDR     R2, =0x0
-                MOVS    R1, #0                 ; for warning,
-                ADD     R1, PC,#0              ; for A1609W,
-                CMP     R1, R0
-                BLS     RAMCODE
+SET_SRAM3_WAIT
+                LDR     R0, =0x40050804
+                MOV     R1, #0x77
+                STR     R1, [R0]
 
-              ; ram code base address.
-                ADD     R2, R0,R2
-RAMCODE
+                LDR     R0, =0x4005080C
+                MOV     R1, #0x77
+                STR     R1, [R0]
+
+                LDR     R0, =0x40050800
+                MOV     R1, #0x1100
+                STR     R1, [R0]
+
+                LDR     R0, =0x40050804
+                MOV     R1, #0x76
+                STR     R1, [R0]
+
+                LDR     R0, =0x4005080C
+                MOV     R1, #0x76
+                STR     R1, [R0]
+
               ; reset Vector table address.
                 LDR     R0, =0xE000ED08
                 STR     R2, [R0]
