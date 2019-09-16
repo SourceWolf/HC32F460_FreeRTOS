@@ -13,7 +13,7 @@ DSTATUS disk_initialize (BYTE pdrv)
                 return res;
             }
             return RES_ERROR;
-        break;
+ //       break;
     }
     return RES_PARERR;
 }
@@ -23,7 +23,7 @@ DSTATUS disk_status (BYTE pdrv)
     {
         case SD_Card:
             return RES_OK;
-            break;
+//            break;
     }
     return RES_PARERR;
 }
@@ -39,7 +39,7 @@ DRESULT disk_read (BYTE pdrv, BYTE* buff, DWORD sector, BYTE count)
                 return res;
             }
             return RES_ERROR;
-            break;
+//            break;
     }
    return RES_PARERR;//(DRESULT)SDCARD_ReadBlocks()
 }
@@ -54,7 +54,8 @@ DRESULT disk_write (BYTE pdrv, const BYTE* buff, DWORD sector, BYTE count)
             {
                 return res;
             }
-            break;
+            return RES_ERROR;
+ //           break;
     }
     return RES_PARERR;
 }
@@ -64,7 +65,7 @@ DRESULT disk_ioctl (BYTE pdrv, BYTE ctrl, void* buff)
     {
         case SD_Card:
             return RES_OK;
-            break;
+ //           break;
     }
     return RES_PARERR;
 }
