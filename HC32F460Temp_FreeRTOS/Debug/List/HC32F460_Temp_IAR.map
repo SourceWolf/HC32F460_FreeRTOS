@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR ELF Linker V8.30.1.114/W32 for ARM                  16/Sep/2019  13:58:16
+# IAR ELF Linker V8.30.1.114/W32 for ARM                  23/Sep/2019  10:49:24
 # Copyright 2007-2018 IAR Systems AB.
 #
 #    Output file  =  
@@ -8,7 +8,7 @@
 #    Map file     =  
 #        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\List\HC32F460_Temp_IAR.map
 #    Command line =  
-#        -f C:\Users\User\AppData\Local\Temp\EWD077.tmp
+#        -f C:\Users\User\AppData\Local\Temp\EW2DF6.tmp
 #        (C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\cmsis_os.o
 #        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\croutine.o
 #        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\data_sound_441_i2s.o
@@ -162,7 +162,7 @@ Absolute sections:                           0x20
   .rodata            const          0x400    0x20  hc32f46x_icg.o [1]
                                   - 0x420    0x20
 
-"P1", part 2 of 2:                         0xc5a1
+"P1", part 2 of 2:                         0xc281
   .text              ro code        0x420  0x252c  hc32f46x_interrupts.o [1]
   .text              ro code       0x294c    0xb4  hc32f46x_exint_nmi_swi.o [1]
   .text              ro code       0x2a00    0x10  cmsis_os.o [1]
@@ -217,51 +217,49 @@ Absolute sections:                           0x20
   .text              ro code       0xab70   0x40c  hc32f46x_i2c.o [1]
   .text              ro code       0xaf7c   0x250  hc32f46x_utility.o [1]
   .text              ro code       0xb1cc   0x2ec  hc32f46x_dcu.o [1]
-  .text              ro code       0xb4b8   0x26c  hc32f46x_timer0.o [1]
-  .text              ro code       0xb724   0x240  hc32f46x_adc.o [1]
-  .text              ro code       0xb964   0x230  hc32f46x_ots.o [1]
-  .text              ro code       0xbb94   0x1ec  User_Gpio.o [1]
-  .text              ro code       0xbd80   0x164  System_Clk.o [1]
-  .text              ro code       0xbee4    0xac  hc32f46x_efm.o [1]
-  .text              ro code       0xbf90    0x30  hc32f46x_sram.o [1]
-  .text              ro code       0xbfc0   0x158  User_Task.o [1]
-  .text              ro code       0xc118    0x78  User_OTS.o [1]
-  .text              ro code       0xc190    0x28  printf.o [2]
-  .text              ro code       0xc1b8    0xac  User_DCU.o [1]
-  .text              ro code       0xc264   0x110  User_ADC.o [1]
-  .text              ro code       0xc374   0x128  User_DMA.o [1]
-  .text              ro code       0xc49c    0x48  FltToDbl.o [3]
-  .text              ro code       0xc4e4    0xb8  main.o [1]
-  .text              ro code       0xc59c    0xb8  User_Timer.o [1]
-  .text              ro code       0xc654    0x9c  packbits_init.o [4]
-  .rodata            const         0xc6f0    0x80  ff.o [1]
-  .text              ro code       0xc770    0x44  startup_hc32f46x.o [1]
-  .text              ro code       0xc7b4    0x28  data_init.o [4]
-  .text              ro code       0xc7dc    0x22  fpinit_M.o [3]
-  .iar.init_table    const         0xc800    0x2c  - Linker created -
-  .text              ro code       0xc82c    0x1e  cmain.o [4]
-  .text              ro code       0xc84a     0x4  low_level_init.o [2]
-  .text              ro code       0xc84e     0x4  exit.o [2]
-  .text              ro code       0xc854     0xa  cexit.o [4]
-  .rodata            const         0xc860    0x18  User_OTS.o [1]
-  .text              ro code       0xc878    0x16  xprout.o [2]
-  .text              ro code       0xc890     0xc  putchar.o [2]
-  .rodata            const         0xc89c    0x14  User_Task.o [1]
-  .rodata            const         0xc8b0    0x10  User_Task.o [1]
-  .rodata            const         0xc8c0     0xc  ff.o [1]
-  .rodata            const         0xc8cc     0xc  User_Task.o [1]
-  .rodata            const         0xc8d8     0xc  User_Task.o [1]
-  .text              ro code       0xc8e4     0xc  cstartup_M.o [4]
-  .rodata            const         0xc8f0     0x8  tasks.o [1]
-  .rodata            const         0xc8f8     0x8  User_Task.o [1]
-  .rodata            const         0xc900     0x8  User_Task.o [1]
-  .rodata            const         0xc908     0x6  xlocale_c.o [2]
-  .rodata            const         0xc910     0x4  heap_4.o [1]
-  .text              ro code       0xc914     0x4  startup_hc32f46x.o [1]
-  .text              ro code       0xc918     0x4  startup_hc32f46x.o [1]
-  .text              ro code       0xc91c     0x4  startup_hc32f46x.o [1]
-  Initializer bytes  const         0xc920    0xa1  <for P2 s0>
-                                 - 0xc9c1  0xc5a1
+  .text              ro code       0xb4b8   0x240  hc32f46x_adc.o [1]
+  .text              ro code       0xb6f8   0x230  hc32f46x_ots.o [1]
+  .text              ro code       0xb928   0x1ec  User_Gpio.o [1]
+  .text              ro code       0xbb14   0x164  System_Clk.o [1]
+  .text              ro code       0xbc78    0xac  hc32f46x_efm.o [1]
+  .text              ro code       0xbd24    0x30  hc32f46x_sram.o [1]
+  .text              ro code       0xbd54   0x158  User_Task.o [1]
+  .text              ro code       0xbeac    0x78  User_OTS.o [1]
+  .text              ro code       0xbf24    0x28  printf.o [2]
+  .text              ro code       0xbf4c    0xac  User_DCU.o [1]
+  .text              ro code       0xbff8   0x110  User_ADC.o [1]
+  .text              ro code       0xc108   0x128  User_DMA.o [1]
+  .text              ro code       0xc230    0x48  FltToDbl.o [3]
+  .text              ro code       0xc278    0xb4  main.o [1]
+  .text              ro code       0xc32c    0x9c  packbits_init.o [4]
+  .rodata            const         0xc3c8    0x80  ff.o [1]
+  .text              ro code       0xc450    0x44  startup_hc32f46x.o [1]
+  .text              ro code       0xc494    0x28  data_init.o [4]
+  .text              ro code       0xc4bc    0x22  fpinit_M.o [3]
+  .iar.init_table    const         0xc4e0    0x2c  - Linker created -
+  .text              ro code       0xc50c    0x1e  cmain.o [4]
+  .text              ro code       0xc52a     0x4  low_level_init.o [2]
+  .text              ro code       0xc52e     0x4  exit.o [2]
+  .text              ro code       0xc534     0xa  cexit.o [4]
+  .rodata            const         0xc540    0x18  User_OTS.o [1]
+  .text              ro code       0xc558    0x16  xprout.o [2]
+  .text              ro code       0xc570     0xc  putchar.o [2]
+  .rodata            const         0xc57c    0x14  User_Task.o [1]
+  .rodata            const         0xc590    0x10  User_Task.o [1]
+  .rodata            const         0xc5a0     0xc  ff.o [1]
+  .rodata            const         0xc5ac     0xc  User_Task.o [1]
+  .rodata            const         0xc5b8     0xc  User_Task.o [1]
+  .text              ro code       0xc5c4     0xc  cstartup_M.o [4]
+  .rodata            const         0xc5d0     0x8  tasks.o [1]
+  .rodata            const         0xc5d8     0x8  User_Task.o [1]
+  .rodata            const         0xc5e0     0x8  User_Task.o [1]
+  .rodata            const         0xc5e8     0x6  xlocale_c.o [2]
+  .rodata            const         0xc5f0     0x4  heap_4.o [1]
+  .text              ro code       0xc5f4     0x4  startup_hc32f46x.o [1]
+  .text              ro code       0xc5f8     0x4  startup_hc32f46x.o [1]
+  .text              ro code       0xc5fc     0x4  startup_hc32f46x.o [1]
+  Initializer bytes  const         0xc600    0xa1  <for P2 s0>
+                                 - 0xc6a1  0xc281
 
 "P2", part 1 of 3:                          0x164
   P2 s0                       0x1fff'8000   0x164  <Init block>
@@ -343,7 +341,7 @@ Unused ranges:
          From           To      Size
          ----           --      ----
         0x280        0x3ff     0x180
-       0xc9c1     0x7'ffff  0x7'363f
+       0xc6a1     0x7'ffff  0x7'395f
   0x1fff'ca80  0x1fff'ffff    0x3580
   0x2000'0000  0x2000'ffff  0x1'0000
   0x2001'0000  0x2001'ffff  0x1'0000
@@ -363,7 +361,7 @@ Zero (__iar_zero_init3)
 
 Copy/packbits (__iar_packbits_init3)
     1 source range, total size 0xa1 (45% of destination):
-               0xc920    0xa1
+               0xc600    0xa1
     1 destination range, total size 0x164:
           0x1fff'8000   0x164
 
@@ -391,7 +389,6 @@ C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj: [1]
     User_PWC.o                      2
     User_SDIO.o                   188       64      140
     User_Task.o                   344       76    1 201
-    User_Timer.o                  184
     cmsis_os.o                     16
     diskio.o                      148
     fattime.o                       4
@@ -410,11 +407,10 @@ C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj: [1]
     hc32f46x_pwc.o                280
     hc32f46x_sdioc.o            2 408        2      136
     hc32f46x_sram.o                48
-    hc32f46x_timer0.o             620
     hc32f46x_utility.o            592
     heap_4.o                      608        4   15 384
     list.o                        152
-    main.o                        184                32
+    main.o                        180                32
     port.o                        516        2        9
     portasm.o                     176
     sd_card.o                   2 672
@@ -423,7 +419,7 @@ C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj: [1]
     system_hc32f46x.o             200        2        4
     tasks.o                     1 736        8      300
     ------------------------------------------------------------
-    Total:                     41 242    1 845   17 762       32
+    Total:                     40 434    1 845   17 762       32
 
 dl7M_tlf.a: [2]
     abort.o                         6
@@ -481,10 +477,10 @@ shb_l.a: [5]
     ------------------------------------------------------------
     Total:                         20
 
-    Gaps                           36        6
+    Gaps                           44        6
     Linker created                          44    1 024
 ----------------------------------------------------------------
-    Grand Total:               49 242    1 991   19 070       32
+    Grand Total:               48 442    1 991   19 070       32
 
 
 *******************************************************************************
@@ -493,17 +489,17 @@ shb_l.a: [5]
 
 Entry                       Address    Size  Type      Object
 -----                       -------    ----  ----      ------
-.iar.init_table$$Base        0xc800           --   Gb  - Linker created -
-.iar.init_table$$Limit       0xc82c           --   Gb  - Linker created -
-?main                        0xc82d          Code  Gb  cmain.o [4]
+.iar.init_table$$Base        0xc4e0           --   Gb  - Linker created -
+.iar.init_table$$Limit       0xc50c           --   Gb  - Linker created -
+?main                        0xc50d          Code  Gb  cmain.o [4]
 ADC1_AIN10_Data         0x1fff'c672     0x2  Data  Gb  User_ADC.o [1]
-ADC1_Start_convert           0xc27d     0x8  Code  Gb  User_ADC.o [1]
-ADC_AddAdcChannel            0xb801    0xa2  Code  Gb  hc32f46x_adc.o [1]
-ADC_AddPgaChannel            0xb937    0x10  Code  Gb  hc32f46x_adc.o [1]
-ADC_ConfigPga                0xb8a3    0x56  Code  Gb  hc32f46x_adc.o [1]
-ADC_EOCA_CallBack            0xc273     0xa  Code  Gb  User_ADC.o [1]
-ADC_Init                     0xb725    0xdc  Code  Gb  hc32f46x_adc.o [1]
-ADC_PgaCmd                   0xb8f9    0x3e  Code  Gb  hc32f46x_adc.o [1]
+ADC1_Start_convert           0xc011     0x8  Code  Gb  User_ADC.o [1]
+ADC_AddAdcChannel            0xb595    0xa2  Code  Gb  hc32f46x_adc.o [1]
+ADC_AddPgaChannel            0xb6cb    0x10  Code  Gb  hc32f46x_adc.o [1]
+ADC_ConfigPga                0xb637    0x56  Code  Gb  hc32f46x_adc.o [1]
+ADC_EOCA_CallBack            0xc007     0xa  Code  Gb  User_ADC.o [1]
+ADC_Init                     0xb4b9    0xdc  Code  Gb  hc32f46x_adc.o [1]
+ADC_PgaCmd                   0xb68d    0x3e  Code  Gb  hc32f46x_adc.o [1]
 BusFault_Handler              0x4bf     0x8  Code  Gb  hc32f46x_interrupts.o [1]
 CLK_GetClockFreq             0x9cc3   0x108  Code  Gb  hc32f46x_clk.o [1]
 CLK_GetFlagStatus            0x9f21    0x80  Code  Gb  hc32f46x_clk.o [1]
@@ -524,11 +520,11 @@ CSTACK$$Base            0x1fff'c680           --   Gb  - Linker created -
 CSTACK$$Limit           0x1fff'ca80           --   Gb  - Linker created -
 CacheMore                    0x889d    0x24  Code  Lc  xlocale_c.o [2]
 Clkdata                 0x1fff'c570    0x20  Data  Gb  main.o [1]
-DCU1_INT_Callback            0xc1d5     0x8  Code  Lc  User_DCU.o [1]
+DCU1_INT_Callback            0xbf69     0x8  Code  Lc  User_DCU.o [1]
 DCU_Init                     0xb1cd    0xfe  Code  Gb  hc32f46x_dcu.o [1]
 DCU_SetTriggerSrc            0xb2d9   0x192  Code  Gb  hc32f46x_dcu.o [1]
 DCU_TRGSELx                  0xb46b    0x2e  Code  Lc  hc32f46x_dcu.o [1]
-DMA1_CH0_Callback            0xc397    0x1a  Code  Gb  User_DMA.o [1]
+DMA1_CH0_Callback            0xc12b    0x1a  Code  Gb  User_DMA.o [1]
 DMA_ChannelCfg               0x73b5   0x2c2  Code  Gb  hc32f46x_dmac.o [1]
 DMA_ChannelCmd               0x7191   0x1c8  Code  Gb  hc32f46x_dmac.o [1]
 DMA_ClearIrqFlag             0x70a9    0xe8  Code  Gb  hc32f46x_dmac.o [1]
@@ -546,10 +542,10 @@ DmaSdiocRxConfiguration
 DmaSdiocTxConfiguration
                              0x58e3    0xd4  Code  Lc  sd_card.o [1]
 EFM_InstructionCacheCmd
-                             0xbf61    0x28  Code  Gb  hc32f46x_efm.o [1]
-EFM_Lock                     0xbef7    0x14  Code  Gb  hc32f46x_efm.o [1]
-EFM_SetLatency               0xbf0b    0x56  Code  Gb  hc32f46x_efm.o [1]
-EFM_Unlock                   0xbee5    0x12  Code  Gb  hc32f46x_efm.o [1]
+                             0xbcf5    0x28  Code  Gb  hc32f46x_efm.o [1]
+EFM_Lock                     0xbc8b    0x14  Code  Gb  hc32f46x_efm.o [1]
+EFM_SetLatency               0xbc9f    0x56  Code  Gb  hc32f46x_efm.o [1]
+EFM_Unlock                   0xbc79    0x12  Code  Gb  hc32f46x_efm.o [1]
 EXINT_Init                   0x294d    0x92  Code  Gb  hc32f46x_exint_nmi_swi.o [1]
 F8X16                        0xa0a0   0x5f0  Data  Gb  OLED.o [1]
 FS_SD_ReadBlocks             0x49e7    0x18  Code  Gb  User_SDIO.o [1]
@@ -558,8 +554,8 @@ FatFs                   0x1fff'c5f4     0x8  Data  Lc  ff.o [1]
 FatFs                   0x1fff'bd64   0x230  Data  Gb  User_Task.o [1]
 Fsid                    0x1fff'c670     0x2  Data  Lc  ff.o [1]
 GetFreqReg                   0xab71    0x36  Code  Lc  hc32f46x_i2c.o [1]
-Get_ADC1_Data                0xc265     0x8  Code  Gb  User_ADC.o [1]
-Get_DCU1_Result              0xc391     0x6  Code  Gb  User_DMA.o [1]
+Get_ADC1_Data                0xbff9     0x8  Code  Gb  User_ADC.o [1]
+Get_DCU1_Result              0xc125     0x6  Code  Gb  User_DMA.o [1]
 HardFault_Handler             0x4af     0x8  Code  Gb  hc32f46x_interrupts.o [1]
 Hd_Task_ADC             0x1fff'c668     0x4  Data  Gb  User_Task.o [1]
 Hd_Task_LED             0x1fff'c664     0x4  Data  Gb  User_Task.o [1]
@@ -715,7 +711,7 @@ IRQ141_Handler               0x23c1   0x1ee  Code  Gb  hc32f46x_interrupts.o [1]
 IRQ142_Handler               0x25c9    0xda  Code  Gb  hc32f46x_interrupts.o [1]
 IRQ143_Handler               0x26bd    0xdc  Code  Gb  hc32f46x_interrupts.o [1]
 IrqHandler              0x1fff'c1b8   0x200  Data  Gb  hc32f46x_interrupts.o [1]
-LED0_Toggle                  0xbcaf    0xb8  Code  Gb  User_Gpio.o [1]
+LED0_Toggle                  0xba43    0xb8  Code  Gb  User_Gpio.o [1]
 LED_Status              0x1fff'c67c     0x1  Data  Gb  User_Gpio.o [1]
 LoadInt                      0x7adf    0x7a  Code  Lc  xprintffull.o [2]
 Lvd1_IrqHandler              0x2a11     0x2  Code  Gb  User_PWC.o [1]
@@ -735,13 +731,13 @@ OLED_StartOrRestart          0xa691    0x78  Code  Lc  OLED.o [1]
 OLED_Stop                    0xa7f5    0x4a  Code  Gb  OLED.o [1]
 OLED_WR_Byte                 0xa8d9    0x18  Code  Gb  OLED.o [1]
 OLED_WriteData               0xa775    0x80  Code  Lc  OLED.o [1]
-OTS_CheckSample              0xba23    0x82  Code  Gb  hc32f46x_ots.o [1]
-OTS_ComputeTemp              0xbb05    0x50  Code  Lc  hc32f46x_ots.o [1]
-OTS_Init                     0xb965    0x9e  Code  Gb  hc32f46x_ots.o [1]
-OTS_ReadData                 0xbab9    0x4c  Code  Lc  hc32f46x_ots.o [1]
-OTS_StartGetTemp             0xba03    0x20  Code  Gb  hc32f46x_ots.o [1]
-OTS_Trimming                 0xbaa5    0x14  Code  Lc  hc32f46x_ots.o [1]
-OtsBaseConfig                0xc119    0x48  Code  Gb  User_OTS.o [1]
+OTS_CheckSample              0xb7b7    0x82  Code  Gb  hc32f46x_ots.o [1]
+OTS_ComputeTemp              0xb899    0x50  Code  Lc  hc32f46x_ots.o [1]
+OTS_Init                     0xb6f9    0x9e  Code  Gb  hc32f46x_ots.o [1]
+OTS_ReadData                 0xb84d    0x4c  Code  Lc  hc32f46x_ots.o [1]
+OTS_StartGetTemp             0xb797    0x20  Code  Gb  hc32f46x_ots.o [1]
+OTS_Trimming                 0xb839    0x14  Code  Lc  hc32f46x_ots.o [1]
+OtsBaseConfig                0xbead    0x48  Code  Gb  User_OTS.o [1]
 PORT_Init                    0x4a21   0x1c4  Code  Gb  hc32f46x_gpio.o [1]
 PORT_Lock                    0x4bf1     0xc  Code  Gb  hc32f46x_gpio.o [1]
 PORT_ResetBits               0x4c4b    0x4e  Code  Gb  hc32f46x_gpio.o [1]
@@ -752,9 +748,9 @@ PWC_Fcg0PeriphClockCmd       0x6f55    0x5c  Code  Gb  hc32f46x_pwc.o [1]
 PWC_Fcg1PeriphClockCmd       0x6fb1    0x4c  Code  Gb  hc32f46x_pwc.o [1]
 PWC_Fcg3PeriphClockCmd       0x6ffd    0x4c  Code  Gb  hc32f46x_pwc.o [1]
 PendSV_Handler               0x3611          Code  Gb  portasm.o [1]
-Print_CPU_Temperature        0xc169    0x20  Code  Gb  User_OTS.o [1]
-Region$$Table$$Base          0xc800           --   Gb  - Linker created -
-Region$$Table$$Limit         0xc82c           --   Gb  - Linker created -
+Print_CPU_Temperature        0xbefd    0x20  Code  Gb  User_OTS.o [1]
+Region$$Table$$Base          0xc4e0           --   Gb  - Linker created -
+Region$$Table$$Limit         0xc50c           --   Gb  - Linker created -
 SDCARD_GetCardCSD            0x50a5    0xe4  Code  Gb  sd_card.o [1]
 SDCARD_GetDeviceMode         0x50a1     0x4  Code  Gb  sd_card.o [1]
 SDCARD_Init                  0x5031    0x70  Code  Gb  sd_card.o [1]
@@ -807,10 +803,10 @@ SDMMC_GetCmdResp7            0x644d    0x4c  Code  Lc  sdmmc_cmd.o [1]
 SDMMC_WaitBusIdle            0x6499    0x4c  Code  Lc  sdmmc_cmd.o [1]
 SDMMC_WaitResponse           0x64e5    0xa6  Code  Lc  sdmmc_cmd.o [1]
 SD_CARD_Init                 0x49cb    0x1c  Code  Gb  User_SDIO.o [1]
-SRAM_CK_Disable              0xbfa5     0xa  Code  Gb  hc32f46x_sram.o [1]
-SRAM_CK_Enable               0xbfaf     0xa  Code  Gb  hc32f46x_sram.o [1]
-SRAM_WT_Disable              0xbf91     0xa  Code  Gb  hc32f46x_sram.o [1]
-SRAM_WT_Enable               0xbf9b     0xa  Code  Gb  hc32f46x_sram.o [1]
+SRAM_CK_Disable              0xbd39     0xa  Code  Gb  hc32f46x_sram.o [1]
+SRAM_CK_Enable               0xbd43     0xa  Code  Gb  hc32f46x_sram.o [1]
+SRAM_WT_Disable              0xbd25     0xa  Code  Gb  hc32f46x_sram.o [1]
+SRAM_WT_Enable               0xbd2f     0xa  Code  Gb  hc32f46x_sram.o [1]
 SVC_Handler                  0x3669          Code  Gb  portasm.o [1]
 SdCardCheckReayForData       0x589b    0x48  Code  Lc  sd_card.o [1]
 SdCardInitHost               0x5693    0x4e  Code  Lc  sd_card.o [1]
@@ -824,27 +820,22 @@ SdiocGetInternDataPtr::m_astcSdiocInstanceDataLut
                         0x1fff'c444    0x88  Data  Lc  hc32f46x_sdioc.o [1]
 SdiocInitPins                0x4965    0x66  Code  Lc  User_SDIO.o [1]
 SetUartBaudrate              0xafa1   0x148  Code  Lc  hc32f46x_utility.o [1]
-Set_ADC_Data                 0xc26d     0x6  Code  Gb  User_ADC.o [1]
-SysTick_Config               0xc525    0x2e  Code  Lc  main.o [1]
+Set_ADC_Data                 0xc001     0x6  Code  Gb  User_ADC.o [1]
+SysTick_Config               0xc2b9    0x2e  Code  Lc  main.o [1]
 SysTick_Handler               0x4d7     0x8  Code  Gb  hc32f46x_interrupts.o [1]
 SystemCoreClock         0x1fff'8160     0x4  Data  Gb  system_hc32f46x.o [1]
 SystemCoreClockUpdate        0x9fe1    0xaa  Code  Gb  system_hc32f46x.o [1]
 SystemInit                   0x9fd9     0x8  Code  Gb  system_hc32f46x.o [1]
-TIMER0_BaseInit              0xb5b5   0x168  Code  Gb  hc32f46x_timer0.o [1]
-TIMER0_Cmd                   0xb4b9    0x8e  Code  Gb  hc32f46x_timer0.o [1]
-TIMER0_IntCmd                0xb547    0x6e  Code  Gb  hc32f46x_timer0.o [1]
-Task_ADC                     0xc05d    0x5e  Code  Gb  User_Task.o [1]
-Task_LED                     0xbfc9    0x94  Code  Gb  User_Task.o [1]
-Timer01_CHB_CallBack         0xc5b9     0x2  Code  Gb  User_Timer.o [1]
+Task_ADC                     0xbdf1    0x5e  Code  Gb  User_Task.o [1]
+Task_LED                     0xbd5d    0x94  Code  Gb  User_Task.o [1]
 UsageFault_Handler            0x4c7     0x8  Code  Gb  hc32f46x_interrupts.o [1]
-User_ADC_Init                0xc285    0xd4  Code  Gb  User_ADC.o [1]
-User_DCU_Init                0xc1dd    0x78  Code  Gb  User_DCU.o [1]
-User_DMA_Init                0xc3b1    0xce  Code  Gb  User_DMA.o [1]
-User_Gpio_Init               0xbbc1    0xee  Code  Gb  User_Gpio.o [1]
+User_ADC_Init                0xc019    0xd4  Code  Gb  User_ADC.o [1]
+User_DCU_Init                0xbf71    0x78  Code  Gb  User_DCU.o [1]
+User_DMA_Init                0xc145    0xce  Code  Gb  User_DMA.o [1]
+User_Gpio_Init               0xb955    0xee  Code  Gb  User_Gpio.o [1]
 User_I2C3_Master_Write       0xa83f    0x72  Code  Gb  OLED.o [1]
-User_OTS_Init                0xc161     0x8  Code  Gb  User_OTS.o [1]
-User_Task_Create             0xc0bb    0x1c  Code  Gb  User_Task.o [1]
-User_Timer0_Init             0xc5bb    0x88  Code  Gb  User_Timer.o [1]
+User_OTS_Init                0xbef5     0x8  Code  Gb  User_OTS.o [1]
+User_Task_Create             0xbe4f    0x1c  Code  Gb  User_Task.o [1]
 Write_IIC_Command            0xa8b1    0x14  Code  Gb  OLED.o [1]
 Write_IIC_Data               0xa8c5    0x14  Code  Gb  OLED.o [1]
 _Encoding_8859_1_Mbrlen
@@ -856,17 +847,16 @@ _LdtobFull                   0x8145   0x400  Code  Lc  xprintffull.o [2]
 _LitobFull                   0x7fed   0x112  Code  Lc  xprintffull.o [2]
 _Locale_lconv           0x1fff'8104    0x38  Data  Lc  xlocale_c.o [2]
 _PrintfFull                  0x791d   0x1aa  Code  Gb  xprintffull.o [2]
-_Prout                       0xc879    0x16  Code  Gb  xprout.o [2]
+_Prout                       0xc559    0x16  Code  Gb  xprout.o [2]
 _PutcharsFull                0x87e5    0x2e  Code  Lc  xprintffull.o [2]
 _PutfldFull                  0x7b59   0x2d8  Code  Lc  xprintffull.o [2]
 _PutstrFull                  0x7f27    0xc6  Code  Lc  xprintffull.o [2]
 _PuttxtFull                  0x7e31    0xf6  Code  Lc  xprintffull.o [2]
-__NVIC_EnableIRQ             0xc4e5    0x1c  Code  Lc  main.o [1]
-__NVIC_EnableIRQ             0xc1b9    0x1c  Code  Lc  User_DCU.o [1]
-__NVIC_EnableIRQ             0xc375    0x1c  Code  Lc  User_DMA.o [1]
-__NVIC_EnableIRQ             0xbb95    0x1c  Code  Lc  User_Gpio.o [1]
-__NVIC_EnableIRQ             0xc59d    0x1c  Code  Lc  User_Timer.o [1]
-__NVIC_SetPriority           0xc501    0x24  Code  Lc  main.o [1]
+__NVIC_EnableIRQ             0xc279    0x1c  Code  Lc  main.o [1]
+__NVIC_EnableIRQ             0xbf4d    0x1c  Code  Lc  User_DCU.o [1]
+__NVIC_EnableIRQ             0xc109    0x1c  Code  Lc  User_DMA.o [1]
+__NVIC_EnableIRQ             0xb929    0x1c  Code  Lc  User_Gpio.o [1]
+__NVIC_SetPriority           0xc295    0x24  Code  Lc  main.o [1]
 __aeabi_cdcmple              0x8ef1          Code  Gb  DblCmpLe.o [3]
 __aeabi_cdrcmple             0x8f21          Code  Gb  DblCmpGe.o [3]
 __aeabi_d2iz                 0x908d          Code  Gb  DblToS32.o [3]
@@ -874,7 +864,7 @@ __aeabi_d2uiz                0x9419          Code  Gb  DblToU32.o [3]
 __aeabi_ddiv                 0x91d1          Code  Gb  DblDiv.o [3]
 __aeabi_dmul                 0x8cdd          Code  Gb  DblMul.o [3]
 __aeabi_dsub                 0x90ed          Code  Gb  DblSub.o [3]
-__aeabi_f2d                  0xc49d          Code  Gb  FltToDbl.o [3]
+__aeabi_f2d                  0xc231          Code  Gb  FltToDbl.o [3]
 __aeabi_i2d                  0x90c9          Code  Gb  S32ToDbl.o [3]
 __aeabi_ldiv0                0x9461          Code  Gb  I64DivZer.o [4]
 __aeabi_memcpy               0x8a05          Code  Gb  ABImemcpy.o [4]
@@ -883,7 +873,7 @@ __aeabi_memcpy8              0x8a25          Code  Gb  ABImemcpy.o [4]
 __aeabi_memset               0x78b5          Code  Gb  ABImemset.o [4]
 __aeabi_ui2d                 0x9441          Code  Gb  U32ToDbl.o [3]
 __aeabi_uldivmod             0x8aad          Code  Gb  I64DivMod.o [4]
-__cmain                      0xc82d          Code  Gb  cmain.o [4]
+__cmain                      0xc50d          Code  Gb  cmain.o [4]
 __exit                       0x95d1    0x14  Code  Gb  exit.o [5]
 __iar_Fail_s                 0x8929    0x1c  Code  Gb  xfail_s.o [2]
 __iar_Mbcurmax               0x89f9     0xa  Code  Gb  xmbcurmax.o [2]
@@ -893,17 +883,17 @@ __iar_Memset_word            0x78bd          Code  Gb  ABImemset.o [4]
 __iar_Stdout            0x1fff'80bc    0x48  Data  Gb  xfiles.o [2]
 __iar_Strchr                 0x8911          Code  Gb  strchr.o [4]
 __iar_dadd                   0x90fd          Code  Gb  DblSub.o [3]
-__iar_data_init3             0xc7b5    0x28  Code  Gb  data_init.o [4]
+__iar_data_init3             0xc495    0x28  Code  Gb  data_init.o [4]
 __iar_dsub                   0x9465          Code  Gb  DblAdd.o [3]
 __iar_dsubStart              0x9477          Code  Gb  DblAdd.o [3]
 __iar_frexp                  0x8e8d          Code  Gb  frexp.o [3]
 __iar_frexpl                 0x8e8d          Code  Gb  frexp.o [3]
 __iar_globLocale        0x1fff'8074    0x48  Data  Lc  xlocale_c.o [2]
 __iar_global_Locale          0x8899     0x4  Code  Gb  xlocale_c.o [2]
-__iar_init_vfp               0xc7dd          Code  Gb  fpinit_M.o [3]
+__iar_init_vfp               0xc4bd          Code  Gb  fpinit_M.o [3]
 __iar_ldexp64                0x8f51          Code  Gb  ldexp.o [3]
-__iar_packbits_init3         0xc655    0x9c  Code  Gb  packbits_init.o [4]
-__iar_program_start          0xc8e5          Code  Gb  cstartup_M.o [4]
+__iar_packbits_init3         0xc32d    0x9c  Code  Gb  packbits_init.o [4]
+__iar_program_start          0xc5c5          Code  Gb  cstartup_M.o [4]
 __iar_scalbln64              0x8f51          Code  Gb  ldexp.o [3]
 __iar_scalbn64               0x8f51          Code  Gb  ldexp.o [3]
 __iar_softfp___iar_frexp64
@@ -911,15 +901,15 @@ __iar_softfp___iar_frexp64
 __iar_softfp_frexp           0x8e81          Code  Gb  frexp.o [3]
 __iar_softfp_frexpl          0x8e81          Code  Gb  frexp.o [3]
 __iar_zero_init3             0x2a13    0x3a  Code  Gb  zero_init3.o [4]
-__low_level_init             0xc84b     0x4  Code  Gb  low_level_init.o [2]
+__low_level_init             0xc52b     0x4  Code  Gb  low_level_init.o [2]
 __vector_table                  0x0          Data  Gb  startup_hc32f46x.o [1]
-_call_main                   0xc839          Code  Gb  cmain.o [4]
-_exit                        0xc855          Code  Gb  cexit.o [4]
+_call_main                   0xc519          Code  Gb  cmain.o [4]
+_exit                        0xc535          Code  Gb  cexit.o [4]
 _gLocale_mblen               0x88fd     0x4  Code  Gb  xlocale_c.o [2]
 _gLocale_mblenInt            0x88c1    0x2c  Code  Gb  xlocale_c.o [2]
 _gLocale_wctomb              0x8901     0x4  Code  Gb  xlocale_c.o [2]
 _gLocale_wctombInt           0x88f9     0x4  Code  Gb  xlocale_c.o [2]
-_main                        0xc847          Code  Gb  cmain.o [4]
+_main                        0xc527          Code  Gb  cmain.o [4]
 abort                        0x945b     0x6  Code  Gb  abort.o [2]
 check_fs                     0x406f    0x74  Code  Lc  ff.o [1]
 chk_chr                      0x3707    0x14  Code  Lc  ff.o [1]
@@ -927,7 +917,7 @@ chk_mounted                  0x40e3   0x2c0  Code  Gb  ff.o [1]
 clust2sect                   0x3bb9    0x1a  Code  Gb  ff.o [1]
 create_chain                 0x3b0b    0xae  Code  Lc  ff.o [1]
 create_name                  0x3ea9   0x118  Code  Lc  ff.o [1]
-create_name::cvt             0xc6f0    0x80  Data  Lc  ff.o [1]
+create_name::cvt             0xc3c8    0x80  Data  Lc  ff.o [1]
 dir_find                     0x3daf    0x64  Code  Lc  ff.o [1]
 dir_next                     0x3c83   0x12c  Code  Lc  ff.o [1]
 dir_register                 0x3e13    0x96  Code  Lc  ff.o [1]
@@ -938,7 +928,7 @@ disk_read                    0x48dd    0x2c  Code  Gb  diskio.o [1]
 disk_status                  0x48cf     0xe  Code  Gb  diskio.o [1]
 disk_write                   0x4909    0x2c  Code  Gb  diskio.o [1]
 enIrqRegistration             0x421    0x86  Code  Gb  hc32f46x_interrupts.o [1]
-exit                         0xc84f     0x4  Code  Gb  exit.o [2]
+exit                         0xc52f     0x4  Code  Gb  exit.o [2]
 f_close                      0x484b    0x1a  Code  Gb  ff.o [1]
 f_gets                       0x4865    0x4a  Code  Gb  ff.o [1]
 f_mount                      0x43cd    0x34  Code  Gb  ff.o [1]
@@ -954,20 +944,20 @@ fputc                        0xaf91    0x10  Code  Gb  hc32f46x_utility.o [1]
 fr                      0x1fff'c67d     0x1  Data  Gb  User_Task.o [1]
 get_fat                      0x3869   0x104  Code  Gb  ff.o [1]
 get_fattime                  0x4943     0x4  Code  Gb  fattime.o [1]
-key0_int_callback            0xbbb1     0x8  Code  Gb  User_Gpio.o [1]
-key1_int_callback            0xbbb9     0x8  Code  Gb  User_Gpio.o [1]
+key0_int_callback            0xb945     0x8  Code  Gb  User_Gpio.o [1]
+key1_int_callback            0xb94d     0x8  Code  Gb  User_Gpio.o [1]
 ldexp                        0x8f51          Code  Gb  ldexp.o [3]
 ldexpl                       0x8f51          Code  Gb  ldexp.o [3]
 line                    0x1fff'c4cc    0x54  Data  Gb  User_Task.o [1]
 localeconv                   0x8905     0x4  Code  Gb  xlocale_c.o [2]
-loop                         0xbfc1     0x8  Code  Gb  User_Task.o [1]
+loop                         0xbd55     0x8  Code  Gb  User_Task.o [1]
 m_f32OtsOffsetM         0x1fff'c60c     0x4  Data  Lc  hc32f46x_ots.o [1]
 m_f32OtsSlopeK          0x1fff'c608     0x4  Data  Lc  hc32f46x_ots.o [1]
 m_stcCardInitCfg        0x1fff'813c    0x10  Data  Lc  User_SDIO.o [1]
 m_stcDmaInitCfg         0x1fff'8154     0x8  Data  Lc  User_SDIO.o [1]
 m_stcSdhandle           0x1fff'8000    0x74  Data  Lc  User_SDIO.o [1]
 m_u8OtsClkSel           0x1fff'c677     0x1  Data  Lc  hc32f46x_ots.o [1]
-main                         0xc553    0x2e  Code  Gb  main.o [1]
+main                         0xc2e7    0x2a  Code  Gb  main.o [1]
 mem_cmp                      0x36e5    0x22  Code  Lc  ff.o [1]
 mem_cpy                      0x36c1    0x14  Code  Lc  ff.o [1]
 mem_set                      0x36d5    0x10  Code  Lc  ff.o [1]
@@ -976,7 +966,7 @@ move_window                  0x371b    0x76  Code  Lc  ff.o [1]
 obuf                    0x1fff'c520    0x50  Data  Lc  xfiles.o [2]
 osSystickHandler             0x2a01    0x10  Code  Gb  cmsis_os.o [1]
 pfnNmiCallback          0x1fff'c604     0x4  Data  Lc  hc32f46x_exint_nmi_swi.o [1]
-printf                       0xc191    0x28  Code  Gb  printf.o [2]
+printf                       0xbf25    0x28  Code  Gb  printf.o [2]
 prvAddCurrentTaskToDelayedList
                              0x306d    0x6e  Code  Lc  tasks.o [1]
 prvAddNewTaskToReadyList
@@ -994,7 +984,7 @@ prvResetNextTaskUnblockTime
                              0x2ff3    0x28  Code  Lc  tasks.o [1]
 prvTaskExitError             0x313d    0x2a  Code  Lc  port.o [1]
 put_fat                      0x396d   0x130  Code  Gb  ff.o [1]
-putchar                      0xc891     0xc  Code  Gb  putchar.o [2]
+putchar                      0xc571     0xc  Code  Gb  putchar.o [2]
 pvPortMalloc                 0x3319   0x114  Code  Gb  heap_4.o [1]
 pxCurrentTCB            0x1fff'c624     0x4  Data  Gb  tasks.o [1]
 pxDelayedTaskList       0x1fff'c628     0x4  Data  Lc  tasks.o [1]
@@ -1013,7 +1003,7 @@ sec_hand                0x1fff'c66c     0x4  Data  Lc  xfail_s.o [2]
 strchr                       0x8911          Code  Gb  strchr.o [4]
 strlen                       0x8969          Code  Gb  strlen.o [4]
 sync                         0x3791    0xd8  Code  Lc  ff.o [1]
-system_clk_init              0xbd81   0x164  Code  Gb  System_Clk.o [1]
+system_clk_init              0xbb15   0x164  Code  Gb  System_Clk.o [1]
 u32ICG                        0x400    0x20  Data  Gb  hc32f46x_icg.o [1]
 u8FreqDiv               0x1fff'814c     0x8  Data  Lc  hc32f46x_i2c.o [1]
 ucHeap                  0x1fff'8164  0x3c00  Data  Lc  heap_4.o [1]
@@ -1046,7 +1036,7 @@ xBlockAllocatedBit      0x1fff'c61c     0x4  Data  Lc  heap_4.o [1]
 xDelayedTaskList1       0x1fff'c590    0x14  Data  Lc  tasks.o [1]
 xDelayedTaskList2       0x1fff'c5a4    0x14  Data  Lc  tasks.o [1]
 xFreeBytesRemaining     0x1fff'c614     0x4  Data  Lc  heap_4.o [1]
-xHeapStructSize              0xc910     0x4  Data  Lc  heap_4.o [1]
+xHeapStructSize              0xc5f0     0x4  Data  Lc  heap_4.o [1]
 xIdleTaskHandle         0x1fff'c658     0x4  Data  Lc  tasks.o [1]
 xMinimumEverFreeBytesRemaining
                         0x1fff'c618     0x4  Data  Lc  heap_4.o [1]
@@ -1074,7 +1064,7 @@ xYieldPending           0x1fff'c648     0x4  Data  Lc  tasks.o [1]
 [4] = rt7M_tl.a
 [5] = shb_l.a
 
-  49 242 bytes of readonly  code memory
+  48 442 bytes of readonly  code memory
    1 991 bytes of readonly  data memory (+ 32 absolute)
   19 070 bytes of readwrite data memory
 

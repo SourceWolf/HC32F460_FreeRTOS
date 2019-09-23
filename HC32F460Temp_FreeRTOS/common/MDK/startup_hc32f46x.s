@@ -280,9 +280,6 @@ SET_SRAM3_WAIT
                 MOV     R1, #0x76
                 STR     R1, [R0]
 
-              ; reset Vector table address.
-                LDR     R0, =0xE000ED08
-                STR     R2, [R0]
                 LDR     R0, =SystemInit
                 BLX     R0
                 LDR     R0, =__main
