@@ -111,7 +111,7 @@ void User_Timer4_init(void)
     stcCntInit.enBufferCmd = Disable;//禁止CPRS缓存
     stcCntInit.enClk = Timer4CntPclk;//时钟源选择
     stcCntInit.enClkDiv = Timer4CntPclkDiv1;//
-    stcCntInit.enCntMode = Timer4CntSawtoothWave;
+    stcCntInit.enCntMode = Timer4CntTriangularWave;
     stcCntInit.enPeakIntMsk = Timer4CntIntMask0;//不屏蔽上溢中断
     stcCntInit.enZeroIntMsk = Timer4CntIntMask0;//不屏蔽下溢中断
     stcCntInit.u16Cycle = TIMER4_CNT_CYCLE_VAL;
@@ -127,6 +127,7 @@ void User_Timer4_init(void)
      if ((Timer4OcoOul == TIMER4_OCO_LOW_CH) || (Timer4OcoOvl == TIMER4_OCO_LOW_CH) || (Timer4OcoOwl == TIMER4_OCO_LOW_CH))
     {
         /* OCMR[31:0] Ox 0FF0 0FFF    0000 1111 1111 0000   0000 1111 1111 1111 */
+#if 0        
         stcLowChCmpMode.enCntZeroLowMatchHighMatchLowChOpState = OcoOpOutputReverse;         /* bit[27:26]  11 */
         stcLowChCmpMode.enCntZeroLowMatchHighNotMatchLowChOpState = OcoOpOutputReverse;      /* bit[11:10]  11 */
         stcLowChCmpMode.enCntZeroLowNotMatchHighMatchLowChOpState = OcoOpOutputHold;         /* bit[31:30]  00 */
@@ -149,7 +150,31 @@ void User_Timer4_init(void)
         stcLowChCmpMode.enCntUpCntMatchOcfState = OcoOcfSet;   /* bit[2] 1 */
         stcLowChCmpMode.enCntPeakMatchOcfState = OcoOcfSet;    /* bit[1] 1 */
         stcLowChCmpMode.enCntDownCntMatchOcfState = OcoOcfSet; /* bit[0] 1 */
+#endif
+#if 1
+        stcLowChCmpMode.enCntZeroLowMatchHighMatchLowChOpState = OcoOpOutputReverse;         /* bit[27:26]  11 */
+        stcLowChCmpMode.enCntZeroLowMatchHighNotMatchLowChOpState = OcoOpOutputReverse;      /* bit[11:10]  11 */
+        stcLowChCmpMode.enCntZeroLowNotMatchHighMatchLowChOpState = OcoOpOutputHold;         /* bit[31:30]  00 */
+        stcLowChCmpMode.enCntZeroLowNotMatchHighNotMatchLowChOpState = OcoOpOutputHold;      /* bit[15:14]  00 */
 
+        stcLowChCmpMode.enCntUpCntLowMatchHighMatchLowChOpState = OcoOpOutputReverse;        /* bit[25:24]  11 */
+        stcLowChCmpMode.enCntUpCntLowMatchHighNotMatchLowChOpState = OcoOpOutputReverse;     /* bit[9:8]    11 */
+        stcLowChCmpMode.enCntUpCntLowNotMatchHighMatchLowChOpState = OcoOpOutputHold;        /* bit[19:18]  00 */
+
+        stcLowChCmpMode.enCntPeakLowMatchHighMatchLowChOpState = OcoOpOutputHold;         /* bit[23:22]  11 */
+        stcLowChCmpMode.enCntPeakLowMatchHighNotMatchLowChOpState = OcoOpOutputHold;      /* bit[7:6]    11 */
+        stcLowChCmpMode.enCntPeakLowNotMatchHighMatchLowChOpState = OcoOpOutputHold;         /* bit[29:28]  00 */
+        stcLowChCmpMode.enCntPeakLowNotMatchHighNotMatchLowChOpState = OcoOpOutputHold;      /* bit[13:12]  00 */
+
+        stcLowChCmpMode.enCntDownLowMatchHighMatchLowChOpState = OcoOpOutputReverse;         /* bit[21:20]  11 */
+        stcLowChCmpMode.enCntDownLowMatchHighNotMatchLowChOpState = OcoOpOutputReverse;      /* bit[5:4]    11 */
+        stcLowChCmpMode.enCntDownLowNotMatchHighMatchLowChOpState = OcoOpOutputHold;         /* bit[17:16]  00 */
+
+        stcLowChCmpMode.enCntZeroMatchOcfState = OcoOcfSet;    /* bit[3] 1 */
+        stcLowChCmpMode.enCntUpCntMatchOcfState = OcoOcfHold;   /* bit[2] 1 */
+        stcLowChCmpMode.enCntPeakMatchOcfState = OcoOcfSet;    /* bit[1] 1 */
+        stcLowChCmpMode.enCntDownCntMatchOcfState = OcoOcfSet; /* bit[0] 1 */
+#endif
         TIMER4_OCO_SetLowChCompareMode(TIMER4_UNIT, TIMER4_OCO_LOW_CH, &stcLowChCmpMode);  /* Set OCO low channel compare mode */
     }
     else

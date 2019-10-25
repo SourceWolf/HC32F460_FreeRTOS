@@ -63,6 +63,7 @@ void Task_LED(void *param)
     User_OTS_Init();
 //    User_SPI_Init();
     Ddl_UartInit();
+    User_Timer4_init();
     taskENTER_CRITICAL();
     OLED_ShowString(48,0,(uint8_t *)"HDSC");
     OLED_ShowString(32,2,(uint8_t *)"HC32F460");

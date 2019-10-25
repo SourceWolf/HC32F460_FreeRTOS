@@ -78,15 +78,8 @@ void system_clk_init(void)
 /* flash read wait cycle setting */
     EFM_Unlock();
     EFM_SetLatency(EFM_LATENCY_4);
-    
-//    M4_EFM->FRMC_f.FLWT = EFM_LATENCY_3; //Flash_wait_3_cycle
-//    M4_EFM->FRMC_f.CACHE = 1;//Enable Cache
-    EFM_InstructionCacheCmd(Enable);
+    EFM_InstructionCacheCmd(Disable);
     EFM_Lock();
-//    SRAM_CFG.u8SramIdx = 0x0B;
-//    SRAM_CFG.enSramWC = SramCycle2;
-//    SRAM_CFG.enSramRC = SramCycle2;
-//    SRAM_Init(&SRAM_CFG);
     SRAM_WT_Enable();
     SRAM_CK_Enable();
     M4_SRAMC->WTCR_f.SRAMBKRWT = SramCycle2;

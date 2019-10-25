@@ -9,9 +9,12 @@ USB_OTG_CORE_HANDLE  USB_OTG_dev;
 stc_clk_freq_t Clkdata;
 int main(void)
 {
-#if defined (__CC_ARM)
-  FPU_Enable();
-#endif
+//#if defined (__CC_ARM)
+//  FPU_Enable();
+//#endif
+#if defined (__CC_ARM) && defined (__TARGET_FPU_VFP)
+    SCB->CPACR |= 0x00F00000;
+#endif    
   system_clk_init();
 //  User_Timer0_Init();
   CLK_GetClockFreq(&Clkdata);

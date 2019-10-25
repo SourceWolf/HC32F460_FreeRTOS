@@ -1,0 +1,12 @@
+!SESSION 2019-09-25 09:17:43.856 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_121
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=zh_CN
+Command-line arguments:  -os win32 -ws win32 -arch x86 -data C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS
+
+!ENTRY com.iar.cdt.arm.toolchain.cmsis.adapter 1 0 2019-09-25 09:17:55.496
+!MESSAGE Using CMSIS pack repositories: http://links.iar.com/cmsis/pack
+
+!ENTRY com.iar.cmsismanager.product 1 0 2019-09-25 09:17:56.995
+!MESSAGE CMSIS Agent interface registered with service registry at ServiceLocation(host:\\.\pipe\iar-cspy-cpp-binary-com.iar.thrift.service.registry-1952b2b4-f58e-4552-9569-69774d937982-1, port:0, protocol:Binary, transport:Pipe)
