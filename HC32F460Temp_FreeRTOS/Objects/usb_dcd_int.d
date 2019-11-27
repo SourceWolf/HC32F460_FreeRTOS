@@ -1,0 +1,10 @@
+.\objects\usb_dcd_int.o: usb_lib\ctl_drv\usb_dcd_int.c
+.\objects\usb_dcd_int.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\usb_dcd_int.o: usb_lib\ctl_drv\usb_dcd_int.h
+.\objects\usb_dcd_int.o: usb_lib\ctl_drv\usb_dcd.h
+.\objects\usb_dcd_int.o: usb_lib\ctl_drv\usb_core.h
+.\objects\usb_dcd_int.o: .\App\usb_conf.h
+.\objects\usb_dcd_int.o: usb_lib\ctl_drv\usb_otg_regs.h
+.\objects\usb_dcd_int.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\usb_dcd_int.o: usb_lib\ctl_drv\usb_defines.h
+.\objects\usb_dcd_int.o: .\App\usb_bsp.h

@@ -1,19 +1,9 @@
 #include "hc32_ddl.h"
+#include "User_Gpio.h"
 #include "hc32f46x_gpio.h"
 #include "System_InterruptCFG_Def.h"
 
-#define LED0_PORT   PortE
-#define LED0_Pin    Pin06
-#define LED1_PORT   PortA
-#define LED1_Pin    Pin07
-#define LED2_PORT   PortB
-#define LED2_Pin    Pin05
-#define LED3_PORT   PortB
-#define LED3_Pin    Pin09
-#define Key0_PORT   PortD
-#define Key0_Pin    Pin03
-#define Key1_PORT   PortD
-#define Key1_Pin    Pin04
+
 
 bool flag_key0,flag_key1;
 
@@ -45,7 +35,10 @@ void User_Gpio_Init(void)
     Port_CFG.enExInt = Enable;
     PORT_Init(Key0_PORT,Key0_Pin, &Port_CFG);
     PORT_Init(Key1_PORT,Key1_Pin, &Port_CFG);
+    PORT_Init(Key2_PORT,Key2_Pin, &Port_CFG);
+    PORT_Init(Key3_PORT,Key3_Pin, &Port_CFG);
     Port_CFG.enPullUp = Enable;
+    
 //    PORT_Init(PortE, Pin04, &Port_CFG);
     LED_Status = 0;
     

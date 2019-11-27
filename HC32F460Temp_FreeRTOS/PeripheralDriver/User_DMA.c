@@ -86,4 +86,7 @@ void User_DMA_Init(void)
 //        M4_AOS->INT_SFTTRG_f.STRG = 1;
 //    }
 }
-
+void GetDMA_CNT(void)
+{
+    M4_DMA1->MONDNSEQCTL0_f.DNSCNT;
+}
