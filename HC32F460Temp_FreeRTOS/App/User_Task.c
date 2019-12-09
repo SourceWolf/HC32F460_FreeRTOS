@@ -25,7 +25,10 @@
 #include "Uart_DMA.h"
 #include "ff.h"
 #include "diskio.h"
-
+#include "usbd_usr.h"
+#include "usbd_desc.h"
+#include "usb_bsp.h"
+USB_OTG_CORE_HANDLE  USB_OTG_dev;
 uint8_t displaydata[4][128];
 extern USB_OTG_CORE_HANDLE  USB_OTG_dev;
 TaskHandle_t Hd_Task_LED, Hd_Task_ADC,Hd_Task_Sleep,Hd_Task_USB,Hd_Task_USBReport;
@@ -92,6 +95,7 @@ void Task_ADC(void *param)
     User_DCU_Init();
     User_ADC_Init();
     User_DMA_Init();
+
 //    User_CAN_Init();
 //    User_QSPI_Flash_Init();
 //    Test_QSPI();
@@ -116,7 +120,7 @@ void Task_ADC(void *param)
 void Task_USB_Report(void *param)
 {
     int8_t  x=0, y=0;
-    static uint8_t HID_Buffer [4];
+    static uint8_t HID_Buffer [4];        
     while(1)
     {
         if(Reset == PORT_GetBit(Key0_PORT,Key0_Pin))
@@ -149,8 +153,18 @@ void Task_USB_Report(void *param)
 }
 void Task_USB(void *param)
 {
+    stc_clk_freq_t Clkdata;
     __IO uint32_t test = 0ul;
-     
+     USBD_Init(&USB_OTG_dev,
+#ifdef USE_USB_OTG_FS
+              USB_OTG_FS_CORE_ID,
+#else
+              USB_OTG_HS_CORE_ID,
+#endif
+              &USR_desc,
+              &USBD_HID_cb,
+              &USR_cb);
+    CLK_GetClockFreq(&Clkdata);
     xTaskCreate(Task_USB_Report,(const char *)"USB_report", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+3, &Hd_Task_USBReport );
     while(1)
     {

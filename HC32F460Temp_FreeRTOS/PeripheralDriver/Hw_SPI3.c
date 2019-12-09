@@ -117,7 +117,7 @@ void Hw_SPI3_Init(void)
     PORT_SetFunc(SPI3_MISO_PORT, SPI3_MISO_PIN, SPI3_MISO_FUNC, Disable);
 
     /* Configuration SPI structure */
-    stcSpiInit.enClkDiv = SpiClkDiv128;
+    stcSpiInit.enClkDiv = SpiClkDiv128;//SPI datarate,PCLK1/128
     stcSpiInit.enFrameNumber = SpiFrameNumber1;
     stcSpiInit.enDataLength = SpiDataLengthBit8;
     stcSpiInit.enFirstBitPosition = SpiFirstBitPositionMSB;

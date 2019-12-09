@@ -92,7 +92,6 @@ void system_clk_init(void)
     SRAM_CK_Disable();
 //-------------Switch system clock-----------------------//
     CLK_SetSysClkSource(SYSTEMCLKSOURCE);
-    CLK_SysClkConfig(&SYS_CLK_CFG); 
-        
+    CLK_SysClkConfig(&SYS_CLK_CFG);  
 }
 /*End of file*/

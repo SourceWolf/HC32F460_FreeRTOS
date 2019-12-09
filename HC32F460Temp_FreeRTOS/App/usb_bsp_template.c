@@ -138,7 +138,7 @@ static void SysClkIni(void)
     /* MPLL config. */
     stcMpllCfg.pllmDiv = 1;
     stcMpllCfg.plln =42;
-    stcMpllCfg.PllpDiv = 4;     //MPLLP = 84
+    stcMpllCfg.PllpDiv = 2;     //MPLLP = 84
     stcMpllCfg.PllqDiv = 2;
     stcMpllCfg.PllrDiv = 7;    //MPLLR 168/4 = 48
     CLK_SetPllSource(ClkPllSrcXTAL);
@@ -192,7 +192,7 @@ static void SysClkIni(void)
 void USB_OTG_BSP_Init(USB_OTG_CORE_HANDLE *pdev)
 {
     /* clock config */
-    SysClkIni();
+//    SysClkIni();
 
 	Ddl_UartInit();
     printf("USBFS start !!\n");

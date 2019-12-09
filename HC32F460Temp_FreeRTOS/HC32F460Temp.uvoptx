@@ -135,7 +135,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGTARM</Key>
-          <Name>(1010=-1,-1,-1,-1,0)(1007=-1,-1,-1,-1,0)(1008=776,0,1152,236,0)(1009=-1,-1,-1,-1,0)(1012=-1,-1,-1,-1,0)</Name>
+          <Name>(1010=-1,-1,-1,-1,0)(1007=-1,-1,-1,-1,0)(1008=1274,0,1650,236,0)(1009=1000,146,1258,734,0)(1012=-1,-1,-1,-1,0)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -157,34 +157,18 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>160</LineNumber>
+          <LineNumber>21</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>32126</Address>
+          <Address>38292</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\App\User_Task.c</Filename>
+          <Filename>.\App\main.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\HC32F460Temp\App/User_Task.c\160</Expression>
-        </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>128</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>32048</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\App\User_Task.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\HC32F460Temp\App/User_Task.c\128</Expression>
+          <Expression>\\HC32F460Temp\App/main.c\21</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -192,6 +176,11 @@
           <count>0</count>
           <WinNumber>1</WinNumber>
           <ItemText>SystemCoreClock,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>1</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Clkdata,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
@@ -236,6 +225,12 @@
       <pszMrulep></pszMrulep>
       <pSingCmdsp></pSingCmdsp>
       <pMultCmdsp></pMultCmdsp>
+      <SystemViewers>
+        <Entry>
+          <Name>System Viewer\SYSREG</Name>
+          <WinId>35905</WinId>
+        </Entry>
+      </SystemViewers>
       <DebugDescription>
         <Enable>1</Enable>
         <EnableFlashSeq>0</EnableFlashSeq>
@@ -1016,7 +1011,7 @@
 
   <Group>
     <GroupName>PeripheralDriver</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1036,7 +1031,7 @@
       <GroupNumber>7</GroupNumber>
       <FileNumber>62</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>.\PeripheralDriver\System_Clk.c</PathWithFileName>

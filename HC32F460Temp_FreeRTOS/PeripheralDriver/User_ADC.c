@@ -79,4 +79,3 @@ void User_ADC_Init(void)
 //	NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);//Enable Interrupt
 	
 }
-

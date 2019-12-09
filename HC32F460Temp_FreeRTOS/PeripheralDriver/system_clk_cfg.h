@@ -134,12 +134,12 @@
 #define PCLK0S_DIV              SYSCLK_DIV1
 //---------------------Configure PLL---------------------------//
 //Configure PLL Clock Source
-#define PLL_CLK_SOURCE  PLL_CLK_SOURCE_HRC
+#define PLL_CLK_SOURCE  PLL_CLK_SOURCE_XTAL
 //------------------Configure MPLL CLK-------------------------//
 //Enable MPLL
 #define MPLL_CLK_ENABLE  ENABLE
 //MPLL Source Clock Divider HRC 16MHZ DIV2 8MHZ
-#define MPLL_CLK_M_DIV   PLL_DIV2+1
+#define MPLL_CLK_M_DIV   1//PLL_DIV2+1
 //----------------倍频系数，最低倍频数20，最高80-----------------//
 //MPLL 倍频系数 21x8MHZ = 168MHZ
 #define MPLL_CLK_NUM        42u//75u//
@@ -150,15 +150,15 @@
 
 
 //------------------Configure UPLL CLK------------------------//
-#define UPLL_CLK_ENABLE  Enable
+#define UPLL_CLK_ENABLE  ENABLE
 #define UPLL_CLK_SOURCE  PLL_CLK_SOURCE//必须与MPLL相同
-#define UPLL_CLK_M_DIV   PLL_DIV2+1
+#define UPLL_CLK_M_DIV   1//PLL_DIV2+1
 //倍频系数，最低倍频数20，最高80/
 #define UPLL_CLK_NUM      42u
 
-#define UPLL_CLK_P_DIV      PLL_DIV2+1//UPLL 预分频数
-#define UPLL_CLK_Q_DIV      PLL_DIV2+1
-#define UPLL_CLK_R_DIV      PLL_DIV2+1
+#define UPLL_CLK_P_DIV      PLL_DIV7+1//UPLL 预分频数
+#define UPLL_CLK_Q_DIV      PLL_DIV7+1
+#define UPLL_CLK_R_DIV      PLL_DIV7+1
 
 //-----------------Configure USB CLK------------------------//
 #define USB_CLK_SOURCE      USBCLK_UPLL_P
