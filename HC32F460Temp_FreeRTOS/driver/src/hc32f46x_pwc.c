@@ -336,12 +336,22 @@ void PWC_PowerModeCfg(const stc_pwc_pwr_mode_cfg_t* pstcPwrMdCfg)
  ** \retval None
  **
  ******************************************************************************/
+#if defined (__ICCARM__)
+__ramfunc
+#endif
 void PWC_EnterPowerDownMd(void)
 {
     ENABLE_PWR_REG_WRITE();
 
     M4_SYSREG->PWR_STPMCR_f.STOP = 1u;
+
+    __disable_irq();
     M4_SYSREG->PWR_PWRC0_f.PWDN = 1u;
+    for(uint8_t i = 0u; i < 10u; i++)
+    {
+        __NOP();
+    }
+    __enable_irq();
 
     DISABLE_PWR_REG_WRITE();
 

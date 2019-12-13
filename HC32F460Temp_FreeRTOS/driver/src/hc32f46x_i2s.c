@@ -240,7 +240,7 @@ void I2S_ClrErrFlag(M4_I2S_TypeDef* pstcI2sReg, en_i2s_err_flag_t enErrFlag)
     DDL_ASSERT(IS_VALID_I2S_REG(pstcI2sReg));
     DDL_ASSERT(IS_VALID_I2S_ERR_FLAG(enErrFlag));
 
-    pstcI2sReg->ER &= ~(1ul << (uint8_t)enErrFlag);
+    pstcI2sReg->ER |= (1ul << (uint8_t)enErrFlag);
 }
 
 /**

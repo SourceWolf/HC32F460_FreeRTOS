@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -40,7 +40,7 @@
  * at all times.
  */
 /******************************************************************************/
-/** \file pixiedust_sound_i2s.c
+/** \file data_sound_8k_i2s.c
  **
  ** Sound data Module
  **
@@ -52,7 +52,7 @@
 /******************************************************************************/
 /* Include files                                                              */
 /******************************************************************************/
-#include "hc32_ddl.h"
+#include "hc32_common.h"
 #include "data_sound_i2s.h"
 
 /*****************************************************************************/
@@ -63,14 +63,8 @@
  ******************************************************************************
  **  \brief   Pixie Dust sound data
  **
- **  \note This data was taken from android.googlesource.com pixiedust.wav and 
- **  was converted into I2S data.
- **  Changes: Around 50,000 samples at the end were skipped for memory reasons
- **  and the remaining samples were faded out by around 20.0000 end samples.
- **
- **  \note that 0xFFFF is used as the end delimiter and is not valid sound data
  ******************************************************************************/
-const uint16_t au16PixieDustSoundI2s_8[WAVFILELEN]={//[129101ul] = {
+const uint16_t au16PixieDustSoundI2s_8[]={
 0x00F9,0x0045,0x0584,0x01DA,0x02CF,0x022E,0xFDA7,0x0090,
 0xFE8D,0xFFE7,0x00DF,0x0068,0x0131,0x00C2,0x0149,0x00D9,
 0x0349,0x01C9,0x01F4,0x01DF,0xFFAA,0x0037,0xFD3F,0xFF11,
@@ -16206,8 +16200,10 @@ const uint16_t au16PixieDustSoundI2s_8[WAVFILELEN]={//[129101ul] = {
 0x1327,0x0806,0x880F,0x0C57,0x052D,0x0BC5,0xFF65,0x0228,
 0x03F9,0xF7FD,0xB908,0xF5FF,0x0779,0xF932,0x0433,0xF8BA,
 0x0424,0xF257,0x1E05,0xECB1,0xFF92,0xEE67,0xF50B,0xF415,
-0xEE10,0xF682,0xF5EB,0xF17D,0xEB69,0xED6E,0xE8C0,0xF162, 
+0xEE10,0xF682,0xF5EB,0xF17D,0xEB69,0xED6E,0xE8C0,0xF162,
 };
+
+uint32_t u32WavLen_8k = sizeof(au16PixieDustSoundI2s_8)/sizeof(uint8_t);
 
 /*****************************************************************************/
 /* EOF (not truncated)                                                       */

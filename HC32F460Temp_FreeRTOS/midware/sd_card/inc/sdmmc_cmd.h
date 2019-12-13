@@ -1,8 +1,8 @@
-/*****************************************************************************
- * Copyright (C) 2016, Huada Semiconductor Co.,Ltd All rights reserved.
+/*******************************************************************************
+ * Copyright (C) 2016, Huada Semiconductor Co., Ltd. All rights reserved.
  *
  * This software is owned and published by:
- * Huada Semiconductor Co.,Ltd ("HDSC").
+ * Huada Semiconductor Co., Ltd. ("HDSC").
  *
  * BY DOWNLOADING, INSTALLING OR USING THIS SOFTWARE, YOU AGREE TO BE BOUND
  * BY ALL THE TERMS AND CONDITIONS OF THIS AGREEMENT.
@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -45,7 +45,7 @@
  ** A detailed description is available at
  ** @link SdiocGroup SDIOC description @endlink
  **
- **   - 2018-11-08  1.0 Hongjh First version for Device Driver Library of SDIOC.
+ **   - 2018-11-15  1.0 Hongjh First version for Device Driver Library of SDIOC.
  **
  ******************************************************************************/
 #ifndef __SDMMC_CMD_H__
@@ -98,7 +98,7 @@ typedef enum en_sdmmc_card_state
  ******************************************************************************/
 typedef enum sdmmc_capacity
 {
-    SdmmcStanderdCapacity = 0x00000000u,    ///< Card capacity: Standerd Capacity
+    SdmmcStanderdCapacity = 0x00000000u,    ///< Card capacity: Standard Capacity
     SdmmcHighCapacity     = 0x40000000u,    ///< Card capacity: High Capacity
 } sdmmc_capacity_t;
 
@@ -110,7 +110,7 @@ typedef enum sdmmc_capacity
 typedef struct stc_sdmmc_resp_card_status
 {
     uint32_t    RESERVE1            :3;     ///< RESERVE
-    uint32_t    AKE_SEQ_ERROR       :1;     ///< Error in the sequence of theauthentication process
+    uint32_t    AKE_SEQ_ERROR       :1;     ///< Error in the sequence of the authentication process
     uint32_t    RESERVE2            :1;     ///< RESERVE
     uint32_t    APP_CMD             :1;     ///< The card will expect ACMD, or an indication that the command has been interpreted as ACMD
     uint32_t    RESERVE3            :2;     ///< RESERVE
@@ -151,11 +151,11 @@ typedef struct stc_sdmmc_resp_card_status
 #define CMD2_ALL_SEND_CID                       (2u)   /*!< Asks any card connected to the host to send the CID numbers on the CMD line.             */
 #define CMD3_SEND_RELATIVE_ADDR                 (3u)   /*!< Asks the card to publish a new relative address (RCA).                                   */
 #define CMD_SET_DSR                             (4u)   /*!< Programs the DSR of all cards.                                                           */
-#define CMD_SDMMC_SEN_OP_COND                   (5u)   /*!< Sends host capacity support information (HCS) and asks the accessed card to send its 
+#define CMD_SDMMC_SEN_OP_COND                   (5u)   /*!< Sends host capacity support information (HCS) and asks the accessed card to send its
                                                             operating condition register (OCR) content in the response on the CMD line.              */
 #define CMD6_SWITCH_FUNC                        (6u)   /*!< Checks switchable function (mode 0) and switch card function (mode 1).                   */
 #define CMD7_SEL_DESEL_CARD                     (7u)   /*!< Selects the card by its own relative address and gets deselected by any other address    */
-#define CMD8_SEND_IF_COND                       (8u)   /*!< Sends SD Memory Card interface condition, which includes host supply voltage information 
+#define CMD8_SEND_IF_COND                       (8u)   /*!< Sends SD Memory Card interface condition, which includes host supply voltage information
                                                             and asks the card whether card supports voltage.                                         */
 #define CMD9_SEND_CSD                           (9u)   /*!< Addressed card sends its card specific data (CSD) on the CMD line.                       */
 #define CMD10_SEND_CID                          (10u)  /*!< Addressed card sends its card identification (CID) on the CMD line.                      */
@@ -164,17 +164,17 @@ typedef struct stc_sdmmc_resp_card_status
 #define CMD13_SEND_STATUS                       (13u)  /*!< Addressed card sends its status register.                                                */
 #define CMD14_HS_BUSTEST_READ                   (14u)  /*!< Reserved                                                                                 */
 #define CMD15_GO_INACTIVE_STATE                 (15u)  /*!< Sends an addressed card into the inactive state.                                         */
-#define CMD16_SET_BLOCKLEN                      (16u)  /*!< Sets the block length (in bytes for SDSC) for all following block commands 
-                                                            (read, write, lock). Default block length is fixed to 512 Bytes. Not effective 
+#define CMD16_SET_BLOCKLEN                      (16u)  /*!< Sets the block length (in bytes for SDSC) for all following block commands
+                                                            (read, write, lock). Default block length is fixed to 512 Bytes. Not effective
                                                             for SDHS and SDXC.                                                                       */
-#define CMD17_READ_SINGLE_BLOCK                 (17u)  /*!< Reads single block of size selected by SET_BLOCKLEN in case of SDSC, and a block of 
+#define CMD17_READ_SINGLE_BLOCK                 (17u)  /*!< Reads single block of size selected by SET_BLOCKLEN in case of SDSC, and a block of
                                                             fixed 512 bytes in case of SDHC and SDXC.                                                */
-#define CMD18_READ_MULTIPLE_BLOCK               (18u)  /*!< Continuously transfers data blocks from card to host until interrupted by 
+#define CMD18_READ_MULTIPLE_BLOCK               (18u)  /*!< Continuously transfers data blocks from card to host until interrupted by
                                                             STOP_TRANSMISSION command.                                                               */
 #define CMD19_HS_BUSTEST_WRITE                  (19u)  /*!< 64 bytes tuning pattern is sent for SDR50 and SDR104.                                    */
 #define CMD20_WRITE_DAT_UNTIL_STOP              (20u)  /*!< Speed class control command.                                                             */
 #define CMD23_SET_BLOCK_COUNT                   (23u)  /*!< Specify block count for CMD18 and CMD25.                                                 */
-#define CMD24_WRITE_SINGLE_BLOCK                (24u)  /*!< Writes single block of size selected by SET_BLOCKLEN in case of SDSC, and a block of 
+#define CMD24_WRITE_SINGLE_BLOCK                (24u)  /*!< Writes single block of size selected by SET_BLOCKLEN in case of SDSC, and a block of
                                                             fixed 512 bytes in case of SDHC and SDXC.                                                */
 #define CMD25_WRITE_MULTIPLE_BLOCK              (25u)  /*!< Continuously writes blocks of data until a STOP_TRANSMISSION follows.                    */
 #define CMD26_PROG_CID                          (26u)  /*!< Reserved for manufacturers.                                                              */
@@ -184,18 +184,18 @@ typedef struct stc_sdmmc_resp_card_status
 #define CMD30_SEND_WRITE_PROT                   (30u)  /*!< Asks the card to send the status of the write protection bits.                           */
 #define CMD32_ERASE_WR_BLK_START                (32u)  /*!< Sets the address of the first write block to be erased. (For SD card only).              */
 #define CMD33_ERASE_WR_BLK_END                  (33u)  /*!< Sets the address of the last write block of the continuous range to be erased.           */
-#define CMD35_ERASE_GRP_START                   (35u)  /*!< Sets the address of the first write block to be erased. Reserved for each command 
+#define CMD35_ERASE_GRP_START                   (35u)  /*!< Sets the address of the first write block to be erased. Reserved for each command
                                                             system set by switch function command (CMD6).                                            */
-#define CMD36_ERASE_GRP_END                     (36u)  /*!< Sets the address of the last write block of the continuous range to be erased. 
+#define CMD36_ERASE_GRP_END                     (36u)  /*!< Sets the address of the last write block of the continuous range to be erased.
                                                             Reserved for each command system set by switch function command (CMD6).                  */
 #define CMD38_ERASE                             (38u)  /*!< Reserved for SD security applications.                                                   */
 #define CMD39_FAST_IO                           (39u)  /*!< SD card doesn't support it (Reserved).                                                   */
 #define CMD40_GO_IRQ_STATE                      (40u)  /*!< SD card doesn't support it (Reserved).                                                   */
-#define CMD42_LOCK_UNLOCK                       (42u)  /*!< Sets/resets the password or lock/unlock the card. The size of the data block is set by 
+#define CMD42_LOCK_UNLOCK                       (42u)  /*!< Sets/resets the password or lock/unlock the card. The size of the data block is set by
                                                             the SET_BLOCK_LEN command.                                                               */
-#define CMD55_APP_CMD                           (55u)  /*!< Indicates to the card that the next command is an application specific command rather 
+#define CMD55_APP_CMD                           (55u)  /*!< Indicates to the card that the next command is an application specific command rather
                                                             than a standard command.                                                                 */
-#define CMD56_GEN_CMD                           (56u)  /*!< Used either to transfer a data block to the card or to get a data block from the card 
+#define CMD56_GEN_CMD                           (56u)  /*!< Used either to transfer a data block to the card or to get a data block from the card
                                                             for general purpose/application specific commands.                                       */
 #define CMD64_NO_CMD                            (64u)  /*!< No command                                                                               */
 
@@ -204,12 +204,12 @@ typedef struct stc_sdmmc_resp_card_status
  ** \brief SDMMC_APP_CMD Commands Index
  **
  ******************************************************************************/
-#define ACMD6_APP_SD_SET_BUSWIDTH               (6u)   /*!< (ACMD6) Defines the data bus width to be used for data transfer. The allowed data bus 
+#define ACMD6_APP_SD_SET_BUSWIDTH               (6u)   /*!< (ACMD6) Defines the data bus width to be used for data transfer. The allowed data bus
                                                             widths are given in SCR register.                                                        */
 #define ACMD13_SD_APP_STATUS                    (13u)  /*!< (ACMD13) Sends the SD status.                                                            */
-#define ACMD22_SD_APP_SEND_NUM_WRITE_BLOCKS     (22u)  /*!< (ACMD22) Sends the number of the written (without errors) write blocks. Responds with 
+#define ACMD22_SD_APP_SEND_NUM_WRITE_BLOCKS     (22u)  /*!< (ACMD22) Sends the number of the written (without errors) write blocks. Responds with
                                                             32bit+CRC data block.                                                                    */
-#define ACMD41_SD_SEND_OP_COND                  (41u)  /*!< (ACMD41) Sends host capacity support information (HCS) and asks the accessed card to 
+#define ACMD41_SD_SEND_OP_COND                  (41u)  /*!< (ACMD41) Sends host capacity support information (HCS) and asks the accessed card to
                                                             send its operating condition register (OCR) content in the response on the CMD line.     */
 #define ACMD42_SET_CLR_CARD_DETECT              (42u)  /*!< (ACMD42) Connect/Disconnect the 50 KOhm pull-up resistor on CD/DAT3 (pin 1) of the card  */
 #define ACMD51_SD_APP_SEND_SCR                  (51u)  /*!< Reads the SD Configuration Register (SCR).                                               */
@@ -260,42 +260,42 @@ typedef struct stc_sdmmc_resp_card_status
 #define SDMMC_SD_VOLT_3_6                       (0x00800000ul)
 
 
-#define SDMMC_ERROR_NONE                        0x00000000u   /*!< No error                                                      */
-#define SDMMC_ERROR_CMD_CRC_FAIL                0x00000001u   /*!< Command response received (but CRC check failed)              */
-#define SDMMC_ERROR_DATA_CRC_FAIL               0x00000002u   /*!< Data block sent/received (CRC check failed)                   */
-#define SDMMC_ERROR_CMD_RSP_TIMEOUT             0x00000004u   /*!< Command response timeout                                      */
-#define SDMMC_ERROR_DATA_TIMEOUT                0x00000008u   /*!< Data timeout                                                  */
-#define SDMMC_ERROR_TX_UNDERRUN                 0x00000010u   /*!< Transmit FIFO underrun                                        */
-#define SDMMC_ERROR_RX_OVERRUN                  0x00000020u   /*!< Receive FIFO overrun                                          */
-#define SDMMC_ERROR_ADDR_MISALIGNED             0x00000040u   /*!< Misaligned address                                            */
-#define SDMMC_ERROR_BLOCK_LEN_ERR               0x00000080u   /*!< Transferred block length is not allowed for the card or the 
-                                                                   number of transferred bytes does not match the block length   */
-#define SDMMC_ERROR_ERASE_SEQ_ERR               0x00000100u   /*!< An error in the sequence of erase command occurs              */
-#define SDMMC_ERROR_BAD_ERASE_PARAM             0x00000200u   /*!< An invalid selection for erase groups                         */
-#define SDMMC_ERROR_WRITE_PROT_VIOLATION        0x00000400u   /*!< Attempt to program a write protect block                      */
-#define SDMMC_ERROR_LOCK_UNLOCK_FAILED          0x00000800u   /*!< Sequence or password error has been detected in unlock 
-                                                                   command or if there was an attempt to access a locked card    */
-#define SDMMC_ERROR_COM_CRC_FAILED              0x00001000u   /*!< CRC check of the previous command failed                      */
-#define SDMMC_ERROR_ILLEGAL_CMD                 0x00002000u   /*!< Command is not legal for the card state                       */
-#define SDMMC_ERROR_CARD_ECC_FAILED             0x00004000u   /*!< Card internal ECC was applied but failed to correct the data  */
-#define SDMMC_ERROR_CC_ERR                      0x00008000u   /*!< Internal card controller error                                */
-#define SDMMC_ERROR_GENERAL_UNKNOWN_ERR         0x00010000u   /*!< General or unknown error                                      */
-#define SDMMC_ERROR_STREAM_READ_UNDERRUN        0x00020000u   /*!< The card could not sustain data reading in stream rmode       */
-#define SDMMC_ERROR_STREAM_WRITE_OVERRUN        0x00040000u   /*!< The card could not sustain data programming in stream mode    */
-#define SDMMC_ERROR_CID_CSD_OVERWRITE           0x00080000u   /*!< CID/CSD overwrite error                                       */
-#define SDMMC_ERROR_WP_ERASE_SKIP               0x00100000u   /*!< Only partial address space was erased                         */
-#define SDMMC_ERROR_CARD_ECC_DISABLED           0x00200000u   /*!< Command has been executed without using internal ECC          */
-#define SDMMC_ERROR_ERASE_RESET                 0x00400000u   /*!< Erase sequence was cleared before executing because an out 
-                                                                   of erase sequence command was received                        */
-#define SDMMC_ERROR_AKE_SEQ_ERR                 0x00800000u   /*!< Error in sequence of authentication                           */
-#define SDMMC_ERROR_INVALID_VOLTRANGE           0x01000000u   /*!< Error in case of invalid voltage range                        */
-#define SDMMC_ERROR_ADDR_OUT_OF_RANGE           0x02000000u   /*!< Error when addressed block is out of range                    */
-#define SDMMC_ERROR_REQUEST_NOT_APPLICABLE      0x04000000u   /*!< Error when command request is not applicable                  */
-#define SDMMC_ERROR_INVALID_PARAMETER           0x08000000u   /*!< the used parameter is not valid                               */
-#define SDMMC_ERROR_UNSUPPORTED_FEATURE         0x10000000u   /*!< Error when feature is not insupported                         */
-#define SDMMC_ERROR_BUSY                        0x20000000u   /*!< Error when transfer process is busy                           */
-#define SDMMC_ERROR_DMA                         0x40000000u   /*!< Error while DMA transfer                                      */
-#define SDMMC_ERROR_TIMEOUT                     0x80000000u   /*!< Timeout error                                                 */
+#define SDMMC_ERROR_NONE                        (0x00000000ul)   /*!< No error                                                      */
+#define SDMMC_ERROR_CMD_CRC_FAIL                (0x00000001ul)   /*!< Command response received (but CRC check failed)              */
+#define SDMMC_ERROR_DATA_CRC_FAIL               (0x00000002ul)   /*!< Data block sent/received (CRC check failed)                   */
+#define SDMMC_ERROR_CMD_RSP_TIMEOUT             (0x00000004ul)   /*!< Command response timeout                                      */
+#define SDMMC_ERROR_DATA_TIMEOUT                (0x00000008ul)   /*!< Data timeout                                                  */
+#define SDMMC_ERROR_TX_UNDERRUN                 (0x00000010ul)   /*!< Transmit FIFO underrun                                        */
+#define SDMMC_ERROR_RX_OVERRUN                  (0x00000020ul)   /*!< Receive FIFO overrun                                          */
+#define SDMMC_ERROR_ADDR_MISALIGNED             (0x00000040ul)   /*!< Misaligned address                                            */
+#define SDMMC_ERROR_BLOCK_LEN_ERR               (0x00000080ul)   /*!< Transferred block length is not allowed for the card or the
+                                                                      number of transferred bytes does not match the block length   */
+#define SDMMC_ERROR_ERASE_SEQ_ERR               (0x00000100ul)   /*!< An error in the sequence of erase command occurs              */
+#define SDMMC_ERROR_BAD_ERASE_PARAM             (0x00000200ul)   /*!< An invalid selection for erase groups                         */
+#define SDMMC_ERROR_WRITE_PROT_VIOLATION        (0x00000400ul)   /*!< Attempt to program a write protect block                      */
+#define SDMMC_ERROR_LOCK_UNLOCK_FAILED          (0x00000800ul)   /*!< Sequence or password error has been detected in unlock
+                                                                      command or if there was an attempt to access a locked card    */
+#define SDMMC_ERROR_COM_CRC_FAILED              (0x00001000ul)   /*!< CRC check of the previous command failed                      */
+#define SDMMC_ERROR_ILLEGAL_CMD                 (0x00002000ul)   /*!< Command is not legal for the card state                       */
+#define SDMMC_ERROR_CARD_ECC_FAILED             (0x00004000ul)   /*!< Card internal ECC was applied but failed to correct the data  */
+#define SDMMC_ERROR_CC_ERR                      (0x00008000ul)   /*!< Internal card controller error                                */
+#define SDMMC_ERROR_GENERAL_UNKNOWN_ERR         (0x00010000ul)   /*!< General or unknown error                                      */
+#define SDMMC_ERROR_STREAM_READ_UNDERRUN        (0x00020000ul)   /*!< The card could not sustain data reading in stream rmode       */
+#define SDMMC_ERROR_STREAM_WRITE_OVERRUN        (0x00040000ul)   /*!< The card could not sustain data programming in stream mode    */
+#define SDMMC_ERROR_CID_CSD_OVERWRITE           (0x00080000ul)   /*!< CID/CSD overwrite error                                       */
+#define SDMMC_ERROR_WP_ERASE_SKIP               (0x00100000ul)   /*!< Only partial address space was erased                         */
+#define SDMMC_ERROR_CARD_ECC_DISABLED           (0x00200000ul)   /*!< Command has been executed without using internal ECC          */
+#define SDMMC_ERROR_ERASE_RESET                 (0x00400000ul)   /*!< Erase sequence was cleared before executing because an out
+                                                                      of erase sequence command was received                        */
+#define SDMMC_ERROR_AKE_SEQ_ERR                 (0x00800000ul)   /*!< Error in sequence of authentication                           */
+#define SDMMC_ERROR_INVALID_VOLTRANGE           (0x01000000ul)   /*!< Error in case of invalid voltage range                        */
+#define SDMMC_ERROR_ADDR_OUT_OF_RANGE           (0x02000000ul)   /*!< Error when addressed block is out of range                    */
+#define SDMMC_ERROR_REQUEST_NOT_APPLICABLE      (0x04000000ul)   /*!< Error when command request is not applicable                  */
+#define SDMMC_ERROR_INVALID_PARAMETER           (0x08000000ul)   /*!< the used parameter is not valid                               */
+#define SDMMC_ERROR_UNSUPPORTED_FEATURE         (0x10000000ul)   /*!< Error when feature is not insupported                         */
+#define SDMMC_ERROR_BUSY                        (0x20000000ul)   /*!< Error when transfer process is busy                           */
+#define SDMMC_ERROR_DMA                         (0x40000000ul)   /*!< Error while DMA transfer                                      */
+#define SDMMC_ERROR_TIMEOUT                     (0x80000000ul)   /*!< Timeout error                                                 */
 
 /*******************************************************************************
  * Global variable definitions ('extern')

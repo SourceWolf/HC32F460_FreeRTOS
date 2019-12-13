@@ -147,9 +147,9 @@ en_result_t enIrqRegistration(const stc_irq_regi_conf_t *pstcIrqRegiConf)
     DDL_ASSERT(IS_NULL_POINT(pstcIrqRegiConf->pfnCallback));
 
     /* IRQ032~128 whether out of range */
-    if (((((pstcIrqRegiConf->enIntSrc/32u)*6u + 32u) > pstcIrqRegiConf->enIRQn) || \
-        (((pstcIrqRegiConf->enIntSrc/32u)*6u + 37u) < pstcIrqRegiConf->enIRQn)) && \
-        (pstcIrqRegiConf->enIRQn >= 32u))
+    if (((((pstcIrqRegiConf->enIntSrc/32)*6 + 32) > pstcIrqRegiConf->enIRQn) || \
+        (((pstcIrqRegiConf->enIntSrc/32)*6 + 37) < pstcIrqRegiConf->enIRQn)) && \
+        (pstcIrqRegiConf->enIRQn >= 32))
     {
         enRet = ErrorInvalidParameter;
     }
@@ -447,7 +447,7 @@ void DebugMon_Handler(void)
  ******************************************************************************/
 void SysTick_Handler(void)
 {
-    //SysTick_IrqHandler();
+    SysTick_IrqHandler();
     osSystickHandler();
 }
 
@@ -2126,82 +2126,82 @@ void IRQ128_Handler(void)
     uint32_t VSSEL128 = M4_INTC->VSSEL128;
 
     /* external interrupt 00 */
-    if ((Set == bM4_INTC_EIFR_EIFR0) && (VSSEL128 & BIT_MASK_00))
+    if ((1ul == bM4_INTC_EIFR_EIFR0) && (VSSEL128 & BIT_MASK_00))
     {
         Extint00_IrqHandler();
     }
     /* external interrupt 01 */
-    if ((Set == bM4_INTC_EIFR_EIFR1) && (VSSEL128 & BIT_MASK_01))
+    if ((1ul == bM4_INTC_EIFR_EIFR1) && (VSSEL128 & BIT_MASK_01))
     {
         Extint01_IrqHandler();
     }
     /* external interrupt 02 */
-    if ((Set == bM4_INTC_EIFR_EIFR2) && (VSSEL128 & BIT_MASK_02))
+    if ((1ul == bM4_INTC_EIFR_EIFR2) && (VSSEL128 & BIT_MASK_02))
     {
         Extint02_IrqHandler();
     }
     /* external interrupt 03 */
-    if ((Set == bM4_INTC_EIFR_EIFR3) && (VSSEL128 & BIT_MASK_03))
+    if ((1ul == bM4_INTC_EIFR_EIFR3) && (VSSEL128 & BIT_MASK_03))
     {
         Extint03_IrqHandler();
     }
     /* external interrupt 04 */
-    if ((Set == bM4_INTC_EIFR_EIFR4) && (VSSEL128 & BIT_MASK_04))
+    if ((1ul == bM4_INTC_EIFR_EIFR4) && (VSSEL128 & BIT_MASK_04))
     {
         Extint04_IrqHandler();
     }
     /* external interrupt 05 */
-    if ((Set == bM4_INTC_EIFR_EIFR5) && (VSSEL128 & BIT_MASK_05))
+    if ((1ul == bM4_INTC_EIFR_EIFR5) && (VSSEL128 & BIT_MASK_05))
     {
         Extint05_IrqHandler();
     }
     /* external interrupt 06 */
-    if ((Set == bM4_INTC_EIFR_EIFR6) && (VSSEL128 & BIT_MASK_06))
+    if ((1ul == bM4_INTC_EIFR_EIFR6) && (VSSEL128 & BIT_MASK_06))
     {
         Extint06_IrqHandler();
     }
     /* external interrupt 07 */
-    if ((Set == bM4_INTC_EIFR_EIFR7) && (VSSEL128 & BIT_MASK_07))
+    if ((1ul == bM4_INTC_EIFR_EIFR7) && (VSSEL128 & BIT_MASK_07))
     {
         Extint07_IrqHandler();
     }
     /* external interrupt 08 */
-    if ((Set == bM4_INTC_EIFR_EIFR8) && (VSSEL128 & BIT_MASK_08))
+    if ((1ul == bM4_INTC_EIFR_EIFR8) && (VSSEL128 & BIT_MASK_08))
     {
         Extint08_IrqHandler();
     }
     /* external interrupt 09 */
-    if ((Set == bM4_INTC_EIFR_EIFR9) && (VSSEL128 & BIT_MASK_09))
+    if ((1ul == bM4_INTC_EIFR_EIFR9) && (VSSEL128 & BIT_MASK_09))
     {
         Extint09_IrqHandler();
     }
     /* external interrupt 10 */
-    if ((Set == bM4_INTC_EIFR_EIFR10) && (VSSEL128 & BIT_MASK_10))
+    if ((1ul == bM4_INTC_EIFR_EIFR10) && (VSSEL128 & BIT_MASK_10))
     {
         Extint10_IrqHandler();
     }
     /* external interrupt 11 */
-    if ((Set == bM4_INTC_EIFR_EIFR11) && (VSSEL128 & BIT_MASK_11))
+    if ((1ul == bM4_INTC_EIFR_EIFR11) && (VSSEL128 & BIT_MASK_11))
     {
         Extint11_IrqHandler();
     }
     /* external interrupt 12 */
-    if ((Set == bM4_INTC_EIFR_EIFR12) && (VSSEL128 & BIT_MASK_12))
+    if ((1ul == bM4_INTC_EIFR_EIFR12) && (VSSEL128 & BIT_MASK_12))
     {
         Extint12_IrqHandler();
     }
     /* external interrupt 13 */
-    if ((Set == bM4_INTC_EIFR_EIFR13) && (VSSEL128 & BIT_MASK_13))
+    if ((1ul == bM4_INTC_EIFR_EIFR13) && (VSSEL128 & BIT_MASK_13))
     {
         Extint13_IrqHandler();
     }
     /* external interrupt 14 */
-    if ((Set == bM4_INTC_EIFR_EIFR14) && (VSSEL128 & BIT_MASK_14))
+    if ((1ul == bM4_INTC_EIFR_EIFR14) && (VSSEL128 & BIT_MASK_14))
     {
         Extint14_IrqHandler();
     }
     /* external interrupt 15 */
-    if ((Set == bM4_INTC_EIFR_EIFR15) && (VSSEL128 & BIT_MASK_15))
+    if ((1ul == bM4_INTC_EIFR_EIFR15) && (VSSEL128 & BIT_MASK_15))
     {
         Extint15_IrqHandler();
     }
@@ -2218,150 +2218,217 @@ void IRQ129_Handler(void)
     uint32_t VSSEL129 =M4_INTC->VSSEL129;
     uint32_t u32Tmp1 = 0ul;
     uint32_t u32Tmp2 = 0ul;
-    /* DMA1 ch.0 Tx completed */
-    if (Reset == bM4_DMA1_INTMASK1_MSKTC0)
+
+    if (1ul == bM4_DMA1_CH0CTL_IE)
     {
-        if ((Set == bM4_DMA1_INTSTAT1_TC0) && (VSSEL129 & BIT_MASK_00))
+        /* DMA1 ch.0 Tx completed */
+        if (0ul == bM4_DMA1_INTMASK1_MSKTC0)
         {
-            Dma1Tc0_IrqHandler();
+            if ((1ul == bM4_DMA1_INTSTAT1_TC0) && (VSSEL129 & BIT_MASK_00))
+            {
+                Dma1Tc0_IrqHandler();
+            }
+        }
+        /* DMA1 ch.0 Block Tx completed */
+        if (0ul == bM4_DMA1_INTMASK1_MSKBTC0)
+        {
+            if ((1ul == bM4_DMA1_INTSTAT1_BTC0) && (VSSEL129 & BIT_MASK_08))
+            {
+                Dma1Btc0_IrqHandler();
+            }
+        }
+        /* DMA1 ch.0 Transfer/Request Error */
+        u32Tmp1 = M4_DMA1->INTSTAT0 & 0x00010001ul;
+        u32Tmp2 = (uint32_t)(~(M4_DMA1->INTMASK0) & 0x00010001ul);
+        if ((u32Tmp1 & u32Tmp2) && (VSSEL129 & BIT_MASK_16))
+        {
+            Dma1Err0_IrqHandler();
         }
     }
-    /* DMA1 ch.1 Tx completed */
-    if (Reset == bM4_DMA1_INTMASK1_MSKTC1)
+    if (1ul == bM4_DMA1_CH1CTL_IE)
     {
-        if ((Set == bM4_DMA1_INTSTAT1_TC1)  && (VSSEL129 & BIT_MASK_01))
+        /* DMA1 ch.1 Tx completed */
+        if (0ul == bM4_DMA1_INTMASK1_MSKTC1)
         {
-            Dma1Tc1_IrqHandler();
+            if ((1ul == bM4_DMA1_INTSTAT1_TC1)  && (VSSEL129 & BIT_MASK_01))
+            {
+                Dma1Tc1_IrqHandler();
+            }
+        }
+        /* DMA1 ch.1 Block Tx completed */
+        if (0ul == bM4_DMA1_INTMASK1_MSKBTC1)
+        {
+            if ((1ul == bM4_DMA1_INTSTAT1_BTC1) && (VSSEL129 & BIT_MASK_09))
+            {
+                Dma1Btc1_IrqHandler();
+            }
+        }
+        /* DMA1 ch.1 Transfer/Request Error */
+        u32Tmp1 = M4_DMA1->INTSTAT0 & 0x00020002ul;
+        u32Tmp2 = (uint32_t)(~(M4_DMA1->INTMASK0) & 0x00020002ul);
+        if ((u32Tmp1 & u32Tmp2) && (VSSEL129 & BIT_MASK_16))
+        {
+            Dma1Err1_IrqHandler();
         }
     }
-    /* DMA1 ch.2 Tx completed */
-    if (Reset == bM4_DMA1_INTMASK1_MSKTC2)
+    if (1ul == bM4_DMA1_CH2CTL_IE)
     {
-        if ((Set == bM4_DMA1_INTSTAT1_TC2)  && (VSSEL129 & BIT_MASK_02))
+        /* DMA1 ch.2 Tx completed */
+        if (0ul == bM4_DMA1_INTMASK1_MSKTC2)
         {
-            Dma1Tc2_IrqHandler();
+            if ((1ul == bM4_DMA1_INTSTAT1_TC2)  && (VSSEL129 & BIT_MASK_02))
+            {
+                Dma1Tc2_IrqHandler();
+            }
+        }
+        /* DMA1 ch.2 Block Tx completed */
+        if (0ul == bM4_DMA1_INTMASK1_MSKBTC2)
+        {
+            if ((1ul == bM4_DMA1_INTSTAT1_BTC2) && (VSSEL129 & BIT_MASK_10))
+            {
+                Dma1Btc2_IrqHandler();
+            }
+        }
+        /* DMA1 ch.2 Transfer/Request Error */
+        u32Tmp1 = M4_DMA1->INTSTAT0 & 0x00040004ul;
+        u32Tmp2 = (uint32_t)(~(M4_DMA1->INTMASK0) & 0x00040004ul);
+        if ((u32Tmp1 & u32Tmp2) && (VSSEL129 & BIT_MASK_16))
+        {
+            Dma1Err2_IrqHandler();
         }
     }
-    /* DMA1 ch.3 Tx completed */
-    if (Reset == bM4_DMA1_INTMASK1_MSKTC3)
+    if (1ul == bM4_DMA1_CH3CTL_IE)
     {
-        if ((Set == bM4_DMA1_INTSTAT1_TC3)  && (VSSEL129 & BIT_MASK_03))
+        /* DMA1 ch.3 Tx completed */
+        if (0ul == bM4_DMA1_INTMASK1_MSKTC3)
         {
-            Dma1Tc3_IrqHandler();
+            if ((1ul == bM4_DMA1_INTSTAT1_TC3)  && (VSSEL129 & BIT_MASK_03))
+            {
+                Dma1Tc3_IrqHandler();
+            }
+        }
+        /* DMA1 ch.3 Block Tx completed */
+        if (0ul == bM4_DMA1_INTMASK1_MSKBTC3)
+        {
+            if ((1ul == bM4_DMA1_INTSTAT1_BTC3) && (VSSEL129 & BIT_MASK_11))
+            {
+                Dma1Btc3_IrqHandler();
+            }
+        }
+        /* DMA1 ch.3 Transfer/Request Error */
+        u32Tmp1 = M4_DMA1->INTSTAT0 & 0x00080008ul;
+        u32Tmp2 = (uint32_t)(~(M4_DMA1->INTMASK0) & 0x00080008ul);
+        if ((u32Tmp1 & u32Tmp2) && (VSSEL129 & BIT_MASK_16))
+        {
+            Dma1Err3_IrqHandler();
         }
     }
-    /* DMA2 ch.0 Tx completed */
-    if (Reset == bM4_DMA2_INTMASK1_MSKTC0)
+    if (1ul == bM4_DMA2_CH0CTL_IE)
     {
-        if ((Set == bM4_DMA2_INTSTAT1_TC0) && (VSSEL129 & BIT_MASK_04))
+        /* DMA2 ch.0 Tx completed */
+        if (0ul == bM4_DMA2_INTMASK1_MSKTC0)
         {
-            Dma2Tc0_IrqHandler();
+            if ((1ul == bM4_DMA2_INTSTAT1_TC0) && (VSSEL129 & BIT_MASK_04))
+            {
+                Dma2Tc0_IrqHandler();
+            }
+        }
+        /* DMA2 ch.0 Block Tx completed */
+        if (0ul == bM4_DMA2_INTMASK1_MSKBTC0)
+        {
+            if ((1ul == bM4_DMA2_INTSTAT1_BTC0) && (VSSEL129 & BIT_MASK_12))
+            {
+                Dma2Btc0_IrqHandler();
+            }
+        }
+        /* DMA2 Ch.0 Transfer/Request Error */
+        u32Tmp1 = M4_DMA2->INTSTAT0 & 0x00010001ul;
+        u32Tmp2 = (uint32_t)(~(M4_DMA2->INTMASK0) & 0x00010001ul);
+        if ((u32Tmp1 & u32Tmp2) && (VSSEL129 & BIT_MASK_17))
+        {
+            Dma2Err0_IrqHandler();
         }
     }
-    /* DMA2 ch.1 Tx completed */
-    if (Reset == bM4_DMA2_INTMASK1_MSKTC1)
+    if (1ul == bM4_DMA2_CH1CTL_IE)
     {
-        if ((Set == bM4_DMA2_INTSTAT1_TC1) && (VSSEL129 & BIT_MASK_05))
+        /* DMA2 ch.1 Tx completed */
+        if (0ul == bM4_DMA2_INTMASK1_MSKTC1)
         {
-            Dma2Tc1_IrqHandler();
+            if ((1ul == bM4_DMA2_INTSTAT1_TC1) && (VSSEL129 & BIT_MASK_05))
+            {
+                Dma2Tc1_IrqHandler();
+            }
+        }
+        /* DMA2 ch.1 Block Tx completed */
+        if (0ul == bM4_DMA2_INTMASK1_MSKBTC1)
+        {
+            if ((1ul == bM4_DMA1_INTSTAT1_BTC1) && (VSSEL129 & BIT_MASK_13))
+            {
+                Dma2Btc1_IrqHandler();
+            }
+        }
+        /* DMA2 Ch.1 Transfer/Request Error */
+        u32Tmp1 = M4_DMA2->INTSTAT0 & 0x00020002ul;
+        u32Tmp2 = (uint32_t)(~(M4_DMA2->INTMASK0) & 0x00020002ul);
+        if ((u32Tmp1 & u32Tmp2) && (VSSEL129 & BIT_MASK_17))
+        {
+            Dma2Err1_IrqHandler();
         }
     }
-    /* DMA2 ch.2 Tx completed */
-    if (Reset == bM4_DMA2_INTMASK1_MSKTC2)
+    if (1ul == bM4_DMA2_CH2CTL_IE)
     {
-        if ((Set == bM4_DMA2_INTSTAT1_TC2) && (VSSEL129 & BIT_MASK_06))
+        /* DMA2 ch.2 Tx completed */
+        if (0ul == bM4_DMA2_INTMASK1_MSKTC2)
         {
-            Dma2Tc2_IrqHandler();
+            if ((1ul == bM4_DMA2_INTSTAT1_TC2) && (VSSEL129 & BIT_MASK_06))
+            {
+                Dma2Tc2_IrqHandler();
+            }
+        }
+        /* DMA2 ch.2 Block Tx completed */
+        if (0ul == bM4_DMA2_INTMASK1_MSKBTC2)
+        {
+            if ((1ul == bM4_DMA1_INTSTAT1_BTC2) && (VSSEL129 & BIT_MASK_14))
+            {
+                Dma2Btc2_IrqHandler();
+            }
+        }
+        /* DMA2 Ch.2 Transfer/Request Error */
+        u32Tmp1 = M4_DMA2->INTSTAT0 & 0x00040004ul;
+        u32Tmp2 = (uint32_t)(~(M4_DMA2->INTMASK0) & 0x00040004ul);
+        if ((u32Tmp1 & u32Tmp2) && (VSSEL129 & BIT_MASK_17))
+        {
+            Dma2Err2_IrqHandler();
         }
     }
-    /* DMA2 ch.3 Tx completed */
-    if (Reset == bM4_DMA2_INTMASK1_MSKTC3)
+    if (1ul == bM4_DMA2_CH3CTL_IE)
     {
-        if ((Set == bM4_DMA2_INTSTAT1_TC3) && (VSSEL129 & BIT_MASK_07))
+        /* DMA2 ch.3 Tx completed */
+        if (0ul == bM4_DMA2_INTMASK1_MSKTC3)
         {
-            Dma2Tc3_IrqHandler();
+            if ((1ul == bM4_DMA2_INTSTAT1_TC3) && (VSSEL129 & BIT_MASK_07))
+            {
+                Dma2Tc3_IrqHandler();
+            }
         }
-    }
-    /* DMA1 ch.0 Block Tx completed */
-    if (Reset == bM4_DMA1_INTMASK1_MSKBTC0)
-    {
-        if ((Set == bM4_DMA1_INTSTAT1_BTC0) && (VSSEL129 & BIT_MASK_08))
+        /* DMA2 ch.3 Block Tx completed */
+        if (0ul == bM4_DMA2_INTMASK1_MSKBTC3)
         {
-            Dma1Btc0_IrqHandler();
+            if ((1ul == bM4_DMA1_INTSTAT1_BTC3) && (VSSEL129 & BIT_MASK_15))
+            {
+                Dma2Btc3_IrqHandler();
+            }
         }
-    }
-    /* DMA1 ch.1 Block Tx completed */
-    if (Reset == bM4_DMA1_INTMASK1_MSKBTC1)
-    {
-        if ((Set == bM4_DMA1_INTSTAT1_BTC1) && (VSSEL129 & BIT_MASK_09))
+        /* DMA2 Ch.3 Transfer/Request Error */
+        u32Tmp1 = M4_DMA2->INTSTAT0 & 0x00080008ul;
+        u32Tmp2 = (uint32_t)(~(M4_DMA2->INTMASK0) & 0x00080008ul);
+        if ((u32Tmp1 & u32Tmp2) && (VSSEL129 & BIT_MASK_17))
         {
-            Dma1Btc1_IrqHandler();
+            Dma2Err3_IrqHandler();
         }
-    }
-    /* DMA1 ch.2 Block Tx completed */
-    if (Reset == bM4_DMA1_INTMASK1_MSKBTC2)
-    {
-        if ((Set == bM4_DMA1_INTSTAT1_BTC2) && (VSSEL129 & BIT_MASK_10))
-        {
-            Dma1Btc2_IrqHandler();
-        }
-    }
-    /* DMA1 ch.3 Block Tx completed */
-    if (Reset == bM4_DMA1_INTMASK1_MSKBTC3)
-    {
-        if ((Set == bM4_DMA1_INTSTAT1_BTC3) && (VSSEL129 & BIT_MASK_11))
-        {
-            Dma1Btc3_IrqHandler();
-        }
-    }
-    /* DMA2 ch.0 Block Tx completed */
-    if (Reset == bM4_DMA2_INTMASK1_MSKBTC0)
-    {
-        if ((Set == bM4_DMA2_INTSTAT1_BTC0) && (VSSEL129 & BIT_MASK_12))
-        {
-            Dma2Btc0_IrqHandler();
-        }
-    }
-    /* DMA2 ch.1 Block Tx completed */
-    if (Reset == bM4_DMA2_INTMASK1_MSKBTC1)
-    {
-        if ((Set == bM4_DMA1_INTSTAT1_BTC1) && (VSSEL129 & BIT_MASK_13))
-        {
-            Dma2Btc1_IrqHandler();
-        }
-    }
-    /* DMA2 ch.2 Block Tx completed */
-    if (Reset == bM4_DMA2_INTMASK1_MSKBTC2)
-    {
-        if ((Set == bM4_DMA1_INTSTAT1_BTC2) && (VSSEL129 & BIT_MASK_14))
-        {
-            Dma2Btc2_IrqHandler();
-        }
-    }
-    /* DMA2 ch.3 Block Tx completed */
-    if (Reset == bM4_DMA2_INTMASK1_MSKBTC3)
-    {
-        if ((Set == bM4_DMA1_INTSTAT1_BTC3) && (VSSEL129 & BIT_MASK_15))
-        {
-            Dma2Btc3_IrqHandler();
-        }
-    }
-    /* DMA1 Transfer/Request Error */
-    u32Tmp1 = M4_DMA1->INTSTAT0 & 0x000F000Ful;
-    u32Tmp2 = (uint32_t)(~(M4_DMA1->INTMASK0) & 0x000F000Ful);
-    if ((u32Tmp1 & u32Tmp2) && (VSSEL129 & BIT_MASK_16))
-    {
-        Dma1Err_IrqHandler();
-    }
-    /* DMA2 Transfer/Request Error */
-    u32Tmp1 = M4_DMA2->INTSTAT0 & 0x000F000Ful;
-    u32Tmp2 = (uint32_t)(~(M4_DMA2->INTMASK0) & 0x000F000Ful);
-    if ((u32Tmp1 & u32Tmp2) && (VSSEL129 & BIT_MASK_17))
-    {
-        Dma2Err_IrqHandler();
     }
     /* EFM program/erase Error */
-    if (Set == bM4_EFM_FITE_PEERRITE)
+    if (1ul == bM4_EFM_FITE_PEERRITE)
     {
         if ((M4_EFM->FSR & 0x0Fu) && (VSSEL129 & BIT_MASK_18))
         {
@@ -2369,23 +2436,23 @@ void IRQ129_Handler(void)
         }
     }
     /* EFM collision Error */
-    if (Set == bM4_EFM_FITE_RDCOLERRITE)
+    if (1ul == bM4_EFM_FITE_RDCOLERRITE)
     {
-        if ((Set == bM4_EFM_FSR_RDCOLERR) && (VSSEL129 & BIT_MASK_19))
+        if ((1ul == bM4_EFM_FSR_RDCOLERR) && (VSSEL129 & BIT_MASK_19))
         {
             EfmColErr_IrqHandler();
         }
     }
     /* EFM operate end */
-    if (Set == bM4_EFM_FITE_OPTENDITE)
+    if (1ul == bM4_EFM_FITE_OPTENDITE)
     {
-        if ((Set == bM4_EFM_FSR_OPTEND) && (VSSEL129 & BIT_MASK_20))
+        if ((1ul == bM4_EFM_FSR_OPTEND) && (VSSEL129 & BIT_MASK_20))
         {
             EfmOpEnd_IrqHandler();
         }
     }
     /* QSPI interrupt */
-    if ((Set == M4_QSPI->SR_f.RAER) && (VSSEL129 & BIT_MASK_22))
+    if ((1ul == M4_QSPI->SR_f.RAER) && (VSSEL129 & BIT_MASK_22))
     {
         QspiInt_IrqHandler();
     }
@@ -2428,47 +2495,47 @@ void IRQ130_Handler(void)
 {
     uint32_t VSSEL130 = M4_INTC->VSSEL130;
     /* Timer0 Ch. 1 A compare match */
-    if (Set == bM4_TMR01_BCONR_INTENA)
+    if (1ul == bM4_TMR01_BCONR_INTENA)
     {
-        if ((Set == bM4_TMR01_STFLR_CMAF) && (VSSEL130 & BIT_MASK_00))
+        if ((1ul == bM4_TMR01_STFLR_CMAF) && (VSSEL130 & BIT_MASK_00))
         {
             Timer01GCMA_IrqHandler();
         }
     }
     /* Timer0 Ch. 1 B compare match */
-    if (Set == bM4_TMR01_BCONR_INTENB)
+    if (1ul == bM4_TMR01_BCONR_INTENB)
     {
-        if ((Set == bM4_TMR01_STFLR_CMBF) && (VSSEL130 & BIT_MASK_01))
+        if ((1ul == bM4_TMR01_STFLR_CMBF) && (VSSEL130 & BIT_MASK_01))
         {
             Timer01GCMB_IrqHandler();
         }
     }
     /* Timer0 Ch. 2 A compare match */
-    if (Set == bM4_TMR02_BCONR_INTENA)
+    if (1ul == bM4_TMR02_BCONR_INTENA)
     {
-        if ((Set == bM4_TMR02_STFLR_CMAF) && (VSSEL130 & BIT_MASK_02))
+        if ((1ul == bM4_TMR02_STFLR_CMAF) && (VSSEL130 & BIT_MASK_02))
         {
             Timer02GCMA_IrqHandler();
         }
     }
     /* Timer0 Ch. 2 B compare match */
-    if (Set == bM4_TMR02_BCONR_INTENB)
+    if (1ul == bM4_TMR02_BCONR_INTENB)
     {
-        if ((Set == bM4_TMR02_STFLR_CMBF) && (VSSEL130 & BIT_MASK_03))
+        if ((1ul == bM4_TMR02_STFLR_CMBF) && (VSSEL130 & BIT_MASK_03))
         {
             Timer02GCMB_IrqHandler();
         }
     }
     /* Main-OSC stop */
-    if (Set == bM4_SYSREG_CMU_XTALSTDCR_XTALSTDIE)
+    if (1ul == bM4_SYSREG_CMU_XTALSTDCR_XTALSTDIE)
     {
-        if ((Set == bM4_SYSREG_CMU_XTALSTDSR_XTALSTDF) && (VSSEL130 & BIT_MASK_21))
+        if ((1ul == bM4_SYSREG_CMU_XTALSTDSR_XTALSTDF) && (VSSEL130 & BIT_MASK_21))
         {
             MainOscStop_IrqHandler();
         }
     }
     /* Wakeup timer */
-    if ((Set == bM4_WKTM_CR_WKOVF) && (VSSEL130 & BIT_MASK_22))
+    if ((1ul == bM4_WKTM_CR_WKOVF) && (VSSEL130 & BIT_MASK_22))
     {
         WakeupTimer_IrqHandler();
     }
@@ -2490,73 +2557,73 @@ void IRQ131_Handler(void)
     uint32_t u32Tmp1 = 0ul;
     uint32_t u32Tmp2 = 0ul;
     /* Timer6 Ch.1 A compare match */
-    if (Set == bM4_TMR61_ICONR_INTENA)
+    if (1ul == bM4_TMR61_ICONR_INTENA)
     {
-        if ((Set == bM4_TMR61_STFLR_CMAF) && (VSSEL131 & BIT_MASK_00))
+        if ((1ul == bM4_TMR61_STFLR_CMAF) && (VSSEL131 & BIT_MASK_00))
         {
             Timer61GCMA_IrqHandler();
         }
     }
     /* Timer6 Ch.1 B compare match */
-    if (Set == bM4_TMR61_ICONR_INTENB)
+    if (1ul == bM4_TMR61_ICONR_INTENB)
     {
-        if ((Set == bM4_TMR61_STFLR_CMBF) && (VSSEL131 & BIT_MASK_01))
+        if ((1ul == bM4_TMR61_STFLR_CMBF) && (VSSEL131 & BIT_MASK_01))
         {
             Timer61GCMB_IrqHandler();
         }
     }
     /* Timer6 Ch.1 C compare match */
-    if (Set == bM4_TMR61_ICONR_INTENC)
+    if (1ul == bM4_TMR61_ICONR_INTENC)
     {
-        if ((Set == bM4_TMR61_STFLR_CMCF) && (VSSEL131 & BIT_MASK_02))
+        if ((1ul == bM4_TMR61_STFLR_CMCF) && (VSSEL131 & BIT_MASK_02))
         {
             Timer61GCMC_IrqHandler();
         }
     }
     /* Timer6 Ch.1 D compare match */
-    if (Set == bM4_TMR61_ICONR_INTEND)
+    if (1ul == bM4_TMR61_ICONR_INTEND)
     {
-        if ((Set == bM4_TMR61_STFLR_CMDF) && (VSSEL131 & BIT_MASK_03))
+        if ((1ul == bM4_TMR61_STFLR_CMDF) && (VSSEL131 & BIT_MASK_03))
         {
             Timer61GCMD_IrqHandler();
         }
     }
     /* Timer6 Ch.1 E compare match */
-    if (Set == bM4_TMR61_ICONR_INTENE)
+    if (1ul == bM4_TMR61_ICONR_INTENE)
     {
-        if ((Set == bM4_TMR61_STFLR_CMEF) && (VSSEL131 & BIT_MASK_04))
+        if ((1ul == bM4_TMR61_STFLR_CMEF) && (VSSEL131 & BIT_MASK_04))
         {
             Timer61GCME_IrqHandler();
         }
     }
     /* Timer6 Ch.1 F compare match */
-    if (Set == bM4_TMR61_ICONR_INTENF)
+    if (1ul == bM4_TMR61_ICONR_INTENF)
     {
-        if ((Set == bM4_TMR61_STFLR_CMFF) && (VSSEL131 & BIT_MASK_05))
+        if ((1ul == bM4_TMR61_STFLR_CMFF) && (VSSEL131 & BIT_MASK_05))
         {
             Timer61GCMF_IrqHandler();
         }
     }
     /* Timer6 Ch.1 overflow */
-    if (Set == bM4_TMR61_ICONR_INTENOVF)
+    if (1ul == bM4_TMR61_ICONR_INTENOVF)
     {
-        if ((Set == bM4_TMR61_STFLR_OVFF) && (VSSEL131 & BIT_MASK_06))
+        if ((1ul == bM4_TMR61_STFLR_OVFF) && (VSSEL131 & BIT_MASK_06))
         {
             Timer61GOV_IrqHandler();
         }
     }
     /* Timer6 Ch.1 underflow */
-    if (Set == bM4_TMR61_ICONR_INTENUDF)
+    if (1ul == bM4_TMR61_ICONR_INTENUDF)
     {
-        if ((Set == bM4_TMR61_STFLR_UDFF) && (VSSEL131 & BIT_MASK_07))
+        if ((1ul == bM4_TMR61_STFLR_UDFF) && (VSSEL131 & BIT_MASK_07))
         {
             Timer61GUD_IrqHandler();
         }
     }
     /* Timer6 Ch.1 dead time */
-    if (Set == bM4_TMR61_ICONR_INTENDTE)
+    if (1ul == bM4_TMR61_ICONR_INTENDTE)
     {
-        if (((Set == bM4_TMR61_STFLR_DTEF)) && (VSSEL131 & BIT_MASK_08))
+        if (((1ul == bM4_TMR61_STFLR_DTEF)) && (VSSEL131 & BIT_MASK_08))
         {
             Timer61GDT_IrqHandler();
         }
@@ -2576,73 +2643,73 @@ void IRQ131_Handler(void)
         Timer61SCMB_IrqHandler();
     }
     /* Timer6 Ch.2 A compare match */
-    if (Set == bM4_TMR62_ICONR_INTENA)
+    if (1ul == bM4_TMR62_ICONR_INTENA)
     {
-        if ((Set == bM4_TMR62_STFLR_CMAF) && (VSSEL131 & BIT_MASK_16))
+        if ((1ul == bM4_TMR62_STFLR_CMAF) && (VSSEL131 & BIT_MASK_16))
         {
             Timer62GCMA_IrqHandler();
         }
     }
     /* Timer6 Ch.2 B compare match */
-    if (Set == bM4_TMR62_ICONR_INTENB)
+    if (1ul == bM4_TMR62_ICONR_INTENB)
     {
-        if ((Set == bM4_TMR62_STFLR_CMBF) && (VSSEL131 & BIT_MASK_17))
+        if ((1ul == bM4_TMR62_STFLR_CMBF) && (VSSEL131 & BIT_MASK_17))
         {
             Timer62GCMB_IrqHandler();
         }
     }
     /* Timer6 Ch.2 C compare match */
-    if (Set == bM4_TMR62_ICONR_INTENC)
+    if (1ul == bM4_TMR62_ICONR_INTENC)
     {
-        if ((Set == bM4_TMR62_STFLR_CMCF) && (VSSEL131 & BIT_MASK_18))
+        if ((1ul == bM4_TMR62_STFLR_CMCF) && (VSSEL131 & BIT_MASK_18))
         {
             Timer62GCMC_IrqHandler();
         }
     }
     /* Timer6 Ch.2 D compare match */
-    if (Set == bM4_TMR62_ICONR_INTEND)
+    if (1ul == bM4_TMR62_ICONR_INTEND)
     {
-        if ((Set == bM4_TMR62_STFLR_CMDF) && (VSSEL131 & BIT_MASK_19))
+        if ((1ul == bM4_TMR62_STFLR_CMDF) && (VSSEL131 & BIT_MASK_19))
         {
             Timer62GCMD_IrqHandler();
         }
     }
     /* Timer6 Ch.2 E compare match */
-    if (Set == bM4_TMR62_ICONR_INTENE)
+    if (1ul == bM4_TMR62_ICONR_INTENE)
     {
-        if ((Set == bM4_TMR62_STFLR_CMEF) && (VSSEL131 & BIT_MASK_20))
+        if ((1ul == bM4_TMR62_STFLR_CMEF) && (VSSEL131 & BIT_MASK_20))
         {
             Timer62GCME_IrqHandler();
         }
     }
     /* Timer6 Ch.2 F compare match */
-    if (Set == bM4_TMR62_ICONR_INTENF)
+    if (1ul == bM4_TMR62_ICONR_INTENF)
     {
-        if ((Set == bM4_TMR62_STFLR_CMFF) && (VSSEL131 & BIT_MASK_21))
+        if ((1ul == bM4_TMR62_STFLR_CMFF) && (VSSEL131 & BIT_MASK_21))
         {
             Timer62GCMF_IrqHandler();
         }
     }
     /* Timer6 Ch.2 overflow */
-    if (Set == bM4_TMR62_ICONR_INTENOVF)
+    if (1ul == bM4_TMR62_ICONR_INTENOVF)
     {
-        if ((Set == bM4_TMR62_STFLR_OVFF) && (VSSEL131 & BIT_MASK_22))
+        if ((1ul == bM4_TMR62_STFLR_OVFF) && (VSSEL131 & BIT_MASK_22))
         {
             Timer62GOV_IrqHandler();
         }
     }
     /* Timer6 Ch.2 underflow */
-    if (Set == bM4_TMR62_ICONR_INTENUDF)
+    if (1ul == bM4_TMR62_ICONR_INTENUDF)
     {
-        if ((Set == bM4_TMR62_STFLR_UDFF) && (VSSEL131 & BIT_MASK_23))
+        if ((1ul == bM4_TMR62_STFLR_UDFF) && (VSSEL131 & BIT_MASK_23))
         {
             Timer62GUD_IrqHandler();
         }
     }
     /* Timer6 Ch.2 dead time */
-    if (Set == bM4_TMR62_ICONR_INTENDTE)
+    if (1ul == bM4_TMR62_ICONR_INTENDTE)
     {
-        if (((Set == bM4_TMR62_STFLR_DTEF)) && (VSSEL131 & BIT_MASK_24))
+        if (((1ul == bM4_TMR62_STFLR_DTEF)) && (VSSEL131 & BIT_MASK_24))
         {
             Timer62GDT_IrqHandler();
         }
@@ -2674,73 +2741,73 @@ void IRQ132_Handler(void)
     uint32_t u32Tmp1 = 0ul;
     uint32_t u32Tmp2 = 0ul;
     /* Timer6 Ch.3 A compare match */
-    if (Set == bM4_TMR63_ICONR_INTENA)
+    if (1ul == bM4_TMR63_ICONR_INTENA)
     {
-        if ((Set == bM4_TMR63_STFLR_CMAF) && (VSSEL132 & BIT_MASK_00))
+        if ((1ul == bM4_TMR63_STFLR_CMAF) && (VSSEL132 & BIT_MASK_00))
         {
             Timer63GCMA_IrqHandler();
         }
     }
     /* Timer6 Ch.3 B compare match */
-    if (Set == bM4_TMR63_ICONR_INTENB)
+    if (1ul == bM4_TMR63_ICONR_INTENB)
     {
-        if ((Set == bM4_TMR63_STFLR_CMBF) && (VSSEL132 & BIT_MASK_01))
+        if ((1ul == bM4_TMR63_STFLR_CMBF) && (VSSEL132 & BIT_MASK_01))
         {
             Timer63GCMB_IrqHandler();
         }
     }
     /* Timer6 Ch.3 C compare match */
-    if (Set == bM4_TMR63_ICONR_INTENC)
+    if (1ul == bM4_TMR63_ICONR_INTENC)
     {
-        if ((Set == bM4_TMR63_STFLR_CMCF) && (VSSEL132 & BIT_MASK_02))
+        if ((1ul == bM4_TMR63_STFLR_CMCF) && (VSSEL132 & BIT_MASK_02))
         {
             Timer63GCMC_IrqHandler();
         }
     }
     /* Timer6 Ch.3 D compare match */
-    if (Set == bM4_TMR63_ICONR_INTEND)
+    if (1ul == bM4_TMR63_ICONR_INTEND)
     {
-        if ((Set == bM4_TMR63_STFLR_CMDF) && (VSSEL132 & BIT_MASK_03))
+        if ((1ul == bM4_TMR63_STFLR_CMDF) && (VSSEL132 & BIT_MASK_03))
         {
             Timer63GCMD_IrqHandler();
         }
     }
     /* Timer6 Ch.3 E compare match */
-    if (Set == bM4_TMR63_ICONR_INTENE)
+    if (1ul == bM4_TMR63_ICONR_INTENE)
     {
-        if ((Set == bM4_TMR63_STFLR_CMEF) && (VSSEL132 & BIT_MASK_04))
+        if ((1ul == bM4_TMR63_STFLR_CMEF) && (VSSEL132 & BIT_MASK_04))
         {
             Timer63GCME_IrqHandler();
         }
     }
     /* Timer6 Ch.3 F compare match */
-    if (Set == bM4_TMR63_ICONR_INTENF)
+    if (1ul == bM4_TMR63_ICONR_INTENF)
     {
-        if ((Set == bM4_TMR63_STFLR_CMFF) && (VSSEL132 & BIT_MASK_05))
+        if ((1ul == bM4_TMR63_STFLR_CMFF) && (VSSEL132 & BIT_MASK_05))
         {
             Timer63GCMF_IrqHandler();
         }
     }
     /* Timer6 Ch.3 overflow */
-    if (Set == bM4_TMR63_ICONR_INTENOVF)
+    if (1ul == bM4_TMR63_ICONR_INTENOVF)
     {
-        if ((Set == bM4_TMR63_STFLR_OVFF) && (VSSEL132 & BIT_MASK_06))
+        if ((1ul == bM4_TMR63_STFLR_OVFF) && (VSSEL132 & BIT_MASK_06))
         {
             Timer63GOV_IrqHandler();
         }
     }
     /* Timer6 Ch.3 underflow */
-    if (Set == bM4_TMR63_ICONR_INTENUDF)
+    if (1ul == bM4_TMR63_ICONR_INTENUDF)
     {
-        if ((Set == bM4_TMR63_STFLR_UDFF) && (VSSEL132 & BIT_MASK_07))
+        if ((1ul == bM4_TMR63_STFLR_UDFF) && (VSSEL132 & BIT_MASK_07))
         {
             Timer63GUD_IrqHandler();
         }
     }
     /* Timer6 Ch.3 dead time */
-    if (Set == bM4_TMR63_ICONR_INTENDTE)
+    if (1ul == bM4_TMR63_ICONR_INTENDTE)
     {
-        if (((Set == bM4_TMR63_STFLR_DTEF)) && (VSSEL132 & BIT_MASK_08))
+        if (((1ul == bM4_TMR63_STFLR_DTEF)) && (VSSEL132 & BIT_MASK_08))
         {
             Timer63GDT_IrqHandler();
         }
@@ -2886,7 +2953,7 @@ void IRQ136_Handler(void)
         TimerA6CMP_IrqHandler();
     }
     /* USBFS global interrupt */
-    if(Set == bM4_USBFS_GAHBCFG_GINTMSK)
+    if(1ul == bM4_USBFS_GAHBCFG_GINTMSK)
     {
         u32Tmp1 = M4_USBFS->GINTMSK & 0xF77CFCFBul;
         u32Tmp2 = M4_USBFS->GINTSTS & 0xF77CFCFBul;
@@ -3378,23 +3445,23 @@ void IRQ140_Handler(void)
     }
 
     /* I2S Ch.1 Transmit */
-    if(Set == bM4_I2S1_CTRL_TXIE)
+    if(1ul == bM4_I2S1_CTRL_TXIE)
     {
-        if ((Set == bM4_I2S1_SR_TXBA) && (VSSEL140 & BIT_MASK_16))
+        if ((1ul == bM4_I2S1_SR_TXBA) && (VSSEL140 & BIT_MASK_16))
         {
             I2s1Tx_IrqHandler();
         }
     }
     /* I2S Ch.1 Receive */
-    if(Set == bM4_I2S1_CTRL_RXIE)
+    if(1ul == bM4_I2S1_CTRL_RXIE)
     {
-        if ((Set == bM4_I2S1_SR_RXBA) && (VSSEL140 & BIT_MASK_17))
+        if ((1ul == bM4_I2S1_SR_RXBA) && (VSSEL140 & BIT_MASK_17))
         {
             I2s1Rx_IrqHandler();
         }
     }
     /* I2S Ch.1 Error */
-    if(Set == bM4_I2S1_CTRL_EIE)
+    if(1ul == bM4_I2S1_CTRL_EIE)
     {
         if ((M4_I2S1->ER & (BIT_MASK_00 | BIT_MASK_01)) && (VSSEL140 & BIT_MASK_18))
         {
@@ -3402,23 +3469,23 @@ void IRQ140_Handler(void)
         }
     }
     /* I2S Ch.2 Transmit */
-    if(Set == bM4_I2S2_CTRL_TXIE)
+    if(1ul == bM4_I2S2_CTRL_TXIE)
     {
-        if ((Set == bM4_I2S2_SR_TXBA) && (VSSEL140 & BIT_MASK_19))
+        if ((1ul == bM4_I2S2_SR_TXBA) && (VSSEL140 & BIT_MASK_19))
         {
             I2s2Tx_IrqHandler();
         }
     }
     /* I2S Ch.2 Receive */
-    if(Set == bM4_I2S2_CTRL_RXIE)
+    if(1ul == bM4_I2S2_CTRL_RXIE)
     {
-        if ((Set == bM4_I2S2_SR_RXBA) && (VSSEL140 & BIT_MASK_20))
+        if ((1ul == bM4_I2S2_SR_RXBA) && (VSSEL140 & BIT_MASK_20))
         {
             I2s2Rx_IrqHandler();
         }
     }
     /* I2S Ch.2 Error */
-    if(Set == bM4_I2S2_CTRL_EIE)
+    if(1ul == bM4_I2S2_CTRL_EIE)
     {
         if ((M4_I2S2->ER & (BIT_MASK_00 | BIT_MASK_01)) && (VSSEL140 & BIT_MASK_21))
         {
@@ -3426,23 +3493,23 @@ void IRQ140_Handler(void)
         }
     }
     /* I2S Ch.3 Transmit */
-    if(Set == bM4_I2S3_CTRL_TXIE)
+    if(1ul == bM4_I2S3_CTRL_TXIE)
     {
-        if ((Set == bM4_I2S3_SR_TXBA) && (VSSEL140 & BIT_MASK_22))
+        if ((1ul == bM4_I2S3_SR_TXBA) && (VSSEL140 & BIT_MASK_22))
         {
             I2s3Tx_IrqHandler();
         }
     }
     /* I2S Ch.3 Receive */
-    if(Set == bM4_I2S3_CTRL_RXIE)
+    if(1ul == bM4_I2S3_CTRL_RXIE)
     {
-        if ((Set == bM4_I2S3_SR_RXBA) && (VSSEL140 & BIT_MASK_23))
+        if ((1ul == bM4_I2S3_SR_RXBA) && (VSSEL140 & BIT_MASK_23))
         {
             I2s3Rx_IrqHandler();
         }
     }
     /* I2S Ch.3 Error */
-    if(Set == bM4_I2S3_CTRL_EIE)
+    if(1ul == bM4_I2S3_CTRL_EIE)
     {
         if ((M4_I2S3->ER & (BIT_MASK_00 | BIT_MASK_01)) && (VSSEL140 & BIT_MASK_24))
         {
@@ -3450,23 +3517,23 @@ void IRQ140_Handler(void)
         }
     }
     /* I2S Ch.4 Transmit */
-    if(Set == bM4_I2S4_CTRL_TXIE)
+    if(1ul == bM4_I2S4_CTRL_TXIE)
     {
-        if ((Set == bM4_I2S4_SR_TXBA) && (VSSEL140 & BIT_MASK_25))
+        if ((1ul == bM4_I2S4_SR_TXBA) && (VSSEL140 & BIT_MASK_25))
         {
             I2s4Tx_IrqHandler();
         }
     }
     /* I2S Ch.4 Receive */
-    if(Set == bM4_I2S4_CTRL_RXIE)
+    if(1ul == bM4_I2S4_CTRL_RXIE)
     {
-        if ((Set == bM4_I2S4_SR_RXBA) && (VSSEL140 & BIT_MASK_26))
+        if ((1ul == bM4_I2S4_SR_RXBA) && (VSSEL140 & BIT_MASK_26))
         {
             I2s4Rx_IrqHandler();
         }
     }
     /* I2S Ch.4 Error */
-    if(Set == bM4_I2S4_CTRL_EIE)
+    if(1ul == bM4_I2S4_CTRL_EIE)
     {
         if ((M4_I2S4->ER & (BIT_MASK_00 | BIT_MASK_01)) && (VSSEL140 & BIT_MASK_27))
         {
@@ -3486,25 +3553,25 @@ void IRQ141_Handler(void)
     uint32_t u32Tmp1 = 0ul;
     uint32_t u32Tmp2 = 0ul;
     /* I2C Ch.1 Receive completed */
-    if(Set == bM4_I2C1_CR2_RFULLIE)
+    if(1ul == bM4_I2C1_CR2_RFULLIE)
     {
-        if ((Set == bM4_I2C1_SR_RFULLF) && (VSSEL141 & BIT_MASK_04))
+        if ((1ul == bM4_I2C1_SR_RFULLF) && (VSSEL141 & BIT_MASK_04))
         {
             I2c1RxEnd_IrqHandler();
         }
     }
     /* I2C Ch.1 Transmit completed */
-    if(Set == bM4_I2C1_CR2_TENDIE)
+    if(1ul == bM4_I2C1_CR2_TENDIE)
     {
-        if ((Set == bM4_I2C1_SR_TENDF) && (VSSEL141 & BIT_MASK_05))
+        if ((1ul == bM4_I2C1_SR_TENDF) && (VSSEL141 & BIT_MASK_05))
         {
             I2c1TxEnd_IrqHandler();
         }
     }
     /* I2C Ch.1 Transmit data empty */
-    if(Set == bM4_I2C1_CR2_TEMPTYIE)
+    if(1ul == bM4_I2C1_CR2_TEMPTYIE)
     {
-        if ((Set == bM4_I2C1_SR_TEMPTYF) && (VSSEL141 & BIT_MASK_06))
+        if ((1ul == bM4_I2C1_SR_TEMPTYF) && (VSSEL141 & BIT_MASK_06))
         {
             I2c1TxEmpty_IrqHandler();
         }
@@ -3517,25 +3584,25 @@ void IRQ141_Handler(void)
         I2c1Err_IrqHandler();
     }
     /* I2C Ch.2 Receive completed */
-    if(Set == bM4_I2C2_CR2_RFULLIE)
+    if(1ul == bM4_I2C2_CR2_RFULLIE)
     {
-        if ((Set == bM4_I2C2_SR_RFULLF) && (VSSEL141 & BIT_MASK_08))
+        if ((1ul == bM4_I2C2_SR_RFULLF) && (VSSEL141 & BIT_MASK_08))
         {
             I2c2RxEnd_IrqHandler();
         }
     }
     /* I2C Ch.2 Transmit completed */
-    if(Set == bM4_I2C2_CR2_TENDIE)
+    if(1ul == bM4_I2C2_CR2_TENDIE)
     {
-        if ((Set == bM4_I2C2_SR_TENDF)  && (VSSEL141 & BIT_MASK_09))
+        if ((1ul == bM4_I2C2_SR_TENDF)  && (VSSEL141 & BIT_MASK_09))
         {
             I2c2TxEnd_IrqHandler();
         }
     }
     /* I2C Ch.2 Transmit data empty */
-    if(Set == bM4_I2C2_CR2_TEMPTYIE)
+    if(1ul == bM4_I2C2_CR2_TEMPTYIE)
     {
-        if ((Set == bM4_I2C2_SR_TEMPTYF) && (VSSEL141 & BIT_MASK_10))
+        if ((1ul == bM4_I2C2_SR_TEMPTYF) && (VSSEL141 & BIT_MASK_10))
         {
             I2c2TxEmpty_IrqHandler();
         }
@@ -3548,25 +3615,25 @@ void IRQ141_Handler(void)
         I2c2Err_IrqHandler();
     }
     /* I2C Ch.3 Receive completed */
-    if(Set == bM4_I2C3_CR2_RFULLIE)
+    if(1ul == bM4_I2C3_CR2_RFULLIE)
     {
-        if ((Set == bM4_I2C3_SR_RFULLF) && (VSSEL141 & BIT_MASK_12))
+        if ((1ul == bM4_I2C3_SR_RFULLF) && (VSSEL141 & BIT_MASK_12))
         {
             I2c3RxEnd_IrqHandler();
         }
     }
     /* I2C Ch.3 Transmit completed */
-    if(Set == bM4_I2C3_CR2_TENDIE)
+    if(1ul == bM4_I2C3_CR2_TENDIE)
     {
-        if ((Set == bM4_I2C3_SR_TENDF)  && (VSSEL141 & BIT_MASK_13))
+        if ((1ul == bM4_I2C3_SR_TENDF)  && (VSSEL141 & BIT_MASK_13))
         {
             I2c3TxEnd_IrqHandler();
         }
     }
     /* I2C Ch.3 Transmit data empty */
-    if(Set == bM4_I2C3_CR2_TEMPTYIE)
+    if(1ul == bM4_I2C3_CR2_TEMPTYIE)
     {
-        if ((Set == bM4_I2C3_SR_TEMPTYF) && (VSSEL141 & BIT_MASK_14))
+        if ((1ul == bM4_I2C3_SR_TEMPTYF) && (VSSEL141 & BIT_MASK_14))
         {
             I2c3TxEmpty_IrqHandler();
         }
@@ -3578,38 +3645,42 @@ void IRQ141_Handler(void)
     {
         I2c3Err_IrqHandler();
     }
-
     /* LVD Ch.1 detected */
-    if((Set == bM4_SYSREG_PWR_PVDDSR_PVD1DETFLG) && (VSSEL141 & BIT_MASK_17))
+    if (1ul == bM4_SYSREG_PWR_PVDCR1_PVD1IRE)
     {
-        Lvd1_IrqHandler();
+        if((1ul == bM4_SYSREG_PWR_PVDDSR_PVD1DETFLG) && (VSSEL141 & BIT_MASK_17))
+        {
+            Lvd1_IrqHandler();
+        }
     }
-    /* LVD Ch.2 detected */
-    if((Set == bM4_SYSREG_PWR_PVDDSR_PVD2DETFLG) && (VSSEL141 & BIT_MASK_18))
+    if (1ul == bM4_SYSREG_PWR_PVDCR1_PVD2IRE)
     {
-        Lvd2_IrqHandler();
+        /* LVD Ch.2 detected */
+        if((1ul == bM4_SYSREG_PWR_PVDDSR_PVD2DETFLG) && (VSSEL141 & BIT_MASK_18))
+        {
+            Lvd2_IrqHandler();
+        }
     }
-
     /* Freq. calculate error detected */
-    if(Set == bM4_FCM_RIER_ERRIE)
+    if(1ul == bM4_FCM_RIER_ERRIE)
     {
-        if((Set == bM4_FCM_SR_ERRF) && (VSSEL141 & BIT_MASK_20))
+        if((1ul == bM4_FCM_SR_ERRF) && (VSSEL141 & BIT_MASK_20))
         {
             FcmErr_IrqHandler();
         }
     }
     /* Freq. calculate completed */
-    if(Set == bM4_FCM_RIER_MENDIE)
+    if(1ul == bM4_FCM_RIER_MENDIE)
     {
-        if((Set == bM4_FCM_SR_MENDF) && (VSSEL141 & BIT_MASK_21))
+        if((1ul == bM4_FCM_SR_MENDF) && (VSSEL141 & BIT_MASK_21))
         {
             FcmEnd_IrqHandler();
         }
     }
     /* Freq. calculate overflow */
-    if(Set == bM4_FCM_RIER_OVFIE)
+    if(1ul == bM4_FCM_RIER_OVFIE)
     {
-        if((Set == bM4_FCM_SR_OVF) && (VSSEL141 & BIT_MASK_22))
+        if((1ul == bM4_FCM_SR_OVF) && (VSSEL141 & BIT_MASK_22))
         {
             FcmOV_IrqHandler();
         }
@@ -3632,57 +3703,57 @@ void IRQ142_Handler(void)
     uint32_t u32VSSEL142 = M4_INTC->VSSEL142;
     uint16_t u16Tmp = 0u;
     /* ADC unit.1 seq. A */
-    if (Set == bM4_ADC1_ICR_EOCAIEN)
+    if (1ul == bM4_ADC1_ICR_EOCAIEN)
     {
-        if ((Set == bM4_ADC1_ISR_EOCAF) && (u32VSSEL142 & BIT_MASK_00))
+        if ((1ul == bM4_ADC1_ISR_EOCAF) && (u32VSSEL142 & BIT_MASK_00))
         {
             ADC1A_IrqHandler();
         }
     }
     /* ADC unit.1 seq. B */
-    if (Set == bM4_ADC1_ICR_EOCBIEN)
+    if (1ul == bM4_ADC1_ICR_EOCBIEN)
     {
-        if ((Set == bM4_ADC1_ISR_EOCBF) && (u32VSSEL142 & BIT_MASK_01))
+        if ((1ul == bM4_ADC1_ISR_EOCBF) && (u32VSSEL142 & BIT_MASK_01))
         {
             ADC1B_IrqHandler();
         }
     }
     /* ADC unit.1 seq. A */
     u16Tmp = M4_ADC1->AWDSR0;
-    if (Set == bM4_ADC1_AWDCR_AWDIEN)
+    if (1ul == bM4_ADC1_AWDCR_AWDIEN)
     {
-        if (((Set == bM4_ADC1_AWDSR1_AWDF16) || (u16Tmp)) && (u32VSSEL142 & BIT_MASK_02))
+        if (((1ul == bM4_ADC1_AWDSR1_AWDF16) || (u16Tmp)) && (u32VSSEL142 & BIT_MASK_02))
         {
             ADC1ChCmp_IrqHandler();
         }
     }
     /* ADC unit.1 seq. cmp */
-    if (Set == bM4_ADC1_AWDCR_AWDIEN)
+    if (1ul == bM4_ADC1_AWDCR_AWDIEN)
     {
-        if (((Set == bM4_ADC1_AWDSR1_AWDF16) || (u16Tmp)) && (u32VSSEL142 & BIT_MASK_03))
+        if (((1ul == bM4_ADC1_AWDSR1_AWDF16) || (u16Tmp)) && (u32VSSEL142 & BIT_MASK_03))
         {
             ADC1SeqCmp_IrqHandler();
         }
     }
 
     /* ADC unit.2 seq. A */
-    if (Set == bM4_ADC2_ICR_EOCAIEN)
+    if (1ul == bM4_ADC2_ICR_EOCAIEN)
     {
-        if ((Set == bM4_ADC2_ISR_EOCAF) && (u32VSSEL142 & BIT_MASK_04))
+        if ((1ul == bM4_ADC2_ISR_EOCAF) && (u32VSSEL142 & BIT_MASK_04))
         {
             ADC2A_IrqHandler();
         }
     }
     /* ADC unit.2 seq. B */
-    if (Set == bM4_ADC2_ICR_EOCBIEN)
+    if (1ul == bM4_ADC2_ICR_EOCBIEN)
     {
-        if ((Set == bM4_ADC2_ISR_EOCBF) && (u32VSSEL142 & BIT_MASK_05))
+        if ((1ul == bM4_ADC2_ISR_EOCBF) && (u32VSSEL142 & BIT_MASK_05))
         {
             ADC2B_IrqHandler();
         }
     }
     /* ADC unit.2 seq. A */
-    if (Set == bM4_ADC2_AWDCR_AWDIEN)
+    if (1ul == bM4_ADC2_AWDCR_AWDIEN)
     {
         if ((M4_ADC2->AWDSR0 & 0x1FFu) && (u32VSSEL142 & BIT_MASK_06))
         {
@@ -3690,7 +3761,7 @@ void IRQ142_Handler(void)
         }
     }
     /* ADC unit.2 seq. cmp */
-    if (Set == bM4_ADC2_AWDCR_AWDIEN)
+    if (1ul == bM4_ADC2_AWDCR_AWDIEN)
     {
         if ((M4_ADC2->AWDSR0 & 0x1FFu) && (u32VSSEL142 & BIT_MASK_07))
         {
@@ -3716,7 +3787,7 @@ void IRQ143_Handler(void)
     uint16_t ERRINTSGEN = 0u;
 
     /* SDIO Ch.1 */
-    if (Set == bM4_INTC_VSSEL143_VSEL2)
+    if (1ul == bM4_INTC_VSSEL143_VSEL2)
     {
         NORINTST = M4_SDIOC1->NORINTST;
         NORINTSGEN = M4_SDIOC1->NORINTSGEN;
@@ -3730,7 +3801,7 @@ void IRQ143_Handler(void)
     }
 
     /* SDIO Ch.2 */
-    if (Set == bM4_INTC_VSSEL143_VSEL5)
+    if (1ul == bM4_INTC_VSSEL143_VSEL5)
     {
         NORINTST = M4_SDIOC2->NORINTST;
         NORINTSGEN = M4_SDIOC2->NORINTSGEN;
@@ -3744,7 +3815,7 @@ void IRQ143_Handler(void)
     }
 
     /* CAN */
-    if (Set == bM4_INTC_VSSEL143_VSEL6)
+    if (1ul == bM4_INTC_VSSEL143_VSEL6)
     {
         RTIF = M4_CAN->RTIF;
         RTIE = M4_CAN->RTIE;

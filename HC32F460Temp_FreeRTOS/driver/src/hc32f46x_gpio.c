@@ -350,7 +350,7 @@ en_result_t PORT_DeInit(void)
     uint8_t u8PortIdx, u8PinIdx;
     PORT_Unlock();
 
-    for (u8PortIdx = PortA; u8PortIdx <= PortH; u8PortIdx++)
+    for (u8PortIdx = (uint8_t)PortA; u8PortIdx <= (uint8_t)PortH; u8PortIdx++)
     {
         *(uint16_t *)(GPIO_BASE + PODR_BASE + u8PortIdx * 0x10ul) = 0u;
         *(uint16_t *)(GPIO_BASE + POER_BASE + u8PortIdx * 0x10ul) = 0u;
@@ -358,7 +358,7 @@ en_result_t PORT_DeInit(void)
         *(uint16_t *)(GPIO_BASE + PORR_BASE + u8PortIdx * 0x10ul) = 0u;
         for (u8PinIdx = 0u; u8PinIdx < 16u; u8PinIdx++)
         {
-            if ((PortH == u8PortIdx) && (3u == u8PinIdx))
+            if (((uint8_t)PortH == u8PortIdx) && (3u == u8PinIdx))
             {
                 break;
             }
@@ -480,7 +480,7 @@ uint16_t PORT_GetData(en_port_t enPort)
     DDL_ASSERT(IS_VALID_PORT(enPort));
 
     uint32_t *PIDRx;
-    PIDRx = (uint32_t *)((uint32_t)(&M4_PORT->PIDRA) + 0x10 * enPort);
+    PIDRx = (uint32_t *)((uint32_t)(&M4_PORT->PIDRA) + 0x10u * enPort);
     return (uint16_t)(*PIDRx);
 }
 
@@ -503,7 +503,7 @@ en_flag_status_t PORT_GetBit(en_port_t enPort, en_pin_t enPin)
     DDL_ASSERT(IS_VALID_PORT(enPort));
     DDL_ASSERT(IS_VALID_PIN(enPin));
 
-    PIDRx = (uint32_t *)((uint32_t)(&M4_PORT->PIDRA) + 0x10 * enPort);
+    PIDRx = (uint32_t *)((uint32_t)(&M4_PORT->PIDRA) + 0x10u * enPort);
     return (en_flag_status_t)((bool)(!!(*PIDRx & (enPin))));
 }
 
@@ -521,13 +521,13 @@ en_flag_status_t PORT_GetBit(en_port_t enPort, en_pin_t enPin)
  ******************************************************************************/
 en_result_t PORT_SetPortData(en_port_t enPort, uint16_t u16Pin)
 {
-    uint32_t *PODRx;
+    uint16_t *PODRx;
 
     /* parameter check */
     DDL_ASSERT(IS_VALID_PORT(enPort));
 
-    PODRx = (uint32_t *)((uint32_t)(&M4_PORT->PODRA) + 0x10 * enPort);
-    *PODRx |= u16Pin & 0x0000FFFFul;
+    PODRx = (uint16_t *)((uint32_t)(&M4_PORT->PODRA) + 0x10u * enPort);
+    *PODRx |= u16Pin;
     return Ok;
 }
 
@@ -545,13 +545,13 @@ en_result_t PORT_SetPortData(en_port_t enPort, uint16_t u16Pin)
  ******************************************************************************/
 en_result_t PORT_ResetPortData(en_port_t enPort, uint16_t u16Pin)
 {
-    uint32_t *PODRx;
+    uint16_t *PODRx;
 
     /* parameter check */
     DDL_ASSERT(IS_VALID_PORT(enPort));
 
-    PODRx = (uint32_t *)((uint32_t)(&M4_PORT->PODRA) + 0x10 * enPort);
-    *PODRx &= (~(uint32_t)u16Pin) & 0x0000FFFFul;
+    PODRx = (uint16_t *)((uint32_t)(&M4_PORT->PODRA) + 0x10u * enPort);
+    *PODRx &= (uint16_t)(~u16Pin);
     return Ok;
 }
 
@@ -569,19 +569,19 @@ en_result_t PORT_ResetPortData(en_port_t enPort, uint16_t u16Pin)
  ******************************************************************************/
 en_result_t PORT_OE(en_port_t enPort, uint16_t u16Pin, en_functional_state_t enNewState)
 {
-    uint32_t *POERx;
+    uint16_t *POERx;
 
     /* parameter check */
     DDL_ASSERT(IS_VALID_PORT(enPort));
 
-    POERx = (uint32_t *)((uint32_t)(&M4_PORT->POERA) + 0x10ul * enPort);
+    POERx = (uint16_t *)((uint32_t)(&M4_PORT->POERA) + 0x10ul * enPort);
     if (Enable == enNewState)
     {
-        *POERx |= u16Pin & 0x0000FFFFul;
+        *POERx |= u16Pin;
     }
     else
     {
-        *POERx &= (~(uint32_t)u16Pin) & 0x0000FFFFul;
+        *POERx &= (uint16_t)(~u16Pin);
     }
     return Ok;
 
@@ -600,13 +600,13 @@ en_result_t PORT_OE(en_port_t enPort, uint16_t u16Pin, en_functional_state_t enN
  ******************************************************************************/
 en_result_t PORT_SetBits(en_port_t enPort, uint16_t u16Pin)
 {
-    uint32_t *POSRx;
+    uint16_t *POSRx;
 
     /* parameter check */
     DDL_ASSERT(IS_VALID_PORT(enPort));
 
-    POSRx = (uint32_t *)((uint32_t)(&M4_PORT->POSRA) + 0x10 * enPort);
-    *POSRx |= u16Pin & 0x0000FFFFul;
+    POSRx = (uint16_t *)((uint32_t)(&M4_PORT->POSRA) + 0x10u * enPort);
+    *POSRx |= u16Pin;
     return Ok;
 
 }
@@ -624,13 +624,13 @@ en_result_t PORT_SetBits(en_port_t enPort, uint16_t u16Pin)
  ******************************************************************************/
 en_result_t PORT_ResetBits(en_port_t enPort, uint16_t u16Pin)
 {
-    uint32_t *PORRx;
+    uint16_t *PORRx;
 
     /* parameter check */
     DDL_ASSERT(IS_VALID_PORT(enPort));
 
-    PORRx = (uint32_t *)((uint32_t)(&M4_PORT->PORRA) + 0x10 * enPort);
-    *PORRx |= u16Pin & 0x0000FFFFul;
+    PORRx = (uint16_t *)((uint32_t)(&M4_PORT->PORRA) + 0x10u * enPort);
+    *PORRx |= u16Pin;
     return Ok;
 }
 
@@ -647,13 +647,13 @@ en_result_t PORT_ResetBits(en_port_t enPort, uint16_t u16Pin)
  ******************************************************************************/
 en_result_t PORT_Toggle(en_port_t enPort, uint16_t u16Pin)
 {
-    uint32_t *POTRx;
+    uint16_t *POTRx;
 
     /* parameter check */
     DDL_ASSERT(IS_VALID_PORT(enPort));
 
-    POTRx = (uint32_t *)((uint32_t)(&M4_PORT->POTRA) + 0x10 * enPort);
-    *POTRx |= u16Pin & 0x0000FFFFul;
+    POTRx = (uint16_t *)((uint32_t)(&M4_PORT->POTRA) + 0x10u * enPort);
+    *POTRx |= u16Pin;
     return Ok;
 }
 

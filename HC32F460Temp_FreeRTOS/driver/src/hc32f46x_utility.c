@@ -107,13 +107,23 @@ void DebugOutput(uint8_t u8Data)
  ** \brief Re-target putchar function
  **
  ******************************************************************************/
+#if defined ( __GNUC__ ) && !defined (__CC_ARM)
+int _write(int fd, char *pBuffer, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		DebugOutput((uint8_t)pBuffer[i]);
+	}
+	return size;
+}
+#else
 int32_t fputc(int32_t ch, FILE *f)
 {
     DebugOutput((uint8_t)ch);
 
     return (ch);
 }
-
+#endif
 /**
  *******************************************************************************
  ** \brief Set synchronous clock mode baudrate

@@ -416,7 +416,7 @@ en_result_t QSPI_PrefetchCmd(en_functional_state_t enNewSta)
 
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewSta));
 
-    M4_QSPI->CR_f.PFSAE = enNewSta;
+    M4_QSPI->CR_f.PFE = enNewSta;
 
     return enRet;
 }

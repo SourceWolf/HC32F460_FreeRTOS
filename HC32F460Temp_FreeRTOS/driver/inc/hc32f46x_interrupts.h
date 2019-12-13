@@ -330,8 +330,14 @@ __WEAKDEF void Dma2Btc0_IrqHandler(void);
 __WEAKDEF void Dma2Btc1_IrqHandler(void);
 __WEAKDEF void Dma2Btc2_IrqHandler(void);
 __WEAKDEF void Dma2Btc3_IrqHandler(void);
-__WEAKDEF void Dma1Err_IrqHandler(void);
-__WEAKDEF void Dma2Err_IrqHandler(void);
+__WEAKDEF void Dma1Err0_IrqHandler(void);
+__WEAKDEF void Dma1Err1_IrqHandler(void);
+__WEAKDEF void Dma1Err2_IrqHandler(void);
+__WEAKDEF void Dma1Err3_IrqHandler(void);
+__WEAKDEF void Dma2Err0_IrqHandler(void);
+__WEAKDEF void Dma2Err1_IrqHandler(void);
+__WEAKDEF void Dma2Err2_IrqHandler(void);
+__WEAKDEF void Dma2Err3_IrqHandler(void);
 
 __WEAKDEF void EfmPgmEraseErr_IrqHandler(void);
 __WEAKDEF void EfmColErr_IrqHandler(void);

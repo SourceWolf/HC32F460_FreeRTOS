@@ -156,6 +156,8 @@
     (((x) >= EVT_SDIOC1_DMAR) && ((x) <= EVT_SDIOC1_DMAW))             ||      \
     (((x) >= EVT_SDIOC2_DMAR) && ((x) <= EVT_SDIOC2_DMAW)))
 
+/* Delay count for time out */
+#define TIMER0_TMOUT 0x5000ul
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
  ******************************************************************************/
@@ -211,11 +213,14 @@ en_flag_status_t TIMER0_GetFlag(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t 
  **
  ** \param [in] enCh              Timer0 channel, Timer0_ChA or Timer0_ChB
  **
- ** \retval None
+ ** \retval Ok                    Success
+ ** \retval ErrorTimeout          Process timeout
  **
  ******************************************************************************/
-void TIMER0_ClearFlag(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh)
+en_result_t TIMER0_ClearFlag(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh)
 {
+    en_result_t enRet = Ok;
+    uint32_t u32TimeOut = 0ul;
     DDL_ASSERT(IS_VALID_UNIT(pstcTim0Reg));
     DDL_ASSERT(IS_VALID_CHANNEL(enCh));
 
@@ -224,7 +229,11 @@ void TIMER0_ClearFlag(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh)
         pstcTim0Reg->STFLR_f.CMAF =0u;
         while(0u != pstcTim0Reg->STFLR_f.CMAF)
         {
-            ;
+            if(u32TimeOut++ > TIMER0_TMOUT)
+            {
+                enRet = ErrorTimeout;
+                break;
+            }
         }
     }
     else
@@ -232,9 +241,14 @@ void TIMER0_ClearFlag(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh)
         pstcTim0Reg->STFLR_f.CMBF = 0u;
         while(0u != pstcTim0Reg->STFLR_f.CMBF)
         {
-            ;
+            if(u32TimeOut++ > TIMER0_TMOUT)
+            {
+                enRet = ErrorTimeout;
+                break;
+            }
         }
     }
+    return enRet;
 }
 
 /**
@@ -247,12 +261,15 @@ void TIMER0_ClearFlag(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh)
  **
  ** \param [in] enCmd             Disable or Enable the function
  **
- ** \retval None
+ ** \retval Ok                    Success
+ ** \retval ErrorTimeout          Process timeout
  **
  ******************************************************************************/
-void TIMER0_Cmd(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
+en_result_t TIMER0_Cmd(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
                 en_functional_state_t enCmd)
 {
+    en_result_t enRet = Ok;
+    uint32_t u32TimeOut = 0ul;
     DDL_ASSERT(IS_VALID_UNIT(pstcTim0Reg));
     DDL_ASSERT(IS_VALID_CHANNEL(enCh));
     DDL_ASSERT(IS_VALID_COMMAND(enCmd));
@@ -263,19 +280,28 @@ void TIMER0_Cmd(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
             pstcTim0Reg->BCONR_f.CSTA = enCmd;
             while(enCmd != pstcTim0Reg->BCONR_f.CSTA)
             {
-                ;
+                if(u32TimeOut++ > TIMER0_TMOUT)
+                {
+                    enRet = ErrorTimeout;
+                    break;
+                }
             }
             break;
         case Tim0_ChannelB:
             pstcTim0Reg->BCONR_f.CSTB = enCmd;
             while(enCmd != pstcTim0Reg->BCONR_f.CSTB)
             {
-                ;
+                if(u32TimeOut++ > TIMER0_TMOUT)
+                {
+                    enRet = ErrorTimeout;
+                    break;
+                }
             }
             break;
         default:
             break;
     }
+    return enRet;
 }
 
 /**
@@ -383,12 +409,15 @@ uint16_t TIMER0_GetCntReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh)
  **
  ** \param [in] u16Cnt            Data to write
  **
- ** \retval uint16_t              None
+ ** \retval Ok                    Success
+ ** \retval ErrorTimeout          Process timeout
  **
  ******************************************************************************/
-void TIMER0_WriteCntReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
+en_result_t TIMER0_WriteCntReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
                         uint16_t u16Cnt)
 {
+    en_result_t enRet = Ok;
+    uint32_t u32TimeOut = 0ul;
     DDL_ASSERT(IS_VALID_UNIT(pstcTim0Reg));
     DDL_ASSERT(IS_VALID_CHANNEL(enCh));
 
@@ -397,7 +426,11 @@ void TIMER0_WriteCntReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
         pstcTim0Reg->CNTAR = (uint32_t)u16Cnt;
         while(u16Cnt != (uint16_t)pstcTim0Reg->CNTAR)
         {
-            ;
+            if(u32TimeOut++ > TIMER0_TMOUT)
+            {
+                enRet = ErrorTimeout;
+                break;
+            }
         }
     }
     else
@@ -405,9 +438,14 @@ void TIMER0_WriteCntReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
         pstcTim0Reg->CNTBR = (uint32_t)u16Cnt;
         while(u16Cnt != (uint16_t)pstcTim0Reg->CNTBR)
         {
-            ;
+            if(u32TimeOut++ > TIMER0_TMOUT)
+            {
+                enRet = ErrorTimeout;
+                break;
+            }
         }
     }
+    return enRet;
 }
 
 /**
@@ -448,12 +486,15 @@ uint16_t TIMER0_GetCmpReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh)
  **
  ** \param [in] u16Cnt            Data to write
  **
- ** \retval uint16_t              None
+ ** \retval Ok                    Success
+ ** \retval ErrorTimeout          Process timeout
  **
  ******************************************************************************/
-void TIMER0_WriteCmpReg(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
+en_result_t TIMER0_WriteCmpReg(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
                         uint16_t u16Cnt)
 {
+    en_result_t enRet = Ok;
+    uint32_t u32TimeOut = 0ul;
     DDL_ASSERT(IS_VALID_UNIT(pstcTim0Reg));
     DDL_ASSERT(IS_VALID_CHANNEL(enCh));
 
@@ -462,7 +503,11 @@ void TIMER0_WriteCmpReg(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
         pstcTim0Reg->CMPAR = (uint32_t)u16Cnt;
         while(u16Cnt != (uint16_t)pstcTim0Reg->CMPAR)
         {
-            ;
+            if(u32TimeOut++ > TIMER0_TMOUT)
+            {
+                enRet = ErrorTimeout;
+                break;
+            }
         }
     }
     else
@@ -470,9 +515,14 @@ void TIMER0_WriteCmpReg(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
         pstcTim0Reg->CMPBR = (uint32_t)u16Cnt;
         while(u16Cnt != (uint16_t)pstcTim0Reg->CMPBR)
         {
-            ;
+            if(u32TimeOut++ > TIMER0_TMOUT)
+            {
+                enRet = ErrorTimeout;
+                break;
+            }
         }
     }
+    return enRet;
 }
 
 /**
@@ -487,6 +537,7 @@ void TIMER0_WriteCmpReg(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
  **
  ** \retval Ok                      Process finished.
  ** \retval ErrorInvalidParameter   Parameter error.
+ ** \retval ErrorTimeout            Process timeout
  **
  ******************************************************************************/
 en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
@@ -494,6 +545,7 @@ en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
 {
     stc_tmr0_bconr_field_t stcBconrTmp;
     en_result_t enRet = Ok;
+    uint32_t u32TimeOut = 0ul;
 
     if (NULL != pstcBaseInit)
     {
@@ -536,9 +588,12 @@ en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
                 pstcTim0Reg->CMPAR = pstcBaseInit->Tim0_CmpValue;
                 while(pstcBaseInit->Tim0_CmpValue != (uint16_t)pstcTim0Reg->CMPAR)
                 {
-                    ;
+                    if(u32TimeOut++ > TIMER0_TMOUT)
+                    {
+                        enRet = ErrorTimeout;
+                        break;
+                    }
                 }
-
                 break;
 
             case Tim0_ChannelB:
@@ -563,10 +618,14 @@ en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
                 pstcTim0Reg->CMPBR = pstcBaseInit->Tim0_CmpValue;
                 while(pstcBaseInit->Tim0_CmpValue != (uint16_t)pstcTim0Reg->CMPBR)
                 {
-                    ;
+                    if(u32TimeOut++ > TIMER0_TMOUT)
+                    {
+                        enRet = ErrorTimeout;
+                        break;
+                    }
                 }
-
                 break;
+
             default:
                 break;
         }
@@ -575,7 +634,7 @@ en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
     {
         enRet = ErrorInvalidParameter;
     }
-    
+
     return enRet;
 }
 
@@ -702,7 +761,7 @@ en_result_t TIMER0_HardTriggerInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_
     {
         enRet = ErrorInvalidParameter;
     }
-    
+
     return enRet;
 
 }

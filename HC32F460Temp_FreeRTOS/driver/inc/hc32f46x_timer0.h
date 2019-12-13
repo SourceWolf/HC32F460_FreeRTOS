@@ -63,7 +63,8 @@
 
 /* C binding of definitions if building with C++ compiler */
 #ifdef __cplusplus
-"C" {
+extern "C"
+{
 #endif
 
 /**
@@ -196,17 +197,17 @@ typedef struct stc_tim0_base_init
   Global function prototypes (definition in C source)
  ******************************************************************************/
 en_flag_status_t TIMER0_GetFlag(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh);
-void TIMER0_ClearFlag(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh);
-void TIMER0_Cmd(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
+en_result_t TIMER0_ClearFlag(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh);
+en_result_t TIMER0_Cmd(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
                 en_functional_state_t enCmd);
 void TIMER0_SetFunc(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
                        en_tim0_function_t enFunc);
 void TIMER0_IntCmd(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
                        en_functional_state_t enCmd);
 uint16_t TIMER0_GetCntReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh);
-void TIMER0_WriteCntReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,uint16_t u16Cnt);
+en_result_t TIMER0_WriteCntReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,uint16_t u16Cnt);
 uint16_t TIMER0_GetCmpReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh);
-void TIMER0_WriteCmpReg(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,uint16_t u16Cnt);
+en_result_t TIMER0_WriteCmpReg(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,uint16_t u16Cnt);
 en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
                        const stc_tim0_base_init_t* pstcBaseInit);
 void TIMER0_DeInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh);

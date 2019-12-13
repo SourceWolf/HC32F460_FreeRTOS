@@ -1,8 +1,8 @@
-/*******************************************************************************
- * Copyright (C) 2016, Huada Semiconductor Co., Ltd. All rights reserved.
+/*****************************************************************************
+ * Copyright (C) 2016, Huada Semiconductor Co.,Ltd All rights reserved.
  *
  * This software is owned and published by:
- * Huada Semiconductor Co., Ltd. ("HDSC").
+ * Huada Semiconductor Co.,Ltd ("HDSC").
  *
  * BY DOWNLOADING, INSTALLING OR USING THIS SOFTWARE, YOU AGREE TO BE BOUND
  * BY ALL THE TERMS AND CONDITIONS OF THIS AGREEMENT.
@@ -40,77 +40,95 @@
  * at all times.
  */
 /******************************************************************************/
-/** \file hc32f46x_icg.c
+/** \file w25qxx.h
  **
  ** A detailed description is available at
- ** @link IcgGroup Initialize Configure description @endlink
+ ** @link W25QXXGroup W25Q64 description @endlink
  **
- **   - 2018-10-15  1.0  yangjp First version for Device Driver Library of ICG.
+ **   - 2019-05-15  1.0 Zhangxl First version for Device Driver Library.
  **
  ******************************************************************************/
+#ifndef __W25QXX_H__
+#define __W25QXX_H__
 
 /*******************************************************************************
  * Include files
  ******************************************************************************/
-#include "hc32f46x_icg.h"
-
-#if (DDL_ICG_ENABLE == DDL_ON)
-
+/* C binding of definitions if building with C++ compiler */
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 /**
  *******************************************************************************
- ** \addtogroup IcgGroup
+ ** \defgroup W25QXXGroup W25Q64 SPI NOR Flash driver
+ **
  ******************************************************************************/
 //@{
 
 /*******************************************************************************
- * Local type definitions ('typedef')
+ * Global type definitions ('typedef')
  ******************************************************************************/
 
-/*******************************************************************************
- * Local pre-processor symbols/macros ('#define')
- ******************************************************************************/
+/*****************************************************************************/
+/* Global pre-processor symbols/macros ('define')                            */
+/*****************************************************************************/
+/* W25QXX Flash ID */
+#define W25Q80  0XEF13u
+#define W25Q16  0XEF14u
+#define W25Q32  0XEF15u
+#define W25Q64  0XEF16u
+#define W25Q128 0XEF17u
+
+/* W25QXX Command list */
+#define W25X_WriteEnable        0x06u
+#define W25X_WriteDisable       0x04u
+#define W25X_ReadStatusReg      0x05u
+#define W25X_WriteStatusReg     0x01u
+#define W25X_ReadData           0x03u
+#define W25X_FastReadData       0x0Bu
+#define W25X_FastReadDual       0x3Bu
+#define W25X_PageProgram        0x02u
+#define W25X_BlockErase         0xD8u
+#define W25X_SectorErase        0x20u
+#define W25X_ChipErase          0xC7u
+#define W25X_PowerDown          0xB9u
+#define W25X_ReleasePowerDown   0xABu
+#define W25X_DeviceID           0xABu
+#define W25X_ManufactDeviceID   0x90u
+#define W25X_JedecDeviceID      0x9Fu
 
 /*******************************************************************************
- * Global variable definitions (declared in header file with 'extern')
+ * Global variable definitions ('extern')
  ******************************************************************************/
+extern uint16_t W25QXX_TYPE;
 
 /*******************************************************************************
- * Local function prototypes ('static')
+ * Global function prototypes (definition in C source)
  ******************************************************************************/
+void W25QXX_Init(void);
+uint16_t  W25QXX_ReadID(void);
+uint8_t   W25QXX_ReadSR(void);
+void W25QXX_Write_SR(uint8_t sr);
+void W25QXX_Write_Enable(void);
+void W25QXX_Write_Disable(void);
+void W25QXX_Write_NoCheck(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteToWrite);
+void W25QXX_Read(uint8_t* pBuffer, uint32_t ReadAddr, uint16_t NumByteToRead);
+void W25QXX_Write(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteToWrite);
+void W25QXX_Erase_Chip(void);
+void W25QXX_Erase_Sector(uint32_t Dst_Addr);
+void W25QXX_Wait_Busy(void);
+void W25QXX_PowerDown(void);
+void W25QXX_WAKEUP(void);
 
-/*******************************************************************************
- * Local variable definitions ('static')
- ******************************************************************************/
-#if defined ( __GNUC__ ) && !defined (__CC_ARM) /* GNU Compiler */
-const uint32_t u32ICG[] __attribute__((section(".icg_sec"))) =
-#elif defined (__CC_ARM)
-const uint32_t u32ICG[] __attribute__((at(0x400))) =
-#elif defined (__ICCARM__)
-__root const uint32_t u32ICG[] @ 0x400 =
-#else
-#error "unsupported compiler!!"
+//@} // W25QXXGroup
+
+#ifdef __cplusplus
+}
 #endif
-{
-    /* ICG 0~ 3 */
-    ICG0_REGISTER_CONSTANT,
-    ICG1_REGISTER_CONSTANT,
-    ICG2_REGISTER_CONSTANT,
-    ICG3_REGISTER_CONSTANT,
-    /* ICG 4~ 7 */
-    ICG4_REGISTER_CONSTANT,
-    ICG5_REGISTER_CONSTANT,
-    ICG6_REGISTER_CONSTANT,
-    ICG7_REGISTER_CONSTANT,
-};
+
+#endif /* __W25QXX_H__ */
 
 /*******************************************************************************
- * Function implementation - global ('extern') and local ('static')
- ******************************************************************************/
-
-//@} // IcgGroup
-
-#endif /* DDL_ICG_ENABLE */
-
-/******************************************************************************
  * EOF (not truncated)
- *****************************************************************************/
+ ******************************************************************************/

@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -40,7 +40,7 @@
  * at all times.
  */
 /******************************************************************************/
-/** \file pixiedust_sound_i2s.c
+/** \file data_sound_i2s.h
  **
  ** Sound data Module
  **
@@ -48,8 +48,8 @@
  **
  ******************************************************************************/
 
-#ifndef __PIXIEDUST_SOUND_I2S_H__
-#define __PIXIEDUST_SOUND_I2S_H__
+#ifndef __DATA_SOUND_I2S_H__
+#define __DATA_SOUND_I2S_H__
 
 /*****************************************************************************/
 /* Include files                                                             */
@@ -68,34 +68,19 @@ extern "C"
 /******************************************************************************
  * Global definitions
  ******************************************************************************/
-//#define WAVFILELEN 129101ul
-#define WAVFILELEN 129101ul
+
 /*****************************************************************************/
 /* Global type definitions ('typedef')                                       */
 /*****************************************************************************/
 
-/**
- *****************************************************************************
- ** \brief I2S start condition type (read, write)
- *****************************************************************************/
-
-/**
- *****************************************************************************
- ** \brief I2S sub frame configuration
- *****************************************************************************/
-
-/**
- *****************************************************************************
- ** \brief I2S configuration
- *****************************************************************************/
-
 /*****************************************************************************/
 /* Global variable declarations ('extern', definition in C source)           */
 /*****************************************************************************/
-extern const uint16_t au16PixieDustSoundI2s_441[WAVFILELEN];//[129101ul];
-extern const uint16_t au16PixieDustSoundI2s_8[WAVFILELEN];//[129101ul];
+extern uint32_t u32WavLen_8k;
+extern uint32_t u32WavLen_44k;
+extern const uint16_t au16PixieDustSoundI2s_441[];
+extern const uint16_t au16PixieDustSoundI2s_8[];
 
-  
 /*****************************************************************************/
 /* Global function prototypes ('extern', definition in C source)             */
 /*****************************************************************************/
@@ -104,7 +89,7 @@ extern const uint16_t au16PixieDustSoundI2s_8[WAVFILELEN];//[129101ul];
 }
 #endif
 
-#endif /* __PIXIEDUST_SOUND_I2S_H__ */
+#endif /* __DATA_SOUND_I2S_H__ */
 /*****************************************************************************/
 /* EOF (not truncated)                                                       */
 /*****************************************************************************/

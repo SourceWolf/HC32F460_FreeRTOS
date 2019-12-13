@@ -1097,7 +1097,8 @@ void CLK_SysClkConfig(const stc_clk_sysclk_cfg_t *pstcSysclkCfg)
                                 ((uint32_t)pstcSysclkCfg->enPclk3Div << 12u)   |
                                 ((uint32_t)pstcSysclkCfg->enPclk4Div << 16u)   |
                                 ((uint32_t)pstcSysclkCfg->enExclkDiv << 20u)   |
-                                ((uint32_t)pstcSysclkCfg->enHclkDiv << 24u));
+                                ((uint32_t)pstcSysclkCfg->enHclkDiv << 24u)    |
+                                ((uint32_t)pstcSysclkCfg->enHclkDiv << 28u));
 
         DISABLE_CLOCK_REG_WRITE();
 
@@ -1845,6 +1846,32 @@ void CLK_ClearFcmFlag(en_clk_fcm_flag_t enFcmFlag)
         default:
             break;
     }
+}
+
+/**
+ *******************************************************************************
+ ** \brief  Clear the XTAL error flag.
+ **
+ ** \param  None
+ **
+ ** \retval None
+ **
+ ** \note   The system clock should not be XTAL before call this function.
+ **
+ ******************************************************************************/
+void CLK_ClearXtalStdFlag(void)
+{
+    /* Enable register write. */
+    ENABLE_CLOCK_REG_WRITE();
+
+    if(Set == M4_SYSREG->CMU_XTALSTDSR_f.XTALSTDF)
+    {
+        /* Clear the XTAL STD flag */
+        M4_SYSREG->CMU_XTALSTDSR_f.XTALSTDF = Reset;
+    }
+
+    /* Disbale register write. */
+    DISABLE_CLOCK_REG_WRITE();
 }
 
 

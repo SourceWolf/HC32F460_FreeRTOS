@@ -680,7 +680,7 @@ en_result_t DMA_ChannelCmd(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_function
                 u32Cnt = pstcDmaReg->DTCTL0_f.CNT;
                 if(pstcDmaReg->MONDTCTL0_f.CNT > DMA_CNT)
                 {
-                    /* not wait. */ 
+                    /* not wait. */
                 }
                 else if(pstcDmaReg->MONDTCTL0_f.CNT < u32Cnt)
                 {
@@ -700,7 +700,7 @@ en_result_t DMA_ChannelCmd(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_function
                 u32Cnt = pstcDmaReg->DTCTL1_f.CNT;
                 if(pstcDmaReg->MONDTCTL1_f.CNT > DMA_CNT)
                 {
-                    /* not wait. */ 
+                    /* not wait. */
                 }
                 else if(pstcDmaReg->MONDTCTL1_f.CNT < u32Cnt)
                 {
@@ -722,7 +722,7 @@ en_result_t DMA_ChannelCmd(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_function
                 u32Cnt = pstcDmaReg->DTCTL2_f.CNT;
                 if(pstcDmaReg->MONDTCTL2_f.CNT > DMA_CNT)
                 {
-                    /* not wait. */ 
+                    /* not wait. */
                 }
                 else if(pstcDmaReg->MONDTCTL2_f.CNT < u32Cnt)
                 {
@@ -743,7 +743,7 @@ en_result_t DMA_ChannelCmd(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_function
                 u32Cnt = pstcDmaReg->DTCTL3_f.CNT;
                 if(pstcDmaReg->MONDTCTL3_f.CNT > DMA_CNT)
                 {
-                    /* not wait. */ 
+                    /* not wait. */
                 }
                 else if(pstcDmaReg->MONDTCTL3_f.CNT < u32Cnt)
                 {
@@ -901,7 +901,7 @@ en_flag_status_t DMA_GetChFlag(M4_DMA_TypeDef* pstcDmaReg, en_dma_ch_flag_t enDm
             u32IntStat = (pstcDmaReg->CHSTAT_f.CHACT & DMACH2);
             break;
         case DmaCh3Sta:
-            u32IntStat = (pstcDmaReg->CHSTAT_f.CHACT & DMACH0);
+            u32IntStat = (pstcDmaReg->CHSTAT_f.CHACT & DMACH3);
             break;
         default:
             break;
@@ -936,7 +936,7 @@ en_result_t DMA_SetSrcAddress(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint32_t
     WRITE_DMA_CH_REG(&pstcDmaReg->SAR0, u8Ch, u32Address);
 
     /* Ensure the address has been writed */
-    while(u32Address != READ_DMA_CH_REG(&pstcDmaReg->SAR0, u8Ch))
+    while(u32Address != READ_DMA_CH_REG(&pstcDmaReg->MONSAR0, u8Ch))
     {
         u16Timeout++;
         if(u16Timeout > DMATIMEOUT2)
@@ -979,7 +979,7 @@ en_result_t DMA_SetDesAddress(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint32_t
     WRITE_DMA_CH_REG(&pstcDmaReg->DAR0, u8Ch, u32Address);
 
     /* Ensure the address has been writed */
-    while(u32Address != READ_DMA_CH_REG(&pstcDmaReg->DAR0, u8Ch))
+    while(u32Address != READ_DMA_CH_REG(&pstcDmaReg->MONDAR0, u8Ch))
     {
         u16Timeout++;
         if(u16Timeout > DMATIMEOUT2)
@@ -1025,7 +1025,7 @@ en_result_t DMA_SetBlockSize(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t 
     MODIFY_DMA_CH_REG(&pstcDmaReg->DTCTL0, u8Ch, DMA_DTCTL_BLKSIZE, (uint32_t)u16BlkSize);
 
     /* Ensure the block size has been writed */
-    while(u16BlkSize != (uint16_t)(READ_DMA_CH_REG(&pstcDmaReg->DTCTL0, u8Ch) & DMA_DTCTL_BLKSIZE))
+    while(u16BlkSize != (uint16_t)(READ_DMA_CH_REG(&pstcDmaReg->MONDTCTL0, u8Ch) & DMA_DTCTL_BLKSIZE))
     {
         u16Timeout++;
         if(u16Timeout > DMATIMEOUT2)
@@ -1069,7 +1069,7 @@ en_result_t DMA_SetTransferCnt(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_
     MODIFY_DMA_CH_REG(&pstcDmaReg->DTCTL0, u8Ch, DMA_DTCTL_CNT, (uint32_t)u16TrnCnt);
 
     /* Ensure the transfer count has been writed */
-    while(u16TrnCnt != ((READ_DMA_CH_REG(&pstcDmaReg->DTCTL0, u8Ch) & DMA_DTCTL_CNT) >> DMA_DTCTL_CNT_Pos))
+    while(u16TrnCnt != ((READ_DMA_CH_REG(&pstcDmaReg->MONDTCTL0, u8Ch) & DMA_DTCTL_CNT) >> DMA_DTCTL_CNT_Pos))
     {
         u16Timeout++;
         if(u16Timeout > DMATIMEOUT2)
@@ -1113,7 +1113,7 @@ en_result_t DMA_SetSrcRptSize(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t
     MODIFY_DMA_CH_REG(&pstcDmaReg->RPT0, u8Ch, DMA_RPT_SRPT, (uint32_t)u16Size);
 
     /* Ensure the source repeat size has been writed */
-    while(u16Size != (uint16_t)(READ_DMA_CH_REG(&pstcDmaReg->RPT0, u8Ch) & DMA_RPT_SRPT))
+    while(u16Size != (uint16_t)(READ_DMA_CH_REG(&pstcDmaReg->MONRPT0, u8Ch) & DMA_RPT_SRPT))
     {
         u16Timeout++;
         if(u16Timeout > DMATIMEOUT2)
@@ -1157,7 +1157,7 @@ en_result_t DMA_SetDesRptSize(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint16_t
     MODIFY_DMA_CH_REG(&pstcDmaReg->RPT0, u8Ch, DMA_RPT_DRPT, (uint32_t)u16Size);
 
     /* Ensure the destination repeat size has been writed */
-    while(u16Size != ((READ_DMA_CH_REG(&pstcDmaReg->RPT0, u8Ch) & DMA_RPT_DRPT) >> DMA_RPT_DRPT_Pos))
+    while(u16Size != ((READ_DMA_CH_REG(&pstcDmaReg->MONRPT0, u8Ch) & DMA_RPT_DRPT) >> DMA_RPT_DRPT_Pos))
     {
         u16Timeout++;
         if(u16Timeout > DMATIMEOUT2)
@@ -1298,7 +1298,7 @@ en_result_t DMA_SetSrcNseqCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
 
     /* Ensure the no-sequence offset & count has been writed */
     while((pstcSrcNseqCfg->u32Offset | ((uint32_t)pstcSrcNseqCfg->u16Cnt << DMA_SNSEQCTL_SNSCNT_Pos))
-            != READ_DMA_CH_REG(&pstcDmaReg->SNSEQCTL0, u8Ch))
+            != READ_DMA_CH_REG(&pstcDmaReg->MONSNSEQCTL0, u8Ch))
     {
         u16Timeout++;
         if(u16Timeout > DMATIMEOUT2)
@@ -1404,7 +1404,7 @@ en_result_t DMA_SetDesNseqCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
 
     /* Ensure the no-sequence offset & count has been writed */
     while((pstcDesNseqCfg->u32Offset | ((uint32_t)pstcDesNseqCfg->u16Cnt << DMA_DNSEQCTL_DNSCNT_Pos))
-            != READ_DMA_CH_REG(&pstcDmaReg->DNSEQCTL0, u8Ch))
+            != READ_DMA_CH_REG(&pstcDmaReg->MONDNSEQCTL0, u8Ch))
     {
         u16Timeout++;
         if(u16Timeout > DMATIMEOUT2)

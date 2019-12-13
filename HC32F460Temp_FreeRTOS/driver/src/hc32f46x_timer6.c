@@ -1684,6 +1684,50 @@ en_result_t Timer6_ClearHwCaptureB(M4_TMR6_TypeDef *TMR6x)
     return Ok;
 }
 
+/**
+ *******************************************************************************
+ ** \brief Set trigger source 0 of hardware event
+ **
+ ** \param [in] enTriggerSrc            Counter event trigger source
+ ** \arg 0-511                          Used to trigger counter start/stop/clear/increment/decrement/capture
+ **
+ ** \retval Ok                          Process successfully done
+ **
+ ******************************************************************************/
+en_result_t Timer6_SetTriggerSrc0(en_event_src_t enTriggerSrc)
+{
+    en_result_t enRet = Ok;
+
+    /* Check parameters */
+    DDL_ASSERT(IS_VALID_EVENT_SOURCE(enTriggerSrc));
+
+    M4_AOS->TMR6_HTSSR1 = enTriggerSrc;
+
+    return enRet;
+}
+
+/**
+ *******************************************************************************
+ ** \brief Set trigger source 1 of hardware event
+ **
+ ** \param [in] enTriggerSrc            Counter event trigger source
+ ** \arg 0-511                          Used to trigger counter start/stop/clear/increment/decrement/capture
+ **
+ ** \retval Ok                          Process successfully done
+ **
+ ******************************************************************************/
+en_result_t Timer6_SetTriggerSrc1(en_event_src_t enTriggerSrc)
+{
+    en_result_t enRet = Ok;
+
+    /* Check parameters */
+    DDL_ASSERT(IS_VALID_EVENT_SOURCE(enTriggerSrc));
+
+    M4_AOS->TMR6_HTSSR2 = enTriggerSrc;
+
+    return enRet;
+}
+
 /*******************************************************************************
  * \brief   Z phase input mask config
  *

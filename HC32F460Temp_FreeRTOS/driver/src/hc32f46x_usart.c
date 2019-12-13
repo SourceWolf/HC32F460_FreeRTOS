@@ -484,9 +484,9 @@ en_flag_status_t USART_GetStatus(M4_USART_TypeDef *USARTx,
  ** \arg M4_USART3                      USART unit 3 instance register base
  ** \arg M4_USART4                      USART unit 4 instance register base
  ** \param [in] enStatus                The specified status
- ** \arg UsartParityError               Parity check error
- ** \arg UsartFrameError                Frame error
- ** \arg UsartOverRunError              Overrun error
+ ** \arg UsartParityErr                 Parity check error
+ ** \arg UsartFrameErr                  Frame error
+ ** \arg UsartOverRunErr                Overrun error
  ** \arg UsartRxTimeOut                 Data receive timeout
  **
  ** \retval Ok                          Clear flag successfully.

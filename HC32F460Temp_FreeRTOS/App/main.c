@@ -20,15 +20,6 @@ SCB->CPACR |= 0x00F00000;
   CLK_GetClockFreq(&Clkdata);
   SysTick_Config(Clkdata.hclkFreq/1000);
   NVIC_EnableIRQ(SysTick_IRQn);
-//  USBD_Init(&USB_OTG_dev,
-//#ifdef USE_USB_OTG_FS
-//              USB_OTG_FS_CORE_ID,
-//#else
-//              USB_OTG_HS_CORE_ID,
-//#endif
-//              &USR_desc,
-//              &USBD_HID_cb,
-//              &USR_cb);
   User_Task_Create();
     while(1)
     {

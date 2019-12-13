@@ -883,20 +883,24 @@ en_result_t SDIOC_ReadBuffer(M4_SDIOC_TypeDef *SDIOCx,
                                 uint32_t u32Len)
 {
     uint32_t i = 0ul;
-    __IO uint32_t *pu32SdiocBuf = NULL;
+    uint32_t u32Temp = 0ul;;
+    __IO uint32_t *SDIO_BUF_REG = NULL;
     en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx && pu8Data pointer */
     if ((NULL != au8Data)                   && \
         (IS_VALID_SDIOC(SDIOCx))            && \
-        (IS_VALID_TRANSFER_BUF_LEN(u32Len)) && \
-        (IS_VALID_TRANSFER_BUF_ALIGN(au8Data)))
+        (IS_VALID_TRANSFER_BUF_LEN(u32Len)))
     {
-        pu32SdiocBuf = (__IO uint32_t *)SDIOC_BUF01(SDIOCx);
+        SDIO_BUF_REG = (__IO uint32_t *)SDIOC_BUF01(SDIOCx);
 
-        for (i = 0ul; i < u32Len; i += 4ul)
+        while (i < u32Len)
         {
-            *(uint32_t*)(&au8Data[i]) = *pu32SdiocBuf;
+            u32Temp = *SDIO_BUF_REG;
+            au8Data[i++] = (uint8_t)((u32Temp >>  0ul) & 0x000000FF);
+            au8Data[i++] = (uint8_t)((u32Temp >>  8ul) & 0x000000FF);
+            au8Data[i++] = (uint8_t)((u32Temp >> 16ul) & 0x000000FF);
+            au8Data[i++] = (uint8_t)((u32Temp >> 24ul) & 0x000000FF);
         }
         enRet = Ok;
     }
@@ -927,21 +931,27 @@ en_result_t SDIOC_WriteBuffer(M4_SDIOC_TypeDef *SDIOCx,
                                 uint32_t u32Len)
 {
     uint32_t i = 0ul;
-    __IO uint32_t *pu32SdiocBuf = NULL;
+    uint32_t u32Temp = 0ul;
+    __IO uint32_t *SDIO_BUF_REG = NULL;
     en_result_t enRet = ErrorInvalidParameter;
 
     /* Check for SDIOCx && pu8Data pointer */
     if ((NULL != au8Data)                   && \
         (IS_VALID_SDIOC(SDIOCx))            && \
-        (IS_VALID_TRANSFER_BUF_LEN(u32Len)) && \
-        (IS_VALID_TRANSFER_BUF_ALIGN(au8Data)))
+        (IS_VALID_TRANSFER_BUF_LEN(u32Len)))
     {
-        pu32SdiocBuf = (__IO uint32_t *)SDIOC_BUF01(SDIOCx);
+        SDIO_BUF_REG = (__IO uint32_t *)SDIOC_BUF01(SDIOCx);
 
-        for (i = 0ul; i < u32Len; i += 4ul)
+        while (i < u32Len)
         {
-            *pu32SdiocBuf = *(uint32_t*)(&au8Data[i]);
+            u32Temp  = (((uint32_t)au8Data[i++]) <<  0ul) & 0x000000FFul;
+            u32Temp += (((uint32_t)au8Data[i++]) <<  8ul) & 0x0000FF00ul;
+            u32Temp += (((uint32_t)au8Data[i++]) << 16ul) & 0x00FF0000ul;
+            u32Temp += (((uint32_t)au8Data[i++]) << 24ul) & 0xFF000000ul;
+
+            *SDIO_BUF_REG = u32Temp;
         }
+
         enRet = Ok;
     }
 

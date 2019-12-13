@@ -62,7 +62,8 @@
 
 /* C binding of definitions if building with C++ compiler */
 #ifdef __cplusplus
-"C" {
+extern "C"
+{
 #endif
 
 /**

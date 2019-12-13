@@ -727,6 +727,10 @@ en_result_t Timer6_ClearHwCaptureA(M4_TMR6_TypeDef *TMR6x);
 en_result_t Timer6_ConfigHwCaptureB(M4_TMR6_TypeDef *TMR6x, en_timer6_hw_trig_t enTimer6HwCaptureB);
 /* Clear Hardware capture event B */
 en_result_t Timer6_ClearHwCaptureB(M4_TMR6_TypeDef *TMR6x);
+/* Set trigger source 0 of hardware event */
+en_result_t Timer6_SetTriggerSrc0(en_event_src_t enTriggerSrc);
+/* Set trigger source 1 of hardware event */
+en_result_t Timer6_SetTriggerSrc1(en_event_src_t enTriggerSrc);
 
 /* Z phase input mask config */
 en_result_t Timer6_ConfigZMask(M4_TMR6_TypeDef *TMR6x, const stc_timer6_zmask_cfg_t* pstcTimer6ZMaskCfg);

@@ -1187,8 +1187,8 @@ en_result_t TIMERA_OrthogonalCodingInit(M4_TMRA_TypeDef *TIMERAx, const stc_time
         DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecTrigRisingEn));
         DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecTrigFallingEn));
         DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecSpecifyEventTriggerEn));
-        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecAnotherUnitUnderflowEn));
         DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecAnotherUnitOverflowEn));
+        DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcCodingInit->enDecAnotherUnitUnderflowEn));
 
         /* Configure hardware increase event register */
         TIMERAx->HCUPR_f.HCUP0 = pstcCodingInit->enIncClkALowAndClkBRisingEn;
@@ -1217,8 +1217,8 @@ en_result_t TIMERA_OrthogonalCodingInit(M4_TMRA_TypeDef *TIMERAx, const stc_time
         TIMERAx->HCDOR_f.HCDO8 = pstcCodingInit->enDecTrigRisingEn;
         TIMERAx->HCDOR_f.HCDO9 = pstcCodingInit->enDecTrigFallingEn;
         TIMERAx->HCDOR_f.HCDO10 = pstcCodingInit->enDecSpecifyEventTriggerEn;
-        TIMERAx->HCDOR_f.HCDO11 = pstcCodingInit->enDecAnotherUnitUnderflowEn;
-        TIMERAx->HCDOR_f.HCDO12 = pstcCodingInit->enDecAnotherUnitOverflowEn;
+        TIMERAx->HCDOR_f.HCDO11 = pstcCodingInit->enDecAnotherUnitOverflowEn;
+        TIMERAx->HCDOR_f.HCDO12 = pstcCodingInit->enDecAnotherUnitUnderflowEn;
 
         /* Configure filter control register */
         TIMERAx->FCONR_f.NOFICKTG = pstcCodingInit->enTrigClkDiv;
@@ -1412,11 +1412,9 @@ en_result_t TIMERA_HwTriggerInit(M4_TMRA_TypeDef *TIMERAx, const stc_timera_hw_t
         TIMERAx->HCONR_f.HCLE2 = pstcHwTriggerInit->stcHwClear.enSpecifyEventClearEn;
         TIMERAx->HCONR_f.HCLE3 = pstcHwTriggerInit->stcHwClear.enAnotherUnitTrigRisingClearEn;
         TIMERAx->HCONR_f.HCLE4 = pstcHwTriggerInit->stcHwClear.enAnotherUnitTrigFallingClearEn;
-        if (M4_TMRA3 == TIMERAx)
-        {
-            TIMERAx->HCONR_f.HCLE5 = pstcHwTriggerInit->stcHwClear.enChannel3RisingClearEn;
-            TIMERAx->HCONR_f.HCLE6 = pstcHwTriggerInit->stcHwClear.enChannel3FallingClearEn;
-        }
+        TIMERAx->HCONR_f.HCLE5 = pstcHwTriggerInit->stcHwClear.enChannel3RisingClearEn;
+        TIMERAx->HCONR_f.HCLE6 = pstcHwTriggerInit->stcHwClear.enChannel3FallingClearEn;
+
         enRet = Ok;
     }
 
@@ -1546,11 +1544,9 @@ en_result_t TIMERA_HwClearConfig(M4_TMRA_TypeDef *TIMERAx, const stc_timera_hw_c
         TIMERAx->HCONR_f.HCLE2 = pstcHwClear->enSpecifyEventClearEn;
         TIMERAx->HCONR_f.HCLE3 = pstcHwClear->enAnotherUnitTrigRisingClearEn;
         TIMERAx->HCONR_f.HCLE4 = pstcHwClear->enAnotherUnitTrigFallingClearEn;
-        if (M4_TMRA3 == TIMERAx)
-        {
-            TIMERAx->HCONR_f.HCLE5 = pstcHwClear->enChannel3RisingClearEn;
-            TIMERAx->HCONR_f.HCLE6 = pstcHwClear->enChannel3FallingClearEn;
-        }
+        TIMERAx->HCONR_f.HCLE5 = pstcHwClear->enChannel3RisingClearEn;
+        TIMERAx->HCONR_f.HCLE6 = pstcHwClear->enChannel3FallingClearEn;
+
         enRet = Ok;
     }
 

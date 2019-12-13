@@ -666,8 +666,7 @@ uint16_t CLK_GetFcmCounter(void);
 en_flag_status_t CLK_GetFcmFlag(en_clk_fcm_flag_t enFcmFlag);
 void CLK_ClearFcmFlag(en_clk_fcm_flag_t enFcmFlag);
 
-void CLK_MainLoopClkBackup(void);
-void CLK_MainLoopClkRecover(void);
+void CLK_ClearXtalStdFlag(void);
 
 //@} // CmuGroup
 
