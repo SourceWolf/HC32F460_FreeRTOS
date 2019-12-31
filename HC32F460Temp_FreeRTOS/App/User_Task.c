@@ -28,8 +28,10 @@
 #include "usbd_usr.h"
 #include "usbd_desc.h"
 #include "usb_bsp.h"
+#include "Hw_Uart1.h"
 USB_OTG_CORE_HANDLE  USB_OTG_dev;
 uint8_t displaydata[4][128];
+uint8_t txdata[10]={1,2,3,4,5,6,7,8,9,0};
 extern USB_OTG_CORE_HANDLE  USB_OTG_dev;
 TaskHandle_t Hd_Task_LED, Hd_Task_ADC,Hd_Task_Sleep,Hd_Task_USB,Hd_Task_USBReport;
 void Task_ADC(void *param);
@@ -81,12 +83,15 @@ void Task_LED(void *param)
     f_gets(line, sizeof line, &Myfile);
         printf("%s\r\n",line);
     f_close(&Myfile);
+//    Hw_Uart1_Init();
+//    UART1_TX_DMA_Init();
 //    User_SPI_Init();
 //    User_USART_Init();
     xTaskCreate(Task_ADC,(const char *)"ADC", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+4, &Hd_Task_ADC );
     while(1)
     {        
         loop();
+//        UART1_DMA_TX_Write_Buffer(txdata,10);
         vTaskDelay(1000/portTICK_PERIOD_MS);
     }
 }

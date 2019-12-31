@@ -1,6 +1,6 @@
-#include "hc32_ddl.h"
 #include "Hw_Uart1.h"
 uint8_t UART1_RXbuff[256];
+uint8_t UART1_TXbuff[256];
 static void USART1_RX_Callback(void)
 {
     uint8_t data;
@@ -78,4 +78,71 @@ void Test_UART1_TX(void)
 {
     while(USART1_UNIT->SR_f.TC == 0);
     USART_SendData(USART1_UNIT, 0x55);
+}
+void DMA_CH0_TC_Callback(void)
+{
+    ;
+}
+void UART1_TX_DMA_Init(void)
+{
+    stc_dma_config_t stcDmaCfg;
+    stc_irq_regi_conf_t stcIrqRegiConf;
+    MEM_ZERO_STRUCT(stcDmaCfg);
+    MEM_ZERO_STRUCT(stcIrqRegiConf);
+    
+    stcDmaCfg.u16BlockSize = 1;//
+    stcDmaCfg.u16TransferCnt = 4;//传4个字节
+    
+    stcDmaCfg.u32DesAddr = (uint32_t)(&USART1_UNIT->DR);//(&DMA0_Dre_Data[0]);//Target Address
+    stcDmaCfg.u32SrcAddr = ((uint32_t)(UART1_TXbuff));//USART2_DR_ADDRESS;//(uint32_t)(&DMA0_Src_data[0]);//Source Address
+    
+    /* Set repeat size. */
+    stcDmaCfg.u16SrcRptSize = 4;
+    stcDmaCfg.u16DesRptSize = 0;
+
+    /* Disable linked list transfer. */
+    stcDmaCfg.stcDmaChCfg.enLlpEn = Disable;     
+    /* Enable repeat function. */
+    stcDmaCfg.stcDmaChCfg.enSrcRptEn = Disable;
+    stcDmaCfg.stcDmaChCfg.enDesRptEn = Disable;   
+    /* Set source & destination address mode. */
+    stcDmaCfg.stcDmaChCfg.enSrcInc = AddressIncrease;//源地址自增
+    stcDmaCfg.stcDmaChCfg.enDesInc = AddressFix;//目标地址不变
+    /* Enable interrup. */
+    stcDmaCfg.stcDmaChCfg.enIntEn = Enable;
+    /* Set data width 32bit. */
+    stcDmaCfg.stcDmaChCfg.enTrnWidth = Dma8Bit;
+
+    PWC_Fcg0PeriphClockCmd(PWC_FCG0_PERIPH_DMA1, Enable);
+    
+    
+    /* Enable DMA1. */
+    DMA_Cmd(M4_DMA1,Enable);   
+    /* Initialize DMA. */
+    DMA_InitChannel(M4_DMA1, DmaCh0, &stcDmaCfg);
+    /* Enable DMA1 channel0. */
+    DMA_ChannelCmd(M4_DMA1, DmaCh0,Enable);
+    /* Clear DMA transfer complete interrupt flag. */
+    DMA_ClearIrqFlag(M4_DMA1, DmaCh0,TrnCpltIrq);
+    
+    stcIrqRegiConf.enIntSrc = INT_DMA1_TC0;
+    stcIrqRegiConf.enIRQn = DMA1_CH0_IRQn;
+    stcIrqRegiConf.pfnCallback =  DMA_CH0_TC_Callback;   
+    
+    enIrqRegistration(&stcIrqRegiConf);
+	NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);//Enable Interrupt
+
+    
+    /* Enable PTDIS(AOS) clock*/
+    PWC_Fcg0PeriphClockCmd(PWC_FCG0_PERIPH_PTDIS,Enable);//打开AOS时钟
+    
+    DMA_SetTriggerSrc(M4_DMA1,DmaCh0,EVT_USART1_TI);
+}
+void UART1_DMA_TX_Write_Buffer(uint8_t *data, uint8_t len)
+{
+    DMA_SetSrcAddress(M4_DMA1,DmaCh0,(uint32_t)data);
+    DMA_SetTransferCnt(M4_DMA1,DmaCh0,len);
+    DMA_ClearIrqFlag(M4_DMA1,DmaCh0, TrnCpltIrq);
+    DMA_ChannelCmd(M4_DMA1, DmaCh0,Enable);
+    USART1_UNIT->DR_f.TDR = 0xFF;
 }

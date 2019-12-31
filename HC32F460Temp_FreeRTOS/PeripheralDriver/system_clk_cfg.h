@@ -145,7 +145,7 @@
 #define MPLL_CLK_NUM        42u//75u//
 //MPLL_P,Q,R分频
 #define MPLL_CLK_P_DIV      PLL_DIV2+1//MPLL 预分频数
-#define MPLL_CLK_Q_DIV      PLL_DIV2+1
+#define MPLL_CLK_Q_DIV      PLL_DIV6+1
 #define MPLL_CLK_R_DIV      PLL_DIV2+1
 
 
@@ -164,5 +164,5 @@
 #define USB_CLK_SOURCE      USBCLK_UPLL_P
 
 //-----------------Configure AD & PERIPHERAL TRNG CLK---------------------//
-#define PERI_CLK_SOURCE     PERICLK_MPLL_P
+#define PERI_CLK_SOURCE     PERICLK_MPLL_Q
 #endif

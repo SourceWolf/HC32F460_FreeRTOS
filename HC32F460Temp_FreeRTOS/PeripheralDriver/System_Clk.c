@@ -66,7 +66,7 @@ void system_clk_init(void)
 #endif    
     CLK_SetUsbClkSource(USB_CLK_SOURCE);
     
-    CLK_SetPeriClkSource((en_clk_peri_source_t)PERI_CLK_SOURCE);
+//    CLK_SetPeriClkSource((en_clk_peri_source_t)PERI_CLK_SOURCE);
     SYS_CLK_CFG.enExclkDiv = EXCKS_DIV;
     SYS_CLK_CFG.enHclkDiv = HCLK_DIV;
     SYS_CLK_CFG.enPclk0Div = PCLK0S_DIV;

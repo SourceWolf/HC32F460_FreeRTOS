@@ -819,14 +819,19 @@
               <FilePath>.\PeripheralDriver\User_QSPI.h</FilePath>
             </File>
             <File>
-              <FileName>Uart_DMA.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\PeripheralDriver\Uart_DMA.c</FilePath>
-            </File>
-            <File>
               <FileName>FPU_Enable.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\PeripheralDriver\FPU_Enable.c</FilePath>
+            </File>
+            <File>
+              <FileName>Hw_Uart1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\PeripheralDriver\Hw_Uart1.c</FilePath>
+            </File>
+            <File>
+              <FileName>Hw_Uart1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\PeripheralDriver\Hw_Uart1.h</FilePath>
             </File>
           </Files>
         </Group>

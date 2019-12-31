@@ -27,9 +27,9 @@ void User_Timer0_Init(void)
 	stcTimerCfg.Tim0_ClockDivision = Tim0_ClkDiv2;//512分频
 	stcTimerCfg.Tim0_CmpValue = 42000-1;
 	TIMER0_BaseInit(M4_TMR01, Tim0_ChannelB, &stcTimerCfg);//TIMER0_BaseInit(M4_TMR01, Tim0_ChannelA, &stcTimerCfg);
-    TIMER0_BaseInit(M4_TMR01, Tim0_ChannelA, &stcTimerCfg);
-    TIMER0_IntCmd(M4_TMR01,Tim0_ChannelB,Enable);//TIMER0_IntCmd(M4_TMR01,Tim0_ChannelA,Enable);
-//	TIMER0_IntCfg(M4_TMR01,Tim0_ChannelB,Enable);//使能中断
+//    TIMER0_BaseInit(M4_TMR01, Tim0_ChannelA, &stcTimerCfg);
+    TIMER0_IntCmd(M4_TMR01,Tim0_ChannelB,Enable);
+//    TIMER0_IntCmd(M4_TMR01,Tim0_ChannelA,Enable);
 	
 	stcIrqRegiConf.enIntSrc = INT_TMR01_GCMB;//INT_TMR01_GCMA
 	stcIrqRegiConf.pfnCallback = Timer01_CHB_CallBack;

@@ -8,6 +8,7 @@
 #include "usbd_usr.h"
 #include "usbd_desc.h"
 #include "usb_bsp.h"
+#include "Hw_Uart1.h"
 //USB_OTG_CORE_HANDLE  USB_OTG_dev;
 stc_clk_freq_t Clkdata;
 int main(void)
