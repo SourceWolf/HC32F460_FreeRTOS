@@ -1,0 +1,15 @@
+.\objects\data_sound_8k_i2s.o: midware\wm8731\src\data_sound_8k_i2s.c
+.\objects\data_sound_8k_i2s.o: .\common\hc32_common.h
+.\objects\data_sound_8k_i2s.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\data_sound_8k_i2s.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\data_sound_8k_i2s.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\data_sound_8k_i2s.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\data_sound_8k_i2s.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\data_sound_8k_i2s.o: .\common\hc32f46x.h
+.\objects\data_sound_8k_i2s.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm4.h
+.\objects\data_sound_8k_i2s.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_version.h
+.\objects\data_sound_8k_i2s.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_compiler.h
+.\objects\data_sound_8k_i2s.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h
+.\objects\data_sound_8k_i2s.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h
+.\objects\data_sound_8k_i2s.o: .\common\system_hc32f46x.h
+.\objects\data_sound_8k_i2s.o: .\midware\wm8731\inc\data_sound_i2s.h

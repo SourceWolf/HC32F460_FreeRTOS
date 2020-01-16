@@ -119,13 +119,13 @@ void UART1_TX_DMA_Init(void)
     /* Enable DMA1. */
     DMA_Cmd(M4_DMA1,Enable);   
     /* Initialize DMA. */
-    DMA_InitChannel(M4_DMA1, DmaCh0, &stcDmaCfg);
+    DMA_InitChannel(M4_DMA1, DmaCh1, &stcDmaCfg);
     /* Enable DMA1 channel0. */
-    DMA_ChannelCmd(M4_DMA1, DmaCh0,Enable);
+    DMA_ChannelCmd(M4_DMA1, DmaCh1,Enable);
     /* Clear DMA transfer complete interrupt flag. */
-    DMA_ClearIrqFlag(M4_DMA1, DmaCh0,TrnCpltIrq);
+    DMA_ClearIrqFlag(M4_DMA1, DmaCh1,TrnCpltIrq);
     
-    stcIrqRegiConf.enIntSrc = INT_DMA1_TC0;
+    stcIrqRegiConf.enIntSrc = INT_DMA1_TC1;
     stcIrqRegiConf.enIRQn = DMA1_CH0_IRQn;
     stcIrqRegiConf.pfnCallback =  DMA_CH0_TC_Callback;   
     
@@ -136,13 +136,14 @@ void UART1_TX_DMA_Init(void)
     /* Enable PTDIS(AOS) clock*/
     PWC_Fcg0PeriphClockCmd(PWC_FCG0_PERIPH_PTDIS,Enable);//´ò¿ªAOSÊ±ÖÓ
     
-    DMA_SetTriggerSrc(M4_DMA1,DmaCh0,EVT_USART1_TI);
+    DMA_SetTriggerSrc(M4_DMA1,DmaCh1,EVT_USART1_TI);
 }
 void UART1_DMA_TX_Write_Buffer(uint8_t *data, uint8_t len)
 {
-    DMA_SetSrcAddress(M4_DMA1,DmaCh0,(uint32_t)data);
-    DMA_SetTransferCnt(M4_DMA1,DmaCh0,len);
-    DMA_ClearIrqFlag(M4_DMA1,DmaCh0, TrnCpltIrq);
-    DMA_ChannelCmd(M4_DMA1, DmaCh0,Enable);
-    USART1_UNIT->DR_f.TDR = 0xFF;
+    DMA_SetSrcAddress(M4_DMA1,DmaCh1,(uint32_t)data);
+    DMA_SetTransferCnt(M4_DMA1,DmaCh1,len);
+    DMA_ClearIrqFlag(M4_DMA1,DmaCh1, TrnCpltIrq);
+    DMA_ChannelCmd(M4_DMA1, DmaCh1,Enable);
+    USART1_UNIT->CR1_f.TE = 0;
+    USART1_UNIT->CR1_f.TE = 1;
 }
