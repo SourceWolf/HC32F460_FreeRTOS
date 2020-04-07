@@ -13,11 +13,11 @@
 .\objects\port.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\port.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\port.o: .\common\hc32f46x.h
-.\objects\port.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm4.h
-.\objects\port.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_version.h
-.\objects\port.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_compiler.h
-.\objects\port.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h
-.\objects\port.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h
+.\objects\port.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm4.h
+.\objects\port.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_version.h
+.\objects\port.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_compiler.h
+.\objects\port.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h
+.\objects\port.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h
 .\objects\port.o: .\common\system_hc32f46x.h
 .\objects\port.o: .\common\ddl_config.h
 .\objects\port.o: .\driver\inc\hc32f46x_adc.h

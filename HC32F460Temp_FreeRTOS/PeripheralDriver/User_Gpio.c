@@ -37,6 +37,7 @@ void User_Gpio_Init(void)
     PORT_Init(Key1_PORT,Key1_Pin, &Port_CFG);
     PORT_Init(Key2_PORT,Key2_Pin, &Port_CFG);
     PORT_Init(Key3_PORT,Key3_Pin, &Port_CFG);
+	PORT_Init(PortB, Pin11, &Port_CFG);
     Port_CFG.enPullUp = Enable;
     
 //    PORT_Init(PortE, Pin04, &Port_CFG);

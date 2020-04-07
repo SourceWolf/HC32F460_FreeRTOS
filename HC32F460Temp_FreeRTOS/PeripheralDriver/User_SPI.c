@@ -3,8 +3,8 @@
 
 unsigned char SPI_DATA;
 /* Choose SPI master or slave mode */
-//#define SPI_MASTER_MODE
-#define SPI_SLAVE_MODE
+#define SPI_MASTER_MODE
+//#define SPI_SLAVE_MODE
 /* SPI_SCK Port/Pin definition */
 #define SPI_SCK_PORT                    PortE
 #define SPI_SCK_PIN                     Pin00
@@ -119,12 +119,12 @@ void User_SPI_Init(void)
 
 #ifdef SPI_MASTER_MODE
     stcSpiInit.enMasterSlaveMode = SpiModeMaster;
-    stcSpiInit.stcDelayConfig.enSsSetupDelayOption = SpiSsSetupDelayCustomValue;
+    stcSpiInit.stcDelayConfig.enSsSetupDelayOption = SpiSsSetupDelayTypicalSck1;
     stcSpiInit.stcDelayConfig.enSsSetupDelayTime = SpiSsSetupDelaySck1;
-    stcSpiInit.stcDelayConfig.enSsHoldDelayOption = SpiSsHoldDelayCustomValue;
+    stcSpiInit.stcDelayConfig.enSsHoldDelayOption = SpiSsHoldDelayTypicalSck1;
     stcSpiInit.stcDelayConfig.enSsHoldDelayTime = SpiSsHoldDelaySck1;
-    stcSpiInit.stcDelayConfig.enSsIntervalTimeOption = SpiSsIntervalCustomValue;
-    stcSpiInit.stcDelayConfig.enSsIntervalTime = SpiSsIntervalSck6PlusPck2;
+    stcSpiInit.stcDelayConfig.enSsIntervalTimeOption = SpiSsIntervalTypicalSck1PlusPck2;
+    stcSpiInit.stcDelayConfig.enSsIntervalTime = SpiSsIntervalSck1PlusPck2;
     stcSpiInit.stcSsConfig.enSsValidBit = SpiSsValidChannel0;
     stcSpiInit.stcSsConfig.enSs0Polarity = SpiSsLowValid;
 #endif
@@ -181,16 +181,18 @@ void User_SPI_Init(void)
     NVIC_ClearPendingIRQ(stcIrqRegiConf.enIRQn);
     NVIC_SetPriority(stcIrqRegiConf.enIRQn, DDL_IRQ_PRIORITY_15);
     NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);
-    
+	
+//    SPI_GeneralLoopbackCmd(SPI_UNIT,Enable);
     /* Enable SPI */
-    SPI_Cmd(SPI_UNIT, Enable);
+//    SPI_Cmd(SPI_UNIT, Enable);
 //    SPI_UNIT->CR1_f.SPE = 1;
     Ddl_Delay1ms(10);
     SPI_IrqCmd(SPI_UNIT, SpiIrqReceive, Enable);
     SPI_IrqCmd(SPI_UNIT, SpiIrqSend, Enable);
     SPI_IrqCmd(SPI_UNIT, SpiIrqError, Enable);
-    SPI_IrqCmd(SPI_UNIT, SpiIrqIdel, Enable);
-//    SPI_Cmd(SPI_UNIT, Enable);
+	
+//    SPI_IrqCmd(SPI_UNIT, SpiIrqIdel, Enable);
+    SPI_Cmd(SPI_UNIT, Enable);
     
 }
 
@@ -198,4 +200,34 @@ void USER_SPI_TEST(void)
 {	
     SPI_SendData8(SPI_UNIT,0x55);	
 }
-
+void SPI_Writedata(uint8_t data)
+{
+	SPI_SendData8(SPI_UNIT,data);
+}
+uint8_t SPI_ReadData(void)
+{
+	return SPI_ReceiveData8(SPI_UNIT);
+}
+uint8_t SPIx_ReadWriteByte(uint8_t TxData)
+{		
+	uint8_t retry=0;
+	while(SPI_UNIT->SR_f.TDEF == 0)
+	{
+		retry++;
+		if(retry>200)
+			return 0;
+	}
+	SPI_SendData8(SPI_UNIT,TxData);
+	while(SPI_UNIT->SR_f.TDEF == 0)
+	{
+		;
+	}
+	retry = 0;
+	while(SPI_UNIT->SR_f.RDFF == 0)
+	{
+		retry++;
+		if(retry>200)
+			return 0;
+	}	
+	return SPI_ReceiveData8(SPI_UNIT);
+}

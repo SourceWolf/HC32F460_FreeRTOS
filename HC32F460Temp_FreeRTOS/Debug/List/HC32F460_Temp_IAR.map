@@ -1,115 +1,115 @@
 ###############################################################################
 #
-# IAR ELF Linker V8.30.1.114/W32 for ARM                  23/Sep/2019  10:49:24
-# Copyright 2007-2018 IAR Systems AB.
+# IAR ELF Linker V8.40.1.212/W32 for ARM                  21/Jan/2020  14:27:02
+# Copyright 2007-2019 IAR Systems AB.
 #
-#    Output file  =  
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Exe\HC32F460_Temp_IAR.out
-#    Map file     =  
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\List\HC32F460_Temp_IAR.map
-#    Command line =  
-#        -f C:\Users\User\AppData\Local\Temp\EW2DF6.tmp
-#        (C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\cmsis_os.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\croutine.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\data_sound_441_i2s.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\data_sound_8k_i2s.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\diskio.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\event_groups.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\fattime.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\ff.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_adc.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_aes.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_can.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_clk.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_cmp.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_dcu.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_dmac.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_efm.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_emb.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_event_port.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_exint_nmi_swi.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_gpio.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_hash.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_i2c.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_i2s.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_icg.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_interrupts.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_keyscan.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_mpu.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_ots.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_pwc.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_qspi.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_rmu.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_rtc.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_sdioc.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_spi.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_sram.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_swdt.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_timer0.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_timer4_cnt.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_timer4_emb.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_timer4_oco.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_timer4_pwm.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_timer4_sevt.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_timer6.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_timera.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_trng.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_usart.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_utility.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_wdt.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\heap_4.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\list.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\main.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\OLED.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\port.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\portasm.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\queue.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\sd_card.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\sdmmc_cmd.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\startup_hc32f46x.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\System_Clk.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\system_hc32f46x.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\tasks.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\timers.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usb_bsp_template.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usb_core.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usb_dcd.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usb_dcd_int.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usb_otg.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usbd_core.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usbd_desc.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usbd_hid_core.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usbd_ioreq.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usbd_req.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usbd_urs.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_ADC.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_CAN.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_Crypto.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_DCU.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_DMA.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_Gpio.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_I2C.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_I2S.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_OTS.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_PWC.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_QSPI.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_RTC.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_SDIO.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_SPI.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_Task.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_Timer.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_Timer4.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_Timer6.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_TimerA.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_TRNG.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_Uart.o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\wm8731.o
+#    Output file  =
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Exe\HC32F460_Temp_IAR.out
+#    Map file     =
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\List\HC32F460_Temp_IAR.map
+#    Command line =
+#        -f C:\Users\Michael\AppData\Local\Temp\EW33F4.tmp
+#        (D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\cmsis_os.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\croutine.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\data_sound_441_i2s.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\data_sound_8k_i2s.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\diskio.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\event_groups.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\fattime.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\ff.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_adc.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_aes.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_can.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_clk.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_cmp.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_dcu.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_dmac.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_efm.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_emb.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_event_port.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_exint_nmi_swi.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_gpio.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_hash.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_i2c.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_i2s.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_icg.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_interrupts.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_keyscan.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_mpu.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_ots.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_pwc.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_qspi.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_rmu.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_rtc.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_sdioc.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_spi.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_sram.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_swdt.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_timer0.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_timer4_cnt.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_timer4_emb.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_timer4_oco.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_timer4_pwm.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_timer4_sevt.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_timer6.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_timera.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_trng.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_usart.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_utility.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\hc32f46x_wdt.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\heap_4.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\list.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\main.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\OLED.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\port.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\portasm.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\queue.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\sd_card.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\sdmmc_cmd.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\startup_hc32f46x.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\System_Clk.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\system_hc32f46x.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\tasks.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\timers.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usb_bsp_template.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usb_core.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usb_dcd.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usb_dcd_int.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usb_otg.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usbd_core.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usbd_desc.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usbd_hid_core.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usbd_ioreq.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usbd_req.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\usbd_urs.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_ADC.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_CAN.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_Crypto.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_DCU.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_DMA.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_Gpio.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_I2C.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_I2S.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_OTS.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_PWC.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_QSPI.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_RTC.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_SDIO.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_SPI.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_Task.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_Timer.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_Timer4.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_Timer6.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_TimerA.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_TRNG.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\User_Uart.o
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj\wm8731.o
 #        --no_out_extension -o
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Exe\HC32F460_Temp_IAR.out
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Exe\HC32F460_Temp_IAR.out
 #        --redirect _Printf=_PrintfFull --redirect _Scanf=_ScanfFull --map
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\List\HC32F460_Temp_IAR.map
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\List\HC32F460_Temp_IAR.map
 #        --config
-#        C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\HC32F46x.icf
+#        D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\HC32F46x.icf
 #        --semihosting --entry __iar_program_start --vfe --text_out locale)
 #
 ###############################################################################
@@ -137,7 +137,7 @@ application.
 *** PLACEMENT SUMMARY
 ***
 
-"A0":  place at 0x0 { ro section .intvec };
+"A0":  place at address 0x0 { ro section .intvec };
 "P1":  place in [from 0x0 to 0x7'ffff] { ro };
 define block CSTACK with size = 1K, alignment = 8 { };
 define block HEAP with size = 1K, alignment = 8 { };
@@ -154,195 +154,262 @@ initialize by copy { rw };
   .intvec            ro code          0x0   0x280  startup_hc32f46x.o [1]
                                   - 0x280   0x280
 
-"P1", part 1 of 2:                            0x0
-  .rodata            const          0x280     0x0  zero_init3.o [4]
-  .rodata            const          0x280     0x0  packbits_init.o [4]
+"P1", part 1 of 2:                          0x104
+  .text              ro code        0x280    0xb4  hc32f46x_exint_nmi_swi.o [1]
+  .text              ro code        0x334    0x10  cmsis_os.o [1]
+  .text              ro code        0x344     0x2  User_PWC.o [1]
+  .text              ro code        0x346    0x3a  zero_init3.o [4]
+  .text              ro code        0x380     0x4  fattime.o [1]
+                                  - 0x384   0x104
 
 Absolute sections:                           0x20
   .rodata            const          0x400    0x20  hc32f46x_icg.o [1]
                                   - 0x420    0x20
 
-"P1", part 2 of 2:                         0xc281
-  .text              ro code        0x420  0x252c  hc32f46x_interrupts.o [1]
-  .text              ro code       0x294c    0xb4  hc32f46x_exint_nmi_swi.o [1]
-  .text              ro code       0x2a00    0x10  cmsis_os.o [1]
-  .text              ro code       0x2a10     0x2  User_PWC.o [1]
-  .text              ro code       0x2a12    0x3a  zero_init3.o [4]
-  .text              ro code       0x2a4c   0x6c8  tasks.o [1]
-  .text              ro code       0x3114   0x204  port.o [1]
-  .text              ro code       0x3318   0x260  heap_4.o [1]
-  .text              ro code       0x3578    0x98  list.o [1]
-  CODE               ro code       0x3610    0xb0  portasm.o [1]
-  .text              ro code       0x36c0  0x11ee  ff.o [1]
-  .text              ro code       0x48ae    0x94  diskio.o [1]
-  .text              ro code       0x4942     0x4  fattime.o [1]
-  .text              ro code       0x4946    0x1e  xencoding_8859_1.o [2]
-  .text              ro code       0x4964    0xbc  User_SDIO.o [1]
-  .text              ro code       0x4a20   0x610  hc32f46x_gpio.o [1]
-  .text              ro code       0x5030   0xa70  sd_card.o [1]
-  .text              ro code       0x5aa0   0xb4c  sdmmc_cmd.o [1]
-  .text              ro code       0x65ec   0x968  hc32f46x_sdioc.o [1]
-  .text              ro code       0x6f54   0x118  hc32f46x_pwc.o [1]
-  .text              ro code       0x706c   0x848  hc32f46x_dmac.o [1]
-  .text              ro code       0x78b4    0x66  ABImemset.o [4]
-  .rodata            const         0x791a     0x2  hc32f46x_sdioc.o [1]
-  .text              ro code       0x791c   0xf7a  xprintffull.o [2]
-  .text              ro code       0x8898    0x78  xlocale_c.o [2]
-  .text              ro code       0x8910    0x16  strchr.o [4]
-  .text              ro code       0x8928    0x40  xfail_s.o [2]
-  .text              ro code       0x8968    0x36  strlen.o [4]
-  .text              ro code       0x89a0    0x58  memchr.o [4]
-  .text              ro code       0x89f8     0xa  xmbcurmax.o [2]
-  .text              ro code       0x8a04    0xa6  ABImemcpy.o [4]
-  .text              ro code       0x8aac   0x230  I64DivMod.o [4]
-  .text              ro code       0x8cdc   0x1a2  DblMul.o [3]
-  .text              ro code       0x8e80    0x70  frexp.o [3]
-  .text              ro code       0x8ef0    0x2e  DblCmpLe.o [3]
-  .text              ro code       0x8f20    0x2e  DblCmpGe.o [3]
-  .text              ro code       0x8f50   0x13a  ldexp.o [3]
-  .text              ro code       0x908c    0x3a  DblToS32.o [3]
-  .text              ro code       0x90c8    0x22  S32ToDbl.o [3]
-  .text              ro code       0x90ec    0xe2  DblSub.o [3]
-  .text              ro code       0x91d0   0x246  DblDiv.o [3]
-  .text              ro code       0x9418    0x28  DblToU32.o [3]
-  .text              ro code       0x9440    0x1a  U32ToDbl.o [3]
-  .text              ro code       0x945a     0x6  abort.o [2]
-  .text              ro code       0x9460     0x2  I64DivZer.o [4]
-  .text              ro code       0x9464   0x16a  DblAdd.o [3]
-  .text              ro code       0x95d0    0x14  exit.o [5]
-  .text              ro code       0x95e4   0x9f4  hc32f46x_clk.o [1]
-  .text              ro code       0x9fd8    0xc8  system_hc32f46x.o [1]
-  .rodata            const         0xa0a0   0x5f0  OLED.o [1]
-  .text              ro code       0xa690   0x4de  OLED.o [1]
-  .text              ro code       0xab70   0x40c  hc32f46x_i2c.o [1]
-  .text              ro code       0xaf7c   0x250  hc32f46x_utility.o [1]
-  .text              ro code       0xb1cc   0x2ec  hc32f46x_dcu.o [1]
-  .text              ro code       0xb4b8   0x240  hc32f46x_adc.o [1]
-  .text              ro code       0xb6f8   0x230  hc32f46x_ots.o [1]
-  .text              ro code       0xb928   0x1ec  User_Gpio.o [1]
-  .text              ro code       0xbb14   0x164  System_Clk.o [1]
-  .text              ro code       0xbc78    0xac  hc32f46x_efm.o [1]
-  .text              ro code       0xbd24    0x30  hc32f46x_sram.o [1]
-  .text              ro code       0xbd54   0x158  User_Task.o [1]
-  .text              ro code       0xbeac    0x78  User_OTS.o [1]
-  .text              ro code       0xbf24    0x28  printf.o [2]
-  .text              ro code       0xbf4c    0xac  User_DCU.o [1]
-  .text              ro code       0xbff8   0x110  User_ADC.o [1]
-  .text              ro code       0xc108   0x128  User_DMA.o [1]
-  .text              ro code       0xc230    0x48  FltToDbl.o [3]
-  .text              ro code       0xc278    0xb4  main.o [1]
-  .text              ro code       0xc32c    0x9c  packbits_init.o [4]
-  .rodata            const         0xc3c8    0x80  ff.o [1]
-  .text              ro code       0xc450    0x44  startup_hc32f46x.o [1]
-  .text              ro code       0xc494    0x28  data_init.o [4]
-  .text              ro code       0xc4bc    0x22  fpinit_M.o [3]
-  .iar.init_table    const         0xc4e0    0x2c  - Linker created -
-  .text              ro code       0xc50c    0x1e  cmain.o [4]
-  .text              ro code       0xc52a     0x4  low_level_init.o [2]
-  .text              ro code       0xc52e     0x4  exit.o [2]
-  .text              ro code       0xc534     0xa  cexit.o [4]
-  .rodata            const         0xc540    0x18  User_OTS.o [1]
-  .text              ro code       0xc558    0x16  xprout.o [2]
-  .text              ro code       0xc570     0xc  putchar.o [2]
-  .rodata            const         0xc57c    0x14  User_Task.o [1]
-  .rodata            const         0xc590    0x10  User_Task.o [1]
-  .rodata            const         0xc5a0     0xc  ff.o [1]
-  .rodata            const         0xc5ac     0xc  User_Task.o [1]
-  .rodata            const         0xc5b8     0xc  User_Task.o [1]
-  .text              ro code       0xc5c4     0xc  cstartup_M.o [4]
-  .rodata            const         0xc5d0     0x8  tasks.o [1]
-  .rodata            const         0xc5d8     0x8  User_Task.o [1]
-  .rodata            const         0xc5e0     0x8  User_Task.o [1]
-  .rodata            const         0xc5e8     0x6  xlocale_c.o [2]
-  .rodata            const         0xc5f0     0x4  heap_4.o [1]
-  .text              ro code       0xc5f4     0x4  startup_hc32f46x.o [1]
-  .text              ro code       0xc5f8     0x4  startup_hc32f46x.o [1]
-  .text              ro code       0xc5fc     0x4  startup_hc32f46x.o [1]
-  Initializer bytes  const         0xc600    0xa1  <for P2 s0>
-                                 - 0xc6a1  0xc281
+"P1", part 2 of 2:                         0xfd25
+  .text              ro code        0x420  0x2698  hc32f46x_interrupts.o [1]
+  .text              ro code       0x2ab8   0x6c4  tasks.o [1]
+  .text              ro code       0x317c   0x204  port.o [1]
+  .text              ro code       0x3380   0x260  heap_4.o [1]
+  .text              ro code       0x35e0    0x98  list.o [1]
+  CODE               ro code       0x3678    0xb0  portasm.o [1]
+  .text              ro code       0x3728  0x11ee  ff.o [1]
+  .text              ro code       0x4916    0x94  diskio.o [1]
+  .text              ro code       0x49aa    0x1e  xencoding_8859_1.o [2]
+  .text              ro code       0x49c8    0xbc  User_SDIO.o [1]
+  .text              ro code       0x4a84   0x6fc  hc32f46x_gpio.o [1]
+  .text              ro code       0x5180   0xb1c  sd_card.o [1]
+  .text              ro code       0x5c9c   0xa98  sdmmc_cmd.o [1]
+  .text              ro code       0x6734   0x980  hc32f46x_sdioc.o [1]
+  .text              ro code       0x70b4    0x66  ABImemset.o [4]
+  .rodata            const         0x711a     0x2  xlocale_c.o [2]
+  .text              ro code       0x711c   0x16c  hc32f46x_pwc.o [1]
+  .text              ro code       0x7288   0x848  hc32f46x_dmac.o [1]
+  .text              ro code       0x7ad0  0x10c6  xprintffull.o [2]
+  .rodata            const         0x8b96     0x2  xlocale_c.o [2]
+  .text              ro code       0x8b98    0x7c  xlocale_c.o [2]
+  .text              ro code       0x8c14    0x16  strchr.o [4]
+  .rodata            const         0x8c2a     0x1  xlocale_c.o [2]
+  .text              ro code       0x8c2c    0x40  xfail_s.o [2]
+  .text              ro code       0x8c6c    0x36  strlen.o [4]
+  .text              ro code       0x8ca4    0x58  memchr.o [4]
+  .text              ro code       0x8cfc    0xa6  ABImemcpy.o [4]
+  .text              ro code       0x8da4    0x70  frexp.o [3]
+  .text              ro code       0x8e14    0x2e  DblCmpLe.o [3]
+  .text              ro code       0x8e44    0x2e  DblCmpGe.o [3]
+  .text              ro code       0x8e74   0x13a  ldexp.o [3]
+  .text              ro code       0x8fb0    0x3a  DblToS32.o [3]
+  .text              ro code       0x8fec    0x22  S32ToDbl.o [3]
+  .text              ro code       0x9010    0xe2  DblSub.o [3]
+  .text              ro code       0x90f4   0x246  DblDiv.o [3]
+  .text              ro code       0x933c    0x28  DblToU32.o [3]
+  .text              ro code       0x9364    0x1a  U32ToDbl.o [3]
+  .text              ro code       0x9380   0x1a2  DblMul.o [3]
+  .text              ro code       0x9522     0xa  xmbcurmax.o [2]
+  .text              ro code       0x952c   0x230  I64DivMod.o [4]
+  .text              ro code       0x975c     0x6  abort.o [2]
+  .text              ro code       0x9764   0x16a  DblAdd.o [3]
+  .text              ro code       0x98d0     0x2  I64DivZer.o [4]
+  .text              ro code       0x98d4    0x14  exit.o [5]
+  .text              ro code       0x98e8   0xac0  hc32f46x_clk.o [1]
+  .text              ro code       0xa3a8    0xc8  system_hc32f46x.o [1]
+  .text              ro code       0xa470   0xa56  usb_core.o [1]
+  .text              ro code       0xaec8   0x142  usb_bsp_template.o [1]
+  .text              ro code       0xb00c   0x6bc  usb_dcd_int.o [1]
+  .text              ro code       0xb6c8   0x250  hc32f46x_utility.o [1]
+  .text              ro code       0xb918    0x28  printf.o [2]
+  .text              ro code       0xb940   0x96c  hc32f46x_timer4_oco.o [1]
+  .text              ro code       0xc2ac   0x6e6  usbd_req.o [1]
+  .text              ro code       0xc992    0x90  usbd_ioreq.o [1]
+  .text              ro code       0xca22   0x29e  usb_dcd.o [1]
+  .text              ro code       0xccc0   0x32e  usbd_core.o [1]
+  .rodata            const         0xcff0   0x5f0  OLED.o [1]
+  .text              ro code       0xd5e0   0x4de  OLED.o [1]
+  .text              ro code       0xdac0   0x40c  hc32f46x_i2c.o [1]
+  .text              ro code       0xdecc   0x2ec  hc32f46x_dcu.o [1]
+  .text              ro code       0xe1b8   0x2e4  hc32f46x_timer4_cnt.o [1]
+  .text              ro code       0xe49c   0x2a4  User_Timer4.o [1]
+  .text              ro code       0xe740   0x1cc  hc32f46x_timer4_pwm.o [1]
+  .text              ro code       0xe90c   0x258  User_Task.o [1]
+  .text              ro code       0xeb64   0x200  User_Gpio.o [1]
+  .text              ro code       0xed64    0x78  User_OTS.o [1]
+  .text              ro code       0xeddc    0xac  User_DCU.o [1]
+  .text              ro code       0xee88    0xf8  User_ADC.o [1]
+  .text              ro code       0xef80   0x128  User_DMA.o [1]
+  .text              ro code       0xf0a8   0x13c  usbd_hid_core.o [1]
+  .text              ro code       0xf1e4   0x230  hc32f46x_ots.o [1]
+  .text              ro code       0xf414    0x48  FltToDbl.o [3]
+  .text              ro code       0xf45c   0x18c  hc32f46x_adc.o [1]
+  .text              ro code       0xf5e8   0x184  System_Clk.o [1]
+  .text              ro code       0xf76c    0xac  hc32f46x_efm.o [1]
+  .text              ro code       0xf818    0x30  hc32f46x_sram.o [1]
+  .text              ro code       0xf848    0xcc  usbd_desc.o [1]
+  .text              ro code       0xf914    0xcc  usbd_urs.o [1]
+  .text              ro code       0xf9e0    0xb4  main.o [1]
+  .text              ro code       0xfa94    0x9c  packbits_init.o [4]
+  .rodata            const         0xfb30    0x80  ff.o [1]
+  .text              ro code       0xfbb0    0x44  startup_hc32f46x.o [1]
+  .rodata            const         0xfbf4    0x28  usbd_urs.o [1]
+  .rodata            const         0xfc1c    0x28  usbd_urs.o [1]
+  .rodata            const         0xfc44    0x28  usbd_urs.o [1]
+  .text              ro code       0xfc6c    0x28  data_init.o [4]
+  .rodata            const         0xfc94    0x24  User_Timer4.o [1]
+  .text              ro code       0xfcb8    0x22  fpinit_M.o [3]
+  .iar.init_table    const         0xfcdc    0x2c  - Linker created -
+  .rodata            const         0xfd08    0x20  usbd_desc.o [1]
+  .rodata            const         0xfd28    0x20  usbd_urs.o [1]
+  .text              ro code       0xfd48    0x1e  cmain.o [4]
+  .text              ro code       0xfd66     0x4  low_level_init.o [2]
+  .text              ro code       0xfd6a     0x4  exit.o [2]
+  .text              ro code       0xfd70     0xa  cexit.o [4]
+  .rodata            const         0xfd7c    0x1c  usbd_urs.o [1]
+  .rodata            const         0xfd98    0x1c  usbd_urs.o [1]
+  .rodata            const         0xfdb4    0x1c  usbd_urs.o [1]
+  .rodata            const         0xfdd0    0x1c  usbd_urs.o [1]
+  .rodata            const         0xfdec    0x18  usb_dcd_int.o [1]
+  .rodata            const         0xfe04    0x18  usbd_req.o [1]
+  .rodata            const         0xfe1c    0x18  User_OTS.o [1]
+  .text              ro code       0xfe34    0x16  xprout.o [2]
+  .text              ro code       0xfe4c     0xc  putchar.o [2]
+  .rodata            const         0xfe58    0x14  usb_dcd_int.o [1]
+  .rodata            const         0xfe6c    0x14  usbd_desc.o [1]
+  .rodata            const         0xfe80    0x14  User_Task.o [1]
+  .rodata            const         0xfe94    0x10  usb_bsp_template.o [1]
+  .rodata            const         0xfea4    0x10  usbd_desc.o [1]
+  .rodata            const         0xfeb4    0x10  usbd_desc.o [1]
+  .rodata            const         0xfec4    0x10  usbd_desc.o [1]
+  .rodata            const         0xfed4    0x10  User_Task.o [1]
+  .rodata            const         0xfee4     0xc  ff.o [1]
+  .rodata            const         0xfef0     0xc  usb_dcd_int.o [1]
+  .rodata            const         0xfefc     0xc  usb_dcd_int.o [1]
+  .rodata            const         0xff08     0xc  usbd_desc.o [1]
+  .rodata            const         0xff14     0xc  usbd_desc.o [1]
+  .rodata            const         0xff20     0xc  usbd_req.o [1]
+  .rodata            const         0xff2c     0xc  User_Task.o [1]
+  .rodata            const         0xff38     0xc  User_Task.o [1]
+  .rodata            const         0xff44     0xc  User_Task.o [1]
+  .text              ro code       0xff50     0xc  cstartup_M.o [4]
+  .rodata            const         0xff5c     0x8  tasks.o [1]
+  .rodata            const         0xff64     0x8  usb_dcd_int.o [1]
+  .rodata            const         0xff6c     0x8  usb_dcd_int.o [1]
+  .rodata            const         0xff74     0x8  usbd_core.o [1]
+  .rodata            const         0xff7c     0x8  User_Task.o [1]
+  .rodata            const         0xff84     0x8  User_Task.o [1]
+  .rodata            const         0xff8c     0x4  heap_4.o [1]
+  .text              ro code       0xff90     0x4  startup_hc32f46x.o [1]
+  .text              ro code       0xff94     0x4  startup_hc32f46x.o [1]
+  .text              ro code       0xff98     0x4  startup_hc32f46x.o [1]
+  .rodata            const         0xff9c     0x0  zero_init3.o [4]
+  .rodata            const         0xff9c     0x0  packbits_init.o [4]
+  Initializer bytes  const         0xff9c   0x1a9  <for P2 s0>
+                               - 0x1'0145  0xfd25
 
-"P2", part 1 of 3:                          0x164
-  P2 s0                       0x1fff'8000   0x164  <Init block>
+"P2", part 1 of 3:                          0x280
+  P2 s0                       0x1fff'8000   0x280  <Init block>
     .data            inited   0x1fff'8000    0x74  User_SDIO.o [1]
-    .data            inited   0x1fff'8074    0x48  xlocale_c.o [2]
-    .data            inited   0x1fff'80bc    0x48  xfiles.o [2]
-    .data            inited   0x1fff'8104    0x38  xlocale_c.o [2]
-    .data            inited   0x1fff'813c    0x10  User_SDIO.o [1]
-    .data            inited   0x1fff'814c     0x8  hc32f46x_i2c.o [1]
-    .data            inited   0x1fff'8154     0x8  User_SDIO.o [1]
-    .data            inited   0x1fff'815c     0x4  port.o [1]
-    .data            inited   0x1fff'8160     0x4  system_hc32f46x.o [1]
-                            - 0x1fff'8164   0x164
+    .data            inited   0x1fff'8074    0x4c  usbd_hid_core.o [1]
+    .data            inited   0x1fff'80c0    0x48  xlocale_c.o [2]
+    .data            inited   0x1fff'8108    0x48  xfiles.o [2]
+    .data            inited   0x1fff'8150    0x38  xlocale_c.o [2]
+    .data            inited   0x1fff'8188    0x2c  usbd_core.o [1]
+    .data            inited   0x1fff'81b4    0x2c  usbd_hid_core.o [1]
+    .data            inited   0x1fff'81e0    0x24  usbd_hid_core.o [1]
+    .data            inited   0x1fff'8204    0x1c  usbd_desc.o [1]
+    .data            inited   0x1fff'8220    0x1c  usbd_urs.o [1]
+    .data            inited   0x1fff'823c    0x14  usbd_desc.o [1]
+    .data            inited   0x1fff'8250    0x10  User_SDIO.o [1]
+    .data            inited   0x1fff'8260     0x8  hc32f46x_i2c.o [1]
+    .data            inited   0x1fff'8268     0x8  User_SDIO.o [1]
+    .data            inited   0x1fff'8270     0x4  port.o [1]
+    .data            inited   0x1fff'8274     0x4  system_hc32f46x.o [1]
+    .data            inited   0x1fff'8278     0x4  usbd_core.o [1]
+    .data            inited   0x1fff'827c     0x4  usbd_desc.o [1]
+                            - 0x1fff'8280   0x280
 
-"P2", part 2 of 3:                         0x451c
-  .bss               zero     0x1fff'8164  0x3c00  heap_4.o [1]
-  .bss               zero     0x1fff'bd64   0x230  User_Task.o [1]
-  .bss               zero     0x1fff'bf94   0x224  User_Task.o [1]
-  .bss               zero     0x1fff'c1b8   0x200  hc32f46x_interrupts.o [1]
-  .bss               zero     0x1fff'c3b8    0x8c  tasks.o [1]
-  .bss               zero     0x1fff'c444    0x88  hc32f46x_sdioc.o [1]
-  .bss               zero     0x1fff'c4cc    0x54  User_Task.o [1]
-  .bss               zero     0x1fff'c520    0x50  xfiles.o [2]
-  .bss               zero     0x1fff'c570    0x20  main.o [1]
-  .bss               zero     0x1fff'c590    0x14  tasks.o [1]
-  .bss               zero     0x1fff'c5a4    0x14  tasks.o [1]
-  .bss               zero     0x1fff'c5b8    0x14  tasks.o [1]
-  .bss               zero     0x1fff'c5cc    0x14  tasks.o [1]
-  .bss               zero     0x1fff'c5e0    0x14  tasks.o [1]
-  .bss               zero     0x1fff'c5f4     0x8  ff.o [1]
-  .bss               zero     0x1fff'c5fc     0x8  heap_4.o [1]
-  .bss               zero     0x1fff'c604     0x4  hc32f46x_exint_nmi_swi.o [1]
-  .bss               zero     0x1fff'c608     0x4  hc32f46x_ots.o [1]
-  .bss               zero     0x1fff'c60c     0x4  hc32f46x_ots.o [1]
-  .bss               zero     0x1fff'c610     0x4  heap_4.o [1]
-  .bss               zero     0x1fff'c614     0x4  heap_4.o [1]
-  .bss               zero     0x1fff'c618     0x4  heap_4.o [1]
-  .bss               zero     0x1fff'c61c     0x4  heap_4.o [1]
-  .bss               zero     0x1fff'c620     0x4  port.o [1]
-  .bss               zero     0x1fff'c624     0x4  tasks.o [1]
-  .bss               zero     0x1fff'c628     0x4  tasks.o [1]
-  .bss               zero     0x1fff'c62c     0x4  tasks.o [1]
-  .bss               zero     0x1fff'c630     0x4  tasks.o [1]
-  .bss               zero     0x1fff'c634     0x4  tasks.o [1]
-  .bss               zero     0x1fff'c638     0x4  tasks.o [1]
-  .bss               zero     0x1fff'c63c     0x4  tasks.o [1]
-  .bss               zero     0x1fff'c640     0x4  tasks.o [1]
-  .bss               zero     0x1fff'c644     0x4  tasks.o [1]
-  .bss               zero     0x1fff'c648     0x4  tasks.o [1]
-  .bss               zero     0x1fff'c64c     0x4  tasks.o [1]
-  .bss               zero     0x1fff'c650     0x4  tasks.o [1]
-  .bss               zero     0x1fff'c654     0x4  tasks.o [1]
-  .bss               zero     0x1fff'c658     0x4  tasks.o [1]
-  .bss               zero     0x1fff'c65c     0x4  tasks.o [1]
-  .bss               zero     0x1fff'c660     0x4  User_OTS.o [1]
-  .bss               zero     0x1fff'c664     0x4  User_Task.o [1]
-  .bss               zero     0x1fff'c668     0x4  User_Task.o [1]
-  .bss               zero     0x1fff'c66c     0x4  xfail_s.o [2]
-  .bss               zero     0x1fff'c670     0x2  ff.o [1]
-  .bss               zero     0x1fff'c672     0x2  User_ADC.o [1]
-  .bss               zero     0x1fff'c674     0x2  User_DMA.o [1]
-  .bss               zero     0x1fff'c676     0x1  hc32f46x_dmac.o [1]
-  .bss               zero     0x1fff'c677     0x1  hc32f46x_ots.o [1]
-  .bss               zero     0x1fff'c678     0x1  port.o [1]
-  .bss               zero     0x1fff'c679     0x1  User_DCU.o [1]
-  .bss               zero     0x1fff'c67a     0x1  User_Gpio.o [1]
-  .bss               zero     0x1fff'c67b     0x1  User_Gpio.o [1]
-  .bss               zero     0x1fff'c67c     0x1  User_Gpio.o [1]
-  .bss               zero     0x1fff'c67d     0x1  User_Task.o [1]
-                            - 0x1fff'c67e  0x451a
+"P2", part 2 of 3:                         0x4be4
+  .bss               zero     0x1fff'8280  0x3c00  heap_4.o [1]
+  .bss               zero     0x1fff'be80   0x660  User_Task.o [1]
+  .bss               zero     0x1fff'c4e0   0x230  User_Task.o [1]
+  .bss               zero     0x1fff'c710   0x224  User_Task.o [1]
+  .bss               zero     0x1fff'c934   0x200  hc32f46x_interrupts.o [1]
+  .bss               zero     0x1fff'cb34    0x8c  tasks.o [1]
+  .bss               zero     0x1fff'cbc0    0x88  hc32f46x_sdioc.o [1]
+  .bss               zero     0x1fff'cc48    0x54  User_Task.o [1]
+  .bss               zero     0x1fff'cc9c    0x50  xfiles.o [2]
+  .bss               zero     0x1fff'ccec    0x40  usbd_req.o [1]
+  .bss               zero     0x1fff'cd2c    0x20  main.o [1]
+  .bss               zero     0x1fff'cd4c    0x14  tasks.o [1]
+  .bss               zero     0x1fff'cd60    0x14  tasks.o [1]
+  .bss               zero     0x1fff'cd74    0x14  tasks.o [1]
+  .bss               zero     0x1fff'cd88    0x14  tasks.o [1]
+  .bss               zero     0x1fff'cd9c    0x14  tasks.o [1]
+  .bss               zero     0x1fff'cdb0     0x8  ff.o [1]
+  .bss               zero     0x1fff'cdb8     0x8  heap_4.o [1]
+  .bss               zero     0x1fff'cdc0     0x4  hc32f46x_exint_nmi_swi.o [1]
+  .bss               zero     0x1fff'cdc4     0x4  hc32f46x_ots.o [1]
+  .bss               zero     0x1fff'cdc8     0x4  hc32f46x_ots.o [1]
+  .bss               zero     0x1fff'cdcc     0x4  heap_4.o [1]
+  .bss               zero     0x1fff'cdd0     0x4  heap_4.o [1]
+  .bss               zero     0x1fff'cdd4     0x4  heap_4.o [1]
+  .bss               zero     0x1fff'cdd8     0x4  heap_4.o [1]
+  .bss               zero     0x1fff'cddc     0x4  port.o [1]
+  .bss               zero     0x1fff'cde0     0x4  tasks.o [1]
+  .bss               zero     0x1fff'cde4     0x4  tasks.o [1]
+  .bss               zero     0x1fff'cde8     0x4  tasks.o [1]
+  .bss               zero     0x1fff'cdec     0x4  tasks.o [1]
+  .bss               zero     0x1fff'cdf0     0x4  tasks.o [1]
+  .bss               zero     0x1fff'cdf4     0x4  tasks.o [1]
+  .bss               zero     0x1fff'cdf8     0x4  tasks.o [1]
+  .bss               zero     0x1fff'cdfc     0x4  tasks.o [1]
+  .bss               zero     0x1fff'ce00     0x4  tasks.o [1]
+  .bss               zero     0x1fff'ce04     0x4  tasks.o [1]
+  .bss               zero     0x1fff'ce08     0x4  tasks.o [1]
+  .bss               zero     0x1fff'ce0c     0x4  tasks.o [1]
+  .bss               zero     0x1fff'ce10     0x4  tasks.o [1]
+  .bss               zero     0x1fff'ce14     0x4  tasks.o [1]
+  .bss               zero     0x1fff'ce18     0x4  tasks.o [1]
+  .bss               zero     0x1fff'ce1c     0x4  usbd_core.o [1]
+  .bss               zero     0x1fff'ce20     0x4  usbd_hid_core.o [1]
+  .bss               zero     0x1fff'ce24     0x4  usbd_hid_core.o [1]
+  .bss               zero     0x1fff'ce28     0x4  usbd_hid_core.o [1]
+  .bss               zero     0x1fff'ce2c     0x4  usbd_req.o [1]
+  .bss               zero     0x1fff'ce30     0x4  usbd_req.o [1]
+  .bss               zero     0x1fff'ce34     0x4  usbd_req.o [1]
+  .bss               zero     0x1fff'ce38     0x4  User_OTS.o [1]
+  .bss               zero     0x1fff'ce3c     0x4  User_Task.o [1]
+  .bss               zero     0x1fff'ce40     0x4  User_Task.o [1]
+  .bss               zero     0x1fff'ce44     0x4  User_Task.o [1]
+  .bss               zero     0x1fff'ce48     0x4  User_Task.o [1]
+  .bss               zero     0x1fff'ce4c     0x4  User_Task.o [1]
+  .bss               zero     0x1fff'ce50     0x4  xfail_s.o [2]
+  .bss               zero     0x1fff'ce54     0x2  ff.o [1]
+  .bss               zero     0x1fff'ce56     0x2  User_ADC.o [1]
+  .bss               zero     0x1fff'ce58     0x2  User_DMA.o [1]
+  .bss               zero     0x1fff'ce5a     0x1  hc32f46x_dmac.o [1]
+  .bss               zero     0x1fff'ce5b     0x1  hc32f46x_ots.o [1]
+  .bss               zero     0x1fff'ce5c     0x1  port.o [1]
+  .bss               zero     0x1fff'ce5d     0x1  usbd_req.o [1]
+  .bss               zero     0x1fff'ce5e     0x1  User_DCU.o [1]
+  .bss               zero     0x1fff'ce5f     0x1  User_Gpio.o [1]
+  .bss               zero     0x1fff'ce60     0x1  User_Gpio.o [1]
+  .bss               zero     0x1fff'ce61     0x1  User_Gpio.o [1]
+  .bss               zero     0x1fff'ce62     0x1  User_Task.o [1]
+  .bss               zero     0x1fff'ce63     0x1  User_Timer4.o [1]
+                            - 0x1fff'ce64  0x4be4
 
 "P2", part 3 of 3:                          0x400
-  CSTACK                      0x1fff'c680   0x400  <Block>
-    CSTACK           uninit   0x1fff'c680   0x400  <Block tail>
-                            - 0x1fff'ca80   0x400
+  CSTACK                      0x1fff'ce68   0x400  <Block>
+    CSTACK           uninit   0x1fff'ce68   0x400  <Block tail>
+                            - 0x1fff'd268   0x400
 
 Unused ranges:
 
          From           To      Size
          ----           --      ----
-        0x280        0x3ff     0x180
-       0xc6a1     0x7'ffff  0x7'395f
-  0x1fff'ca80  0x1fff'ffff    0x3580
+        0x384        0x3ff      0x7c
+     0x1'0145     0x7'ffff  0x6'febb
+  0x1fff'ce64  0x1fff'ce67       0x4
+  0x1fff'd268  0x1fff'ffff    0x2d98
   0x2000'0000  0x2000'ffff  0x1'0000
   0x2001'0000  0x2001'ffff  0x1'0000
   0x2002'0000  0x2002'6fff    0x7000
@@ -356,14 +423,14 @@ Unused ranges:
           Address      Size
           -------      ----
 Zero (__iar_zero_init3)
-    1 destination range, total size 0x451a:
-          0x1fff'8164  0x451a
+    1 destination range, total size 0x4be4:
+          0x1fff'8280  0x4be4
 
 Copy/packbits (__iar_packbits_init3)
-    1 source range, total size 0xa1 (45% of destination):
-               0xc600    0xa1
-    1 destination range, total size 0x164:
-          0x1fff'8000   0x164
+    1 source range, total size 0x1a9 (66% of destination):
+               0xff9c   0x1a9
+    1 destination range, total size 0x280:
+          0x1fff'8000   0x280
 
 
 
@@ -378,48 +445,62 @@ command line/config:
     ------------------------------------------------------------
     Total:
 
-C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj: [1]
-    OLED.o                      1 246    1 520
-    System_Clk.o                  356
-    User_ADC.o                    272                 2
+D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj: [1]
+    OLED.o                      1'246    1'520
+    System_Clk.o                  388
+    User_ADC.o                    248                 2
     User_DCU.o                    172                 1
     User_DMA.o                    296                 2
-    User_Gpio.o                   492                 3
+    User_Gpio.o                   512                 3
     User_OTS.o                    120       24        4
     User_PWC.o                      2
-    User_SDIO.o                   188       64      140
-    User_Task.o                   344       76    1 201
+    User_SDIO.o                   188       92      140
+    User_Task.o                   600       88    2'845
+    User_Timer4.o                 676       36        1
     cmsis_os.o                     16
     diskio.o                      148
     fattime.o                       4
-    ff.o                        4 590      140       10
-    hc32f46x_adc.o                576
-    hc32f46x_clk.o              2 548
+    ff.o                        4'590      140       10
+    hc32f46x_adc.o                396
+    hc32f46x_clk.o              2'752
     hc32f46x_dcu.o                748
-    hc32f46x_dmac.o             2 120                 1
+    hc32f46x_dmac.o             2'120                 1
     hc32f46x_efm.o                172
     hc32f46x_exint_nmi_swi.o      180                 4
-    hc32f46x_gpio.o             1 552
-    hc32f46x_i2c.o              1 036        3        8
+    hc32f46x_gpio.o             1'788
+    hc32f46x_i2c.o              1'036        6        8
     hc32f46x_icg.o                                            32
-    hc32f46x_interrupts.o       9 516               512
+    hc32f46x_interrupts.o       9'880               512
     hc32f46x_ots.o                560                 9
-    hc32f46x_pwc.o                280
-    hc32f46x_sdioc.o            2 408        2      136
+    hc32f46x_pwc.o                364
+    hc32f46x_sdioc.o            2'432               136
     hc32f46x_sram.o                48
+    hc32f46x_timer4_cnt.o         740
+    hc32f46x_timer4_oco.o       2'412
+    hc32f46x_timer4_pwm.o         460
     hc32f46x_utility.o            592
-    heap_4.o                      608        4   15 384
+    heap_4.o                      608        4   15'384
     list.o                        152
     main.o                        180                32
-    port.o                        516        2        9
+    port.o                        516        3        9
     portasm.o                     176
-    sd_card.o                   2 672
-    sdmmc_cmd.o                 2 892
+    sd_card.o                   2'844
+    sdmmc_cmd.o                 2'712
     startup_hc32f46x.o            720
     system_hc32f46x.o             200        2        4
-    tasks.o                     1 736        8      300
+    tasks.o                     1'732        8      300
+    usb_bsp_template.o            322       16
+    usb_core.o                  2'646
+    usb_dcd.o                     670
+    usb_dcd_int.o               1'724       84
+    usbd_core.o                   814       40       52
+    usbd_desc.o                   204      160       52
+    usbd_hid_core.o               316      103      168
+    usbd_ioreq.o                  144
+    usbd_req.o                  1'766       36       77
+    usbd_urs.o                    204      282       28
     ------------------------------------------------------------
-    Total:                     40 434    1 845   17 762       32
+    Total:                     54'536    2'644   19'784       32
 
 dl7M_tlf.a: [2]
     abort.o                         6
@@ -429,13 +510,13 @@ dl7M_tlf.a: [2]
     putchar.o                      12
     xencoding_8859_1.o             30
     xfail_s.o                      64                 4
-    xfiles.o                                32      152
-    xlocale_c.o                   120       64      128
+    xfiles.o                                48      152
+    xlocale_c.o                   124       90      128
     xmbcurmax.o                    10
-    xprintffull.o               3 962
+    xprintffull.o               4'294
     xprout.o                       22
     ------------------------------------------------------------
-    Total:                      4 274       96      284
+    Total:                      4'610      138      284
 
 m7M_tls.a: [3]
     DblAdd.o                      362
@@ -453,7 +534,7 @@ m7M_tls.a: [3]
     frexp.o                       112
     ldexp.o                       314
     ------------------------------------------------------------
-    Total:                      2 370
+    Total:                      2'370
 
 rt7M_tl.a: [4]
     ABImemcpy.o                   166
@@ -470,17 +551,17 @@ rt7M_tl.a: [4]
     strlen.o                       54
     zero_init3.o                   58
     ------------------------------------------------------------
-    Total:                      1 300
+    Total:                      1'300
 
 shb_l.a: [5]
     exit.o                         20
     ------------------------------------------------------------
     Total:                         20
 
-    Gaps                           44        6
-    Linker created                          44    1 024
+    Gaps                           37        6
+    Linker created                          44    1'024
 ----------------------------------------------------------------
-    Grand Total:               48 442    1 991   19 070       32
+    Grand Total:               62'873    2'832   21'092       32
 
 
 *******************************************************************************
@@ -489,584 +570,772 @@ shb_l.a: [5]
 
 Entry                       Address    Size  Type      Object
 -----                       -------    ----  ----      ------
-.iar.init_table$$Base        0xc4e0           --   Gb  - Linker created -
-.iar.init_table$$Limit       0xc50c           --   Gb  - Linker created -
-?main                        0xc50d          Code  Gb  cmain.o [4]
-ADC1_AIN10_Data         0x1fff'c672     0x2  Data  Gb  User_ADC.o [1]
-ADC1_Start_convert           0xc011     0x8  Code  Gb  User_ADC.o [1]
-ADC_AddAdcChannel            0xb595    0xa2  Code  Gb  hc32f46x_adc.o [1]
-ADC_AddPgaChannel            0xb6cb    0x10  Code  Gb  hc32f46x_adc.o [1]
-ADC_ConfigPga                0xb637    0x56  Code  Gb  hc32f46x_adc.o [1]
-ADC_EOCA_CallBack            0xc007     0xa  Code  Gb  User_ADC.o [1]
-ADC_Init                     0xb4b9    0xdc  Code  Gb  hc32f46x_adc.o [1]
-ADC_PgaCmd                   0xb68d    0x3e  Code  Gb  hc32f46x_adc.o [1]
-BusFault_Handler              0x4bf     0x8  Code  Gb  hc32f46x_interrupts.o [1]
-CLK_GetClockFreq             0x9cc3   0x108  Code  Gb  hc32f46x_clk.o [1]
-CLK_GetFlagStatus            0x9f21    0x80  Code  Gb  hc32f46x_clk.o [1]
-CLK_HrcCmd                   0x9763    0xae  Code  Gb  hc32f46x_clk.o [1]
-CLK_LrcCmd                   0x9811    0x76  Code  Gb  hc32f46x_clk.o [1]
-CLK_MpllCmd                  0x99c5    0x82  Code  Gb  hc32f46x_clk.o [1]
-CLK_MpllConfig               0x98bf   0x106  Code  Gb  hc32f46x_clk.o [1]
-CLK_SetPeriClkSource         0x9eb9    0x3a  Code  Gb  hc32f46x_clk.o [1]
-CLK_SetPllSource             0x9887    0x38  Code  Gb  hc32f46x_clk.o [1]
-CLK_SetSysClkSource          0x9abd    0xca  Code  Gb  hc32f46x_clk.o [1]
-CLK_SetUsbClkSource          0x9de1    0xd6  Code  Gb  hc32f46x_clk.o [1]
-CLK_SysClkConfig             0x9b87   0x13c  Code  Gb  hc32f46x_clk.o [1]
-CLK_UpllCmd                  0x9a47    0x76  Code  Gb  hc32f46x_clk.o [1]
-CLK_Xtal32Cmd                0x96ed    0x76  Code  Gb  hc32f46x_clk.o [1]
-CLK_Xtal32Config             0x96ad    0x40  Code  Gb  hc32f46x_clk.o [1]
-CLK_XtalCmd                  0x95e5    0xc8  Code  Gb  hc32f46x_clk.o [1]
-CSTACK$$Base            0x1fff'c680           --   Gb  - Linker created -
-CSTACK$$Limit           0x1fff'ca80           --   Gb  - Linker created -
-CacheMore                    0x889d    0x24  Code  Lc  xlocale_c.o [2]
-Clkdata                 0x1fff'c570    0x20  Data  Gb  main.o [1]
-DCU1_INT_Callback            0xbf69     0x8  Code  Lc  User_DCU.o [1]
-DCU_Init                     0xb1cd    0xfe  Code  Gb  hc32f46x_dcu.o [1]
-DCU_SetTriggerSrc            0xb2d9   0x192  Code  Gb  hc32f46x_dcu.o [1]
-DCU_TRGSELx                  0xb46b    0x2e  Code  Lc  hc32f46x_dcu.o [1]
-DMA1_CH0_Callback            0xc12b    0x1a  Code  Gb  User_DMA.o [1]
-DMA_ChannelCfg               0x73b5   0x2c2  Code  Gb  hc32f46x_dmac.o [1]
-DMA_ChannelCmd               0x7191   0x1c8  Code  Gb  hc32f46x_dmac.o [1]
-DMA_ClearIrqFlag             0x70a9    0xe8  Code  Gb  hc32f46x_dmac.o [1]
-DMA_Cmd                      0x706d    0x3c  Code  Gb  hc32f46x_dmac.o [1]
-DMA_InitChannel              0x7679   0x22c  Code  Gb  hc32f46x_dmac.o [1]
-DMA_SetTriggerSrc            0x7369    0x46  Code  Gb  hc32f46x_dmac.o [1]
-Dcu1_result             0x1fff'c674     0x2  Data  Gb  User_DMA.o [1]
-Ddl_Delay1ms                 0xb165    0x2e  Code  Gb  hc32f46x_utility.o [1]
-Ddl_UartInit                 0xb0e9    0x7c  Code  Gb  hc32f46x_utility.o [1]
-DebugMon_Handler              0x4cf     0x8  Code  Gb  hc32f46x_interrupts.o [1]
-DebugOutput                  0xaf7d    0x14  Code  Gb  hc32f46x_utility.o [1]
-DmaChEnState            0x1fff'c676     0x1  Data  Lc  hc32f46x_dmac.o [1]
-DmaSdiocRxConfiguration
-                             0x59b7    0xd4  Code  Lc  sd_card.o [1]
-DmaSdiocTxConfiguration
-                             0x58e3    0xd4  Code  Lc  sd_card.o [1]
+.iar.init_table$$Base        0xfcdc           --   Gb  - Linker created -
+.iar.init_table$$Limit       0xfd08           --   Gb  - Linker created -
+?main                        0xfd49          Code  Gb  cmain.o [4]
+ADC1_AIN10_Data         0x1fff'ce56     0x2  Data  Gb  User_ADC.o [1]
+ADC1_Start_convert           0xeea1     0x8  Code  Gb  User_ADC.o [1]
+ADC_AddAdcChannel            0xf539    0xa2  Code  Gb  hc32f46x_adc.o [1]
+ADC_EOCA_CallBack            0xee97     0xa  Code  Gb  User_ADC.o [1]
+ADC_Init                     0xf45d    0xdc  Code  Gb  hc32f46x_adc.o [1]
+BusFault_Handler              0x4c7     0x8  Code  Gb  hc32f46x_interrupts.o [1]
+CLK_GetClockFreq             0xa0cd   0x108  Code  Gb  hc32f46x_clk.o [1]
+CLK_GetFlagStatus            0xa2f1    0x80  Code  Gb  hc32f46x_clk.o [1]
+CLK_HrcCmd                   0x9a67    0xae  Code  Gb  hc32f46x_clk.o [1]
+CLK_LrcCmd                   0x9b15    0x76  Code  Gb  hc32f46x_clk.o [1]
+CLK_MpllCmd                  0x9cc9    0x82  Code  Gb  hc32f46x_clk.o [1]
+CLK_MpllConfig               0x9bc3   0x106  Code  Gb  hc32f46x_clk.o [1]
+CLK_SetPllSource             0x9b8b    0x38  Code  Gb  hc32f46x_clk.o [1]
+CLK_SetSysClkSource          0x9ec3    0xc8  Code  Gb  hc32f46x_clk.o [1]
+CLK_SetUsbClkSource          0xa1ed    0xd6  Code  Gb  hc32f46x_clk.o [1]
+CLK_SysClkConfig             0x9f8b   0x142  Code  Gb  hc32f46x_clk.o [1]
+CLK_UpllCmd                  0x9e4d    0x76  Code  Gb  hc32f46x_clk.o [1]
+CLK_UpllConfig               0x9d4b   0x102  Code  Gb  hc32f46x_clk.o [1]
+CLK_Xtal32Cmd                0x99f1    0x76  Code  Gb  hc32f46x_clk.o [1]
+CLK_Xtal32Config             0x99b1    0x40  Code  Gb  hc32f46x_clk.o [1]
+CLK_XtalCmd                  0x98e9    0xc8  Code  Gb  hc32f46x_clk.o [1]
+CSTACK$$Base            0x1fff'ce68           --   Gb  - Linker created -
+CSTACK$$Limit           0x1fff'd268           --   Gb  - Linker created -
+CacheMore                    0x8b9d    0x28  Code  Lc  xlocale_c.o [2]
+Clkdata                 0x1fff'cd2c    0x20  Data  Gb  main.o [1]
+DCD_EP_Close                 0xcb29    0x4a  Code  Gb  usb_dcd.o [1]
+DCD_EP_ClrStall              0xcc45    0x4a  Code  Gb  usb_dcd.o [1]
+DCD_EP_Flush                 0xcc8f    0x1e  Code  Gb  usb_dcd.o [1]
+DCD_EP_Open                  0xcac5    0x64  Code  Gb  usb_dcd.o [1]
+DCD_EP_PrepareRx             0xcb73    0x48  Code  Gb  usb_dcd.o [1]
+DCD_EP_SetAddress            0xccad    0x14  Code  Gb  usb_dcd.o [1]
+DCD_EP_Stall                 0xcbfb    0x4a  Code  Gb  usb_dcd.o [1]
+DCD_EP_Tx                    0xcbbb    0x40  Code  Gb  usb_dcd.o [1]
+DCD_HandleEnumDone_ISR       0xb605    0x4a  Code  Lc  usb_dcd_int.o [1]
+DCD_HandleInEP_ISR           0xb1e9    0xf4  Code  Lc  usb_dcd_int.o [1]
+DCD_HandleOutEP_ISR          0xb2dd   0x11a  Code  Lc  usb_dcd_int.o [1]
+DCD_HandleResume_ISR         0xb121    0x50  Code  Lc  usb_dcd_int.o [1]
+DCD_HandleRxStatusQueueLevel_ISR
+                             0xb413    0xa0  Code  Lc  usb_dcd_int.o [1]
+DCD_HandleSof_ISR            0xb3f7    0x1c  Code  Lc  usb_dcd_int.o [1]
+DCD_HandleUSBSuspend_ISR
+                             0xb171    0x78  Code  Lc  usb_dcd_int.o [1]
+DCD_HandleUsbReset_ISR       0xb543    0xc2  Code  Lc  usb_dcd_int.o [1]
+DCD_HandleUsbReset_ISR::__FUNCTION__
+                             0xfdec    0x18  Data  Lc  usb_dcd_int.o [1]
+DCD_Init                     0xca23    0xa2  Code  Gb  usb_dcd.o [1]
+DCD_IsoINIncomplete_ISR
+                             0xb64f    0x1c  Code  Lc  usb_dcd_int.o [1]
+DCD_IsoOUTIncomplete_ISR
+                             0xb66b    0x1c  Code  Lc  usb_dcd_int.o [1]
+DCD_ReadDevInEP              0xb6a9    0x20  Code  Lc  usb_dcd_int.o [1]
+DCD_SessionRequest_ISR       0xb0fb    0x26  Code  Lc  usb_dcd_int.o [1]
+DCD_WriteEmptyTxFifo         0xb4b3    0x90  Code  Lc  usb_dcd_int.o [1]
+DCU1_INT_Callback            0xedf9     0x8  Code  Lc  User_DCU.o [1]
+DCU_Init                     0xdecd    0xfe  Code  Gb  hc32f46x_dcu.o [1]
+DCU_SetTriggerSrc            0xdfd9   0x192  Code  Gb  hc32f46x_dcu.o [1]
+DCU_TRGSELx                  0xe16b    0x2e  Code  Lc  hc32f46x_dcu.o [1]
+DMA1_CH0_Callback            0xefa3    0x1a  Code  Gb  User_DMA.o [1]
+DMA_ChannelCfg               0x75d1   0x2c2  Code  Gb  hc32f46x_dmac.o [1]
+DMA_ChannelCmd               0x73ad   0x1c8  Code  Gb  hc32f46x_dmac.o [1]
+DMA_ClearIrqFlag             0x72c5    0xe8  Code  Gb  hc32f46x_dmac.o [1]
+DMA_Cmd                      0x7289    0x3c  Code  Gb  hc32f46x_dmac.o [1]
+DMA_InitChannel              0x7895   0x22c  Code  Gb  hc32f46x_dmac.o [1]
+DMA_SetTriggerSrc            0x7585    0x46  Code  Gb  hc32f46x_dmac.o [1]
+Dcu1_result             0x1fff'ce58     0x2  Data  Gb  User_DMA.o [1]
+Ddl_Delay1ms                 0xb8b1    0x2e  Code  Gb  hc32f46x_utility.o [1]
+Ddl_UartInit                 0xb835    0x7c  Code  Gb  hc32f46x_utility.o [1]
+DebugMon_Handler              0x4d7     0x8  Code  Gb  hc32f46x_interrupts.o [1]
+DebugOutput                  0xb6c9    0x14  Code  Gb  hc32f46x_utility.o [1]
+DmaChEnState            0x1fff'ce5a     0x1  Data  Lc  hc32f46x_dmac.o [1]
+DmaSdiocRxConfig             0x5bad    0xda  Code  Lc  sd_card.o [1]
+DmaSdiocTxConfig             0x5ad3    0xda  Code  Lc  sd_card.o [1]
 EFM_InstructionCacheCmd
-                             0xbcf5    0x28  Code  Gb  hc32f46x_efm.o [1]
-EFM_Lock                     0xbc8b    0x14  Code  Gb  hc32f46x_efm.o [1]
-EFM_SetLatency               0xbc9f    0x56  Code  Gb  hc32f46x_efm.o [1]
-EFM_Unlock                   0xbc79    0x12  Code  Gb  hc32f46x_efm.o [1]
-EXINT_Init                   0x294d    0x92  Code  Gb  hc32f46x_exint_nmi_swi.o [1]
-F8X16                        0xa0a0   0x5f0  Data  Gb  OLED.o [1]
-FS_SD_ReadBlocks             0x49e7    0x18  Code  Gb  User_SDIO.o [1]
-FS_SD_WriteBlocks            0x49ff    0x18  Code  Gb  User_SDIO.o [1]
-FatFs                   0x1fff'c5f4     0x8  Data  Lc  ff.o [1]
-FatFs                   0x1fff'bd64   0x230  Data  Gb  User_Task.o [1]
-Fsid                    0x1fff'c670     0x2  Data  Lc  ff.o [1]
-GetFreqReg                   0xab71    0x36  Code  Lc  hc32f46x_i2c.o [1]
-Get_ADC1_Data                0xbff9     0x8  Code  Gb  User_ADC.o [1]
-Get_DCU1_Result              0xc125     0x6  Code  Gb  User_DMA.o [1]
-HardFault_Handler             0x4af     0x8  Code  Gb  hc32f46x_interrupts.o [1]
-Hd_Task_ADC             0x1fff'c668     0x4  Data  Gb  User_Task.o [1]
-Hd_Task_LED             0x1fff'c664     0x4  Data  Gb  User_Task.o [1]
-I2C_BaudrateConfig           0xaba9   0x104  Code  Gb  hc32f46x_i2c.o [1]
-I2C_ClearStatus              0xaf3d    0x26  Code  Gb  hc32f46x_i2c.o [1]
-I2C_Cmd                      0xad7b    0x44  Code  Gb  hc32f46x_i2c.o [1]
-I2C_DeInit                   0xacad    0x34  Code  Gb  hc32f46x_i2c.o [1]
-I2C_GenerateReStart          0xae0f    0x3e  Code  Gb  hc32f46x_i2c.o [1]
-I2C_GenerateStart            0xadd1    0x3e  Code  Gb  hc32f46x_i2c.o [1]
-I2C_GenerateStop             0xae4d    0x3e  Code  Gb  hc32f46x_i2c.o [1]
-I2C_GetStatus                0xaeab    0x92  Code  Gb  hc32f46x_i2c.o [1]
-I2C_Init                     0xace1    0x9a  Code  Gb  hc32f46x_i2c.o [1]
-I2C_SendData                 0xae8b    0x20  Code  Gb  hc32f46x_i2c.o [1]
-IRQ000_Handler                0x4df    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ001_Handler                0x4f1    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ002_Handler                0x503    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ003_Handler                0x515    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ004_Handler                0x527    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ005_Handler                0x539    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ006_Handler                0x54b    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ007_Handler                0x55d    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ008_Handler                0x56f    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ009_Handler                0x581    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ010_Handler                0x593    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ011_Handler                0x5a5    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ012_Handler                0x5b7    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ013_Handler                0x5c9    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ014_Handler                0x5db    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ015_Handler                0x5ed    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ016_Handler                0x5ff    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ017_Handler                0x611    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ018_Handler                0x623    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ019_Handler                0x635    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ020_Handler                0x647    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ021_Handler                0x659    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ022_Handler                0x66b    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ023_Handler                0x67d    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ024_Handler                0x68f    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ025_Handler                0x6a1    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ026_Handler                0x6b3    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ027_Handler                0x6c5    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ028_Handler                0x6d7    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ029_Handler                0x6e9    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ030_Handler                0x6fb    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ031_Handler                0x70d    0x12  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ032_Handler                0x71f    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ033_Handler                0x735    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ034_Handler                0x74b    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ035_Handler                0x761    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ036_Handler                0x777    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ037_Handler                0x78d    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ038_Handler                0x7a3    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ039_Handler                0x7b9    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ040_Handler                0x7cf    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ041_Handler                0x7e5    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ042_Handler                0x7fb    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ043_Handler                0x811    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ044_Handler                0x827    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ045_Handler                0x83d    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ046_Handler                0x853    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ047_Handler                0x869    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ048_Handler                0x87f    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ049_Handler                0x895    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ050_Handler                0x8ab    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ051_Handler                0x8c1    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ052_Handler                0x8d7    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ053_Handler                0x8ed    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ054_Handler                0x903    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ055_Handler                0x919    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ056_Handler                0x92f    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ057_Handler                0x945    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ058_Handler                0x95b    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ059_Handler                0x971    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ060_Handler                0x987    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ061_Handler                0x99d    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ062_Handler                0x9b3    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ063_Handler                0x9c9    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ064_Handler                0x9df    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ065_Handler                0x9f5    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ066_Handler                0xa0b    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ067_Handler                0xa21    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ068_Handler                0xa37    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ069_Handler                0xa4d    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ070_Handler                0xa63    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ071_Handler                0xa79    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ072_Handler                0xa8f    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ073_Handler                0xaa5    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ074_Handler                0xabb    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ075_Handler                0xad1    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ076_Handler                0xae7    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ077_Handler                0xafd    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ078_Handler                0xb13    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ079_Handler                0xb29    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ080_Handler                0xb3f    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ081_Handler                0xb53    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ082_Handler                0xb67    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ083_Handler                0xb7b    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ084_Handler                0xb8f    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ085_Handler                0xba3    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ086_Handler                0xbb7    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ087_Handler                0xbcb    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ088_Handler                0xbdf    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ089_Handler                0xbf3    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ090_Handler                0xc07    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ091_Handler                0xc1b    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ092_Handler                0xc2f    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ093_Handler                0xc43    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ094_Handler                0xc57    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ095_Handler                0xc6b    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ096_Handler                0xc7f    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ097_Handler                0xc93    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ098_Handler                0xca7    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ099_Handler                0xcbb    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ100_Handler                0xccf    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ101_Handler                0xce3    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ102_Handler                0xcf7    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ103_Handler                0xd0b    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ104_Handler                0xd1f    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ105_Handler                0xd33    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ106_Handler                0xd47    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ107_Handler                0xd5b    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ108_Handler                0xd6f    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ109_Handler                0xd83    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ110_Handler                0xd97    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ111_Handler                0xdab    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ112_Handler                0xdbf    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ113_Handler                0xdd9    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ114_Handler                0xded    0x14  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ115_Handler                0xe05    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ116_Handler                0xe1b    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ117_Handler                0xe31    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ118_Handler                0xe47    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ119_Handler                0xe5d    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ120_Handler                0xe73    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ121_Handler                0xe89    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ122_Handler                0xe9f    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ123_Handler                0xeb5    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ124_Handler                0xecb    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ125_Handler                0xee1    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ126_Handler                0xef7    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ127_Handler                0xf0d    0x16  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ128_Handler                0xf23   0x12a  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ129_Handler               0x104d   0x2ee  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ130_Handler               0x133b    0xbc  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ131_Handler               0x13f7   0x27e  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ132_Handler               0x16b1   0x146  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ136_Handler               0x18a5   0x28c  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ137_Handler               0x1bbd   0x21a  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ138_Handler               0x1e45   0x1cc  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ139_Handler               0x2045    0xec  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ140_Handler               0x2195   0x1e6  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ141_Handler               0x23c1   0x1ee  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ142_Handler               0x25c9    0xda  Code  Gb  hc32f46x_interrupts.o [1]
-IRQ143_Handler               0x26bd    0xdc  Code  Gb  hc32f46x_interrupts.o [1]
-IrqHandler              0x1fff'c1b8   0x200  Data  Gb  hc32f46x_interrupts.o [1]
-LED0_Toggle                  0xba43    0xb8  Code  Gb  User_Gpio.o [1]
-LED_Status              0x1fff'c67c     0x1  Data  Gb  User_Gpio.o [1]
-LoadInt                      0x7adf    0x7a  Code  Lc  xprintffull.o [2]
-Lvd1_IrqHandler              0x2a11     0x2  Code  Gb  User_PWC.o [1]
-MemManage_Handler             0x4b7     0x8  Code  Gb  hc32f46x_interrupts.o [1]
-Myfile                  0x1fff'bf94   0x224  Data  Gb  User_Task.o [1]
-NMI_Handler                   0x4a7     0x8  Code  Gb  hc32f46x_interrupts.o [1]
-NMI_IrqHandler               0x29df    0x18  Code  Gb  hc32f46x_exint_nmi_swi.o [1]
-OLED_Clear                   0xa963    0x44  Code  Gb  OLED.o [1]
-OLED_Display_On              0xa947    0x1c  Code  Gb  OLED.o [1]
-OLED_I2C3_init               0xa8f1    0x56  Code  Gb  OLED.o [1]
-OLED_Init                    0xaaa1    0xce  Code  Gb  OLED.o [1]
-OLED_SendAdr                 0xa709    0x6c  Code  Lc  OLED.o [1]
-OLED_Set_Pos                 0xa9a7    0x36  Code  Gb  OLED.o [1]
-OLED_ShowChar                0xa9dd    0x7c  Code  Gb  OLED.o [1]
-OLED_ShowString              0xaa59    0x3a  Code  Gb  OLED.o [1]
-OLED_StartOrRestart          0xa691    0x78  Code  Lc  OLED.o [1]
-OLED_Stop                    0xa7f5    0x4a  Code  Gb  OLED.o [1]
-OLED_WR_Byte                 0xa8d9    0x18  Code  Gb  OLED.o [1]
-OLED_WriteData               0xa775    0x80  Code  Lc  OLED.o [1]
-OTS_CheckSample              0xb7b7    0x82  Code  Gb  hc32f46x_ots.o [1]
-OTS_ComputeTemp              0xb899    0x50  Code  Lc  hc32f46x_ots.o [1]
-OTS_Init                     0xb6f9    0x9e  Code  Gb  hc32f46x_ots.o [1]
-OTS_ReadData                 0xb84d    0x4c  Code  Lc  hc32f46x_ots.o [1]
-OTS_StartGetTemp             0xb797    0x20  Code  Gb  hc32f46x_ots.o [1]
-OTS_Trimming                 0xb839    0x14  Code  Lc  hc32f46x_ots.o [1]
-OtsBaseConfig                0xbead    0x48  Code  Gb  User_OTS.o [1]
-PORT_Init                    0x4a21   0x1c4  Code  Gb  hc32f46x_gpio.o [1]
-PORT_Lock                    0x4bf1     0xc  Code  Gb  hc32f46x_gpio.o [1]
-PORT_ResetBits               0x4c4b    0x4e  Code  Gb  hc32f46x_gpio.o [1]
-PORT_SetBits                 0x4bfd    0x4e  Code  Gb  hc32f46x_gpio.o [1]
-PORT_SetFunc                 0x4c9d   0x382  Code  Gb  hc32f46x_gpio.o [1]
-PORT_Unlock                  0x4be5     0xc  Code  Gb  hc32f46x_gpio.o [1]
-PWC_Fcg0PeriphClockCmd       0x6f55    0x5c  Code  Gb  hc32f46x_pwc.o [1]
-PWC_Fcg1PeriphClockCmd       0x6fb1    0x4c  Code  Gb  hc32f46x_pwc.o [1]
-PWC_Fcg3PeriphClockCmd       0x6ffd    0x4c  Code  Gb  hc32f46x_pwc.o [1]
-PendSV_Handler               0x3611          Code  Gb  portasm.o [1]
-Print_CPU_Temperature        0xbefd    0x20  Code  Gb  User_OTS.o [1]
-Region$$Table$$Base          0xc4e0           --   Gb  - Linker created -
-Region$$Table$$Limit         0xc50c           --   Gb  - Linker created -
-SDCARD_GetCardCSD            0x50a5    0xe4  Code  Gb  sd_card.o [1]
-SDCARD_GetDeviceMode         0x50a1     0x4  Code  Gb  sd_card.o [1]
-SDCARD_Init                  0x5031    0x70  Code  Gb  sd_card.o [1]
-SDCARD_ReadBlocks            0x5189   0x1ea  Code  Gb  sd_card.o [1]
-SDCARD_WriteBlocks           0x5373   0x202  Code  Gb  sd_card.o [1]
+                             0xf7e9    0x28  Code  Gb  hc32f46x_efm.o [1]
+EFM_Lock                     0xf77f    0x14  Code  Gb  hc32f46x_efm.o [1]
+EFM_SetLatency               0xf793    0x56  Code  Gb  hc32f46x_efm.o [1]
+EFM_Unlock                   0xf76d    0x12  Code  Gb  hc32f46x_efm.o [1]
+EXINT_Init                    0x281    0x92  Code  Gb  hc32f46x_exint_nmi_swi.o [1]
+F8X16                        0xcff0   0x5f0  Data  Gb  OLED.o [1]
+FS_SD_ReadBlocks             0x4a4b    0x18  Code  Gb  User_SDIO.o [1]
+FS_SD_WriteBlocks            0x4a63    0x18  Code  Gb  User_SDIO.o [1]
+FatFs                   0x1fff'cdb0     0x8  Data  Lc  ff.o [1]
+FatFs                   0x1fff'c4e0   0x230  Data  Gb  User_Task.o [1]
+Fsid                    0x1fff'ce54     0x2  Data  Lc  ff.o [1]
+GetFreqReg                   0xdac1    0x36  Code  Lc  hc32f46x_i2c.o [1]
+GetTimer4OcoIntNum           0xe517    0x32  Code  Lc  User_Timer4.o [1]
+GetTimer4OcoIntNum::aenOcoIntNum
+                             0xfc94    0x24  Data  Lc  User_Timer4.o [1]
+Get_ADC1_Data                0xee89     0x8  Code  Gb  User_ADC.o [1]
+Get_DCU1_Result              0xef9d     0x6  Code  Gb  User_DMA.o [1]
+HID_MOUSE_ReportDesc    0x1fff'8074    0x4c  Data  Lc  usbd_hid_core.o [1]
+HardFault_Handler             0x4b7     0x8  Code  Gb  hc32f46x_interrupts.o [1]
+Hd_Task_ADC             0x1fff'ce40     0x4  Data  Gb  User_Task.o [1]
+Hd_Task_LED             0x1fff'ce3c     0x4  Data  Gb  User_Task.o [1]
+Hd_Task_USB             0x1fff'ce44     0x4  Data  Gb  User_Task.o [1]
+Hd_Task_USBReport       0x1fff'ce48     0x4  Data  Gb  User_Task.o [1]
+I2C_BaudrateConfig           0xdaf9   0x104  Code  Gb  hc32f46x_i2c.o [1]
+I2C_ClearStatus              0xde8d    0x26  Code  Gb  hc32f46x_i2c.o [1]
+I2C_Cmd                      0xdccb    0x44  Code  Gb  hc32f46x_i2c.o [1]
+I2C_DeInit                   0xdbfd    0x34  Code  Gb  hc32f46x_i2c.o [1]
+I2C_GenerateReStart          0xdd5f    0x3e  Code  Gb  hc32f46x_i2c.o [1]
+I2C_GenerateStart            0xdd21    0x3e  Code  Gb  hc32f46x_i2c.o [1]
+I2C_GenerateStop             0xdd9d    0x3e  Code  Gb  hc32f46x_i2c.o [1]
+I2C_GetStatus                0xddfb    0x92  Code  Gb  hc32f46x_i2c.o [1]
+I2C_Init                     0xdc31    0x9a  Code  Gb  hc32f46x_i2c.o [1]
+I2C_SendData                 0xdddb    0x20  Code  Gb  hc32f46x_i2c.o [1]
+IRQ000_Handler                0x4eb    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ001_Handler                0x4fd    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ002_Handler                0x50f    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ003_Handler                0x521    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ004_Handler                0x533    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ005_Handler                0x545    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ006_Handler                0x557    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ007_Handler                0x569    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ008_Handler                0x57b    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ009_Handler                0x58d    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ010_Handler                0x59f    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ011_Handler                0x5b1    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ012_Handler                0x5c3    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ013_Handler                0x5d5    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ014_Handler                0x5e7    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ015_Handler                0x5f9    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ016_Handler                0x60b    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ017_Handler                0x61d    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ018_Handler                0x62f    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ019_Handler                0x641    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ020_Handler                0x653    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ021_Handler                0x665    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ022_Handler                0x677    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ023_Handler                0x689    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ024_Handler                0x69b    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ025_Handler                0x6ad    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ026_Handler                0x6bf    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ027_Handler                0x6d1    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ028_Handler                0x6e3    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ029_Handler                0x6f5    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ030_Handler                0x707    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ031_Handler                0x719    0x12  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ032_Handler                0x72b    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ033_Handler                0x741    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ034_Handler                0x757    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ035_Handler                0x76d    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ036_Handler                0x783    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ037_Handler                0x799    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ038_Handler                0x7af    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ039_Handler                0x7c5    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ040_Handler                0x7db    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ041_Handler                0x7f1    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ042_Handler                0x807    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ043_Handler                0x81d    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ044_Handler                0x833    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ045_Handler                0x849    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ046_Handler                0x85f    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ047_Handler                0x875    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ048_Handler                0x88b    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ049_Handler                0x8a1    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ050_Handler                0x8b7    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ051_Handler                0x8cd    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ052_Handler                0x8e3    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ053_Handler                0x8f9    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ054_Handler                0x90f    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ055_Handler                0x925    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ056_Handler                0x93b    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ057_Handler                0x951    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ058_Handler                0x967    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ059_Handler                0x97d    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ060_Handler                0x993    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ061_Handler                0x9a9    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ062_Handler                0x9bf    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ063_Handler                0x9d5    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ064_Handler                0x9eb    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ065_Handler                0xa01    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ066_Handler                0xa17    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ067_Handler                0xa2d    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ068_Handler                0xa43    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ069_Handler                0xa59    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ070_Handler                0xa6f    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ071_Handler                0xa85    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ072_Handler                0xa9b    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ073_Handler                0xab1    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ074_Handler                0xac7    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ075_Handler                0xadd    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ076_Handler                0xaf3    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ077_Handler                0xb09    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ078_Handler                0xb1f    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ079_Handler                0xb35    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ080_Handler                0xb4b    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ081_Handler                0xb5f    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ082_Handler                0xb73    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ083_Handler                0xb87    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ084_Handler                0xb9b    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ085_Handler                0xbaf    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ086_Handler                0xbc3    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ087_Handler                0xbd7    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ088_Handler                0xbeb    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ089_Handler                0xbff    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ090_Handler                0xc13    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ091_Handler                0xc27    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ092_Handler                0xc3b    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ093_Handler                0xc4f    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ094_Handler                0xc63    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ095_Handler                0xc77    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ096_Handler                0xc8b    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ097_Handler                0xc9f    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ098_Handler                0xcb3    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ099_Handler                0xcc7    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ100_Handler                0xcdb    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ101_Handler                0xcef    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ102_Handler                0xd03    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ103_Handler                0xd17    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ104_Handler                0xd2b    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ105_Handler                0xd3f    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ106_Handler                0xd53    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ107_Handler                0xd67    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ108_Handler                0xd7b    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ109_Handler                0xd8f    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ110_Handler                0xda3    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ111_Handler                0xdb7    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ112_Handler                0xdcb    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ113_Handler                0xde5    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ114_Handler                0xdf9    0x14  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ115_Handler                0xe11    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ116_Handler                0xe27    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ117_Handler                0xe3d    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ118_Handler                0xe55    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ119_Handler                0xe6b    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ120_Handler                0xe81    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ121_Handler                0xe99    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ122_Handler                0xeaf    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ123_Handler                0xec5    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ124_Handler                0xedd    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ125_Handler                0xef3    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ126_Handler                0xf09    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ127_Handler                0xf1f    0x16  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ128_Handler                0xf35   0x12a  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ129_Handler               0x105f   0x40a  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ130_Handler               0x1469    0xbc  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ131_Handler               0x1549   0x27e  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ132_Handler               0x1821   0x146  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ136_Handler               0x19f9   0x28c  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ137_Handler               0x1d0d   0x21a  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ138_Handler               0x1f95   0x1cc  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ139_Handler               0x2191    0xec  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ140_Handler               0x22e5   0x1e6  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ141_Handler               0x2511   0x202  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ142_Handler               0x272d    0xdc  Code  Gb  hc32f46x_interrupts.o [1]
+IRQ143_Handler               0x2825    0xdc  Code  Gb  hc32f46x_interrupts.o [1]
+IrqHandler              0x1fff'c934   0x200  Data  Gb  hc32f46x_interrupts.o [1]
+Key_Config                   0xf915    0x4a  Code  Lc  usbd_urs.o [1]
+LED0_Toggle                  0xec93    0xb8  Code  Gb  User_Gpio.o [1]
+LED_Status              0x1fff'ce61     0x1  Data  Gb  User_Gpio.o [1]
+Lvd1_IrqHandler               0x345     0x2  Code  Gb  User_PWC.o [1]
+MemManage_Handler             0x4bf     0x8  Code  Gb  hc32f46x_interrupts.o [1]
+Myfile                  0x1fff'c710   0x224  Data  Gb  User_Task.o [1]
+NMI_Handler                   0x4af     0x8  Code  Gb  hc32f46x_interrupts.o [1]
+NMI_IrqHandler                0x313    0x18  Code  Gb  hc32f46x_exint_nmi_swi.o [1]
+OLED_Clear                   0xd8b3    0x44  Code  Gb  OLED.o [1]
+OLED_Display_On              0xd897    0x1c  Code  Gb  OLED.o [1]
+OLED_I2C3_init               0xd841    0x56  Code  Gb  OLED.o [1]
+OLED_Init                    0xd9f1    0xce  Code  Gb  OLED.o [1]
+OLED_SendAdr                 0xd659    0x6c  Code  Lc  OLED.o [1]
+OLED_Set_Pos                 0xd8f7    0x36  Code  Gb  OLED.o [1]
+OLED_ShowChar                0xd92d    0x7c  Code  Gb  OLED.o [1]
+OLED_ShowString              0xd9a9    0x3a  Code  Gb  OLED.o [1]
+OLED_StartOrRestart          0xd5e1    0x78  Code  Lc  OLED.o [1]
+OLED_Stop                    0xd745    0x4a  Code  Gb  OLED.o [1]
+OLED_WR_Byte                 0xd829    0x18  Code  Gb  OLED.o [1]
+OLED_WriteData               0xd6c5    0x80  Code  Lc  OLED.o [1]
+OTS_CheckSample              0xf2a3    0x82  Code  Gb  hc32f46x_ots.o [1]
+OTS_ComputeTemp              0xf385    0x50  Code  Lc  hc32f46x_ots.o [1]
+OTS_Init                     0xf1e5    0x9e  Code  Gb  hc32f46x_ots.o [1]
+OTS_ReadData                 0xf339    0x4c  Code  Lc  hc32f46x_ots.o [1]
+OTS_StartGetTemp             0xf283    0x20  Code  Gb  hc32f46x_ots.o [1]
+OTS_Trimming                 0xf325    0x14  Code  Lc  hc32f46x_ots.o [1]
+OcoIrqCallback               0xe4f9    0x1e  Code  Lc  User_Timer4.o [1]
+OtsBaseConfig                0xed65    0x48  Code  Gb  User_OTS.o [1]
+PORT_GetBit                  0x4c61    0xec  Code  Gb  hc32f46x_gpio.o [1]
+PORT_Init                    0x4a85   0x1c4  Code  Gb  hc32f46x_gpio.o [1]
+PORT_Lock                    0x4c55     0xc  Code  Gb  hc32f46x_gpio.o [1]
+PORT_ResetBits               0x4d99    0x4c  Code  Gb  hc32f46x_gpio.o [1]
+PORT_SetBits                 0x4d4d    0x4c  Code  Gb  hc32f46x_gpio.o [1]
+PORT_SetFunc                 0x4de9   0x382  Code  Gb  hc32f46x_gpio.o [1]
+PORT_Unlock                  0x4c49     0xc  Code  Gb  hc32f46x_gpio.o [1]
+PWC_Fcg0PeriphClockCmd       0x711d    0x5c  Code  Gb  hc32f46x_pwc.o [1]
+PWC_Fcg1PeriphClockCmd       0x7179    0x4c  Code  Gb  hc32f46x_pwc.o [1]
+PWC_Fcg2PeriphClockCmd       0x71c5    0x4c  Code  Gb  hc32f46x_pwc.o [1]
+PWC_Fcg3PeriphClockCmd       0x7211    0x4c  Code  Gb  hc32f46x_pwc.o [1]
+PendSV_Handler               0x3679          Code  Gb  portasm.o [1]
+Print_CPU_Temperature        0xedb5    0x20  Code  Gb  User_OTS.o [1]
+Region$$Table$$Base          0xfcdc           --   Gb  - Linker created -
+Region$$Table$$Limit         0xfd08           --   Gb  - Linker created -
+SDCARD_GetCardCSD            0x51f3    0xde  Code  Gb  sd_card.o [1]
+SDCARD_GetDeviceMode         0x51e3    0x10  Code  Gb  sd_card.o [1]
+SDCARD_Init                  0x5181    0x62  Code  Gb  sd_card.o [1]
+SDCARD_ReadBlocks            0x52d1   0x1f4  Code  Gb  sd_card.o [1]
+SDCARD_WriteBlocks           0x54c5   0x218  Code  Gb  sd_card.o [1]
 SDIOC_ClearNormalIrqFlag
-                             0x6ed7    0x70  Code  Gb  hc32f46x_sdioc.o [1]
-SDIOC_ConfigData             0x6acb   0x1c2  Code  Gb  hc32f46x_sdioc.o [1]
-SDIOC_GetNormalIrqFlag       0x6e5b    0x7c  Code  Gb  hc32f46x_sdioc.o [1]
-SDIOC_GetResponse            0x69f5    0x4a  Code  Gb  hc32f46x_sdioc.o [1]
-SDIOC_GetStatus              0x6dd1    0x8a  Code  Gb  hc32f46x_sdioc.o [1]
-SDIOC_Init                   0x66b9   0x14a  Code  Gb  hc32f46x_sdioc.o [1]
-SDIOC_ReadBuffer             0x6a3f    0x46  Code  Gb  hc32f46x_sdioc.o [1]
-SDIOC_SendCommand            0x6803   0x1f2  Code  Gb  hc32f46x_sdioc.o [1]
-SDIOC_SetBusWidth            0x6ce5    0x8a  Code  Gb  hc32f46x_sdioc.o [1]
-SDIOC_SetClk                 0x6c8d    0x58  Code  Gb  hc32f46x_sdioc.o [1]
-SDIOC_SetSpeedMode           0x6d6f    0x48  Code  Gb  hc32f46x_sdioc.o [1]
-SDIOC_WriteBuffer            0x6a85    0x46  Code  Gb  hc32f46x_sdioc.o [1]
+                             0x703b    0x70  Code  Gb  hc32f46x_sdioc.o [1]
+SDIOC_ConfigData             0x6c2f   0x1c4  Code  Gb  hc32f46x_sdioc.o [1]
+SDIOC_GetNormalIrqFlag       0x6fbf    0x7c  Code  Gb  hc32f46x_sdioc.o [1]
+SDIOC_GetResponse            0x6b3d    0x4a  Code  Gb  hc32f46x_sdioc.o [1]
+SDIOC_GetStatus              0x6f35    0x8a  Code  Gb  hc32f46x_sdioc.o [1]
+SDIOC_Init                   0x6801   0x14a  Code  Gb  hc32f46x_sdioc.o [1]
+SDIOC_ReadBuffer             0x6b87    0x52  Code  Gb  hc32f46x_sdioc.o [1]
+SDIOC_SendCommand            0x694b   0x1f2  Code  Gb  hc32f46x_sdioc.o [1]
+SDIOC_SetBusWidth            0x6e4b    0x8a  Code  Gb  hc32f46x_sdioc.o [1]
+SDIOC_SetClk                 0x6df3    0x58  Code  Gb  hc32f46x_sdioc.o [1]
+SDIOC_SetSpeedMode           0x6ed5    0x48  Code  Gb  hc32f46x_sdioc.o [1]
+SDIOC_WriteBuffer            0x6bd9    0x56  Code  Gb  hc32f46x_sdioc.o [1]
 SDMMC_Acmd41_SdSendOpCond
-                             0x6231    0xac  Code  Gb  sdmmc_cmd.o [1]
+                             0x63cb    0x9e  Code  Gb  sdmmc_cmd.o [1]
 SDMMC_Acmd6_SetBusWidth
-                             0x61b1    0x7a  Code  Gb  sdmmc_cmd.o [1]
-SDMMC_Cmd0_GoIdleState       0x5aa1    0x86  Code  Gb  sdmmc_cmd.o [1]
-SDMMC_Cmd13_SendStatus       0x5e41    0x80  Code  Gb  sdmmc_cmd.o [1]
+                             0x6353    0x78  Code  Gb  sdmmc_cmd.o [1]
+SDMMC_Cmd0_GoIdleState       0x5c9d    0x74  Code  Gb  sdmmc_cmd.o [1]
+SDMMC_Cmd13_SendStatus       0x5ff1    0x7e  Code  Gb  sdmmc_cmd.o [1]
 SDMMC_Cmd16_SetBlockLength
-                             0x5ec1    0x7e  Code  Gb  sdmmc_cmd.o [1]
+                             0x606f    0x7c  Code  Gb  sdmmc_cmd.o [1]
 SDMMC_Cmd17_ReadSingleBlock
-                             0x5f3f    0x7e  Code  Gb  sdmmc_cmd.o [1]
+                             0x60eb    0x7c  Code  Gb  sdmmc_cmd.o [1]
 SDMMC_Cmd18_ReadMultipleBlock
-                             0x5fbd    0x7e  Code  Gb  sdmmc_cmd.o [1]
+                             0x6167    0x7c  Code  Gb  sdmmc_cmd.o [1]
 SDMMC_Cmd24_WriteSingleBlock
-                             0x603b    0x7e  Code  Gb  sdmmc_cmd.o [1]
+                             0x61e3    0x7c  Code  Gb  sdmmc_cmd.o [1]
 SDMMC_Cmd25_WriteMultipleBlock
-                             0x60b9    0x7e  Code  Gb  sdmmc_cmd.o [1]
-SDMMC_Cmd2_AllSendCID        0x5b27    0x78  Code  Gb  sdmmc_cmd.o [1]
+                             0x625f    0x7c  Code  Gb  sdmmc_cmd.o [1]
+SDMMC_Cmd2_AllSendCID        0x5d11    0x72  Code  Gb  sdmmc_cmd.o [1]
 SDMMC_Cmd3_SendRelativeAddr
-                             0x5b9f    0x78  Code  Gb  sdmmc_cmd.o [1]
-SDMMC_Cmd55_AppCmd           0x6137    0x7a  Code  Gb  sdmmc_cmd.o [1]
-SDMMC_Cmd6_SwitchFunc        0x5c17    0x9c  Code  Gb  sdmmc_cmd.o [1]
+                             0x5d83    0x72  Code  Gb  sdmmc_cmd.o [1]
+SDMMC_Cmd55_AppCmd           0x62db    0x78  Code  Gb  sdmmc_cmd.o [1]
+SDMMC_Cmd6_SwitchFunc        0x5df5    0x7c  Code  Gb  sdmmc_cmd.o [1]
 SDMMC_Cmd7_SelectDeselectCard
-                             0x5cb3    0x80  Code  Gb  sdmmc_cmd.o [1]
-SDMMC_Cmd8_SendIfCond        0x5d33    0x92  Code  Gb  sdmmc_cmd.o [1]
-SDMMC_Cmd9_SendCSD           0x5dc5    0x7c  Code  Gb  sdmmc_cmd.o [1]
-SDMMC_GetCardDetection       0x658b    0x4e  Code  Lc  sdmmc_cmd.o [1]
-SDMMC_GetCmdResp1            0x62e1    0x58  Code  Lc  sdmmc_cmd.o [1]
-SDMMC_GetCmdResp2            0x6339    0x6a  Code  Lc  sdmmc_cmd.o [1]
-SDMMC_GetCmdResp3            0x63a9    0x4c  Code  Lc  sdmmc_cmd.o [1]
-SDMMC_GetCmdResp6            0x63f5    0x58  Code  Lc  sdmmc_cmd.o [1]
-SDMMC_GetCmdResp7            0x644d    0x4c  Code  Lc  sdmmc_cmd.o [1]
-SDMMC_WaitBusIdle            0x6499    0x4c  Code  Lc  sdmmc_cmd.o [1]
-SDMMC_WaitResponse           0x64e5    0xa6  Code  Lc  sdmmc_cmd.o [1]
-SD_CARD_Init                 0x49cb    0x1c  Code  Gb  User_SDIO.o [1]
-SRAM_CK_Disable              0xbd39     0xa  Code  Gb  hc32f46x_sram.o [1]
-SRAM_CK_Enable               0xbd43     0xa  Code  Gb  hc32f46x_sram.o [1]
-SRAM_WT_Disable              0xbd25     0xa  Code  Gb  hc32f46x_sram.o [1]
-SRAM_WT_Enable               0xbd2f     0xa  Code  Gb  hc32f46x_sram.o [1]
-SVC_Handler                  0x3669          Code  Gb  portasm.o [1]
-SdCardCheckReayForData       0x589b    0x48  Code  Lc  sd_card.o [1]
-SdCardInitHost               0x5693    0x4e  Code  Lc  sd_card.o [1]
-SdCardInitSd                 0x56e1    0x88  Code  Lc  sd_card.o [1]
-SdCardPowerON                0x5769   0x132  Code  Lc  sd_card.o [1]
-SdCardSetBusWidth            0x5575    0x78  Code  Lc  sd_card.o [1]
-SdCardSetSpeed               0x55ed    0xa6  Code  Lc  sd_card.o [1]
-SdiocGetClkDiv               0x65ed    0x88  Code  Lc  hc32f46x_sdioc.o [1]
-SdiocGetInternDataPtr        0x6675    0x44  Code  Lc  hc32f46x_sdioc.o [1]
+                             0x5e71    0x7e  Code  Gb  sdmmc_cmd.o [1]
+SDMMC_Cmd8_SendIfCond        0x5eef    0x88  Code  Gb  sdmmc_cmd.o [1]
+SDMMC_Cmd9_SendCSD           0x5f77    0x7a  Code  Gb  sdmmc_cmd.o [1]
+SDMMC_GetCardDetection       0x66cb    0x56  Code  Lc  sdmmc_cmd.o [1]
+SDMMC_GetCmdResp1            0x6469    0x44  Code  Lc  sdmmc_cmd.o [1]
+SDMMC_GetCmdResp2            0x64b9    0x5a  Code  Lc  sdmmc_cmd.o [1]
+SDMMC_GetCmdResp3            0x6513    0x3c  Code  Lc  sdmmc_cmd.o [1]
+SDMMC_GetCmdResp6            0x654f    0x4a  Code  Lc  sdmmc_cmd.o [1]
+SDMMC_GetCmdResp7            0x6599    0x3c  Code  Lc  sdmmc_cmd.o [1]
+SDMMC_WaitBusIdle            0x65d5    0x48  Code  Lc  sdmmc_cmd.o [1]
+SDMMC_WaitResponse           0x661d    0xae  Code  Lc  sdmmc_cmd.o [1]
+SD_CARD_Init                 0x4a2f    0x1c  Code  Gb  User_SDIO.o [1]
+SET_TEST_MODE           0x1fff'ce1c     0x4  Data  Gb  usbd_core.o [1]
+SRAM_CK_Disable              0xf82d     0xa  Code  Gb  hc32f46x_sram.o [1]
+SRAM_CK_Enable               0xf837     0xa  Code  Gb  hc32f46x_sram.o [1]
+SRAM_WT_Disable              0xf819     0xa  Code  Gb  hc32f46x_sram.o [1]
+SRAM_WT_Enable               0xf823     0xa  Code  Gb  hc32f46x_sram.o [1]
+SVC_Handler                  0x36d1          Code  Gb  portasm.o [1]
+SdCardCheckReayForData       0x5a97    0x3c  Code  Lc  sd_card.o [1]
+SdCardInitHost               0x58b7    0x50  Code  Lc  sd_card.o [1]
+SdCardInitSd                 0x5907    0x7a  Code  Lc  sd_card.o [1]
+SdCardPowerON                0x5981   0x116  Code  Lc  sd_card.o [1]
+SdCardSetBusWidth            0x56dd    0x86  Code  Lc  sd_card.o [1]
+SdCardSetSpeed               0x5763   0x154  Code  Lc  sd_card.o [1]
+SdiocGetClkDiv               0x6735    0x88  Code  Lc  hc32f46x_sdioc.o [1]
+SdiocGetInternDataPtr        0x67bd    0x44  Code  Lc  hc32f46x_sdioc.o [1]
 SdiocGetInternDataPtr::m_astcSdiocInstanceDataLut
-                        0x1fff'c444    0x88  Data  Lc  hc32f46x_sdioc.o [1]
-SdiocInitPins                0x4965    0x66  Code  Lc  User_SDIO.o [1]
-SetUartBaudrate              0xafa1   0x148  Code  Lc  hc32f46x_utility.o [1]
-Set_ADC_Data                 0xc001     0x6  Code  Gb  User_ADC.o [1]
-SysTick_Config               0xc2b9    0x2e  Code  Lc  main.o [1]
-SysTick_Handler               0x4d7     0x8  Code  Gb  hc32f46x_interrupts.o [1]
-SystemCoreClock         0x1fff'8160     0x4  Data  Gb  system_hc32f46x.o [1]
-SystemCoreClockUpdate        0x9fe1    0xaa  Code  Gb  system_hc32f46x.o [1]
-SystemInit                   0x9fd9     0x8  Code  Gb  system_hc32f46x.o [1]
-Task_ADC                     0xbdf1    0x5e  Code  Gb  User_Task.o [1]
-Task_LED                     0xbd5d    0x94  Code  Gb  User_Task.o [1]
-UsageFault_Handler            0x4c7     0x8  Code  Gb  hc32f46x_interrupts.o [1]
-User_ADC_Init                0xc019    0xd4  Code  Gb  User_ADC.o [1]
-User_DCU_Init                0xbf71    0x78  Code  Gb  User_DCU.o [1]
-User_DMA_Init                0xc145    0xce  Code  Gb  User_DMA.o [1]
-User_Gpio_Init               0xb955    0xee  Code  Gb  User_Gpio.o [1]
-User_I2C3_Master_Write       0xa83f    0x72  Code  Gb  OLED.o [1]
-User_OTS_Init                0xbef5     0x8  Code  Gb  User_OTS.o [1]
-User_Task_Create             0xbe4f    0x1c  Code  Gb  User_Task.o [1]
-Write_IIC_Command            0xa8b1    0x14  Code  Gb  OLED.o [1]
-Write_IIC_Data               0xa8c5    0x14  Code  Gb  OLED.o [1]
+                        0x1fff'cbc0    0x88  Data  Lc  hc32f46x_sdioc.o [1]
+SdiocInitPins                0x49c9    0x66  Code  Lc  User_SDIO.o [1]
+SetUartBaudrate              0xb6ed   0x148  Code  Lc  hc32f46x_utility.o [1]
+Set_ADC_Data                 0xee91     0x6  Code  Gb  User_ADC.o [1]
+SysTick_Config               0xfa21    0x2e  Code  Lc  main.o [1]
+SysTick_Handler               0x4df     0xc  Code  Gb  hc32f46x_interrupts.o [1]
+SystemCoreClock         0x1fff'8274     0x4  Data  Gb  system_hc32f46x.o [1]
+SystemCoreClockUpdate        0xa3b1    0xaa  Code  Gb  system_hc32f46x.o [1]
+SystemInit                   0xa3a9     0x8  Code  Gb  system_hc32f46x.o [1]
+TIMER4_CNT_ClearCountVal
+                             0xe467    0x28  Code  Gb  hc32f46x_timer4_cnt.o [1]
+TIMER4_CNT_Init              0xe1b9   0x27e  Code  Gb  hc32f46x_timer4_cnt.o [1]
+TIMER4_CNT_Start             0xe437    0x30  Code  Gb  hc32f46x_timer4_cnt.o [1]
+TIMER4_OCO_ClearIrqFlag
+                             0xc1a7    0x94  Code  Gb  hc32f46x_timer4_oco.o [1]
+TIMER4_OCO_Init              0xb941   0x488  Code  Gb  hc32f46x_timer4_oco.o [1]
+TIMER4_OCO_OutputCompareCmd
+                             0xc0d9    0xce  Code  Gb  hc32f46x_timer4_oco.o [1]
+TIMER4_OCO_SetLowChCompareMode
+                             0xbdd5   0x304  Code  Gb  hc32f46x_timer4_oco.o [1]
+TIMER4_OCO_WriteOccr         0xc23b    0x64  Code  Gb  hc32f46x_timer4_oco.o [1]
+TIMER4_PWM_Init              0xe741   0x116  Code  Gb  hc32f46x_timer4_pwm.o [1]
+TIMER4_PWM_SetFilterCountValue
+                             0xe8b3    0x4c  Code  Gb  hc32f46x_timer4_pwm.o [1]
+TIMER4_PWM_WriteDeadRegionValue
+                             0xe857    0x5c  Code  Gb  hc32f46x_timer4_pwm.o [1]
+Task_ADC                     0xe9ad    0x5e  Code  Gb  User_Task.o [1]
+Task_LED                     0xe915    0x98  Code  Gb  User_Task.o [1]
+Task_USB                     0xea7b    0x4e  Code  Gb  User_Task.o [1]
+Task_USB_Report              0xea0b    0x70  Code  Gb  User_Task.o [1]
+Task_USB_Report::HID_Buffer
+                        0x1fff'ce4c     0x4  Data  Lc  User_Task.o [1]
+USBD_ClrCfg                  0xcf8b    0x10  Code  Gb  usbd_core.o [1]
+USBD_ClrFeature              0xc879    0x34  Code  Lc  usbd_req.o [1]
+USBD_CtlContinueRx           0xc9d5    0x16  Code  Gb  usbd_ioreq.o [1]
+USBD_CtlContinueSendData
+                             0xc9bf    0x16  Code  Gb  usbd_ioreq.o [1]
+USBD_CtlError                0xc8f1    0x22  Code  Gb  usbd_req.o [1]
+USBD_CtlReceiveStatus        0xca07    0x1c  Code  Gb  usbd_ioreq.o [1]
+USBD_CtlSendData             0xc993    0x2c  Code  Gb  usbd_ioreq.o [1]
+USBD_CtlSendStatus           0xc9eb    0x1c  Code  Gb  usbd_ioreq.o [1]
+USBD_DCD_INT_cb         0x1fff'8188    0x2c  Data  Gb  usbd_core.o [1]
+USBD_DCD_INT_fops       0x1fff'8278     0x4  Data  Gb  usbd_core.o [1]
+USBD_DataInStage             0xce0b    0xce  Code  Lc  usbd_core.o [1]
+USBD_DataOutStage            0xcd5f    0xac  Code  Lc  usbd_core.o [1]
+USBD_DeInit                  0xcd09     0x4  Code  Gb  usbd_core.o [1]
+USBD_DevConnected            0xcfb7    0x16  Code  Lc  usbd_core.o [1]
+USBD_DevDisconnected         0xcfcd    0x22  Code  Lc  usbd_core.o [1]
+USBD_DeviceDesc         0x1fff'823c    0x14  Data  Gb  usbd_desc.o [1]
+USBD_GetConfig               0xc779    0x38  Code  Lc  usbd_req.o [1]
+USBD_GetDescriptor           0xc561   0x108  Code  Lc  usbd_req.o [1]
+USBD_GetIntf                 0xc7e1    0x10  Code  Lc  usbd_req.o [1]
+USBD_GetLen                  0xc97f    0x14  Code  Lc  usbd_req.o [1]
+USBD_GetStatus               0xc7b1    0x30  Code  Lc  usbd_req.o [1]
+USBD_GetString               0xc931    0x4e  Code  Gb  usbd_req.o [1]
+USBD_HID_AltSet         0x1fff'ce20     0x4  Data  Lc  usbd_hid_core.o [1]
+USBD_HID_CfgDesc        0x1fff'81e0    0x24  Data  Lc  usbd_hid_core.o [1]
+USBD_HID_DataIn              0xf1d9     0xc  Code  Lc  usbd_hid_core.o [1]
+USBD_HID_DeInit              0xf0c9    0x18  Code  Lc  usbd_hid_core.o [1]
+USBD_HID_GetCfgDesc          0xf1b9     0x8  Code  Lc  usbd_hid_core.o [1]
+USBD_HID_IdleState      0x1fff'ce28     0x4  Data  Lc  usbd_hid_core.o [1]
+USBD_HID_Init                0xf0a9    0x20  Code  Lc  usbd_hid_core.o [1]
+USBD_HID_Protocol       0x1fff'ce24     0x4  Data  Lc  usbd_hid_core.o [1]
+USBD_HID_SendReport          0xf19f    0x1a  Code  Gb  usbd_hid_core.o [1]
+USBD_HID_Setup               0xf0e1    0xbe  Code  Lc  usbd_hid_core.o [1]
+USBD_HID_cb             0x1fff'81b4    0x2c  Data  Gb  usbd_hid_core.o [1]
+USBD_Init                    0xccc1    0x48  Code  Gb  usbd_core.o [1]
+USBD_IsoINIncomplete         0xcf9b     0xe  Code  Lc  usbd_core.o [1]
+USBD_IsoOUTIncomplete        0xcfa9     0xe  Code  Lc  usbd_core.o [1]
+USBD_LangIDDesc         0x1fff'827c     0x4  Data  Gb  usbd_desc.o [1]
+USBD_OTG_ISR_Handler         0xb00d    0xee  Code  Gb  usb_dcd_int.o [1]
+USBD_ParseSetupRequest       0xc8ad    0x44  Code  Gb  usbd_req.o [1]
+USBD_Reset                   0xceed    0x30  Code  Lc  usbd_core.o [1]
+USBD_Resume                  0xcf1d    0x1e  Code  Lc  usbd_core.o [1]
+USBD_RunTestMode             0xced9     0xc  Code  Lc  usbd_core.o [1]
+USBD_SOF                     0xcf57    0x18  Code  Lc  usbd_core.o [1]
+USBD_SetAddress              0xc669    0x58  Code  Lc  usbd_req.o [1]
+USBD_SetCfg                  0xcf6f    0x1c  Code  Gb  usbd_core.o [1]
+USBD_SetConfig               0xc6c1    0xb8  Code  Lc  usbd_req.o [1]
+USBD_SetConfig::cfgidx  0x1fff'ce5d     0x1  Data  Lc  usbd_req.o [1]
+USBD_SetFeature              0xc7f1    0x88  Code  Lc  usbd_req.o [1]
+USBD_SetupStage              0xcd0d    0x52  Code  Lc  usbd_core.o [1]
+USBD_StdDevReq               0xc2ad    0xa0  Code  Gb  usbd_req.o [1]
+USBD_StdEPReq                0xc3df   0x182  Code  Gb  usbd_req.o [1]
+USBD_StdItfReq               0xc34d    0x92  Code  Gb  usbd_req.o [1]
+USBD_StrDesc            0x1fff'ccec    0x40  Data  Gb  usbd_req.o [1]
+USBD_Suspend                 0xcf3b    0x1c  Code  Lc  usbd_core.o [1]
+USBD_USR_ConfigStrDescriptor
+                             0xf8ab    0x20  Code  Gb  usbd_desc.o [1]
+USBD_USR_DeviceConfigured
+                             0xf98d     0xa  Code  Gb  usbd_urs.o [1]
+USBD_USR_DeviceConnected
+                             0xf997     0xa  Code  Gb  usbd_urs.o [1]
+USBD_USR_DeviceDescriptor
+                             0xf849     0x8  Code  Gb  usbd_desc.o [1]
+USBD_USR_DeviceDisconnected
+                             0xf9a1     0xa  Code  Gb  usbd_urs.o [1]
+USBD_USR_DeviceReset         0xf967    0x26  Code  Gb  usbd_urs.o [1]
+USBD_USR_DeviceResumed       0xf9b5     0xa  Code  Gb  usbd_urs.o [1]
+USBD_USR_DeviceSuspended
+                             0xf9ab     0xa  Code  Gb  usbd_urs.o [1]
+USBD_USR_Init                0xf95f     0x8  Code  Gb  usbd_urs.o [1]
+USBD_USR_InterfaceStrDescriptor
+                             0xf8cb    0x20  Code  Gb  usbd_desc.o [1]
+USBD_USR_LangIDStrDescriptor
+                             0xf851     0x8  Code  Gb  usbd_desc.o [1]
+USBD_USR_ManufacturerStrDescriptor
+                             0xf879    0x12  Code  Gb  usbd_desc.o [1]
+USBD_USR_ProductStrDescriptor
+                             0xf859    0x20  Code  Gb  usbd_desc.o [1]
+USBD_USR_SerialStrDescriptor
+                             0xf88b    0x20  Code  Gb  usbd_desc.o [1]
+USBD_cfg_status         0x1fff'ce34     0x4  Data  Gb  usbd_req.o [1]
+USBD_default_cfg        0x1fff'ce30     0x4  Data  Gb  usbd_req.o [1]
+USBD_ep_status          0x1fff'ce2c     0x4  Data  Gb  usbd_req.o [1]
+USB_IRQ_Handler              0xaf25     0xa  Code  Gb  usb_bsp_template.o [1]
+USB_OTG_ActiveRemoteWakeup
+                             0xae55    0x72  Code  Gb  usb_core.o [1]
+USB_OTG_BSP_EnableInterrupt
+                             0xaf9b    0x36  Code  Gb  usb_bsp_template.o [1]
+USB_OTG_BSP_Init             0xaf2f    0x6c  Code  Gb  usb_bsp_template.o [1]
+USB_OTG_BSP_mDelay           0xaffd     0xe  Code  Gb  usb_bsp_template.o [1]
+USB_OTG_BSP_uDelay           0xafed    0x10  Code  Gb  usb_bsp_template.o [1]
+USB_OTG_CoreInit             0xa6a9    0x7a  Code  Gb  usb_core.o [1]
+USB_OTG_CoreInitDev          0xa811   0x126  Code  Gb  usb_core.o [1]
+USB_OTG_CoreReset            0xa491    0x62  Code  Lc  usb_core.o [1]
+USB_OTG_DisableGlobalInt
+                             0xa73b    0x1a  Code  Gb  usb_core.o [1]
+USB_OTG_EP0Activate          0xa993    0x4a  Code  Gb  usb_core.o [1]
+USB_OTG_EP0StartXfer         0xac13   0x12e  Code  Gb  usb_core.o [1]
+USB_OTG_EP0_OutStart         0xadf1    0x64  Code  Gb  usb_core.o [1]
+USB_OTG_EPActivate           0xa9dd    0x74  Code  Gb  usb_core.o [1]
+USB_OTG_EPClearStall         0xad7f    0x3e  Code  Gb  usb_core.o [1]
+USB_OTG_EPDeactivate         0xaa51    0x56  Code  Gb  usb_core.o [1]
+USB_OTG_EPSetStall           0xad41    0x3e  Code  Gb  usb_core.o [1]
+USB_OTG_EPStartXfer          0xaaa7   0x16c  Code  Gb  usb_core.o [1]
+USB_OTG_EnableCommonInt
+                             0xa471    0x20  Code  Lc  usb_core.o [1]
+USB_OTG_EnableDevInt         0xa937    0x5c  Code  Gb  usb_core.o [1]
+USB_OTG_EnableGlobalInt
+                             0xa723    0x18  Code  Gb  usb_core.o [1]
+USB_OTG_FlushRxFifo          0xa79b    0x3e  Code  Gb  usb_core.o [1]
+USB_OTG_FlushTxFifo          0xa755    0x46  Code  Gb  usb_core.o [1]
+USB_OTG_GetDeviceSpeed       0xa555    0x2c  Code  Gb  usb_core.o [1]
+USB_OTG_GetMode              0xa581     0xa  Code  Gb  usb_core.o [1]
+USB_OTG_InitDevSpeed         0xa699    0x10  Code  Gb  usb_core.o [1]
+USB_OTG_IsDeviceMode         0xa58b    0x14  Code  Gb  usb_core.o [1]
+USB_OTG_ReadCoreItr          0xa59f    0x10  Code  Gb  usb_core.o [1]
+USB_OTG_ReadDevAllInEPItr
+                             0xade1    0x10  Code  Gb  usb_core.o [1]
+USB_OTG_ReadDevAllOutEp_itr
+                             0xadbd    0x10  Code  Gb  usb_core.o [1]
+USB_OTG_ReadDevOutEP_itr
+                             0xadcd    0x14  Code  Gb  usb_core.o [1]
+USB_OTG_ReadPacket           0xa52d    0x28  Code  Gb  usb_core.o [1]
+USB_OTG_SelectCore           0xa5af    0xdc  Code  Gb  usb_core.o [1]
+USB_OTG_SetCurrentMode       0xa7d9    0x38  Code  Gb  usb_core.o [1]
+USB_OTG_WritePacket          0xa4f3    0x3a  Code  Gb  usb_core.o [1]
+USB_OTG_dev             0x1fff'be80   0x660  Data  Gb  User_Task.o [1]
+USR_cb                  0x1fff'8220    0x1c  Data  Gb  usbd_urs.o [1]
+USR_desc                0x1fff'8204    0x1c  Data  Gb  usbd_desc.o [1]
+UsageFault_Handler            0x4cf     0x8  Code  Gb  hc32f46x_interrupts.o [1]
+User_ADC_Init                0xeea9    0xbc  Code  Gb  User_ADC.o [1]
+User_DCU_Init                0xee01    0x78  Code  Gb  User_DCU.o [1]
+User_DMA_Init                0xefbd    0xce  Code  Gb  User_DMA.o [1]
+User_Gpio_Init               0xeb91   0x102  Code  Gb  User_Gpio.o [1]
+User_I2C3_Master_Write       0xd78f    0x72  Code  Gb  OLED.o [1]
+User_OTS_Init                0xedad     0x8  Code  Gb  User_OTS.o [1]
+User_Task_Create             0xeac9    0x30  Code  Gb  User_Task.o [1]
+User_Timer4_init             0xe549   0x1d0  Code  Gb  User_Timer4.o [1]
+Write_IIC_Command            0xd801    0x14  Code  Gb  OLED.o [1]
+Write_IIC_Data               0xd815    0x14  Code  Gb  OLED.o [1]
 _Encoding_8859_1_Mbrlen
-                             0x4959     0x2  Code  Gb  xencoding_8859_1.o [2]
+                             0x49bd     0x2  Code  Gb  xencoding_8859_1.o [2]
 _Encoding_8859_1_Wctomb
-                             0x4947    0x12  Code  Gb  xencoding_8859_1.o [2]
-_GenldFull                   0x8571   0x274  Code  Lc  xprintffull.o [2]
-_LdtobFull                   0x8145   0x400  Code  Lc  xprintffull.o [2]
-_LitobFull                   0x7fed   0x112  Code  Lc  xprintffull.o [2]
-_Locale_lconv           0x1fff'8104    0x38  Data  Lc  xlocale_c.o [2]
-_PrintfFull                  0x791d   0x1aa  Code  Gb  xprintffull.o [2]
-_Prout                       0xc559    0x16  Code  Gb  xprout.o [2]
-_PutcharsFull                0x87e5    0x2e  Code  Lc  xprintffull.o [2]
-_PutfldFull                  0x7b59   0x2d8  Code  Lc  xprintffull.o [2]
-_PutstrFull                  0x7f27    0xc6  Code  Lc  xprintffull.o [2]
-_PuttxtFull                  0x7e31    0xf6  Code  Lc  xprintffull.o [2]
-__NVIC_EnableIRQ             0xc279    0x1c  Code  Lc  main.o [1]
-__NVIC_EnableIRQ             0xbf4d    0x1c  Code  Lc  User_DCU.o [1]
-__NVIC_EnableIRQ             0xc109    0x1c  Code  Lc  User_DMA.o [1]
-__NVIC_EnableIRQ             0xb929    0x1c  Code  Lc  User_Gpio.o [1]
-__NVIC_SetPriority           0xc295    0x24  Code  Lc  main.o [1]
-__aeabi_cdcmple              0x8ef1          Code  Gb  DblCmpLe.o [3]
-__aeabi_cdrcmple             0x8f21          Code  Gb  DblCmpGe.o [3]
-__aeabi_d2iz                 0x908d          Code  Gb  DblToS32.o [3]
-__aeabi_d2uiz                0x9419          Code  Gb  DblToU32.o [3]
-__aeabi_ddiv                 0x91d1          Code  Gb  DblDiv.o [3]
-__aeabi_dmul                 0x8cdd          Code  Gb  DblMul.o [3]
-__aeabi_dsub                 0x90ed          Code  Gb  DblSub.o [3]
-__aeabi_f2d                  0xc231          Code  Gb  FltToDbl.o [3]
-__aeabi_i2d                  0x90c9          Code  Gb  S32ToDbl.o [3]
-__aeabi_ldiv0                0x9461          Code  Gb  I64DivZer.o [4]
-__aeabi_memcpy               0x8a05          Code  Gb  ABImemcpy.o [4]
-__aeabi_memcpy4              0x8a25          Code  Gb  ABImemcpy.o [4]
-__aeabi_memcpy8              0x8a25          Code  Gb  ABImemcpy.o [4]
-__aeabi_memset               0x78b5          Code  Gb  ABImemset.o [4]
-__aeabi_ui2d                 0x9441          Code  Gb  U32ToDbl.o [3]
-__aeabi_uldivmod             0x8aad          Code  Gb  I64DivMod.o [4]
-__cmain                      0xc50d          Code  Gb  cmain.o [4]
-__exit                       0x95d1    0x14  Code  Gb  exit.o [5]
-__iar_Fail_s                 0x8929    0x1c  Code  Gb  xfail_s.o [2]
-__iar_Mbcurmax               0x89f9     0xa  Code  Gb  xmbcurmax.o [2]
-__iar_Memchr                 0x89a1          Code  Gb  memchr.o [4]
-__iar_Memset                 0x78b5          Code  Gb  ABImemset.o [4]
-__iar_Memset_word            0x78bd          Code  Gb  ABImemset.o [4]
-__iar_Stdout            0x1fff'80bc    0x48  Data  Gb  xfiles.o [2]
-__iar_Strchr                 0x8911          Code  Gb  strchr.o [4]
-__iar_dadd                   0x90fd          Code  Gb  DblSub.o [3]
-__iar_data_init3             0xc495    0x28  Code  Gb  data_init.o [4]
-__iar_dsub                   0x9465          Code  Gb  DblAdd.o [3]
-__iar_dsubStart              0x9477          Code  Gb  DblAdd.o [3]
-__iar_frexp                  0x8e8d          Code  Gb  frexp.o [3]
-__iar_frexpl                 0x8e8d          Code  Gb  frexp.o [3]
-__iar_globLocale        0x1fff'8074    0x48  Data  Lc  xlocale_c.o [2]
-__iar_global_Locale          0x8899     0x4  Code  Gb  xlocale_c.o [2]
-__iar_init_vfp               0xc4bd          Code  Gb  fpinit_M.o [3]
-__iar_ldexp64                0x8f51          Code  Gb  ldexp.o [3]
-__iar_packbits_init3         0xc32d    0x9c  Code  Gb  packbits_init.o [4]
-__iar_program_start          0xc5c5          Code  Gb  cstartup_M.o [4]
-__iar_scalbln64              0x8f51          Code  Gb  ldexp.o [3]
-__iar_scalbn64               0x8f51          Code  Gb  ldexp.o [3]
+                             0x49ab    0x12  Code  Gb  xencoding_8859_1.o [2]
+_LitobFull                   0x89e3   0x10a  Code  Lc  xprintffull.o [2]
+_Locale_lconv           0x1fff'8150    0x38  Data  Lc  xlocale_c.o [2]
+_PrintfFull                  0x7ad1   0xcc4  Code  Gb  xprintffull.o [2]
+_Prout                       0xfe35    0x16  Code  Gb  xprout.o [2]
+_PutcharsFull                0x8b55    0x2e  Code  Lc  xprintffull.o [2]
+_PutstrFull                  0x8923    0xc0  Code  Lc  xprintffull.o [2]
+_PuttxtFull                  0x8817   0x10c  Code  Lc  xprintffull.o [2]
+__NVIC_ClearPendingIRQ       0xaee5    0x1c  Code  Lc  usb_bsp_template.o [1]
+__NVIC_ClearPendingIRQ       0xe4b9    0x1c  Code  Lc  User_Timer4.o [1]
+__NVIC_EnableIRQ             0xf9e1    0x1c  Code  Lc  main.o [1]
+__NVIC_EnableIRQ             0xaec9    0x1c  Code  Lc  usb_bsp_template.o [1]
+__NVIC_EnableIRQ             0xeddd    0x1c  Code  Lc  User_DCU.o [1]
+__NVIC_EnableIRQ             0xef81    0x1c  Code  Lc  User_DMA.o [1]
+__NVIC_EnableIRQ             0xeb65    0x1c  Code  Lc  User_Gpio.o [1]
+__NVIC_EnableIRQ             0xe49d    0x1c  Code  Lc  User_Timer4.o [1]
+__NVIC_SetPriority           0xf9fd    0x24  Code  Lc  main.o [1]
+__NVIC_SetPriority           0xaf01    0x24  Code  Lc  usb_bsp_template.o [1]
+__NVIC_SetPriority           0xe4d5    0x24  Code  Lc  User_Timer4.o [1]
+__aeabi_cdcmple              0x8e15          Code  Gb  DblCmpLe.o [3]
+__aeabi_cdrcmple             0x8e45          Code  Gb  DblCmpGe.o [3]
+__aeabi_d2iz                 0x8fb1          Code  Gb  DblToS32.o [3]
+__aeabi_d2uiz                0x933d          Code  Gb  DblToU32.o [3]
+__aeabi_ddiv                 0x90f5          Code  Gb  DblDiv.o [3]
+__aeabi_dmul                 0x9381          Code  Gb  DblMul.o [3]
+__aeabi_dsub                 0x9011          Code  Gb  DblSub.o [3]
+__aeabi_f2d                  0xf415          Code  Gb  FltToDbl.o [3]
+__aeabi_i2d                  0x8fed          Code  Gb  S32ToDbl.o [3]
+__aeabi_ldiv0                0x98d1          Code  Gb  I64DivZer.o [4]
+__aeabi_memcpy               0x8cfd          Code  Gb  ABImemcpy.o [4]
+__aeabi_memcpy4              0x8d1d          Code  Gb  ABImemcpy.o [4]
+__aeabi_memcpy8              0x8d1d          Code  Gb  ABImemcpy.o [4]
+__aeabi_memset               0x70b5          Code  Gb  ABImemset.o [4]
+__aeabi_ui2d                 0x9365          Code  Gb  U32ToDbl.o [3]
+__aeabi_uldivmod             0x952d          Code  Gb  I64DivMod.o [4]
+__cmain                      0xfd49          Code  Gb  cmain.o [4]
+__exit                       0x98d5    0x14  Code  Gb  exit.o [5]
+__iar_Fail_s                 0x8c2d    0x1c  Code  Gb  xfail_s.o [2]
+__iar_Mbcurmax               0x9523     0xa  Code  Gb  xmbcurmax.o [2]
+__iar_Memchr                 0x8ca5          Code  Gb  memchr.o [4]
+__iar_Memset                 0x70b5          Code  Gb  ABImemset.o [4]
+__iar_Memset_word            0x70bd          Code  Gb  ABImemset.o [4]
+__iar_Stdout            0x1fff'8108    0x48  Data  Gb  xfiles.o [2]
+__iar_Strchr                 0x8c15          Code  Gb  strchr.o [4]
+__iar_dadd                   0x9021          Code  Gb  DblSub.o [3]
+__iar_data_init3             0xfc6d    0x28  Code  Gb  data_init.o [4]
+__iar_dsub                   0x9765          Code  Gb  DblAdd.o [3]
+__iar_dsubStart              0x9777          Code  Gb  DblAdd.o [3]
+__iar_frexp                  0x8db1          Code  Gb  frexp.o [3]
+__iar_frexpl                 0x8db1          Code  Gb  frexp.o [3]
+__iar_globLocale        0x1fff'80c0    0x48  Data  Lc  xlocale_c.o [2]
+__iar_global_Locale          0x8b99     0x4  Code  Gb  xlocale_c.o [2]
+__iar_init_vfp               0xfcb9          Code  Gb  fpinit_M.o [3]
+__iar_ldexp64                0x8e75          Code  Gb  ldexp.o [3]
+__iar_packbits_init3         0xfa95    0x9c  Code  Gb  packbits_init.o [4]
+__iar_program_start          0xff51          Code  Gb  cstartup_M.o [4]
+__iar_scalbln64              0x8e75          Code  Gb  ldexp.o [3]
+__iar_scalbn64               0x8e75          Code  Gb  ldexp.o [3]
 __iar_softfp___iar_frexp64
-                             0x8e81          Code  Gb  frexp.o [3]
-__iar_softfp_frexp           0x8e81          Code  Gb  frexp.o [3]
-__iar_softfp_frexpl          0x8e81          Code  Gb  frexp.o [3]
-__iar_zero_init3             0x2a13    0x3a  Code  Gb  zero_init3.o [4]
-__low_level_init             0xc52b     0x4  Code  Gb  low_level_init.o [2]
+                             0x8da5          Code  Gb  frexp.o [3]
+__iar_softfp_frexp           0x8da5          Code  Gb  frexp.o [3]
+__iar_softfp_frexpl          0x8da5          Code  Gb  frexp.o [3]
+__iar_zero_init3              0x347    0x3a  Code  Gb  zero_init3.o [4]
+__low_level_init             0xfd67     0x4  Code  Gb  low_level_init.o [2]
 __vector_table                  0x0          Data  Gb  startup_hc32f46x.o [1]
-_call_main                   0xc519          Code  Gb  cmain.o [4]
-_exit                        0xc535          Code  Gb  cexit.o [4]
-_gLocale_mblen               0x88fd     0x4  Code  Gb  xlocale_c.o [2]
-_gLocale_mblenInt            0x88c1    0x2c  Code  Gb  xlocale_c.o [2]
-_gLocale_wctomb              0x8901     0x4  Code  Gb  xlocale_c.o [2]
-_gLocale_wctombInt           0x88f9     0x4  Code  Gb  xlocale_c.o [2]
-_main                        0xc527          Code  Gb  cmain.o [4]
-abort                        0x945b     0x6  Code  Gb  abort.o [2]
-check_fs                     0x406f    0x74  Code  Lc  ff.o [1]
-chk_chr                      0x3707    0x14  Code  Lc  ff.o [1]
-chk_mounted                  0x40e3   0x2c0  Code  Gb  ff.o [1]
-clust2sect                   0x3bb9    0x1a  Code  Gb  ff.o [1]
-create_chain                 0x3b0b    0xae  Code  Lc  ff.o [1]
-create_name                  0x3ea9   0x118  Code  Lc  ff.o [1]
-create_name::cvt             0xc3c8    0x80  Data  Lc  ff.o [1]
-dir_find                     0x3daf    0x64  Code  Lc  ff.o [1]
-dir_next                     0x3c83   0x12c  Code  Lc  ff.o [1]
-dir_register                 0x3e13    0x96  Code  Lc  ff.o [1]
-dir_seek                     0x3bd3    0xb0  Code  Lc  ff.o [1]
-disk_initialize              0x48af    0x20  Code  Gb  diskio.o [1]
-disk_ioctl                   0x4935     0xe  Code  Gb  diskio.o [1]
-disk_read                    0x48dd    0x2c  Code  Gb  diskio.o [1]
-disk_status                  0x48cf     0xe  Code  Gb  diskio.o [1]
-disk_write                   0x4909    0x2c  Code  Gb  diskio.o [1]
-enIrqRegistration             0x421    0x86  Code  Gb  hc32f46x_interrupts.o [1]
-exit                         0xc52f     0x4  Code  Gb  exit.o [2]
-f_close                      0x484b    0x1a  Code  Gb  ff.o [1]
-f_gets                       0x4865    0x4a  Code  Gb  ff.o [1]
-f_mount                      0x43cd    0x34  Code  Gb  ff.o [1]
-f_open                       0x441d   0x1ae  Code  Gb  ff.o [1]
-f_read                       0x45cb   0x1c2  Code  Gb  ff.o [1]
-f_sync                       0x478d    0xbe  Code  Gb  ff.o [1]
-f_temperature           0x1fff'c660     0x4  Data  Gb  User_OTS.o [1]
-flag_DCU1_INT           0x1fff'c679     0x1  Data  Gb  User_DCU.o [1]
-flag_key0               0x1fff'c67a     0x1  Data  Gb  User_Gpio.o [1]
-flag_key1               0x1fff'c67b     0x1  Data  Gb  User_Gpio.o [1]
-follow_path                  0x3fc1    0xae  Code  Lc  ff.o [1]
-fputc                        0xaf91    0x10  Code  Gb  hc32f46x_utility.o [1]
-fr                      0x1fff'c67d     0x1  Data  Gb  User_Task.o [1]
-get_fat                      0x3869   0x104  Code  Gb  ff.o [1]
-get_fattime                  0x4943     0x4  Code  Gb  fattime.o [1]
-key0_int_callback            0xb945     0x8  Code  Gb  User_Gpio.o [1]
-key1_int_callback            0xb94d     0x8  Code  Gb  User_Gpio.o [1]
-ldexp                        0x8f51          Code  Gb  ldexp.o [3]
-ldexpl                       0x8f51          Code  Gb  ldexp.o [3]
-line                    0x1fff'c4cc    0x54  Data  Gb  User_Task.o [1]
-localeconv                   0x8905     0x4  Code  Gb  xlocale_c.o [2]
-loop                         0xbd55     0x8  Code  Gb  User_Task.o [1]
-m_f32OtsOffsetM         0x1fff'c60c     0x4  Data  Lc  hc32f46x_ots.o [1]
-m_f32OtsSlopeK          0x1fff'c608     0x4  Data  Lc  hc32f46x_ots.o [1]
-m_stcCardInitCfg        0x1fff'813c    0x10  Data  Lc  User_SDIO.o [1]
-m_stcDmaInitCfg         0x1fff'8154     0x8  Data  Lc  User_SDIO.o [1]
+_call_main                   0xfd55          Code  Gb  cmain.o [4]
+_exit                        0xfd71          Code  Gb  cexit.o [4]
+_gLocale_mblen               0x8c01     0x4  Code  Gb  xlocale_c.o [2]
+_gLocale_mblenInt            0x8bc5    0x2c  Code  Gb  xlocale_c.o [2]
+_gLocale_wctomb              0x8c05     0x4  Code  Gb  xlocale_c.o [2]
+_gLocale_wctombInt           0x8bfd     0x4  Code  Gb  xlocale_c.o [2]
+_main                        0xfd63          Code  Gb  cmain.o [4]
+abort                        0x975d     0x6  Code  Gb  abort.o [2]
+check_fs                     0x40d7    0x74  Code  Lc  ff.o [1]
+chk_chr                      0x376f    0x14  Code  Lc  ff.o [1]
+chk_mounted                  0x414b   0x2c0  Code  Gb  ff.o [1]
+clust2sect                   0x3c21    0x1a  Code  Gb  ff.o [1]
+create_chain                 0x3b73    0xae  Code  Lc  ff.o [1]
+create_name                  0x3f11   0x118  Code  Lc  ff.o [1]
+create_name::cvt             0xfb30    0x80  Data  Lc  ff.o [1]
+dir_find                     0x3e17    0x64  Code  Lc  ff.o [1]
+dir_next                     0x3ceb   0x12c  Code  Lc  ff.o [1]
+dir_register                 0x3e7b    0x96  Code  Lc  ff.o [1]
+dir_seek                     0x3c3b    0xb0  Code  Lc  ff.o [1]
+disk_initialize              0x4917    0x20  Code  Gb  diskio.o [1]
+disk_ioctl                   0x499d     0xe  Code  Gb  diskio.o [1]
+disk_read                    0x4945    0x2c  Code  Gb  diskio.o [1]
+disk_status                  0x4937     0xe  Code  Gb  diskio.o [1]
+disk_write                   0x4971    0x2c  Code  Gb  diskio.o [1]
+enIrqRegistration             0x421    0x8e  Code  Gb  hc32f46x_interrupts.o [1]
+exit                         0xfd6b     0x4  Code  Gb  exit.o [2]
+f_close                      0x48b3    0x1a  Code  Gb  ff.o [1]
+f_gets                       0x48cd    0x4a  Code  Gb  ff.o [1]
+f_mount                      0x4435    0x34  Code  Gb  ff.o [1]
+f_open                       0x4485   0x1ae  Code  Gb  ff.o [1]
+f_read                       0x4633   0x1c2  Code  Gb  ff.o [1]
+f_sync                       0x47f5    0xbe  Code  Gb  ff.o [1]
+f_temperature           0x1fff'ce38     0x4  Data  Gb  User_OTS.o [1]
+flag_DCU1_INT           0x1fff'ce5e     0x1  Data  Gb  User_DCU.o [1]
+flag_key0               0x1fff'ce5f     0x1  Data  Gb  User_Gpio.o [1]
+flag_key1               0x1fff'ce60     0x1  Data  Gb  User_Gpio.o [1]
+follow_path                  0x4029    0xae  Code  Lc  ff.o [1]
+fputc                        0xb6dd    0x10  Code  Gb  hc32f46x_utility.o [1]
+fr                      0x1fff'ce62     0x1  Data  Gb  User_Task.o [1]
+get_fat                      0x38d1   0x104  Code  Gb  ff.o [1]
+get_fattime                   0x381     0x4  Code  Gb  fattime.o [1]
+key0_int_callback            0xeb81     0x8  Code  Gb  User_Gpio.o [1]
+key1_int_callback            0xeb89     0x8  Code  Gb  User_Gpio.o [1]
+ldexp                        0x8e75          Code  Gb  ldexp.o [3]
+ldexpl                       0x8e75          Code  Gb  ldexp.o [3]
+line                    0x1fff'cc48    0x54  Data  Gb  User_Task.o [1]
+localeconv                   0x8c09     0x4  Code  Gb  xlocale_c.o [2]
+loop                         0xe90d     0x8  Code  Gb  User_Task.o [1]
+m_CntOcoMatchIrq        0x1fff'ce63     0x1  Data  Lc  User_Timer4.o [1]
+m_f32OtsOffsetM         0x1fff'cdc8     0x4  Data  Lc  hc32f46x_ots.o [1]
+m_f32OtsSlopeK          0x1fff'cdc4     0x4  Data  Lc  hc32f46x_ots.o [1]
+m_stcCardInitCfg        0x1fff'8250    0x10  Data  Lc  User_SDIO.o [1]
+m_stcDmaInitCfg         0x1fff'8268     0x8  Data  Lc  User_SDIO.o [1]
 m_stcSdhandle           0x1fff'8000    0x74  Data  Lc  User_SDIO.o [1]
-m_u8OtsClkSel           0x1fff'c677     0x1  Data  Lc  hc32f46x_ots.o [1]
-main                         0xc2e7    0x2a  Code  Gb  main.o [1]
-mem_cmp                      0x36e5    0x22  Code  Lc  ff.o [1]
-mem_cpy                      0x36c1    0x14  Code  Lc  ff.o [1]
-mem_set                      0x36d5    0x10  Code  Lc  ff.o [1]
-memchr                       0x89a1          Code  Gb  memchr.o [4]
-move_window                  0x371b    0x76  Code  Lc  ff.o [1]
-obuf                    0x1fff'c520    0x50  Data  Lc  xfiles.o [2]
-osSystickHandler             0x2a01    0x10  Code  Gb  cmsis_os.o [1]
-pfnNmiCallback          0x1fff'c604     0x4  Data  Lc  hc32f46x_exint_nmi_swi.o [1]
-printf                       0xbf25    0x28  Code  Gb  printf.o [2]
+m_u8OtsClkSel           0x1fff'ce5b     0x1  Data  Lc  hc32f46x_ots.o [1]
+main                         0xfa4f    0x2a  Code  Gb  main.o [1]
+mem_cmp                      0x374d    0x22  Code  Lc  ff.o [1]
+mem_cpy                      0x3729    0x14  Code  Lc  ff.o [1]
+mem_set                      0x373d    0x10  Code  Lc  ff.o [1]
+memchr                       0x8ca5          Code  Gb  memchr.o [4]
+move_window                  0x3783    0x76  Code  Lc  ff.o [1]
+obuf                    0x1fff'cc9c    0x50  Data  Lc  xfiles.o [2]
+osSystickHandler              0x335    0x10  Code  Gb  cmsis_os.o [1]
+pfnNmiCallback          0x1fff'cdc0     0x4  Data  Lc  hc32f46x_exint_nmi_swi.o [1]
+printf                       0xb919    0x28  Code  Gb  printf.o [2]
 prvAddCurrentTaskToDelayedList
-                             0x306d    0x6e  Code  Lc  tasks.o [1]
+                             0x30d5    0x6e  Code  Lc  tasks.o [1]
 prvAddNewTaskToReadyList
-                             0x2b65    0x9a  Code  Lc  tasks.o [1]
+                             0x2bcf    0x9a  Code  Lc  tasks.o [1]
 prvCheckTasksWaitingTermination
-                             0x2f8d    0x50  Code  Lc  tasks.o [1]
-prvDeleteTCB                 0x2fe1    0x12  Code  Lc  tasks.o [1]
-prvHeapInit                  0x349f    0x5e  Code  Lc  heap_4.o [1]
-prvIdleTask                  0x2f05    0x22  Code  Lc  tasks.o [1]
-prvInitialiseNewTask         0x2abb    0xaa  Code  Lc  tasks.o [1]
-prvInitialiseTaskLists       0x2f3d    0x50  Code  Lc  tasks.o [1]
+                             0x2ff5    0x50  Code  Lc  tasks.o [1]
+prvDeleteTCB                 0x3049    0x12  Code  Lc  tasks.o [1]
+prvHeapInit                  0x3507    0x5e  Code  Lc  heap_4.o [1]
+prvIdleTask                  0x2f6d    0x22  Code  Lc  tasks.o [1]
+prvInitialiseNewTask         0x2b25    0xaa  Code  Lc  tasks.o [1]
+prvInitialiseTaskLists       0x2fa5    0x50  Code  Lc  tasks.o [1]
 prvInsertBlockIntoFreeList
-                             0x34fd    0x5e  Code  Lc  heap_4.o [1]
+                             0x3565    0x5e  Code  Lc  heap_4.o [1]
 prvResetNextTaskUnblockTime
-                             0x2ff3    0x28  Code  Lc  tasks.o [1]
-prvTaskExitError             0x313d    0x2a  Code  Lc  port.o [1]
-put_fat                      0x396d   0x130  Code  Gb  ff.o [1]
-putchar                      0xc571     0xc  Code  Gb  putchar.o [2]
-pvPortMalloc                 0x3319   0x114  Code  Gb  heap_4.o [1]
-pxCurrentTCB            0x1fff'c624     0x4  Data  Gb  tasks.o [1]
-pxDelayedTaskList       0x1fff'c628     0x4  Data  Lc  tasks.o [1]
-pxEnd                   0x1fff'c610     0x4  Data  Lc  heap_4.o [1]
+                             0x305b    0x28  Code  Lc  tasks.o [1]
+prvTaskExitError             0x31a5    0x2a  Code  Lc  port.o [1]
+put_fat                      0x39d5   0x130  Code  Gb  ff.o [1]
+putchar                      0xfe4d     0xc  Code  Gb  putchar.o [2]
+pvPortMalloc                 0x3381   0x114  Code  Gb  heap_4.o [1]
+pxCurrentTCB            0x1fff'cde0     0x4  Data  Gb  tasks.o [1]
+pxDelayedTaskList       0x1fff'cde4     0x4  Data  Lc  tasks.o [1]
+pxEnd                   0x1fff'cdcc     0x4  Data  Lc  heap_4.o [1]
 pxOverflowDelayedTaskList
-                        0x1fff'c62c     0x4  Data  Lc  tasks.o [1]
-pxPortInitialiseStack        0x3115    0x28  Code  Gb  port.o [1]
-pxReadyTasksLists       0x1fff'c3b8    0x8c  Data  Lc  tasks.o [1]
-remove_chain                 0x3a9d    0x6e  Code  Lc  ff.o [1]
-scalbln                      0x8f51          Code  Gb  ldexp.o [3]
-scalblnl                     0x8f51          Code  Gb  ldexp.o [3]
-scalbn                       0x8f51          Code  Gb  ldexp.o [3]
-scalbnl                      0x8f51          Code  Gb  ldexp.o [3]
-scale                        0x80ff    0x46  Code  Lc  xprintffull.o [2]
-sec_hand                0x1fff'c66c     0x4  Data  Lc  xfail_s.o [2]
-strchr                       0x8911          Code  Gb  strchr.o [4]
-strlen                       0x8969          Code  Gb  strlen.o [4]
-sync                         0x3791    0xd8  Code  Lc  ff.o [1]
-system_clk_init              0xbb15   0x164  Code  Gb  System_Clk.o [1]
+                        0x1fff'cde8     0x4  Data  Lc  tasks.o [1]
+pxPortInitialiseStack        0x317d    0x28  Code  Gb  port.o [1]
+pxReadyTasksLists       0x1fff'cb34    0x8c  Data  Lc  tasks.o [1]
+remove_chain                 0x3b05    0x6e  Code  Lc  ff.o [1]
+scalbln                      0x8e75          Code  Gb  ldexp.o [3]
+scalblnl                     0x8e75          Code  Gb  ldexp.o [3]
+scalbn                       0x8e75          Code  Gb  ldexp.o [3]
+scalbnl                      0x8e75          Code  Gb  ldexp.o [3]
+scale                        0x8aed    0x46  Code  Lc  xprintffull.o [2]
+sec_hand                0x1fff'ce50     0x4  Data  Lc  xfail_s.o [2]
+strchr                       0x8c15          Code  Gb  strchr.o [4]
+strlen                       0x8c6d          Code  Gb  strlen.o [4]
+sync                         0x37f9    0xd8  Code  Lc  ff.o [1]
+system_clk_init              0xf5e9   0x184  Code  Gb  System_Clk.o [1]
 u32ICG                        0x400    0x20  Data  Gb  hc32f46x_icg.o [1]
-u8FreqDiv               0x1fff'814c     0x8  Data  Lc  hc32f46x_i2c.o [1]
-ucHeap                  0x1fff'8164  0x3c00  Data  Lc  heap_4.o [1]
-ucMaxSysCallPriority    0x1fff'c678     0x1  Data  Lc  port.o [1]
-ulMaxPRIGROUPValue      0x1fff'c620     0x4  Data  Lc  port.o [1]
-uxCriticalNesting       0x1fff'815c     0x4  Data  Lc  port.o [1]
-uxCurrentNumberOfTasks  0x1fff'c634     0x4  Data  Lc  tasks.o [1]
+u8FreqDiv               0x1fff'8260     0x8  Data  Lc  hc32f46x_i2c.o [1]
+ucHeap                  0x1fff'8280  0x3c00  Data  Lc  heap_4.o [1]
+ucMaxSysCallPriority    0x1fff'ce5c     0x1  Data  Lc  port.o [1]
+ulMaxPRIGROUPValue      0x1fff'cddc     0x4  Data  Lc  port.o [1]
+uxCriticalNesting       0x1fff'8270     0x4  Data  Lc  port.o [1]
+uxCurrentNumberOfTasks  0x1fff'cdf0     0x4  Data  Lc  tasks.o [1]
 uxDeletedTasksWaitingCleanUp
-                        0x1fff'c630     0x4  Data  Lc  tasks.o [1]
-uxListRemove                 0x35eb    0x26  Code  Gb  list.o [1]
-uxPendedTicks           0x1fff'c644     0x4  Data  Lc  tasks.o [1]
-uxSchedulerSuspended    0x1fff'c65c     0x4  Data  Lc  tasks.o [1]
-uxTaskNumber            0x1fff'c650     0x4  Data  Lc  tasks.o [1]
-uxTopReadyPriority      0x1fff'c63c     0x4  Data  Lc  tasks.o [1]
-vListInitialise              0x3579    0x1e  Code  Gb  list.o [1]
-vListInitialiseItem          0x3597     0x6  Code  Gb  list.o [1]
-vListInsert                  0x35b5    0x36  Code  Gb  list.o [1]
-vListInsertEnd               0x359d    0x18  Code  Gb  list.o [1]
-vPortEnableVFP               0x36a5          Code  Gb  portasm.o [1]
-vPortEnterCritical           0x3235    0x34  Code  Gb  port.o [1]
-vPortExitCritical            0x3269    0x2c  Code  Gb  port.o [1]
-vPortFree                    0x342d    0x72  Code  Gb  heap_4.o [1]
-vPortStartFirstTask          0x3685          Code  Gb  portasm.o [1]
-vTaskDelay                   0x2bff    0x4c  Code  Gb  tasks.o [1]
-vTaskStartScheduler          0x2c4b    0x64  Code  Gb  tasks.o [1]
-vTaskSuspendAll              0x2caf     0xc  Code  Gb  tasks.o [1]
-vTaskSwitchContext           0x2e97    0x6c  Code  Gb  tasks.o [1]
-validate                     0x43a3    0x2a  Code  Lc  ff.o [1]
-xBlockAllocatedBit      0x1fff'c61c     0x4  Data  Lc  heap_4.o [1]
-xDelayedTaskList1       0x1fff'c590    0x14  Data  Lc  tasks.o [1]
-xDelayedTaskList2       0x1fff'c5a4    0x14  Data  Lc  tasks.o [1]
-xFreeBytesRemaining     0x1fff'c614     0x4  Data  Lc  heap_4.o [1]
-xHeapStructSize              0xc5f0     0x4  Data  Lc  heap_4.o [1]
-xIdleTaskHandle         0x1fff'c658     0x4  Data  Lc  tasks.o [1]
+                        0x1fff'cdec     0x4  Data  Lc  tasks.o [1]
+uxListRemove                 0x3653    0x26  Code  Gb  list.o [1]
+uxPendedTicks           0x1fff'ce00     0x4  Data  Lc  tasks.o [1]
+uxSchedulerSuspended    0x1fff'ce18     0x4  Data  Lc  tasks.o [1]
+uxTaskNumber            0x1fff'ce0c     0x4  Data  Lc  tasks.o [1]
+uxTopReadyPriority      0x1fff'cdf8     0x4  Data  Lc  tasks.o [1]
+vListInitialise              0x35e1    0x1e  Code  Gb  list.o [1]
+vListInitialiseItem          0x35ff     0x6  Code  Gb  list.o [1]
+vListInsert                  0x361d    0x36  Code  Gb  list.o [1]
+vListInsertEnd               0x3605    0x18  Code  Gb  list.o [1]
+vPortEnableVFP               0x370d          Code  Gb  portasm.o [1]
+vPortEnterCritical           0x329d    0x34  Code  Gb  port.o [1]
+vPortExitCritical            0x32d1    0x2c  Code  Gb  port.o [1]
+vPortFree                    0x3495    0x72  Code  Gb  heap_4.o [1]
+vPortStartFirstTask          0x36ed          Code  Gb  portasm.o [1]
+vTaskDelay                   0x2c69    0x4c  Code  Gb  tasks.o [1]
+vTaskStartScheduler          0x2cb5    0x64  Code  Gb  tasks.o [1]
+vTaskSuspendAll              0x2d19     0xc  Code  Gb  tasks.o [1]
+vTaskSwitchContext           0x2f01    0x6c  Code  Gb  tasks.o [1]
+validate                     0x440b    0x2a  Code  Lc  ff.o [1]
+xBlockAllocatedBit      0x1fff'cdd8     0x4  Data  Lc  heap_4.o [1]
+xDelayedTaskList1       0x1fff'cd4c    0x14  Data  Lc  tasks.o [1]
+xDelayedTaskList2       0x1fff'cd60    0x14  Data  Lc  tasks.o [1]
+xFreeBytesRemaining     0x1fff'cdd0     0x4  Data  Lc  heap_4.o [1]
+xHeapStructSize              0xff8c     0x4  Data  Lc  heap_4.o [1]
+xIdleTaskHandle         0x1fff'ce14     0x4  Data  Lc  tasks.o [1]
 xMinimumEverFreeBytesRemaining
-                        0x1fff'c618     0x4  Data  Lc  heap_4.o [1]
-xNextTaskUnblockTime    0x1fff'c654     0x4  Data  Lc  tasks.o [1]
-xNumOfOverflows         0x1fff'c64c     0x4  Data  Lc  tasks.o [1]
-xPendingReadyList       0x1fff'c5b8    0x14  Data  Lc  tasks.o [1]
-xPortStartScheduler          0x3167    0xce  Code  Gb  port.o [1]
-xPortSysTickHandler          0x3295    0x28  Code  Gb  port.o [1]
-xSchedulerRunning       0x1fff'c640     0x4  Data  Lc  tasks.o [1]
-xStart                  0x1fff'c5fc     0x8  Data  Lc  heap_4.o [1]
-xSuspendedTaskList      0x1fff'c5e0    0x14  Data  Lc  tasks.o [1]
-xTaskCreate                  0x2a4d    0x6e  Code  Gb  tasks.o [1]
-xTaskGetSchedulerState       0x3025    0x20  Code  Gb  tasks.o [1]
-xTaskIncrementTick           0x2d9f    0xf8  Code  Gb  tasks.o [1]
-xTaskResumeAll               0x2cbb    0xe4  Code  Gb  tasks.o [1]
+                        0x1fff'cdd4     0x4  Data  Lc  heap_4.o [1]
+xNextTaskUnblockTime    0x1fff'ce10     0x4  Data  Lc  tasks.o [1]
+xNumOfOverflows         0x1fff'ce08     0x4  Data  Lc  tasks.o [1]
+xPendingReadyList       0x1fff'cd74    0x14  Data  Lc  tasks.o [1]
+xPortStartScheduler          0x31cf    0xce  Code  Gb  port.o [1]
+xPortSysTickHandler          0x32fd    0x28  Code  Gb  port.o [1]
+xSchedulerRunning       0x1fff'cdfc     0x4  Data  Lc  tasks.o [1]
+xStart                  0x1fff'cdb8     0x8  Data  Lc  heap_4.o [1]
+xSuspendedTaskList      0x1fff'cd9c    0x14  Data  Lc  tasks.o [1]
+xTaskCreate                  0x2ab9    0x6c  Code  Gb  tasks.o [1]
+xTaskGetSchedulerState       0x308d    0x20  Code  Gb  tasks.o [1]
+xTaskIncrementTick           0x2e09    0xf8  Code  Gb  tasks.o [1]
+xTaskResumeAll               0x2d25    0xe4  Code  Gb  tasks.o [1]
 xTasksWaitingTermination
-                        0x1fff'c5cc    0x14  Data  Lc  tasks.o [1]
-xTickCount              0x1fff'c638     0x4  Data  Lc  tasks.o [1]
-xYieldPending           0x1fff'c648     0x4  Data  Lc  tasks.o [1]
+                        0x1fff'cd88    0x14  Data  Lc  tasks.o [1]
+xTickCount              0x1fff'cdf4     0x4  Data  Lc  tasks.o [1]
+xYieldPending           0x1fff'ce04     0x4  Data  Lc  tasks.o [1]
 
 
-[1] = C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj
+[1] = D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Debug\Obj
 [2] = dl7M_tlf.a
 [3] = m7M_tls.a
 [4] = rt7M_tl.a
 [5] = shb_l.a
 
-  48 442 bytes of readonly  code memory
-   1 991 bytes of readonly  data memory (+ 32 absolute)
-  19 070 bytes of readwrite data memory
+  62'873 bytes of readonly  code memory
+   2'832 bytes of readonly  data memory (+ 32 absolute)
+  21'092 bytes of readwrite data memory
 
 Errors: none
 Warnings: none

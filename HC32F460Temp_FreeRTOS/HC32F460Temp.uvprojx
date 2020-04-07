@@ -17,7 +17,7 @@
         <TargetCommonOption>
           <Device>HC32F460PETB</Device>
           <Vendor>HDSC</Vendor>
-          <PackID>HDSC.HC32F46x.1.0.0</PackID>
+          <PackID>HDSC.HC32F46x.1.0.1</PackID>
           <PackURL>https://raw.githubusercontent.com/hdscmcu/pack/master/</PackURL>
           <Cpu>IRAM(0x1FFF8000,0x8000) IRAM2(0x20000000,0x10000) IRAM3(0x20010000,0x10000) IRAM4(0x20020000,0x07000) IRAM5(0x200F0000,0x01000) IROM(0x00000000,0x80000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -81,7 +81,7 @@
             <nStopB2X>0</nStopB2X>
           </BeforeMake>
           <AfterMake>
-            <RunUserProg1>0</RunUserProg1>
+            <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
             <UserProg1Name>fromelf --bincombined --bincombined_base=0x00000000 --output .\Objects\@L.bin .\Objects\@L.axf</UserProg1Name>
             <UserProg2Name></UserProg2Name>
@@ -337,9 +337,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--diag_suppress=186,66</MiscControls>
-              <Define>HC32F46x,USE_DEVICE_DRIVER_LIB,__TARGET_FPU_VFP,__FPU_PRESENT=1,ARM_MATH_CM4,__CC_ARM,ARM_MATH_MATRIX_CHECK,ARM_MATH_ROUNDING</Define>
+              <Define>HC32F46x,USE_DEVICE_DRIVER_LIB,__TARGET_FPU_VFP,__FPU_PRESENT=1,ARM_MATH_CM4,__CC_ARM,ARM_MATH_MATRIX_CHECK,ARM_MATH_ROUNDING,__MPU_PRESENT=1</Define>
               <Undefine></Undefine>
-              <IncludePath>.\common;.\driver\src;.\driver\inc;.\driver;.\usb_lib\ctl_drv;.\usb_lib\device_class\hid;.\usb_lib\device_core;.\App;.\FreeRTOS;.\FreeRTOS\include;.\FreeRTOS\CMSIS_RTOS;.\FreeRTOS\portable\MemMang;.\FreeRTOS\portable\RVDS;.\PeripheralDriver;.\midware\OLED;.\midware\OLED;.\midware\sd_card\inc;.\midware\sd_card\src;.\midware\sd_card;.\midware\wm8731;.\midware\wm8731\inc;.\midware\wm8731\src;.\FreeRTOS\portable\MDK;.\FileSystem\inc</IncludePath>
+              <IncludePath>.\common;.\driver\src;.\driver\inc;.\driver;.\usb_lib\ctl_drv;.\usb_lib\device_class\hid;.\usb_lib\device_core;.\App;.\FreeRTOS;.\FreeRTOS\include;.\FreeRTOS\CMSIS_RTOS;.\FreeRTOS\portable\MemMang;.\FreeRTOS\portable\RVDS;.\PeripheralDriver;.\midware\OLED;.\midware\OLED;.\midware\sd_card\inc;.\midware\sd_card\src;.\midware\sd_card;.\midware\wm8731;.\midware\wm8731\inc;.\midware\wm8731\src;.\FreeRTOS\portable\MDK;.\FileSystem\inc;.\midware\NRF24L01;.\midware\MLX9061x;.\RTT</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -724,11 +724,6 @@
               <FilePath>.\PeripheralDriver\System_Clk.c</FilePath>
             </File>
             <File>
-              <FileName>User_SPI.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\PeripheralDriver\User_SPI.c</FilePath>
-            </File>
-            <File>
               <FileName>User_OTS.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\PeripheralDriver\User_OTS.c</FilePath>
@@ -757,11 +752,6 @@
               <FileName>User_DMA.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\PeripheralDriver\User_DMA.c</FilePath>
-            </File>
-            <File>
-              <FileName>User_I2C.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\PeripheralDriver\User_I2C.c</FilePath>
             </File>
             <File>
               <FileName>User_I2S.c</FileName>
@@ -832,6 +822,46 @@
               <FileName>Hw_Uart1.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\PeripheralDriver\Hw_Uart1.h</FilePath>
+            </File>
+            <File>
+              <FileName>HW_I2C.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\PeripheralDriver\HW_I2C.c</FilePath>
+            </File>
+            <File>
+              <FileName>HW_I2C.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\PeripheralDriver\HW_I2C.h</FilePath>
+            </File>
+            <File>
+              <FileName>Hw_MPU.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\PeripheralDriver\Hw_MPU.c</FilePath>
+            </File>
+            <File>
+              <FileName>Hw_MPU.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\PeripheralDriver\Hw_MPU.h</FilePath>
+            </File>
+            <File>
+              <FileName>Hw_TIMERA_Capture.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\PeripheralDriver\Hw_TIMERA_Capture.c</FilePath>
+            </File>
+            <File>
+              <FileName>Hw_TIMERA_Capture.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\PeripheralDriver\Hw_TIMERA_Capture.h</FilePath>
+            </File>
+            <File>
+              <FileName>Hw_SPI3.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\PeripheralDriver\Hw_SPI3.c</FilePath>
+            </File>
+            <File>
+              <FileName>Hw_SPI3.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\PeripheralDriver\Hw_SPI3.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -918,6 +948,36 @@
               <FileType>1</FileType>
               <FilePath>.\midware\sd_card\src\sd_card.c</FilePath>
             </File>
+            <File>
+              <FileName>NRF24L01.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\midware\NRF24L01\NRF24L01.c</FilePath>
+            </File>
+            <File>
+              <FileName>NRF24L01.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\midware\NRF24L01\NRF24L01.h</FilePath>
+            </File>
+            <File>
+              <FileName>MLX9061x.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\midware\MLX9061x\MLX9061x.c</FilePath>
+            </File>
+            <File>
+              <FileName>MLX9061x.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\midware\MLX9061x\MLX9061x.h</FilePath>
+            </File>
+            <File>
+              <FileName>AT24C02.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\midware\AT24C02\AT24C02.c</FilePath>
+            </File>
+            <File>
+              <FileName>AT24C02.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\midware\AT24C02\AT24C02.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -937,6 +997,31 @@
               <FileName>ff.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\FileSystem\src\ff.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Debug_RTT</GroupName>
+          <Files>
+            <File>
+              <FileName>SEGGER_RTT.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\RTT\SEGGER_RTT.c</FilePath>
+            </File>
+            <File>
+              <FileName>SEGGER_RTT.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\RTT\SEGGER_RTT.h</FilePath>
+            </File>
+            <File>
+              <FileName>SEGGER_RTT_Conf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\RTT\SEGGER_RTT_Conf.h</FilePath>
+            </File>
+            <File>
+              <FileName>SEGGER_RTT_printf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\RTT\SEGGER_RTT_printf.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -14,11 +14,11 @@
 .\objects\timers.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\objects\timers.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\timers.o: .\common\hc32f46x.h
-.\objects\timers.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm4.h
-.\objects\timers.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_version.h
-.\objects\timers.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_compiler.h
-.\objects\timers.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h
-.\objects\timers.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h
+.\objects\timers.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm4.h
+.\objects\timers.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_version.h
+.\objects\timers.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_compiler.h
+.\objects\timers.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h
+.\objects\timers.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h
 .\objects\timers.o: .\common\system_hc32f46x.h
 .\objects\timers.o: .\common\ddl_config.h
 .\objects\timers.o: .\driver\inc\hc32f46x_adc.h

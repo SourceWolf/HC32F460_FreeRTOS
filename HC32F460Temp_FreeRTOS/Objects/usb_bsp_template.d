@@ -12,11 +12,11 @@
 .\objects\usb_bsp_template.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\usb_bsp_template.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\usb_bsp_template.o: .\common\hc32f46x.h
-.\objects\usb_bsp_template.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm4.h
-.\objects\usb_bsp_template.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_version.h
-.\objects\usb_bsp_template.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_compiler.h
-.\objects\usb_bsp_template.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h
-.\objects\usb_bsp_template.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h
+.\objects\usb_bsp_template.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm4.h
+.\objects\usb_bsp_template.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_version.h
+.\objects\usb_bsp_template.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_compiler.h
+.\objects\usb_bsp_template.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h
+.\objects\usb_bsp_template.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h
 .\objects\usb_bsp_template.o: .\common\system_hc32f46x.h
 .\objects\usb_bsp_template.o: .\common\ddl_config.h
 .\objects\usb_bsp_template.o: .\driver\inc\hc32f46x_adc.h

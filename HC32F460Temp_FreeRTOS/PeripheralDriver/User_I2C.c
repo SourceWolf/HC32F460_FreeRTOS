@@ -1,10 +1,10 @@
 #include "hc32_ddl.h"
 #define I2C_CH M4_I2C1
 
-#define I2C1_SCL_PORT   PortC
-#define I2C1_SCL_Pin    Pin04
-#define I2C1_SDA_PORT   PortC
-#define I2C1_SDA_Pin    Pin05
+#define I2C1_SCL_PORT   PortC//PortA//PortC
+#define I2C1_SCL_Pin    Pin04//Pin01//Pin04
+#define I2C1_SDA_PORT   PortC//PortA//PortC
+#define I2C1_SDA_Pin    Pin05//Pin00//Pin05
 
 /* Define E2PROM device address */
 #define E2_ADDRESS                      0x50
@@ -20,7 +20,7 @@
 #define GENERATE_START                  0x00
 #define GENERATE_RESTART                0x01
 
-#define TIMEOUT                         ((uint32_t)0x10000)
+#define TIMEOUT                         ((uint32_t)0x100)
 
 #define I2C_RET_OK                      0
 #define I2C_RET_ERROR                   1
@@ -86,13 +86,14 @@ static uint8_t E2_StartOrRestart(uint8_t u8Start)
  **         - I2C_RET_ERROR  Send start failed
  **         - I2C_RET_OK     Send start success
  ******************************************************************************/
-static uint8_t E2_SendAdr(uint8_t u8Adr)
+;static uint8_t E2_SendAdr(uint8_t u8Adr)
 {
     uint32_t u32TimeOut = TIMEOUT;
 
     /* Wait tx buffer empty */
     while(Reset == I2C_GetStatus(I2C_CH, I2C_SR_TEMPTYF))
     {
+		I2C_SoftwareResetCmd(I2C_CH,1);
         if(0 == (u32TimeOut--)) return I2C_RET_ERROR;
     }
     
@@ -112,7 +113,8 @@ static uint8_t E2_SendAdr(uint8_t u8Adr)
         u32TimeOut = TIMEOUT;
         while(Set == I2C_GetStatus(I2C_CH, I2C_SR_NACKDETECTF))
         {
-            if(0 == (u32TimeOut--)) return I2C_RET_ERROR;
+            if(0 == (u32TimeOut--)) 
+			return I2C_RET_ERROR;
         }
     }
     
@@ -267,7 +269,7 @@ uint8_t E2_Initialize(void)
     
     MEM_ZERO_STRUCT(stcI2cInit);
     stcI2cInit.enI2cMode = I2cMaster;
-    stcI2cInit.u32Baudrate = 50000;
+    stcI2cInit.u32Baudrate = 400000;
     I2C_Init(I2C_CH, &stcI2cInit);
     
     I2C_Cmd(I2C_CH, Enable);
@@ -350,31 +352,40 @@ uint8_t User_I2C1_Master_Write(uint8_t DeviceAddr, uint8_t DataAddr,uint8_t *TxD
 
 uint8_t User_I2C1_Master_Read(uint8_t DeviceAddr, uint8_t DataAddr,uint8_t *RxData, uint8_t Data_len)
 {
-    uint8_t i,status = I2C_RET_OK;
+    static uint8_t i,status = I2C_RET_OK;
     uint32_t u32TimeOut = TIMEOUT;
     status = E2_StartOrRestart(GENERATE_START);
     if(status != I2C_RET_OK)
         {
+			E2_Stop();
             return status;
         }
     status = E2_SendAdr((DeviceAddr<<1)&0xFE);
     if(status != I2C_RET_OK)
         {
+			E2_Stop();
+			I2C_CH->CR1_f.PE = 0;
+			I2C_CH->CR1_f.SWRST = 1;
+			I2C_CH->CR1_f.SWRST = 0;
+			I2C_CH->CR1_f.PE = 1;			
             return status;
         }
     status = E2_WriteData(&DataAddr,1);
     if(status != I2C_RET_OK)
         {
+			E2_Stop();
             return status;
         }
     status = E2_StartOrRestart(GENERATE_RESTART);
     if(status != I2C_RET_OK)
         {
+			E2_Stop();
             return status;
         }
      status = E2_SendAdr((DeviceAddr<<1)|0x01);
     if(status != I2C_RET_OK)
         {
+			E2_Stop();
             return status;
         }
     for(i=0; i<Data_len; i++)
@@ -386,7 +397,12 @@ uint8_t User_I2C1_Master_Read(uint8_t DeviceAddr, uint8_t DataAddr,uint8_t *RxDa
             }        
             while(Reset == I2C_GetStatus(I2C_CH, I2C_SR_RFULLF))
                 {
-                    if(0 == (u32TimeOut--)) return I2C_RET_ERROR;
+                    if(0 == (u32TimeOut--))
+					{
+						status = E2_Stop();
+						return I2C_RET_ERROR;
+					}
+						
                 }        
             /* read data from register*/
             RxData[i] = I2C_ReadData(I2C_CH);

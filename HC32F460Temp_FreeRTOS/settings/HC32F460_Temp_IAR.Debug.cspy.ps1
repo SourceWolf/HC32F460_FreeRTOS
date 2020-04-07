@@ -23,9 +23,9 @@
 
 if ($debugfile -eq "")
 {
-& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.1\common\bin\cspybat" -f "C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\settings\HC32F460_Temp_IAR.Debug.general.xcl" --backend -f "C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\settings\HC32F460_Temp_IAR.Debug.driver.xcl" 
+& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\common\bin\cspybat" -f "D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\settings\HC32F460_Temp_IAR.Debug.general.xcl" --backend -f "D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\settings\HC32F460_Temp_IAR.Debug.driver.xcl" 
 }
 else
 {
-& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.1\common\bin\cspybat" -f "C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\settings\HC32F460_Temp_IAR.Debug.general.xcl" --debug_file=$debugfile --backend -f "C:\03-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\settings\HC32F460_Temp_IAR.Debug.driver.xcl" 
+& "C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\common\bin\cspybat" -f "D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\settings\HC32F460_Temp_IAR.Debug.general.xcl" --debug_file=$debugfile --backend -f "D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\settings\HC32F460_Temp_IAR.Debug.driver.xcl" 
 }

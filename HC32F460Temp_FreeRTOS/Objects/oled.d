@@ -7,11 +7,11 @@
 .\objects\oled.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\oled.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\oled.o: .\common\hc32f46x.h
-.\objects\oled.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm4.h
-.\objects\oled.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_version.h
-.\objects\oled.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_compiler.h
-.\objects\oled.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h
-.\objects\oled.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h
+.\objects\oled.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm4.h
+.\objects\oled.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_version.h
+.\objects\oled.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_compiler.h
+.\objects\oled.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h
+.\objects\oled.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h
 .\objects\oled.o: .\common\system_hc32f46x.h
 .\objects\oled.o: .\common\ddl_config.h
 .\objects\oled.o: .\driver\inc\hc32f46x_adc.h
@@ -71,3 +71,4 @@
 .\objects\oled.o: .\driver\inc\hc32f46x_utility.h
 .\objects\oled.o: .\driver\inc\hc32f46x_wdt.h
 .\objects\oled.o: midware\OLED\OLED_FRONT.h
+.\objects\oled.o: .\PeripheralDriver\Hw_I2C.h

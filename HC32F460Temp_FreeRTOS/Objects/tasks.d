@@ -14,11 +14,11 @@
 .\objects\tasks.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\tasks.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\tasks.o: .\common\hc32f46x.h
-.\objects\tasks.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm4.h
-.\objects\tasks.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_version.h
-.\objects\tasks.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_compiler.h
-.\objects\tasks.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h
-.\objects\tasks.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h
+.\objects\tasks.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm4.h
+.\objects\tasks.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_version.h
+.\objects\tasks.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_compiler.h
+.\objects\tasks.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h
+.\objects\tasks.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h
 .\objects\tasks.o: .\common\system_hc32f46x.h
 .\objects\tasks.o: .\common\ddl_config.h
 .\objects\tasks.o: .\driver\inc\hc32f46x_adc.h

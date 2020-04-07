@@ -1,4 +1,4 @@
---cpu=Cortex-M4.fp
+--cpu=Cortex-M4.fp.sp
 ".\objects\hc32f46x_adc.o"
 ".\objects\hc32f46x_aes.o"
 ".\objects\hc32f46x_can.o"
@@ -63,7 +63,6 @@
 ".\objects\user_crypto.o"
 ".\objects\user_dcu.o"
 ".\objects\user_dma.o"
-".\objects\user_i2c.o"
 ".\objects\user_i2s.o"
 ".\objects\user_pwc.o"
 ".\objects\user_rtc.o"
@@ -76,6 +75,9 @@
 ".\objects\user_qspi.o"
 ".\objects\fpu_enable.o"
 ".\objects\hw_uart1.o"
+".\objects\hw_i2c.o"
+".\objects\hw_mpu.o"
+".\objects\hw_timera_capture.o"
 ".\objects\croutine.o"
 ".\objects\event_groups.o"
 ".\objects\list.o"
@@ -91,9 +93,14 @@
 ".\objects\wm8731.o"
 ".\objects\sdmmc_cmd.o"
 ".\objects\sd_card.o"
+".\objects\nrf24l01.o"
+".\objects\mlx9061x.o"
+".\objects\at24c02.o"
 ".\objects\diskio.o"
 ".\objects\fattime.o"
 ".\objects\ff.o"
+".\objects\segger_rtt.o"
+".\objects\segger_rtt_printf.o"
 --library_type=microlib --strict --scatter ".\Objects\HC32F460Temp.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info
 --list ".\Listings\HC32F460Temp.map" -o .\Objects\HC32F460Temp.axf

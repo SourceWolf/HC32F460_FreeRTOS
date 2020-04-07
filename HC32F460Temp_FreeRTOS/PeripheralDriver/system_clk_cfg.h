@@ -146,7 +146,7 @@
 //MPLL_P,Q,R分频
 #define MPLL_CLK_P_DIV      PLL_DIV2+1//MPLL 预分频数
 #define MPLL_CLK_Q_DIV      PLL_DIV6+1
-#define MPLL_CLK_R_DIV      PLL_DIV2+1
+#define MPLL_CLK_R_DIV      PLL_DIV15+1
 
 
 //------------------Configure UPLL CLK------------------------//

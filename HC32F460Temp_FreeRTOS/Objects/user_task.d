@@ -7,11 +7,11 @@
 .\objects\user_task.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\user_task.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\objects\user_task.o: .\common\hc32f46x.h
-.\objects\user_task.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm4.h
-.\objects\user_task.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_version.h
-.\objects\user_task.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_compiler.h
-.\objects\user_task.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h
-.\objects\user_task.o: C:\Users\User\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h
+.\objects\user_task.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm4.h
+.\objects\user_task.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_version.h
+.\objects\user_task.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_compiler.h
+.\objects\user_task.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h
+.\objects\user_task.o: C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h
 .\objects\user_task.o: .\common\system_hc32f46x.h
 .\objects\user_task.o: .\common\ddl_config.h
 .\objects\user_task.o: .\driver\inc\hc32f46x_adc.h
@@ -112,3 +112,9 @@
 .\objects\user_task.o: App\usbd_desc.h
 .\objects\user_task.o: App\usb_bsp.h
 .\objects\user_task.o: .\PeripheralDriver\Hw_Uart1.h
+.\objects\user_task.o: .\midware\NRF24L01\NRF24L01.h
+.\objects\user_task.o: .\midware\MLX9061x\MLX9061x.h
+.\objects\user_task.o: .\PeripheralDriver\Hw_TIMERA_Capture.h
+.\objects\user_task.o: .\PeripheralDriver\HW_I2C.h
+.\objects\user_task.o: .\RTT\SEGGER_RTT.h
+.\objects\user_task.o: .\RTT\SEGGER_RTT_Conf.h

@@ -11,5 +11,6 @@ void OLED_Set_Pos(unsigned char x, unsigned char y);
 void OLED_Clear(void);
 void OLED_Display_Off(void);
 void OLED_Display_On(void);
+void OLED_Refresh(void);
 #endif
 
