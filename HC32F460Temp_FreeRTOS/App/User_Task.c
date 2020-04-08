@@ -79,7 +79,7 @@ void Task_LED(void *param)
 //	User_I2C1_Init();
 //    OLED_Init();
 //    User_OTS_Init();
-//	NRF24L01_Init();
+	NRF24L01_Init();
 //    Ddl_UartInit();
 //    User_Timer4_init();
 //    taskENTER_CRITICAL();
@@ -105,7 +105,8 @@ void Task_LED(void *param)
 //	User_I2S3_Init();
 //	TimerACaptureInit();
     while(1)
-    {  
+    { 
+	Test_NRF24L01_TX();		
 //			PORT_Toggle(LED0_PORT,LED0_Pin);
 //			User_I2C1_Master_Read(0x32,0x0d,&data,1);
 

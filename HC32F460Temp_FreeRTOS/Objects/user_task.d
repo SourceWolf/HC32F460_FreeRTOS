@@ -75,7 +75,6 @@
 .\objects\user_task.o: .\PeripheralDriver\System_Clk.h
 .\objects\user_task.o: .\PeripheralDriver\User_ADC.h
 .\objects\user_task.o: .\PeripheralDriver\User_I2C.h
-.\objects\user_task.o: .\PeripheralDriver\User_SPI.h
 .\objects\user_task.o: .\PeripheralDriver\User_DMA.h
 .\objects\user_task.o: .\PeripheralDriver\User_RTC.h
 .\objects\user_task.o: .\PeripheralDriver\User_OTS.h

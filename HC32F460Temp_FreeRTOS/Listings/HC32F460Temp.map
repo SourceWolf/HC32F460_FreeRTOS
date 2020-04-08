@@ -6,27 +6,27 @@ Memory Map of the image
 
   Image Entry point : 0x00000281
 
-  Load Region LR_IROM1 (Base: 0x00000000, Size: 0x00003f0c, Max: 0x00080000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x00000000, Size: 0x000041f0, Max: 0x00080000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00003e98, Max: 0x00080000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x0000417c, Max: 0x00080000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x00000000   0x00000000   0x00000280   Data   RO         6377    RESET               startup_hc32f46x.o
-    0x00000280   0x00000280   0x00000000   Code   RO        10602  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x00000280   0x00000280   0x00000004   Code   RO        10888    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
-    0x00000284   0x00000284   0x00000004   Code   RO        10891    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x00000288   0x00000288   0x00000000   Code   RO        10893    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x00000288   0x00000288   0x00000000   Code   RO        10895    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x00000288   0x00000288   0x00000008   Code   RO        10896    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x00000290   0x00000290   0x00000000   Code   RO        10898    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
-    0x00000290   0x00000290   0x00000000   Code   RO        10900    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
-    0x00000290   0x00000290   0x00000004   Code   RO        10889    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
-    0x00000294   0x00000294   0x000000ba   Code   RO         9328    .emb_text           port.o
+    0x00000000   0x00000000   0x00000280   Data   RO         6374    RESET               startup_hc32f46x.o
+    0x00000280   0x00000280   0x00000000   Code   RO        10645  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x00000280   0x00000280   0x00000004   Code   RO        10931    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
+    0x00000284   0x00000284   0x00000004   Code   RO        10934    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x00000288   0x00000288   0x00000000   Code   RO        10936    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x00000288   0x00000288   0x00000000   Code   RO        10938    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x00000288   0x00000288   0x00000008   Code   RO        10939    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x00000290   0x00000290   0x00000000   Code   RO        10941    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
+    0x00000290   0x00000290   0x00000000   Code   RO        10943    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
+    0x00000290   0x00000290   0x00000004   Code   RO        10932    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
+    0x00000294   0x00000294   0x000000ba   Code   RO         9325    .emb_text           port.o
     0x0000034e   0x0000034e   0x00000002   PAD
-    0x00000350   0x00000350   0x00000058   Code   RO         6378    .text               startup_hc32f46x.o
-    0x000003a8   0x000003a8   0x00000024   Code   RO        10609    .text               mc_w.l(memseta.o)
-    0x000003cc   0x000003cc   0x00000024   Code   RO        10922    .text               mc_w.l(init.o)
+    0x00000350   0x00000350   0x00000058   Code   RO         6375    .text               startup_hc32f46x.o
+    0x000003a8   0x000003a8   0x00000024   Code   RO        10652    .text               mc_w.l(memseta.o)
+    0x000003cc   0x000003cc   0x00000024   Code   RO        10965    .text               mc_w.l(init.o)
     0x000003f0   0x000003f0   0x00000008   Code   RO         2010    i.BusFault_Handler  hc32f46x_interrupts.o
     0x000003f8   0x000003f8   0x00000008   Code   RO         2011    i.DebugMon_Handler  hc32f46x_interrupts.o
     0x00000400   0x00000400   0x00000020   Data   RO         1986    .ARM.__AT_0x00000400  hc32f46x_icg.o
@@ -49,9 +49,9 @@ Memory Map of the image
     0x00000b24   0x00000b24   0x00000018   Code   RO         1220    i.EFM_Lock          hc32f46x_efm.o
     0x00000b3c   0x00000b3c   0x00000010   Code   RO         1228    i.EFM_SetLatency    hc32f46x_efm.o
     0x00000b4c   0x00000b4c   0x00000014   Code   RO         1233    i.EFM_Unlock        hc32f46x_efm.o
-    0x00000b60   0x00000b60   0x0000001c   Code   RO         8100    i.HAL_MPU_Disable   hw_mpu.o
+    0x00000b60   0x00000b60   0x0000001c   Code   RO         8005    i.HAL_MPU_Disable   hw_mpu.o
     0x00000b7c   0x00000b7c   0x00000008   Code   RO         2012    i.HardFault_Handler  hc32f46x_interrupts.o
-    0x00000b84   0x00000b84   0x000000c4   Code   RO         8102    i.Hw_MPU_Init       hw_mpu.o
+    0x00000b84   0x00000b84   0x000000c4   Code   RO         8007    i.Hw_MPU_Init       hw_mpu.o
     0x00000c48   0x00000c48   0x00000010   Code   RO         2013    i.IRQ000_Handler    hc32f46x_interrupts.o
     0x00000c58   0x00000c58   0x00000010   Code   RO         2014    i.IRQ001_Handler    hc32f46x_interrupts.o
     0x00000c68   0x00000c68   0x00000010   Code   RO         2015    i.IRQ002_Handler    hc32f46x_interrupts.o
@@ -195,98 +195,114 @@ Memory Map of the image
     0x00002ae4   0x00002ae4   0x000000c4   Code   RO         2153    i.IRQ143_Handler    hc32f46x_interrupts.o
     0x00002ba8   0x00002ba8   0x00000008   Code   RO         2154    i.MemManage_Handler  hc32f46x_interrupts.o
     0x00002bb0   0x00002bb0   0x00000008   Code   RO         2155    i.NMI_Handler       hc32f46x_interrupts.o
-    0x00002bb8   0x00002bb8   0x0000005c   Code   RO         1590    i.PORT_SetFunc      hc32f46x_gpio.o
-    0x00002c14   0x00002c14   0x00000018   Code   RO         3439    i.PWC_Fcg1PeriphClockCmd  hc32f46x_pwc.o
-    0x00002c2c   0x00002c2c   0x00000038   Code   RO         4209    i.SPI_Cmd           hc32f46x_spi.o
-    0x00002c64   0x00002c64   0x000001a8   Code   RO         4213    i.SPI_Init          hc32f46x_spi.o
-    0x00002e0c   0x00002e0c   0x00000064   Code   RO         4214    i.SPI_IrqCmd        hc32f46x_spi.o
-    0x00002e70   0x00002e70   0x00000006   Code   RO         4217    i.SPI_ReceiveData8  hc32f46x_spi.o
-    0x00002e76   0x00002e76   0x00000002   PAD
-    0x00002e78   0x00002e78   0x00000034   Code   RO         4221    i.SPI_SendData8     hc32f46x_spi.o
-    0x00002eac   0x00002eac   0x00000010   Code   RO         4352    i.SRAM_CK_Disable   hc32f46x_sram.o
-    0x00002ebc   0x00002ebc   0x00000010   Code   RO         4353    i.SRAM_CK_Enable    hc32f46x_sram.o
-    0x00002ecc   0x00002ecc   0x00000010   Code   RO         4358    i.SRAM_WT_Disable   hc32f46x_sram.o
-    0x00002edc   0x00002edc   0x00000010   Code   RO         4359    i.SRAM_WT_Enable    hc32f46x_sram.o
-    0x00002eec   0x00002eec   0x0000000e   Code   RO         2156    i.SysTick_Handler   hc32f46x_interrupts.o
-    0x00002efa   0x00002efa   0x00000002   PAD
-    0x00002efc   0x00002efc   0x0000007c   Code   RO         6332    i.SystemCoreClockUpdate  system_hc32f46x.o
-    0x00002f78   0x00002f78   0x00000004   Code   RO         6333    i.SystemInit        system_hc32f46x.o
-    0x00002f7c   0x00002f7c   0x00000014   Code   RO         6180    i.Task_LED          user_task.o
-    0x00002f90   0x00002f90   0x00000048   Code   RO         7139    i.USER_SPI3_ERR_Callback  user_spi.o
-    0x00002fd8   0x00002fd8   0x0000000c   Code   RO         7140    i.USER_SPI3_IDEL_Callback  user_spi.o
-    0x00002fe4   0x00002fe4   0x00000044   Code   RO         7141    i.USER_SPI3_RX_Callback  user_spi.o
-    0x00003028   0x00003028   0x0000001c   Code   RO         7142    i.USER_SPI3_TX_Callback  user_spi.o
-    0x00003044   0x00003044   0x0000000c   Code   RO         7143    i.USER_SPI_TEST     user_spi.o
-    0x00003050   0x00003050   0x00000008   Code   RO         2157    i.UsageFault_Handler  hc32f46x_interrupts.o
-    0x00003058   0x00003058   0x000001a4   Code   RO         7144    i.User_SPI_Init     user_spi.o
-    0x000031fc   0x000031fc   0x0000002c   Code   RO         6183    i.User_Task_Create  user_task.o
-    0x00003228   0x00003228   0x0000001a   Code   RO         7145    i.__NVIC_ClearPendingIRQ  user_spi.o
-    0x00003242   0x00003242   0x0000001a   Code   RO         7146    i.__NVIC_EnableIRQ  user_spi.o
-    0x0000325c   0x0000325c   0x00000020   Code   RO         7147    i.__NVIC_SetPriority  user_spi.o
-    0x0000327c   0x0000327c   0x0000000e   Code   RO        10926    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x0000328a   0x0000328a   0x00000002   Code   RO        10927    i.__scatterload_null  mc_w.l(handlers.o)
-    0x0000328c   0x0000328c   0x0000000e   Code   RO        10928    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x0000329a   0x0000329a   0x00000002   PAD
-    0x0000329c   0x0000329c   0x00000064   Code   RO         2164    i.enIrqRegistration  hc32f46x_interrupts.o
-    0x00003300   0x00003300   0x00000054   Code   RO         5887    i.main              main.o
-    0x00003354   0x00003354   0x00000014   Code   RO         8983    i.osSystickHandler  cmsis_os.o
-    0x00003368   0x00003368   0x00000070   Code   RO         8561    i.prvAddCurrentTaskToDelayedList  tasks.o
-    0x000033d8   0x000033d8   0x000000d0   Code   RO         8562    i.prvAddNewTaskToReadyList  tasks.o
-    0x000034a8   0x000034a8   0x00000050   Code   RO         8563    i.prvCheckTasksWaitingTermination  tasks.o
-    0x000034f8   0x000034f8   0x00000014   Code   RO         8564    i.prvDeleteTCB      tasks.o
-    0x0000350c   0x0000350c   0x0000004c   Code   RO         8870    i.prvHeapInit       heap_4.o
-    0x00003558   0x00003558   0x00000028   Code   RO         8565    i.prvIdleTask       tasks.o
-    0x00003580   0x00003580   0x0000008e   Code   RO         8566    i.prvInitialiseNewTask  tasks.o
-    0x0000360e   0x0000360e   0x00000002   PAD
-    0x00003610   0x00003610   0x0000004c   Code   RO         8871    i.prvInsertBlockIntoFreeList  heap_4.o
-    0x0000365c   0x0000365c   0x00000020   Code   RO         8567    i.prvResetNextTaskUnblockTime  tasks.o
-    0x0000367c   0x0000367c   0x00000028   Code   RO         9329    i.prvTaskExitError  port.o
-    0x000036a4   0x000036a4   0x000000d8   Code   RO         8872    i.pvPortMalloc      heap_4.o
-    0x0000377c   0x0000377c   0x0000002c   Code   RO         9330    i.pxPortInitialiseStack  port.o
-    0x000037a8   0x000037a8   0x00000138   Code   RO         7109    i.system_clk_init   system_clk.o
-    0x000038e0   0x000038e0   0x00000024   Code   RO         8363    i.uxListRemove      list.o
-    0x00003904   0x00003904   0x00000016   Code   RO         8364    i.vListInitialise   list.o
-    0x0000391a   0x0000391a   0x00000006   Code   RO         8365    i.vListInitialiseItem  list.o
-    0x00003920   0x00003920   0x00000030   Code   RO         8366    i.vListInsert       list.o
-    0x00003950   0x00003950   0x00000018   Code   RO         8367    i.vListInsertEnd    list.o
-    0x00003968   0x00003968   0x00000040   Code   RO         9332    i.vPortEnterCritical  port.o
-    0x000039a8   0x000039a8   0x00000028   Code   RO         9333    i.vPortExitCritical  port.o
-    0x000039d0   0x000039d0   0x0000005c   Code   RO         8873    i.vPortFree         heap_4.o
-    0x00003a2c   0x00003a2c   0x00000020   Code   RO         9334    i.vPortSetupTimerInterrupt  port.o
-    0x00003a4c   0x00003a4c   0x0000004c   Code   RO         8575    i.vTaskDelay        tasks.o
-    0x00003a98   0x00003a98   0x00000068   Code   RO         8586    i.vTaskStartScheduler  tasks.o
-    0x00003b00   0x00003b00   0x00000010   Code   RO         8588    i.vTaskSuspendAll   tasks.o
-    0x00003b10   0x00003b10   0x0000005c   Code   RO         8589    i.vTaskSwitchContext  tasks.o
-    0x00003b6c   0x00003b6c   0x000000e0   Code   RO         9336    i.xPortStartScheduler  port.o
-    0x00003c4c   0x00003c4c   0x0000002c   Code   RO         9337    i.xPortSysTickHandler  port.o
-    0x00003c78   0x00003c78   0x00000056   Code   RO         8591    i.xTaskCreate       tasks.o
-    0x00003cce   0x00003cce   0x00000002   PAD
-    0x00003cd0   0x00003cd0   0x0000001c   Code   RO         8595    i.xTaskGetSchedulerState  tasks.o
-    0x00003cec   0x00003cec   0x000000c8   Code   RO         8598    i.xTaskIncrementTick  tasks.o
-    0x00003db4   0x00003db4   0x000000c4   Code   RO         8604    i.xTaskResumeAll    tasks.o
-    0x00003e78   0x00003e78   0x00000020   Data   RO        10924    Region$$Table       anon$$obj.o
+    0x00002bb8   0x00002bb8   0x00000036   Code   RO         9926    i.NRF24L01_Init     nrf24l01.o
+    0x00002bee   0x00002bee   0x0000001e   Code   RO         9928    i.NRF24L01_Read_Reg  nrf24l01.o
+    0x00002c0c   0x00002c0c   0x0000004a   Code   RO         9930    i.NRF24L01_TxPacket  nrf24l01.o
+    0x00002c56   0x00002c56   0x00000002   PAD
+    0x00002c58   0x00002c58   0x00000036   Code   RO         9931    i.NRF24L01_Write_Buf  nrf24l01.o
+    0x00002c8e   0x00002c8e   0x0000001e   Code   RO         9932    i.NRF24L01_Write_Reg  nrf24l01.o
+    0x00002cac   0x00002cac   0x00000008   Code   RO         9934    i.NRF_CS_Clr        nrf24l01.o
+    0x00002cb4   0x00002cb4   0x00000008   Code   RO         9935    i.NRF_CS_Set        nrf24l01.o
+    0x00002cbc   0x00002cbc   0x00000014   Code   RO         1581    i.PORT_GetBit       hc32f46x_gpio.o
+    0x00002cd0   0x00002cd0   0x00000100   Code   RO         1583    i.PORT_Init         hc32f46x_gpio.o
+    0x00002dd0   0x00002dd0   0x00000014   Code   RO         1587    i.PORT_ResetBits    hc32f46x_gpio.o
+    0x00002de4   0x00002de4   0x00000014   Code   RO         1589    i.PORT_SetBits      hc32f46x_gpio.o
+    0x00002df8   0x00002df8   0x0000005c   Code   RO         1590    i.PORT_SetFunc      hc32f46x_gpio.o
+    0x00002e54   0x00002e54   0x00000018   Code   RO         3439    i.PWC_Fcg1PeriphClockCmd  hc32f46x_pwc.o
+    0x00002e6c   0x00002e6c   0x00000038   Code   RO         4209    i.SPI_Cmd           hc32f46x_spi.o
+    0x00002ea4   0x00002ea4   0x000001a8   Code   RO         4213    i.SPI_Init          hc32f46x_spi.o
+    0x0000304c   0x0000304c   0x00000064   Code   RO         4214    i.SPI_IrqCmd        hc32f46x_spi.o
+    0x000030b0   0x000030b0   0x00000006   Code   RO         4217    i.SPI_ReceiveData8  hc32f46x_spi.o
+    0x000030b6   0x000030b6   0x00000002   PAD
+    0x000030b8   0x000030b8   0x00000034   Code   RO         4221    i.SPI_SendData8     hc32f46x_spi.o
+    0x000030ec   0x000030ec   0x00000048   Code   RO         8121    i.SPIx_ReadWriteByte  user_spi.o
+    0x00003134   0x00003134   0x00000010   Code   RO         4352    i.SRAM_CK_Disable   hc32f46x_sram.o
+    0x00003144   0x00003144   0x00000010   Code   RO         4353    i.SRAM_CK_Enable    hc32f46x_sram.o
+    0x00003154   0x00003154   0x00000010   Code   RO         4358    i.SRAM_WT_Disable   hc32f46x_sram.o
+    0x00003164   0x00003164   0x00000010   Code   RO         4359    i.SRAM_WT_Enable    hc32f46x_sram.o
+    0x00003174   0x00003174   0x0000000e   Code   RO         2156    i.SysTick_Handler   hc32f46x_interrupts.o
+    0x00003182   0x00003182   0x00000002   PAD
+    0x00003184   0x00003184   0x0000007c   Code   RO         6329    i.SystemCoreClockUpdate  system_hc32f46x.o
+    0x00003200   0x00003200   0x00000004   Code   RO         6330    i.SystemInit        system_hc32f46x.o
+    0x00003204   0x00003204   0x00000058   Code   RO         9937    i.TX_Mode           nrf24l01.o
+    0x0000325c   0x0000325c   0x00000014   Code   RO         6180    i.Task_LED          user_task.o
+    0x00003270   0x00003270   0x00000020   Code   RO         9939    i.Test_NRF24L01_TX  nrf24l01.o
+    0x00003290   0x00003290   0x00000048   Code   RO         8122    i.USER_SPI3_ERR_Callback  user_spi.o
+    0x000032d8   0x000032d8   0x0000000c   Code   RO         8123    i.USER_SPI3_IDEL_Callback  user_spi.o
+    0x000032e4   0x000032e4   0x00000044   Code   RO         8124    i.USER_SPI3_RX_Callback  user_spi.o
+    0x00003328   0x00003328   0x0000001c   Code   RO         8125    i.USER_SPI3_TX_Callback  user_spi.o
+    0x00003344   0x00003344   0x00000008   Code   RO         2157    i.UsageFault_Handler  hc32f46x_interrupts.o
+    0x0000334c   0x0000334c   0x00000188   Code   RO         8127    i.User_SPI_Init     user_spi.o
+    0x000034d4   0x000034d4   0x0000002c   Code   RO         6183    i.User_Task_Create  user_task.o
+    0x00003500   0x00003500   0x0000001a   Code   RO         8128    i.__NVIC_ClearPendingIRQ  user_spi.o
+    0x0000351a   0x0000351a   0x0000001a   Code   RO         8129    i.__NVIC_EnableIRQ  user_spi.o
+    0x00003534   0x00003534   0x00000020   Code   RO         8130    i.__NVIC_SetPriority  user_spi.o
+    0x00003554   0x00003554   0x0000000e   Code   RO        10969    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x00003562   0x00003562   0x00000002   Code   RO        10970    i.__scatterload_null  mc_w.l(handlers.o)
+    0x00003564   0x00003564   0x0000000e   Code   RO        10971    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x00003572   0x00003572   0x00000002   PAD
+    0x00003574   0x00003574   0x00000064   Code   RO         2164    i.enIrqRegistration  hc32f46x_interrupts.o
+    0x000035d8   0x000035d8   0x00000054   Code   RO         5887    i.main              main.o
+    0x0000362c   0x0000362c   0x00000014   Code   RO         8980    i.osSystickHandler  cmsis_os.o
+    0x00003640   0x00003640   0x00000070   Code   RO         8558    i.prvAddCurrentTaskToDelayedList  tasks.o
+    0x000036b0   0x000036b0   0x000000d0   Code   RO         8559    i.prvAddNewTaskToReadyList  tasks.o
+    0x00003780   0x00003780   0x00000050   Code   RO         8560    i.prvCheckTasksWaitingTermination  tasks.o
+    0x000037d0   0x000037d0   0x00000014   Code   RO         8561    i.prvDeleteTCB      tasks.o
+    0x000037e4   0x000037e4   0x0000004c   Code   RO         8867    i.prvHeapInit       heap_4.o
+    0x00003830   0x00003830   0x00000028   Code   RO         8562    i.prvIdleTask       tasks.o
+    0x00003858   0x00003858   0x0000008e   Code   RO         8563    i.prvInitialiseNewTask  tasks.o
+    0x000038e6   0x000038e6   0x00000002   PAD
+    0x000038e8   0x000038e8   0x0000004c   Code   RO         8868    i.prvInsertBlockIntoFreeList  heap_4.o
+    0x00003934   0x00003934   0x00000020   Code   RO         8564    i.prvResetNextTaskUnblockTime  tasks.o
+    0x00003954   0x00003954   0x00000028   Code   RO         9326    i.prvTaskExitError  port.o
+    0x0000397c   0x0000397c   0x000000d8   Code   RO         8869    i.pvPortMalloc      heap_4.o
+    0x00003a54   0x00003a54   0x0000002c   Code   RO         9327    i.pxPortInitialiseStack  port.o
+    0x00003a80   0x00003a80   0x00000138   Code   RO         7106    i.system_clk_init   system_clk.o
+    0x00003bb8   0x00003bb8   0x00000024   Code   RO         8360    i.uxListRemove      list.o
+    0x00003bdc   0x00003bdc   0x00000016   Code   RO         8361    i.vListInitialise   list.o
+    0x00003bf2   0x00003bf2   0x00000006   Code   RO         8362    i.vListInitialiseItem  list.o
+    0x00003bf8   0x00003bf8   0x00000030   Code   RO         8363    i.vListInsert       list.o
+    0x00003c28   0x00003c28   0x00000018   Code   RO         8364    i.vListInsertEnd    list.o
+    0x00003c40   0x00003c40   0x00000040   Code   RO         9329    i.vPortEnterCritical  port.o
+    0x00003c80   0x00003c80   0x00000028   Code   RO         9330    i.vPortExitCritical  port.o
+    0x00003ca8   0x00003ca8   0x0000005c   Code   RO         8870    i.vPortFree         heap_4.o
+    0x00003d04   0x00003d04   0x00000020   Code   RO         9331    i.vPortSetupTimerInterrupt  port.o
+    0x00003d24   0x00003d24   0x0000004c   Code   RO         8572    i.vTaskDelay        tasks.o
+    0x00003d70   0x00003d70   0x00000068   Code   RO         8583    i.vTaskStartScheduler  tasks.o
+    0x00003dd8   0x00003dd8   0x00000010   Code   RO         8585    i.vTaskSuspendAll   tasks.o
+    0x00003de8   0x00003de8   0x0000005c   Code   RO         8586    i.vTaskSwitchContext  tasks.o
+    0x00003e44   0x00003e44   0x000000e0   Code   RO         9333    i.xPortStartScheduler  port.o
+    0x00003f24   0x00003f24   0x0000002c   Code   RO         9334    i.xPortSysTickHandler  port.o
+    0x00003f50   0x00003f50   0x00000056   Code   RO         8588    i.xTaskCreate       tasks.o
+    0x00003fa6   0x00003fa6   0x00000002   PAD
+    0x00003fa8   0x00003fa8   0x0000001c   Code   RO         8592    i.xTaskGetSchedulerState  tasks.o
+    0x00003fc4   0x00003fc4   0x000000c8   Code   RO         8595    i.xTaskIncrementTick  tasks.o
+    0x0000408c   0x0000408c   0x000000c4   Code   RO         8601    i.xTaskResumeAll    tasks.o
+    0x00004150   0x00004150   0x0000000a   Data   RO         9940    .constdata          nrf24l01.o
+    0x0000415a   0x0000415a   0x00000002   PAD
+    0x0000415c   0x0000415c   0x00000020   Data   RO        10967    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x1fff8000, Load base: 0x00003e98, Size: 0x000043b8, Max: 0x0002f000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x1fff8000, Load base: 0x0000417c, Size: 0x000043b8, Max: 0x0002f000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x1fff8000   0x00003e98   0x0000000c   Data   RW         6190    .data               user_task.o
-    0x1fff800c   0x00003ea4   0x00000004   Data   RW         6334    .data               system_hc32f46x.o
-    0x1fff8010   0x00003ea8   0x00000004   Data   RW         7150    .data               user_spi.o
-    0x1fff8014   0x00003eac   0x0000003c   Data   RW         8607    .data               tasks.o
-    0x1fff8050   0x00003ee8   0x00000018   Data   RW         8878    .data               heap_4.o
-    0x1fff8068   0x00003f00   0x0000000c   Data   RW         9338    .data               port.o
+    0x1fff8000   0x0000417c   0x0000000c   Data   RW         6190    .data               user_task.o
+    0x1fff800c   0x00004188   0x00000004   Data   RW         6331    .data               system_hc32f46x.o
+    0x1fff8010   0x0000418c   0x00000004   Data   RW         8133    .data               user_spi.o
+    0x1fff8014   0x00004190   0x0000003c   Data   RW         8604    .data               tasks.o
+    0x1fff8050   0x000041cc   0x00000018   Data   RW         8875    .data               heap_4.o
+    0x1fff8068   0x000041e4   0x0000000c   Data   RW         9335    .data               port.o
     0x1fff8074        -       0x00000200   Zero   RW         2168    .bss                hc32f46x_interrupts.o
     0x1fff8274        -       0x00000020   Zero   RW         5888    .bss                main.o
-    0x1fff8294        -       0x00000032   Zero   RW         7148    .bss                user_spi.o
-    0x1fff82c6   0x00003f0c   0x00000002   PAD
-    0x1fff82c8        -       0x000000f0   Zero   RW         8606    .bss                tasks.o
-    0x1fff83b8        -       0x00003c00   Zero   RW         8877    .bss                heap_4.o
-    0x1fffbfb8        -       0x00000400   Zero   RW         6375    STACK               startup_hc32f46x.o
+    0x1fff8294        -       0x00000032   Zero   RW         8131    .bss                user_spi.o
+    0x1fff82c6   0x000041f0   0x00000002   PAD
+    0x1fff82c8        -       0x000000f0   Zero   RW         8603    .bss                tasks.o
+    0x1fff83b8        -       0x00003c00   Zero   RW         8874    .bss                heap_4.o
+    0x1fffbfb8        -       0x00000400   Zero   RW         6372    STACK               startup_hc32f46x.o
 
 
-    Execution Region RW_IRAM2 (Exec base: 0x200f0000, Load base: 0x00003f0c, Size: 0x00000000, Max: 0x00001000, ABSOLUTE)
+    Execution Region RW_IRAM2 (Exec base: 0x200f0000, Load base: 0x000041f0, Size: 0x00000000, Max: 0x00001000, ABSOLUTE)
 
     **** No section assigned to this execution region ****
 

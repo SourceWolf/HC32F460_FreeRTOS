@@ -854,14 +854,14 @@
               <FilePath>.\PeripheralDriver\Hw_TIMERA_Capture.h</FilePath>
             </File>
             <File>
-              <FileName>Hw_SPI3.c</FileName>
+              <FileName>User_SPI.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\PeripheralDriver\Hw_SPI3.c</FilePath>
+              <FilePath>.\PeripheralDriver\User_SPI.c</FilePath>
             </File>
             <File>
-              <FileName>Hw_SPI3.h</FileName>
+              <FileName>User_SPI.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\PeripheralDriver\Hw_SPI3.h</FilePath>
+              <FilePath>.\PeripheralDriver\User_SPI.h</FilePath>
             </File>
           </Files>
         </Group>

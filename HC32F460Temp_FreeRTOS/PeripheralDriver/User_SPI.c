@@ -97,7 +97,7 @@ void User_SPI_Init(void)
 
     /* Configuration SPI pin */
     PORT_SetFunc(SPI_SCK_PORT, SPI_SCK_PIN, SPI_SCK_FUNC, Disable);
-    PORT_SetFunc(SPI_NSS_PORT, SPI_NSS_PIN, SPI_NSS_FUNC, Disable);
+//    PORT_SetFunc(SPI_NSS_PORT, SPI_NSS_PIN, SPI_NSS_FUNC, Disable);
     PORT_SetFunc(SPI_MOSI_PORT, SPI_MOSI_PIN, SPI_MOSI_FUNC, Disable);
     PORT_SetFunc(SPI_MISO_PORT, SPI_MISO_PIN, SPI_MISO_FUNC, Disable);
 
@@ -109,7 +109,7 @@ void User_SPI_Init(void)
     stcSpiInit.enSckPolarity = SpiSckIdleLevelLow;
     stcSpiInit.enSckPhase = SpiSckOddSampleEvenChange;
     stcSpiInit.enReadBufferObject = SpiReadReceiverBuffer;
-    stcSpiInit.enWorkMode = SpiWorkMode4Line;
+    stcSpiInit.enWorkMode = SpiWorkMode3Line;
     stcSpiInit.enTransMode = SpiTransFullDuplex;
     stcSpiInit.enCommAutoSuspendEn = Disable;
     stcSpiInit.enModeFaultErrorDetectEn = Disable;
@@ -147,7 +147,7 @@ void User_SPI_Init(void)
 
     NVIC_ClearPendingIRQ(stcIrqRegiConf.enIRQn);
     NVIC_SetPriority(stcIrqRegiConf.enIRQn, DDL_IRQ_PRIORITY_15);
-    NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);
+//    NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);
 
     /* SPI3 rx interrupt */
     stcIrqRegiConf.enIntSrc = SPI_RX_INT_SOURCE;
@@ -158,7 +158,7 @@ void User_SPI_Init(void)
 
     NVIC_ClearPendingIRQ(stcIrqRegiConf.enIRQn);
     NVIC_SetPriority(stcIrqRegiConf.enIRQn, DDL_IRQ_PRIORITY_15);
-    NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);
+//    NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);
     
     /* SPI3 Error interrupt */
     stcIrqRegiConf.enIntSrc = SPI_ERR_INT_SOURCE;
