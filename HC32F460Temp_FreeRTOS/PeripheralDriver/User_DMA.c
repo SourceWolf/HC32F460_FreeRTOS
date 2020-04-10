@@ -31,7 +31,7 @@ void User_DMA_Init(void)
     MEM_ZERO_STRUCT(stcIrqRegiConf);
     
     stcDmaCfg.u16BlockSize = DMA_BLKSIZE;//
-    stcDmaCfg.u16TransferCnt = DMA_TRNCNT;//
+    stcDmaCfg.u16TransferCnt = 0;//
     
     stcDmaCfg.u32DesAddr = (uint32_t)(&M4_DCU1->DATA1);//(&DMA0_Dre_Data[0]);//Target Address
     stcDmaCfg.u32SrcAddr = (uint32_t)(&(M4_ADC1->DR10));//USART2_DR_ADDRESS;//(uint32_t)(&DMA0_Src_data[0]);//Source Address

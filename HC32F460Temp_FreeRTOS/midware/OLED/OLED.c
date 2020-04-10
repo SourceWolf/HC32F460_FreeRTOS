@@ -1,7 +1,10 @@
 #include "hc32_ddl.h"
 #include "OLED_FRONT.h"
 #include "Hw_I2C.h"
+#include <math.h>
+#include <arm_math.h>
 #define VERSION_OLED    1//0旧版，1新版DEMO
+#define MAX_Y_POS 31
 #if VERSION_OLED
 #define OLED_I2C    M4_I2C2
 #define OLED_SCL_PORT   PortD
@@ -15,7 +18,7 @@
 #define OLED_SDA_PORT   PortB
 #define OLED_SDA_PIN    Pin07
 #endif 
-#define I2C_Baudrate 200000
+#define I2C_Baudrate 400000
 #define OLED_ADDRESS  0x3C//0x78
 #define OLED_ADDRESS_W                    0x00
 #define OLED_ADDRESS_R                    0x01
@@ -146,8 +149,6 @@ void OLED_Refresh(void)
 		OLED_WR_Byte (0x10,OLED_CMD);      //列高地址  
 		for(n=0;n<128;n++)OLED_WR_Byte(display_data[i][n],OLED_DATA); //写入 0 清屏
 	}
-	display_data[0][0] = 0x50;
-	display_data[0][1] = 0xFF;
 }
 void OLED_Clear(void)  
 {  
@@ -343,4 +344,162 @@ void OLED_Init(void)
     OLED_Clear();
 //	OLED_Set_Pos(0,0); 	 //画点
 }  
-
+void OLED_Set_Point(unsigned char x,unsigned char y)
+{
+	volatile uint8_t temp,line;
+	if(y>MAX_Y_POS)//超过屏高
+	{
+		return;
+	}
+	line = 3 - (y>>3);//行号
+	temp = y-(3-line)*8;//byte位置
+	temp = 0x80>>temp;
+	display_data[line][x] |= temp;
+}
+void OLED_Clr_Point(unsigned char x,unsigned char y)
+{
+	volatile uint8_t temp,line;
+	if(y>MAX_Y_POS)//超过屏高
+	{
+		return;
+	}
+	line = 3 - (y>>3);//行号
+	temp = y-(3-line)*8;//byte位置
+	temp = 0x80>>temp;
+	display_data[line][x] &= ~temp;
+}
+void OLED_Draw_line(unsigned char x1,unsigned char y1,unsigned char x2,unsigned char y2)
+{
+	volatile unsigned char i,dx,dy;
+	if(x2>x1)
+	{
+		dx = x2-x1;
+		if(y2>y1)
+		{
+			dy = y2-y1;
+			if(dx>dy)
+			{
+				for(i=x1;i<=x2;i++)
+				{
+					OLED_Set_Point(i,y1+(i-x1)*dy/dx);
+				}
+			}
+			else
+			{
+				for(i=y1;i<=y2;i++)
+				{
+					OLED_Set_Point(x1+(i-y1)*dx/dy,i);
+				}
+			}	
+		}
+		else
+		{
+			dy = y1-y2;
+			if(dx>dy)
+			{
+				for(i=x1;i<=x2;i++)
+				{
+					OLED_Set_Point(i,y1-(i-x1)*dy/dx);
+				}
+			}
+			else
+			{
+				for(i=y1;i>=y2;i--)
+				{
+					OLED_Set_Point(x1+(y1-i)*dx/dy,i);
+					if(i == 0)break;
+				}
+			}
+		}
+	}
+	else
+	{
+		dx = x1-x2;
+		if(y2>y1)
+		{
+			dy = y2-y1;
+			if(dx>dy)
+			{
+				for(i=x1;i>=x2;i--)
+				{
+					OLED_Set_Point(i,y1+(x1-i)*dy/dx);
+					if(i == 0)break;
+				}
+			}
+			else
+			{
+				for(i=y1;i<=y2;i++)
+				{
+					OLED_Set_Point(x1-(i-y1)*dx/dy,i);
+				}
+			}
+		}
+		else
+		{
+			dy = y1-y2;
+			if(dx>dy)
+			{
+				for(i=x1;i>=x2;i--)
+				{
+					OLED_Set_Point(i,y1+(i-x1)*dy/dx);
+					if(i == 0)break;
+				}
+			}
+			else
+			{
+				for(i=y1;i>=y2;i--)
+				{
+					OLED_Set_Point(x1+(i-y1)*dx/dy,i);
+					if(i == 0)break;
+				}
+			}
+		}
+	}	
+	
+}
+void TestDrawline(void)
+{
+	OLED_Draw_line(127,31,0,0);
+	OLED_Draw_line(17,31,0,0);
+	OLED_Draw_line(127,0,0,31);
+	OLED_Draw_line(17,0,0,31);
+	OLED_Draw_line(0,0,12,38);
+	OLED_Draw_line(0,0,64,38);
+	OLED_Draw_line(0,38,64,0);
+	OLED_Draw_line(0,38,12,0);
+}
+void showsin(void)
+{
+	for(int i = 0;i<127;i++)
+	{
+		OLED_Set_Point(i,16+16*arm_sin_f32((float)i*0.1));
+	}
+}
+void move_left(void)
+{
+	uint8_t temp;
+	for(int j=0;j<4;j++)
+	{
+		temp = display_data[j][0];
+		for(int i=0;i<127;i++)
+		{
+			display_data[j][i] = display_data[j][i+1];
+		}
+		display_data[j][127] = temp;
+	}	
+}
+void insertdisplaydata(unsigned char data)
+{
+	for(int j=0;j<4;j++)
+	{
+		for(int i=0;i<127;i++)
+		{
+			display_data[j][127-i] = display_data[j][126-i];
+		}
+	}
+	display_data[0][0] = 0;
+	display_data[1][0] = 0;
+	display_data[2][0] = 0;
+	display_data[3][0] = 0;
+	OLED_Set_Point(0,data);	
+}

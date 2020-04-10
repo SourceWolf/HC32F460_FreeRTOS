@@ -96,11 +96,13 @@
 ".\objects\nrf24l01.o"
 ".\objects\mlx9061x.o"
 ".\objects\at24c02.o"
+".\objects\wl2400ptc.o"
 ".\objects\diskio.o"
 ".\objects\fattime.o"
 ".\objects\ff.o"
 ".\objects\segger_rtt.o"
 ".\objects\segger_rtt_printf.o"
+"C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Lib\ARM\arm_cortexM4lf_math.lib"
 --library_type=microlib --strict --scatter ".\Objects\HC32F460Temp.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info
 --list ".\Listings\HC32F460Temp.map" -o .\Objects\HC32F460Temp.axf

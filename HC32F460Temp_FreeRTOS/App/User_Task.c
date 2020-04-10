@@ -73,14 +73,13 @@ void Task_LED(void *param)
 {
 	static uint8_t data;
 	en_result_t status;
-//    User_Gpio_Init();
-//	HW_I2C_Init(400000);
+    User_Gpio_Init();
 //	P_UserSystem_Init = (void *)(Add_UserSystem_Init+4);
 //	User_I2C1_Init();
-//    OLED_Init();
+    OLED_Init();
 //    User_OTS_Init();
-	NRF24L01_Init();
-//    Ddl_UartInit();
+//	NRF24L01_Init();
+    Ddl_UartInit();
 //    User_Timer4_init();
 //    taskENTER_CRITICAL();
 //    OLED_ShowString(0,0,(uint8_t *)"HDSC");
@@ -99,26 +98,16 @@ void Task_LED(void *param)
 //    UART1_TX_DMA_Init();
 //    User_SPI_Init();
 //    User_USART_Init();
-//    xTaskCreate(Task_ADC,(const char *)"ADC", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+4, &Hd_Task_ADC );
+    xTaskCreate(Task_ADC,(const char *)"ADC", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+4, &Hd_Task_ADC );
 //	MLX90615_Init();
 //	P_UserSystem_Init();
 //	User_I2S3_Init();
 //	TimerACaptureInit();
+//	showsin();
     while(1)
-    { 
-	Test_NRF24L01_TX();		
-//			PORT_Toggle(LED0_PORT,LED0_Pin);
-//			User_I2C1_Master_Read(0x32,0x0d,&data,1);
-
-//		OLED_Refresh();
-//        loop();
-//		OLED_ShowNum(48,0,GetFrequence(),8,16);
-//		Test90615();
-//		NRF24L01_check();
-//		OLED_ShowNum(48,0,Test90615(),2,16);
-//		OLED_ShowNum(64,0,(uint32_t)(Test90615()*10)%10,2,16);		
-//        UART1_DMA_TX_Write_Buffer(txdata,10);
-        vTaskDelay(900/portTICK_PERIOD_MS);
+    {
+		OLED_Refresh();
+        vTaskDelay(5/portTICK_PERIOD_MS);
     }
 }
 void Task_ADC(void *param)
@@ -144,8 +133,9 @@ void Task_ADC(void *param)
         } 
         taskENTER_CRITICAL();
         printf("AIN10 data:%d\r\n",Get_DCU1_Result()-1000);
+		insertdisplaydata((Get_DCU1_Result()-1000)/128);
         taskEXIT_CRITICAL();   
-        vTaskDelay(1000/portTICK_PERIOD_MS);
+        vTaskDelay(10/portTICK_PERIOD_MS);
     }
 }
 void Task_USB_Report(void *param)
