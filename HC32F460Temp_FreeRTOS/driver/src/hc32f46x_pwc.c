@@ -70,17 +70,17 @@
 /*******************************************************************************
  * Local pre-processor symbols/macros ('#define')
  ******************************************************************************/
-#define ENABLE_FCG0_REG_WRITE()             (M4_MSTP->FCG0PC = 0xa5a50001u)
+#define ENABLE_FCG0_REG_WRITE()             (M4_MSTP->FCG0PC |= 0xa5a50001u)
 #define DISABLE_FCG0_REG_WRITE()            (M4_MSTP->FCG0PC = 0xa5a50000u)
 
-#define ENABLE_PWR_REG0_WRITE()             (M4_SYSREG->PWR_FPRC = 0xa503u)
-#define DISABLE_PWR_REG0_WRITE()            (M4_SYSREG->PWR_FPRC = 0xa500u)
+#define ENABLE_PWR_REG0_WRITE()             (M4_SYSREG->PWR_FPRC |= 0xa503u)
+#define DISABLE_PWR_REG0_WRITE()            (M4_SYSREG->PWR_FPRC = (0xa500u | (M4_SYSREG->PWR_FPRC & (uint16_t)(~3u))))
 
-#define ENABLE_PWR_REG_WRITE()              (M4_SYSREG->PWR_FPRC = 0xa502u)
-#define DISABLE_PWR_REG_WRITE()             (M4_SYSREG->PWR_FPRC = 0xa500u)
+#define ENABLE_PWR_REG_WRITE()              (M4_SYSREG->PWR_FPRC |= 0xa502u)
+#define DISABLE_PWR_REG_WRITE()             (M4_SYSREG->PWR_FPRC = (0xa500u | (M4_SYSREG->PWR_FPRC & (uint16_t)(~2u))))
 
-#define ENABLE_PVD_REG_WRITE()              (M4_SYSREG->PWR_FPRC = 0xa508u)
-#define DISABLE_PVD_REG_WRITE()             (M4_SYSREG->PWR_FPRC = 0xa500u)
+#define ENABLE_PVD_REG_WRITE()              (M4_SYSREG->PWR_FPRC |= 0xa508u)
+#define DISABLE_PVD_REG_WRITE()             (M4_SYSREG->PWR_FPRC = (0xa500u | (M4_SYSREG->PWR_FPRC & (uint16_t)(~8u))))
 
 /*! Parameter validity check for wake up event. */
 #define IS_PWC_WKUP_EVENT(evt)              ((0x00u) != (evt))
@@ -341,6 +341,13 @@ __ramfunc
 #endif
 void PWC_EnterPowerDownMd(void)
 {
+    ENABLE_PVD_REG_WRITE();
+
+    /* Reset PVD1IRS & PVD2IRS */
+    M4_SYSREG->PWR_PVDCR1 &= 0xddu;
+
+    DISABLE_PVD_REG_WRITE();
+
     ENABLE_PWR_REG_WRITE();
 
     M4_SYSREG->PWR_STPMCR_f.STOP = 1u;
@@ -1742,6 +1749,7 @@ void PWC_IrqClkRecover(void)
         PWC_enClockRecover();
     }
 }
+
 /**
  *******************************************************************************
  ** \brief  Enter stop mode.

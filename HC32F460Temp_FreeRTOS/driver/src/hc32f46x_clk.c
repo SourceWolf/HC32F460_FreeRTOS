@@ -104,11 +104,11 @@
 #define CLK_PLL_VCO_OUT_MIN                 (240u*1000u*1000u)
 #define CLK_PLL_VCO_OUT_MAX                 (480u*1000u*1000u)
 
-#define ENABLE_CLOCK_REG_WRITE()            (M4_SYSREG->PWR_FPRC = 0xa501u)
-#define DISABLE_CLOCK_REG_WRITE()           (M4_SYSREG->PWR_FPRC = 0xa500u)
+#define ENABLE_CLOCK_REG_WRITE()            (M4_SYSREG->PWR_FPRC |= 0xa501u)
+#define DISABLE_CLOCK_REG_WRITE()           (M4_SYSREG->PWR_FPRC = (0xa500u | (M4_SYSREG->PWR_FPRC & (uint16_t)(~1u))))
 
-#define ENABLE_CLOCK1_REG_WRITE()           (M4_SYSREG->PWR_FPRC = 0xa502u)
-#define DISABLE_CLOCK1_REG_WRITE()          (M4_SYSREG->PWR_FPRC = 0xa500u)
+#define ENABLE_CLOCK1_REG_WRITE()           (M4_SYSREG->PWR_FPRC |= 0xa502u)
+#define DISABLE_CLOCK1_REG_WRITE()          (M4_SYSREG->PWR_FPRC = (0xa500u | (M4_SYSREG->PWR_FPRC & (uint16_t)(~2u))))
 
 
 #define DEFAULT_FCG0                        (0xFFFFFAEEul)
@@ -543,7 +543,7 @@ en_result_t CLK_Xtal32Cmd(en_functional_state_t enNewState)
  ** \note   None
  **
  ******************************************************************************/
-void CLK_HrcTrim(uint8_t trimValue)
+void CLK_HrcTrim(int8_t trimValue)
 {
     ENABLE_CLOCK_REG_WRITE();
 
@@ -623,7 +623,7 @@ en_result_t CLK_HrcCmd(en_functional_state_t enNewState)
  ** \note   None
  **
  ******************************************************************************/
-void CLK_MrcTrim(uint8_t trimValue)
+void CLK_MrcTrim(int8_t trimValue)
 {
     ENABLE_CLOCK_REG_WRITE();
 
@@ -690,7 +690,7 @@ en_result_t CLK_MrcCmd(en_functional_state_t enNewState)
  ** \note   None
  **
  ******************************************************************************/
-void CLK_LrcTrim(uint8_t trimValue)
+void CLK_LrcTrim(int8_t trimValue)
 {
     ENABLE_CLOCK_REG_WRITE();
 
@@ -785,8 +785,10 @@ void CLK_SetPllSource(en_clk_pll_source_t enPllSrc)
  ******************************************************************************/
 void CLK_MpllConfig(const stc_clk_mpll_cfg_t *pstcMpllCfg)
 {
+#ifdef __DEBUG
     uint32_t vcoIn = 0ul;
     uint32_t vcoOut = 0ul;
+#endif /* #ifdef __DEBUG */
 
     if(NULL != pstcMpllCfg)
     {
@@ -796,12 +798,14 @@ void CLK_MpllConfig(const stc_clk_mpll_cfg_t *pstcMpllCfg)
         DDL_ASSERT(IS_PLLN_VALID(pstcMpllCfg->plln));
         DDL_ASSERT(IS_PLLM_VALID(pstcMpllCfg->pllmDiv));
 
+#ifdef __DEBUG
         vcoIn = ((ClkPllSrcXTAL == M4_SYSREG->CMU_PLLCFGR_f.PLLSRC ?
                 XTAL_VALUE : HRC_VALUE) / pstcMpllCfg->pllmDiv);
         vcoOut = vcoIn * pstcMpllCfg->plln;
 
         DDL_ASSERT(IS_PLL_VCO_IN_VALID(vcoIn));
         DDL_ASSERT(IS_PLL_VCO_OUT_VALID(vcoOut));
+#endif /* #ifdef __DEBUG */
 
         ENABLE_CLOCK_REG_WRITE();
 
@@ -883,8 +887,10 @@ en_result_t CLK_MpllCmd(en_functional_state_t enNewState)
  ******************************************************************************/
 void CLK_UpllConfig(const stc_clk_upll_cfg_t *pstcUpllCfg)
 {
-    uint32_t vcoIn = 0u;
-    uint32_t vcoOut = 0u;
+#ifdef __DEBUG
+    uint32_t vcoIn = 0ul;
+    uint32_t vcoOut = 0ul;
+#endif /* #ifdef __DEBUG */
 
     if(NULL != pstcUpllCfg)
     {
@@ -894,13 +900,14 @@ void CLK_UpllConfig(const stc_clk_upll_cfg_t *pstcUpllCfg)
         DDL_ASSERT(IS_PLLN_VALID(pstcUpllCfg->plln));
         DDL_ASSERT(IS_UPLLM_VALID(pstcUpllCfg->pllmDiv));
 
-
+#ifdef __DEBUG
         vcoIn = ((ClkPllSrcXTAL == M4_SYSREG->CMU_PLLCFGR_f.PLLSRC ?
                 XTAL_VALUE : HRC_VALUE) / pstcUpllCfg->pllmDiv);
         vcoOut = vcoIn * pstcUpllCfg->plln;
 
         DDL_ASSERT(IS_PLL_VCO_IN_VALID(vcoIn));
         DDL_ASSERT(IS_PLL_VCO_OUT_VALID(vcoOut));
+#endif /* #ifdef __DEBUG */
 
         ENABLE_CLOCK_REG_WRITE();
 

@@ -189,7 +189,8 @@
 
 /*! Parameter validity check for ADC trigger source event . */
 #define IS_ADC_TRIG_SRC_EVENT(x)                                                \
-(   (((x) >= EVT_PORT_EIRQ0) && ((x) <= EVT_PORT_EIRQ15))           ||          \
+(   ((x) == EVT_PORT_EIRQ0)                                         ||          \
+    (((x) > EVT_PORT_EIRQ0) && ((x) <= EVT_PORT_EIRQ15))            ||          \
     (((x) >= EVT_DMA1_TC0) && ((x) <= EVT_DMA2_BTC3))               ||          \
     (((x) >= EVT_EFM_OPTEND) && ((x) <= EVT_USBFS_SOF))             ||          \
     (((x) >= EVT_DCU1) && ((x) <= EVT_DCU4))                        ||          \

@@ -624,13 +624,13 @@ en_result_t CLK_XtalCmd(en_functional_state_t enNewState);
 void CLK_Xtal32Config(const stc_clk_xtal32_cfg_t *pstcXtal32Cfg);
 en_result_t CLK_Xtal32Cmd(en_functional_state_t enNewState);
 
-void CLK_HrcTrim(uint8_t trimValue);
+void CLK_HrcTrim(int8_t trimValue);
 en_result_t CLK_HrcCmd(en_functional_state_t enNewState);
 
-void CLK_MrcTrim(uint8_t trimValue);
+void CLK_MrcTrim(int8_t trimValue);
 en_result_t CLK_MrcCmd(en_functional_state_t enNewState);
 
-void CLK_LrcTrim(uint8_t trimValue);
+void CLK_LrcTrim(int8_t trimValue);
 en_result_t CLK_LrcCmd(en_functional_state_t enNewState);
 
 void CLK_SetPllSource(en_clk_pll_source_t enPllSrc);

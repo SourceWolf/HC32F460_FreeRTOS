@@ -17,5 +17,6 @@ void OLED_Draw_line(unsigned char x1,unsigned char y1,unsigned char x2,unsigned 
 void showsin(void);
 void move_left(void);
 void insertdisplaydata(unsigned char data);
+void OLED_ShowChar2(unsigned char x,unsigned char y,unsigned char chr);
 #endif
 

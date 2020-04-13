@@ -1059,7 +1059,7 @@ en_result_t CMP_ADC_SetRefVoltPath(en_cmp_adc_int_ref_volt_path_t enRefVoltPath)
     en_result_t enRet = ErrorInvalidParameter;
 
     /* Check parameter */
-    if (!IS_VALID_ADC_REF_VOLT_PATH(enRefVoltPath))
+    if (IS_VALID_ADC_REF_VOLT_PATH(enRefVoltPath))
     {
         M4_CMP_CR->RVADC = RVADC_WRITE_PROT_KEY;  /* Release write protection */
         M4_CMP_CR->RVADC =  enRefVoltPath;        /* Set reference voltage path */

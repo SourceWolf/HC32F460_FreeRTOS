@@ -9,6 +9,7 @@
 #include "User_RTC.h"
 #include "User_OTS.h"
 #include "User_Timer4.h"
+#include "User_TimerA.h"
 #include "cmsis_os.h"
 #include "User_I2S.h"
 #include "User_Timer6.h"
@@ -38,7 +39,7 @@
 USB_OTG_CORE_HANDLE  USB_OTG_dev;
 uint8_t displaydata[4][128];
 extern USB_OTG_CORE_HANDLE  USB_OTG_dev;
-TaskHandle_t Hd_Task_LED, Hd_Task_ADC,Hd_Task_Sleep,Hd_Task_USB,Hd_Task_USBReport;
+TaskHandle_t Hd_Task_LED, Hd_Task_ADC,Hd_Task_Sleep,Hd_Task_USB,Hd_Task_USBReport,Hd_Task_Display;
 void Task_ADC(void *param);
 //void (*P_UserSystem_Init)(void);
 char line[82];
@@ -69,6 +70,15 @@ void loop(void)
 {
     LED0_Toggle();
 }
+void Task_Display(void* param)
+{
+	OLED_Init();
+	while(1)
+	{
+		OLED_Refresh();
+        vTaskDelay(5/portTICK_PERIOD_MS);
+	}
+}
 void Task_LED(void *param)
 {
 	static uint8_t data;
@@ -76,10 +86,11 @@ void Task_LED(void *param)
     User_Gpio_Init();
 //	P_UserSystem_Init = (void *)(Add_UserSystem_Init+4);
 //	User_I2C1_Init();
-    OLED_Init();
+    
 //    User_OTS_Init();
 //	NRF24L01_Init();
     Ddl_UartInit();
+	TimerA_config();
 //    User_Timer4_init();
 //    taskENTER_CRITICAL();
 //    OLED_ShowString(0,0,(uint8_t *)"HDSC");
@@ -104,10 +115,11 @@ void Task_LED(void *param)
 //	User_I2S3_Init();
 //	TimerACaptureInit();
 //	showsin();
+//	OLED_ShowChar2(2,2,'A');
     while(1)
     {
-		OLED_Refresh();
-        vTaskDelay(5/portTICK_PERIOD_MS);
+		loop();
+        vTaskDelay(1000/portTICK_PERIOD_MS);
     }
 }
 void Task_ADC(void *param)
@@ -200,7 +212,8 @@ void Task_USB(void *param)
 
 void User_Task_Create(void)
 {
-    xTaskCreate(Task_LED,(const char *)"LED", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+3, &Hd_Task_LED );
+	xTaskCreate(Task_LED,(const char *)"LED", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+3, &Hd_Task_LED );		
+    xTaskCreate(Task_Display,(const char *)"Display", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+3, &Hd_Task_Display);
 //    xTaskCreate(Task_Sleep,(const char *)"sleep", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+5, &Hd_Task_Sleep );
 //    xTaskCreate(Task_USB,(const char *)"USB", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+3, &Hd_Task_USB );
     

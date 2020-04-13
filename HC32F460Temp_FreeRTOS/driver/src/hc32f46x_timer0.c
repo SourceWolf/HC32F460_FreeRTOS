@@ -173,6 +173,83 @@
 /*******************************************************************************
  * Function implementation - global ('extern') and local ('static')
  ******************************************************************************/
+
+/**
+ *******************************************************************************
+ ** \brief Get clock mode
+ **
+ ** \param [in] pstcTim0Reg       Pointer to Timer0 register
+ **
+ ** \param [in] enCh              channel, Tim0_ChannelA or Tim0_ChannelB
+ **
+ ** \retval Tim0_Sync:            Synchronous clock
+ ** \retval Tim0_Async:           Asynchronous clock
+ **
+ ******************************************************************************/
+static en_tim0_counter_mode_t TIMER0_GetClkMode(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh)
+{
+    en_tim0_counter_mode_t enMode = Tim0_Sync;
+    DDL_ASSERT(IS_VALID_UNIT(pstcTim0Reg));
+    DDL_ASSERT(IS_VALID_CHANNEL(enCh));
+
+    switch(enCh)
+    {
+        case Tim0_ChannelA:
+            enMode = (en_tim0_counter_mode_t)pstcTim0Reg->BCONR_f.SYNSA;
+            break;
+        case Tim0_ChannelB:
+            enMode = (en_tim0_counter_mode_t)pstcTim0Reg->BCONR_f.SYNSB;
+            break;
+        default:
+            break;
+    }
+    return enMode;
+}
+
+/**
+ *******************************************************************************
+ ** \brief Time delay for register write in asynchronous mode
+ **
+ ** \param [in] pstcTim0Reg       Pointer to Timer0 register
+ **
+ ** \param [in] enCh              Channel, Tim0_ChannelA or Tim0_ChannelB
+ **
+ ** \param [in] enIsPublicReg     Enable for BCONR and STFLR register delay
+ **
+ ** \retval None
+ **
+ ******************************************************************************/
+static void AsyncDelay(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
+                       en_functional_state_t enIsPublicReg)
+{
+    en_functional_state_t enDelayEn = Disable;
+    en_tim0_counter_mode_t enModeA = TIMER0_GetClkMode(pstcTim0Reg, Tim0_ChannelA);
+    en_tim0_counter_mode_t enModeB = TIMER0_GetClkMode(pstcTim0Reg, Tim0_ChannelB);
+
+    if(Enable == enIsPublicReg)
+    {
+        if((Tim0_Async == enModeA) || (Tim0_Async == enModeB))
+        {
+            enDelayEn = Enable;
+        }
+    }
+    else
+    {
+        if(Tim0_Async == TIMER0_GetClkMode(pstcTim0Reg, enCh))
+        {
+            enDelayEn = Enable;
+        }
+    }
+
+    if(Enable == enDelayEn)
+    {
+        for(uint32_t i=0ul; i<SystemCoreClock/10000ul; i++)
+        {
+            __NOP();
+        }
+    }
+}
+
 /**
  *******************************************************************************
  ** \brief Get Timer0 status flag
@@ -227,6 +304,7 @@ en_result_t TIMER0_ClearFlag(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enC
     if(Tim0_ChannelA == enCh)
     {
         pstcTim0Reg->STFLR_f.CMAF =0u;
+        AsyncDelay(pstcTim0Reg, enCh, Enable);
         while(0u != pstcTim0Reg->STFLR_f.CMAF)
         {
             if(u32TimeOut++ > TIMER0_TMOUT)
@@ -239,6 +317,7 @@ en_result_t TIMER0_ClearFlag(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enC
     else
     {
         pstcTim0Reg->STFLR_f.CMBF = 0u;
+        AsyncDelay(pstcTim0Reg, enCh, Enable);
         while(0u != pstcTim0Reg->STFLR_f.CMBF)
         {
             if(u32TimeOut++ > TIMER0_TMOUT)
@@ -278,6 +357,7 @@ en_result_t TIMER0_Cmd(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
     {
         case Tim0_ChannelA:
             pstcTim0Reg->BCONR_f.CSTA = enCmd;
+            AsyncDelay(pstcTim0Reg, enCh, Enable);
             while(enCmd != pstcTim0Reg->BCONR_f.CSTA)
             {
                 if(u32TimeOut++ > TIMER0_TMOUT)
@@ -289,6 +369,7 @@ en_result_t TIMER0_Cmd(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
             break;
         case Tim0_ChannelB:
             pstcTim0Reg->BCONR_f.CSTB = enCmd;
+            AsyncDelay(pstcTim0Reg, enCh, Enable);
             while(enCmd != pstcTim0Reg->BCONR_f.CSTB)
             {
                 if(u32TimeOut++ > TIMER0_TMOUT)
@@ -314,12 +395,16 @@ en_result_t TIMER0_Cmd(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
  **
  ** \param [in] enFunc            Timer0 function,Tim0_OutputCapare or Tim0_InputCapture
  **
- ** \retval None
+ ** \retval Ok                    Success
+ ** \retval ErrorTimeout          Process timeout
  **
  ******************************************************************************/
-void TIMER0_SetFunc(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
+en_result_t TIMER0_SetFunc(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
                        en_tim0_function_t enFunc)
 {
+    en_result_t enRet = Ok;
+    uint32_t u32TimeOut = 0ul;
+
     DDL_ASSERT(IS_VALID_UNIT(pstcTim0Reg));
     DDL_ASSERT(IS_VALID_CHANNEL(enCh));
     DDL_ASSERT(IS_VALID_FUNCTION(enFunc));
@@ -328,13 +413,32 @@ void TIMER0_SetFunc(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
     {
         case Tim0_ChannelA:
             pstcTim0Reg->BCONR_f.CAPMDA = enFunc;
+            AsyncDelay(pstcTim0Reg, enCh, Enable);
+            while(enFunc != pstcTim0Reg->BCONR_f.CAPMDA)
+            {
+                if(u32TimeOut++ > TIMER0_TMOUT)
+                {
+                    enRet = ErrorTimeout;
+                    break;
+                }
+            }
             break;
         case Tim0_ChannelB:
             pstcTim0Reg->BCONR_f.CAPMDB = enFunc;
+            AsyncDelay(pstcTim0Reg, enCh, Enable);
+            while(enFunc != pstcTim0Reg->BCONR_f.CAPMDB)
+            {
+                if(u32TimeOut++ > TIMER0_TMOUT)
+                {
+                    enRet = ErrorTimeout;
+                    break;
+                }
+            }
             break;
         default:
             break;
     }
+    return enRet;
 }
 
 /**
@@ -347,12 +451,16 @@ void TIMER0_SetFunc(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
  **
  ** \param [in] enCmd             Disable or Enable the function
  **
- ** \retval None
+ ** \retval Ok                    Success
+ ** \retval ErrorTimeout          Process timeout
  **
  ******************************************************************************/
-void TIMER0_IntCmd(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
+en_result_t TIMER0_IntCmd(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
                        en_functional_state_t enCmd)
 {
+    en_result_t enRet = Ok;
+    uint32_t u32TimeOut = 0ul;
+
     DDL_ASSERT(IS_VALID_UNIT(pstcTim0Reg));
     DDL_ASSERT(IS_VALID_CHANNEL(enCh));
     DDL_ASSERT(IS_VALID_COMMAND(enCmd));
@@ -361,13 +469,32 @@ void TIMER0_IntCmd(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t enCh,
     {
         case Tim0_ChannelA:
             pstcTim0Reg->BCONR_f.INTENA = enCmd;
+            AsyncDelay(pstcTim0Reg, enCh, Enable);
+            while(enCmd != pstcTim0Reg->BCONR_f.INTENA)
+            {
+                if(u32TimeOut++ > TIMER0_TMOUT)
+                {
+                    enRet = ErrorTimeout;
+                    break;
+                }
+            }
             break;
         case Tim0_ChannelB:
             pstcTim0Reg->BCONR_f.INTENB = enCmd;
+            AsyncDelay(pstcTim0Reg, enCh, Enable);
+            while(enCmd != pstcTim0Reg->BCONR_f.INTENB)
+            {
+                if(u32TimeOut++ > TIMER0_TMOUT)
+                {
+                    enRet = ErrorTimeout;
+                    break;
+                }
+            }
             break;
         default:
             break;
     }
+    return enRet;
 }
 
 /**
@@ -424,6 +551,7 @@ en_result_t TIMER0_WriteCntReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t en
     if(Tim0_ChannelA == enCh)
     {
         pstcTim0Reg->CNTAR = (uint32_t)u16Cnt;
+        AsyncDelay(pstcTim0Reg, enCh, Disable);
         while(u16Cnt != (uint16_t)pstcTim0Reg->CNTAR)
         {
             if(u32TimeOut++ > TIMER0_TMOUT)
@@ -436,6 +564,7 @@ en_result_t TIMER0_WriteCntReg(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t en
     else
     {
         pstcTim0Reg->CNTBR = (uint32_t)u16Cnt;
+        AsyncDelay(pstcTim0Reg, enCh, Disable);
         while(u16Cnt != (uint16_t)pstcTim0Reg->CNTBR)
         {
             if(u32TimeOut++ > TIMER0_TMOUT)
@@ -501,6 +630,7 @@ en_result_t TIMER0_WriteCmpReg(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t e
     if(Tim0_ChannelA == enCh)
     {
         pstcTim0Reg->CMPAR = (uint32_t)u16Cnt;
+        AsyncDelay(pstcTim0Reg, enCh, Disable);
         while(u16Cnt != (uint16_t)pstcTim0Reg->CMPAR)
         {
             if(u32TimeOut++ > TIMER0_TMOUT)
@@ -513,6 +643,7 @@ en_result_t TIMER0_WriteCmpReg(M4_TMR0_TypeDef* pstcTim0Reg, en_tim0_channel_t e
     else
     {
         pstcTim0Reg->CMPBR = (uint32_t)u16Cnt;
+        AsyncDelay(pstcTim0Reg, enCh, Disable);
         while(u16Cnt != (uint16_t)pstcTim0Reg->CMPBR)
         {
             if(u32TimeOut++ > TIMER0_TMOUT)
@@ -563,12 +694,30 @@ en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
 
         /*Read current BCONR register */
         stcBconrTmp = pstcTim0Reg->BCONR_f;
+        /* Clear current configurate CH */
+        if(Tim0_ChannelA == enCh)
+        {
+            *(uint32_t *)&stcBconrTmp &= 0xFFFF0000ul;
+        }
+        else
+        {
+            *(uint32_t *)&stcBconrTmp &= 0x0000FFFFul;
+        }
+        pstcTim0Reg->BCONR_f = stcBconrTmp;
+        AsyncDelay(pstcTim0Reg, enCh, Enable);
+        while(*(uint32_t *)&stcBconrTmp != *(uint32_t *)&(pstcTim0Reg->BCONR_f))
+        {
+            if(u32TimeOut++ > TIMER0_TMOUT)
+            {
+                enRet = ErrorTimeout;
+                break;
+            }
+        }
 
         switch(enCh)
         {
             case Tim0_ChannelA:
-                /*set timer counter mode*/
-                stcBconrTmp.SYNSA = pstcBaseInit->Tim0_CounterMode;
+
                 switch(pstcBaseInit->Tim0_CounterMode)
                 {
                     case Tim0_Sync:
@@ -584,9 +733,17 @@ en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
                 stcBconrTmp.CKDIVA = pstcBaseInit->Tim0_ClockDivision;
                 /* Write BCONR register */
                 pstcTim0Reg->BCONR_f = stcBconrTmp;
+                AsyncDelay(pstcTim0Reg, enCh, Enable);
+
                 /*set timer compare value*/
                 pstcTim0Reg->CMPAR = pstcBaseInit->Tim0_CmpValue;
-                while(pstcBaseInit->Tim0_CmpValue != (uint16_t)pstcTim0Reg->CMPAR)
+                AsyncDelay(pstcTim0Reg, enCh, Enable);
+
+                /*set timer counter mode*/
+                pstcTim0Reg->BCONR_f.SYNSA = pstcBaseInit->Tim0_CounterMode;
+                AsyncDelay(pstcTim0Reg, enCh, Enable);
+                u32TimeOut = 0ul;
+                while(pstcBaseInit->Tim0_CounterMode != pstcTim0Reg->BCONR_f.SYNSA)
                 {
                     if(u32TimeOut++ > TIMER0_TMOUT)
                     {
@@ -594,11 +751,10 @@ en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
                         break;
                     }
                 }
+
                 break;
 
             case Tim0_ChannelB:
-                /*set timer counter mode*/
-                stcBconrTmp.SYNSB = pstcBaseInit->Tim0_CounterMode;
                 switch(pstcBaseInit->Tim0_CounterMode)
                 {
                     case Tim0_Sync:
@@ -614,9 +770,17 @@ en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
                 stcBconrTmp.CKDIVB = pstcBaseInit->Tim0_ClockDivision;
                 /* Write BCONR register */
                 pstcTim0Reg->BCONR_f = stcBconrTmp;
+                AsyncDelay(pstcTim0Reg, enCh, Enable);
+
                 /*set timer compare value*/
                 pstcTim0Reg->CMPBR = pstcBaseInit->Tim0_CmpValue;
-                while(pstcBaseInit->Tim0_CmpValue != (uint16_t)pstcTim0Reg->CMPBR)
+                AsyncDelay(pstcTim0Reg, enCh, Enable);
+
+                /*set timer counter mode*/
+                pstcTim0Reg->BCONR_f.SYNSB = pstcBaseInit->Tim0_CounterMode;
+                AsyncDelay(pstcTim0Reg, enCh, Enable);
+                u32TimeOut = 0ul;
+                while(pstcBaseInit->Tim0_CounterMode != pstcTim0Reg->BCONR_f.SYNSB)
                 {
                     if(u32TimeOut++ > TIMER0_TMOUT)
                     {
@@ -646,11 +810,15 @@ en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
  **
  ** \param [in] enCh            Timer0 channel, Tim0_ChannelA or Tim0_ChannelB
  **
- ** \retval None
+ ** \retval Ok                  Process finished.
+ ** \retval ErrorTimeout        Process timeout
  **
  ******************************************************************************/
-void TIMER0_DeInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh)
+en_result_t TIMER0_DeInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh)
 {
+    en_result_t enRet = Ok;
+    uint32_t u32TimeOut = 0ul;
+
     DDL_ASSERT(IS_VALID_UNIT(pstcTim0Reg));
     DDL_ASSERT(IS_VALID_CHANNEL(enCh));
 
@@ -658,6 +826,16 @@ void TIMER0_DeInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh)
     {
         case Tim0_ChannelA:
             pstcTim0Reg->BCONR &= 0xFFFF0000ul;
+            AsyncDelay(pstcTim0Reg, enCh, Enable);
+            while(0ul != (pstcTim0Reg->BCONR & 0x0000FFFFul))
+            {
+                if(u32TimeOut++ > TIMER0_TMOUT)
+                {
+                    enRet = ErrorTimeout;
+                    break;
+                }
+            }
+
             pstcTim0Reg->CMPAR = 0x0000FFFFul;
             pstcTim0Reg->CNTAR = 0x00000000ul;
             pstcTim0Reg->STFLR_f.CMAF =0u;
@@ -665,6 +843,16 @@ void TIMER0_DeInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh)
 
         case Tim0_ChannelB:
             pstcTim0Reg->BCONR &= 0x0000FFFFul;
+            AsyncDelay(pstcTim0Reg, enCh, Enable);
+            while(0ul != (pstcTim0Reg->BCONR & 0xFFFF0000ul))
+            {
+                if(u32TimeOut++ > TIMER0_TMOUT)
+                {
+                    enRet = ErrorTimeout;
+                    break;
+                }
+            }
+
             pstcTim0Reg->CMPBR = 0x0000FFFFul;
             pstcTim0Reg->CNTBR = 0x00000000ul;
             pstcTim0Reg->STFLR_f.CMBF =0u;
@@ -672,6 +860,7 @@ void TIMER0_DeInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh)
         default:
             break;
     }
+    return enRet;
 }
 
 /**
@@ -709,6 +898,7 @@ en_result_t TIMER0_HardTriggerInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_
 {
     stc_tmr0_bconr_field_t stcBconrTmp;
     en_result_t enRet = Ok;
+
     if(NULL != pStcInit)
     {
         DDL_ASSERT(IS_VALID_UNIT(pstcTim0Reg));
@@ -754,6 +944,8 @@ en_result_t TIMER0_HardTriggerInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_
             default:
                 break;
         }
+        AsyncDelay(pstcTim0Reg, enCh, Enable);
+
         /* Set trigger source*/
         M4_AOS->TMR0_HTSSR_f.TRGSEL = pStcInit->Tim0_SelTrigSrc;
     }

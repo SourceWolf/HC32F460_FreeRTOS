@@ -105,7 +105,7 @@ do{                                                                            \
 /* Exported function */
 void Ddl_AssertHandler(uint8_t *file, int16_t line);
 #else
-#define DDL_ASSERT(x)                               (void)(x)
+#define DDL_ASSERT(x)                               (void)(0)
 #endif /* __DEBUG */
 
 //@} // DdlUtilityGroup

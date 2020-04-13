@@ -161,7 +161,7 @@ void TimerA_config(void)
     PORT_SetFunc(TIMERA_UNIT1_CH3_PORT, TIMERA_UNIT1_CH3_PIN, TIMERA_UNIT1_CH3_FUNC, Disable);
 
     /* Configuration timera unit 1 base structure */
-    stcTimeraInit.enClkDiv = TimeraPclkDiv1;
+    stcTimeraInit.enClkDiv = TimeraPclkDiv1024;
     stcTimeraInit.enCntMode = TimeraCountModeSawtoothWave;
     stcTimeraInit.enCntDir = TimeraCountDirUp;
     stcTimeraInit.enSyncStartupEn = Disable;

@@ -503,3 +503,44 @@ void insertdisplaydata(unsigned char data)
 	display_data[3][0] = 0;
 	OLED_Set_Point(0,data);	
 }
+void OLED_ShowChar2(unsigned char x,unsigned char y,unsigned char chr)
+{
+	unsigned char c=0,i=0,j=0,pos,temp;	
+	c=chr-' '; //获取字符的偏移量	
+	if(x>Max_Column-1){x=0;y=y+1;} //如果列书超出了范围，就从下1行的第0列开始
+	if(SIZE ==16) //字符大小如果为 16 = 8*16
+	{
+		for(i=0;i<8;i++)
+		{
+			temp = F8X16[c*16+8+i];
+			pos = 0x80;
+			for(j=0;j<8;j++)
+			{
+				if(temp&pos)
+				{
+					OLED_Set_Point(x+i,y+j);
+				}
+				else
+				{
+					OLED_Clr_Point(x+i,y+j);
+				}
+				pos = pos>>1;
+			}	
+			temp = F8X16[c*16+i];
+			pos = 0x80;
+			for(j=0;j<8;j++)
+			{
+				if(temp&pos)
+				{
+					OLED_Set_Point(x+i,y+8+j);
+				}
+				else
+				{
+					OLED_Clr_Point(x+i,y+8+j);
+				}
+				pos = pos>>1;
+			}
+		}	
+	}
+
+}
