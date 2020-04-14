@@ -55,7 +55,7 @@
  ******************************************************************************/
 #include "hc32f46x_interrupts.h"
 #include "hc32f46x_utility.h"
-
+#include "cmsis_os.h"
 #if (DDL_INTERRUPTS_ENABLE == DDL_ON)
 
 /**

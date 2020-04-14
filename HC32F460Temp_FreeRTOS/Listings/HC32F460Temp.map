@@ -76,11 +76,11 @@ Memory Map of the image
     0x00001842   0x00001842   0x00000002   PAD
     0x00001844   0x00001844   0x0000015c   Code   RO         1037    i.DMA_InitChannel   hc32f46x_dmac.o
     0x000019a0   0x000019a0   0x00000034   Code   RO         1054    i.DMA_SetTriggerSrc  hc32f46x_dmac.o
-    0x000019d4   0x000019d4   0x00000034   Code   RO         5744    i.Ddl_Delay1ms      hc32f46x_utility.o
-    0x00001a08   0x00001a08   0x00000048   Code   RO         5745    i.Ddl_Delay1us      hc32f46x_utility.o
-    0x00001a50   0x00001a50   0x0000009c   Code   RO         5746    i.Ddl_UartInit      hc32f46x_utility.o
+    0x000019d4   0x000019d4   0x00000034   Code   RO         5843    i.Ddl_Delay1ms      hc32f46x_utility.o
+    0x00001a08   0x00001a08   0x00000048   Code   RO         5844    i.Ddl_Delay1us      hc32f46x_utility.o
+    0x00001a50   0x00001a50   0x0000009c   Code   RO         5845    i.Ddl_UartInit      hc32f46x_utility.o
     0x00001aec   0x00001aec   0x00000008   Code   RO         2030    i.DebugMon_Handler  hc32f46x_interrupts.o
-    0x00001af4   0x00001af4   0x00000018   Code   RO         5747    i.DebugOutput       hc32f46x_utility.o
+    0x00001af4   0x00001af4   0x00000018   Code   RO         5846    i.DebugOutput       hc32f46x_utility.o
     0x00001b0c   0x00001b0c   0x00000014   Code   RO         1219    i.EFM_InstructionCacheCmd  hc32f46x_efm.o
     0x00001b20   0x00001b20   0x00000018   Code   RO         1221    i.EFM_Lock          hc32f46x_efm.o
     0x00001b38   0x00001b38   0x00000014   Code   RO         1230    i.EFM_SetLatency    hc32f46x_efm.o
@@ -262,30 +262,30 @@ Memory Map of the image
     0x00004b1c   0x00004b1c   0x0000001c   Code   RO         1597    i.PORT_SetBits      hc32f46x_gpio.o
     0x00004b38   0x00004b38   0x00000058   Code   RO         1598    i.PORT_SetFunc      hc32f46x_gpio.o
     0x00004b90   0x00004b90   0x00000010   Code   RO         1602    i.PORT_Unlock       hc32f46x_gpio.o
-    0x00004ba0   0x00004ba0   0x00000038   Code   RO         3316    i.PWC_Fcg0PeriphClockCmd  hc32f46x_pwc.o
-    0x00004bd8   0x00004bd8   0x00000020   Code   RO         3317    i.PWC_Fcg1PeriphClockCmd  hc32f46x_pwc.o
-    0x00004bf8   0x00004bf8   0x00000020   Code   RO         3318    i.PWC_Fcg2PeriphClockCmd  hc32f46x_pwc.o
-    0x00004c18   0x00004c18   0x00000020   Code   RO         3319    i.PWC_Fcg3PeriphClockCmd  hc32f46x_pwc.o
-    0x00004c38   0x00004c38   0x00000010   Code   RO         4261    i.SRAM_CK_Disable   hc32f46x_sram.o
-    0x00004c48   0x00004c48   0x00000010   Code   RO         4262    i.SRAM_CK_Enable    hc32f46x_sram.o
-    0x00004c58   0x00004c58   0x00000010   Code   RO         4267    i.SRAM_WT_Disable   hc32f46x_sram.o
-    0x00004c68   0x00004c68   0x00000010   Code   RO         4268    i.SRAM_WT_Enable    hc32f46x_sram.o
-    0x00004c78   0x00004c78   0x0000017c   Code   RO         5748    i.SetUartBaudrate   hc32f46x_utility.o
+    0x00004ba0   0x00004ba0   0x00000038   Code   RO         3469    i.PWC_Fcg0PeriphClockCmd  hc32f46x_pwc.o
+    0x00004bd8   0x00004bd8   0x00000020   Code   RO         3470    i.PWC_Fcg1PeriphClockCmd  hc32f46x_pwc.o
+    0x00004bf8   0x00004bf8   0x00000020   Code   RO         3471    i.PWC_Fcg2PeriphClockCmd  hc32f46x_pwc.o
+    0x00004c18   0x00004c18   0x00000020   Code   RO         3472    i.PWC_Fcg3PeriphClockCmd  hc32f46x_pwc.o
+    0x00004c38   0x00004c38   0x00000010   Code   RO         4396    i.SRAM_CK_Disable   hc32f46x_sram.o
+    0x00004c48   0x00004c48   0x00000010   Code   RO         4397    i.SRAM_CK_Enable    hc32f46x_sram.o
+    0x00004c58   0x00004c58   0x00000010   Code   RO         4402    i.SRAM_WT_Disable   hc32f46x_sram.o
+    0x00004c68   0x00004c68   0x00000010   Code   RO         4403    i.SRAM_WT_Enable    hc32f46x_sram.o
+    0x00004c78   0x00004c78   0x0000017c   Code   RO         5847    i.SetUartBaudrate   hc32f46x_utility.o
     0x00004df4   0x00004df4   0x0000000c   Code   RO         7312    i.Set_ADC_Data      user_adc.o
     0x00004e00   0x00004e00   0x0000000c   Code   RO         2175    i.SysTick_Handler   hc32f46x_interrupts.o
     0x00004e0c   0x00004e0c   0x000000c4   Code   RO         6396    i.SystemCoreClockUpdate  system_hc32f46x.o
     0x00004ed0   0x00004ed0   0x00000008   Code   RO         6397    i.SystemInit        system_hc32f46x.o
-    0x00004ed8   0x00004ed8   0x0000008c   Code   RO         5246    i.TIMERA_BaseInit   hc32f46x_timera.o
-    0x00004f64   0x00004f64   0x000000e8   Code   RO         5249    i.TIMERA_ClearFlag  hc32f46x_timera.o
-    0x0000504c   0x0000504c   0x00000058   Code   RO         5252    i.TIMERA_CompareCmd  hc32f46x_timera.o
-    0x000050a4   0x000050a4   0x00000140   Code   RO         5253    i.TIMERA_CompareInit  hc32f46x_timera.o
-    0x000051e4   0x000051e4   0x0000006c   Code   RO         5263    i.TIMERA_HwStartupConfig  hc32f46x_timera.o
-    0x00005250   0x00005250   0x000000e8   Code   RO         5266    i.TIMERA_IrqCmd     hc32f46x_timera.o
-    0x00005338   0x00005338   0x00000058   Code   RO         5271    i.TIMERA_SetCompareValue  hc32f46x_timera.o
-    0x00005390   0x00005390   0x00000084   Code   RO         6203    i.Task_ADC          user_task.o
-    0x00005414   0x00005414   0x00000012   Code   RO         6204    i.Task_Display      user_task.o
+    0x00004ed8   0x00004ed8   0x0000008c   Code   RO         5354    i.TIMERA_BaseInit   hc32f46x_timera.o
+    0x00004f64   0x00004f64   0x000000e8   Code   RO         5357    i.TIMERA_ClearFlag  hc32f46x_timera.o
+    0x0000504c   0x0000504c   0x00000058   Code   RO         5360    i.TIMERA_CompareCmd  hc32f46x_timera.o
+    0x000050a4   0x000050a4   0x00000140   Code   RO         5361    i.TIMERA_CompareInit  hc32f46x_timera.o
+    0x000051e4   0x000051e4   0x0000006c   Code   RO         5371    i.TIMERA_HwStartupConfig  hc32f46x_timera.o
+    0x00005250   0x00005250   0x000000e8   Code   RO         5374    i.TIMERA_IrqCmd     hc32f46x_timera.o
+    0x00005338   0x00005338   0x00000058   Code   RO         5379    i.TIMERA_SetCompareValue  hc32f46x_timera.o
+    0x00005390   0x00005390   0x00000084   Code   RO         6245    i.Task_ADC          user_task.o
+    0x00005414   0x00005414   0x00000012   Code   RO         6246    i.Task_Display      user_task.o
     0x00005426   0x00005426   0x00000002   PAD
-    0x00005428   0x00005428   0x00000040   Code   RO         6205    i.Task_LED          user_task.o
+    0x00005428   0x00005428   0x00000040   Code   RO         6247    i.Task_LED          user_task.o
     0x00005468   0x00005468   0x00000168   Code   RO         7790    i.TimerA_config     user_timera.o
     0x000055d0   0x000055d0   0x00000048   Code   RO         7791    i.TimeraUnit1_IrqCallback  user_timera.o
     0x00005618   0x00005618   0x00000008   Code   RO         2176    i.UsageFault_Handler  hc32f46x_interrupts.o
@@ -293,7 +293,7 @@ Memory Map of the image
     0x000056dc   0x000056dc   0x0000009c   Code   RO         7441    i.User_DCU_Init     user_dcu.o
     0x00005778   0x00005778   0x000000f0   Code   RO         7479    i.User_DMA_Init     user_dma.o
     0x00005868   0x00005868   0x00000110   Code   RO         7173    i.User_Gpio_Init    user_gpio.o
-    0x00005978   0x00005978   0x0000004c   Code   RO         6208    i.User_Task_Create  user_task.o
+    0x00005978   0x00005978   0x0000004c   Code   RO         6250    i.User_Task_Create  user_task.o
     0x000059c4   0x000059c4   0x00000038   Code   RO         9603    i.Write_IIC_Command  oled.o
     0x000059fc   0x000059fc   0x00000038   Code   RO         9604    i.Write_IIC_Data    oled.o
     0x00005a34   0x00005a34   0x00000020   Code   RO        11320    i.__0printf         mc_w.l(printfa.o)
@@ -311,12 +311,12 @@ Memory Map of the image
     0x00006380   0x00006380   0x0000002e   Code   RO        11330    i._printf_pre_padding  mc_w.l(printfa.o)
     0x000063ae   0x000063ae   0x00000002   PAD
     0x000063b0   0x000063b0   0x00000088   Code   RO         2183    i.enIrqRegistration  hc32f46x_interrupts.o
-    0x00006438   0x00006438   0x00000010   Code   RO         5749    i.fputc             hc32f46x_utility.o
+    0x00006438   0x00006438   0x00000010   Code   RO         5848    i.fputc             hc32f46x_utility.o
     0x00006448   0x00006448   0x00000050   Code   RO         9605    i.insertdisplaydata  oled.o
     0x00006498   0x00006498   0x0000000c   Code   RO         7175    i.key0_int_callback  user_gpio.o
     0x000064a4   0x000064a4   0x0000000c   Code   RO         7176    i.key1_int_callback  user_gpio.o
-    0x000064b0   0x000064b0   0x00000008   Code   RO         6209    i.loop              user_task.o
-    0x000064b8   0x000064b8   0x000000a4   Code   RO         5848    i.main              main.o
+    0x000064b0   0x000064b0   0x00000008   Code   RO         6251    i.loop              user_task.o
+    0x000064b8   0x000064b8   0x000000a4   Code   RO         5944    i.main              main.o
     0x0000655c   0x0000655c   0x00000010   Code   RO         9152    i.osSystickHandler  cmsis_os.o
     0x0000656c   0x0000656c   0x00000098   Code   RO         8724    i.prvAddCurrentTaskToDelayedList  tasks.o
     0x00006604   0x00006604   0x000000b4   Code   RO         8725    i.prvAddNewTaskToReadyList  tasks.o
@@ -363,7 +363,7 @@ Memory Map of the image
     0x1fff8000   0x00007460   0x00000001   Data   RW         1055    .data               hc32f46x_dmac.o
     0x1fff8001   0x00007461   0x00000008   Data   RW         1784    .data               hc32f46x_i2c.o
     0x1fff8009   0x00007469   0x00000003   PAD
-    0x1fff800c   0x0000746c   0x0000001e   Data   RW         6211    .data               user_task.o
+    0x1fff800c   0x0000746c   0x0000001e   Data   RW         6253    .data               user_task.o
     0x1fff802a   0x0000748a   0x00000002   PAD
     0x1fff802c   0x0000748c   0x00000004   Data   RW         6398    .data               system_hc32f46x.o
     0x1fff8030   0x00007490   0x00000003   Data   RW         7177    .data               user_gpio.o
@@ -379,7 +379,7 @@ Memory Map of the image
     0x1fff8098   0x000074f8   0x0000000c   Data   RW         9507    .data               port.o
     0x1fff80a4   0x00007504   0x00000004   Data   RW        11370    .data               mc_w.l(stdout.o)
     0x1fff80a8        -       0x00000200   Zero   RW         2187    .bss                hc32f46x_interrupts.o
-    0x1fff82a8        -       0x00000020   Zero   RW         5849    .bss                main.o
+    0x1fff82a8        -       0x00000020   Zero   RW         5945    .bss                main.o
     0x1fff82c8        -       0x000000f0   Zero   RW         8770    .bss                tasks.o
     0x1fff83b8        -       0x00003c00   Zero   RW         9046    .bss                heap_4.o
     0x1fffbfb8        -       0x00000200   Zero   RW         9609    .bss                oled.o
