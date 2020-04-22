@@ -18,5 +18,6 @@ void showsin(void);
 void move_left(void);
 void insertdisplaydata(unsigned char data);
 void OLED_ShowChar2(unsigned char x,unsigned char y,unsigned char chr);
+void OLED_unShowChar2(unsigned char x,unsigned char y,unsigned char chr);
 #endif
 

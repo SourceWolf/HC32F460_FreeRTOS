@@ -339,7 +339,7 @@
               <MiscControls>--diag_suppress=186,66</MiscControls>
               <Define>HC32F46x,USE_DEVICE_DRIVER_LIB,__TARGET_FPU_VFP,__FPU_PRESENT=1,ARM_MATH_CM4,__CC_ARM,ARM_MATH_MATRIX_CHECK,ARM_MATH_ROUNDING,__MPU_PRESENT=1</Define>
               <Undefine></Undefine>
-              <IncludePath>.\common;.\driver\src;.\driver\inc;.\driver;.\usb_lib\ctl_drv;.\usb_lib\device_class\hid;.\usb_lib\device_core;.\App;.\FreeRTOS;.\FreeRTOS\include;.\FreeRTOS\CMSIS_RTOS;.\FreeRTOS\portable\MemMang;.\FreeRTOS\portable\RVDS;.\PeripheralDriver;.\midware\OLED;.\midware\OLED;.\midware\sd_card\inc;.\midware\sd_card\src;.\midware\sd_card;.\midware\wm8731;.\midware\wm8731\inc;.\midware\wm8731\src;.\FreeRTOS\portable\MDK;.\FileSystem\inc;.\midware\NRF24L01;.\midware\MLX9061x;.\RTT</IncludePath>
+              <IncludePath>.\common;.\driver\src;.\driver\inc;.\driver;.\usb_lib\ctl_drv;.\usb_lib\device_class\hid;.\usb_lib\device_core;.\App;.\FreeRTOS;.\FreeRTOS\include;.\FreeRTOS\CMSIS_RTOS;.\FreeRTOS\portable\MemMang;.\FreeRTOS\portable\RVDS;.\PeripheralDriver;.\midware\OLED;.\midware\OLED;.\midware\sd_card\inc;.\midware\sd_card\src;.\midware\sd_card;.\midware\wm8731;.\midware\wm8731\inc;.\midware\wm8731\src;.\FreeRTOS\portable\MDK;.\FileSystem\inc;.\midware\NRF24L01;.\midware\MLX9061x;.\RTT;.\midware\WL2400PTC;.\midware</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -863,6 +863,16 @@
               <FileType>5</FileType>
               <FilePath>.\PeripheralDriver\User_SPI.h</FilePath>
             </File>
+            <File>
+              <FileName>Hw_SPI4.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\PeripheralDriver\Hw_SPI4.c</FilePath>
+            </File>
+            <File>
+              <FileName>Hw_SPI4.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\PeripheralDriver\Hw_SPI4.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -918,11 +928,6 @@
         <Group>
           <GroupName>Midware</GroupName>
           <Files>
-            <File>
-              <FileName>OLED.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\midware\OLED\OLED.c</FilePath>
-            </File>
             <File>
               <FileName>data_sound_8k_i2s.c</FileName>
               <FileType>1</FileType>
@@ -987,6 +992,31 @@
               <FileName>WL2400PTC.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\midware\WL2400PTC\WL2400PTC.h</FilePath>
+            </File>
+            <File>
+              <FileName>User_FFT.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\midware\FFT\User_FFT.c</FilePath>
+            </File>
+            <File>
+              <FileName>User_FFT.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\midware\FFT\User_FFT.h</FilePath>
+            </File>
+            <File>
+              <FileName>OLED.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\midware\OLED\OLED.c</FilePath>
+            </File>
+            <File>
+              <FileName>DataRemapping.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\midware\DataRemapping.c</FilePath>
+            </File>
+            <File>
+              <FileName>DataRemapping.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\midware\DataRemapping.h</FilePath>
             </File>
           </Files>
         </Group>

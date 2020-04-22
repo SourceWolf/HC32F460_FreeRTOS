@@ -34,6 +34,7 @@
 #include "Hw_TIMERA_Capture.h"
 #include "HW_I2C.h"
 #include "SEGGER_RTT.h"
+#include "DataRemapping.h"
 //#define Add_UserSystem_Init 0x00040000
 
 USB_OTG_CORE_HANDLE  USB_OTG_dev;
@@ -90,7 +91,7 @@ void Task_LED(void *param)
 //    User_OTS_Init();
 //	NRF24L01_Init();
     Ddl_UartInit();
-	TimerA_config();
+//	TimerA_config();
 //    User_Timer4_init();
 //    taskENTER_CRITICAL();
 //    OLED_ShowString(0,0,(uint8_t *)"HDSC");
@@ -115,7 +116,7 @@ void Task_LED(void *param)
 //	User_I2S3_Init();
 //	TimerACaptureInit();
 //	showsin();
-//	OLED_ShowChar2(2,2,'A');
+//	OLED_ShowChar2(2,2,'A');	
     while(1)
     {
 		loop();

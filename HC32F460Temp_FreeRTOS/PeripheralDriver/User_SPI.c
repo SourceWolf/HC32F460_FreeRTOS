@@ -97,12 +97,12 @@ void User_SPI_Init(void)
 
     /* Configuration SPI pin */
     PORT_SetFunc(SPI_SCK_PORT, SPI_SCK_PIN, SPI_SCK_FUNC, Disable);
-//    PORT_SetFunc(SPI_NSS_PORT, SPI_NSS_PIN, SPI_NSS_FUNC, Disable);
+    PORT_SetFunc(SPI_NSS_PORT, SPI_NSS_PIN, SPI_NSS_FUNC, Disable);
     PORT_SetFunc(SPI_MOSI_PORT, SPI_MOSI_PIN, SPI_MOSI_FUNC, Disable);
-    PORT_SetFunc(SPI_MISO_PORT, SPI_MISO_PIN, SPI_MISO_FUNC, Disable);
+//    PORT_SetFunc(SPI_MISO_PORT, SPI_MISO_PIN, SPI_MISO_FUNC, Disable);
 
     /* Configuration SPI structure */
-    stcSpiInit.enClkDiv = SpiClkDiv64;
+    stcSpiInit.enClkDiv = SpiClkDiv256;
     stcSpiInit.enFrameNumber = SpiFrameNumber1;
     stcSpiInit.enDataLength = SpiDataLengthBit8;
     stcSpiInit.enFirstBitPosition = SpiFirstBitPositionMSB;
@@ -187,8 +187,8 @@ void User_SPI_Init(void)
 //    SPI_Cmd(SPI_UNIT, Enable);
 //    SPI_UNIT->CR1_f.SPE = 1;
     Ddl_Delay1ms(10);
-    SPI_IrqCmd(SPI_UNIT, SpiIrqReceive, Enable);
-    SPI_IrqCmd(SPI_UNIT, SpiIrqSend, Enable);
+//    SPI_IrqCmd(SPI_UNIT, SpiIrqReceive, Enable);
+//    SPI_IrqCmd(SPI_UNIT, SpiIrqSend, Enable);
     SPI_IrqCmd(SPI_UNIT, SpiIrqError, Enable);
 	
 //    SPI_IrqCmd(SPI_UNIT, SpiIrqIdel, Enable);
@@ -201,8 +201,9 @@ void USER_SPI_TEST(void)
     SPI_SendData8(SPI_UNIT,0x55);	
 }
 void SPI_Writedata(uint8_t data)
-{
+{	
 	SPI_SendData8(SPI_UNIT,data);
+	while(SPI_UNIT->SR_f.IDLNF == 0);
 }
 uint8_t SPI_ReadData(void)
 {
