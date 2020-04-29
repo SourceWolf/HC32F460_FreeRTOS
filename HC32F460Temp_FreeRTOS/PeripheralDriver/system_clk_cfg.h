@@ -152,9 +152,9 @@
 //------------------Configure UPLL CLK------------------------//
 #define UPLL_CLK_ENABLE  ENABLE
 #define UPLL_CLK_SOURCE  PLL_CLK_SOURCE//必须与MPLL相同
-#define UPLL_CLK_M_DIV   1//PLL_DIV2+1
+#define UPLL_CLK_M_DIV   2//PLL_DIV2+1
 //倍频系数，最低倍频数20，最高80/
-#define UPLL_CLK_NUM      42u
+#define UPLL_CLK_NUM      84u
 
 #define UPLL_CLK_P_DIV      PLL_DIV7+1//UPLL 预分频数
 #define UPLL_CLK_Q_DIV      PLL_DIV7+1

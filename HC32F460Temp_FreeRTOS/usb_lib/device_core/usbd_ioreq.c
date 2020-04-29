@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -44,8 +44,8 @@
  **
  ** A detailed description is available at
  ** @link
-		This file provides the IO requests APIs for control endpoints.
-	@endlink
+    This file provides the IO requests APIs for control endpoints.
+    @endlink
  **
  **   - 2018-12-26  1.0  wangmin First version for USB demo.
  **
@@ -54,7 +54,6 @@
 /*******************************************************************************
  * Include files
  ******************************************************************************/
-#include <stdio.h>
 #include "usbd_ioreq.h"
 
 /*******************************************************************************
@@ -101,7 +100,7 @@ USBD_Status  USBD_CtlSendData (USB_OTG_CORE_HANDLE  *pdev,
 
     //printf("ctrl in %d\n",len);
 
-    DCD_EP_Tx (pdev, 0, pbuf, len);
+    DCD_EP_Tx (pdev, 0u, pbuf, (uint32_t)len);
 
     return ret;
 }
@@ -121,7 +120,7 @@ USBD_Status  USBD_CtlContinueSendData (USB_OTG_CORE_HANDLE  *pdev,
 {
     USBD_Status ret = USBD_OK;
 
-    DCD_EP_Tx (pdev, 0, pbuf, len);
+    DCD_EP_Tx (pdev, 0u, pbuf, (uint32_t)len);
     return ret;
 }
 
@@ -145,7 +144,7 @@ USBD_Status  USBD_CtlPrepareRx (USB_OTG_CORE_HANDLE  *pdev,
     pdev->dev.device_state = USB_OTG_EP0_DATA_OUT;
 
     DCD_EP_PrepareRx (pdev,
-                        0,
+                        0u,
                         pbuf,
                         len);
     return ret;
@@ -167,7 +166,7 @@ USBD_Status  USBD_CtlContinueRx (USB_OTG_CORE_HANDLE  *pdev,
     USBD_Status ret = USBD_OK;
 
     DCD_EP_PrepareRx (pdev,
-                        0,
+                        0u,
                         pbuf,
                         len);
     return ret;
@@ -184,9 +183,9 @@ USBD_Status  USBD_CtlSendStatus (USB_OTG_CORE_HANDLE  *pdev)
     USBD_Status ret = USBD_OK;
     pdev->dev.device_state = USB_OTG_EP0_STATUS_IN;
     DCD_EP_Tx (pdev,
-                0,
+                0u,
                 pdev->dev.setup_packet,//NULL,
-                0);
+                0u);
     //printf("ctrl send status\n");
     //  USB_OTG_EP0_OutStart(pdev);
 
@@ -205,9 +204,9 @@ USBD_Status  USBD_CtlReceiveStatus (USB_OTG_CORE_HANDLE  *pdev)
     USBD_Status ret = USBD_OK;
     pdev->dev.device_state = USB_OTG_EP0_STATUS_OUT;
     DCD_EP_PrepareRx ( pdev,
-                        0,
+                        0u,
                         pdev->dev.setup_packet,//NULL,
-                        0);
+                        0u);
     //  USB_OTG_EP0_OutStart(pdev);
     return ret;
 }
@@ -223,7 +222,7 @@ USBD_Status  USBD_CtlReceiveStatus (USB_OTG_CORE_HANDLE  *pdev)
  ******************************************************************************/
 uint16_t  USBD_GetRxCount (USB_OTG_CORE_HANDLE  *pdev , uint8_t epnum)
 {
-    return pdev->dev.out_ep[epnum].xfer_count;
+    return (uint16_t)pdev->dev.out_ep[epnum].xfer_count;
 }
 
 /*******************************************************************************

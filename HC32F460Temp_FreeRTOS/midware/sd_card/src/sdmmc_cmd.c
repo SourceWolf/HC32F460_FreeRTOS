@@ -1647,7 +1647,7 @@ static bool SDMMC_GetCardDetection(M4_SDIOC_TypeDef *SDIOCx)
 {
     bool bRet = false;
     __IO uint32_t u32Count = 5000ul * (SystemCoreClock / 8ul /1000ul);
-
+	return true;//
     /* Wait until card is stable */
     do
     {

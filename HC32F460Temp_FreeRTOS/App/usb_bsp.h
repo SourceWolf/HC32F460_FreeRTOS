@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -56,6 +56,7 @@
  ******************************************************************************/
 #include "usb_core.h"
 #include "usb_conf.h"
+#include "hc32_ddl.h"
 
 /*******************************************************************************
  * Global type definitions ('typedef')
@@ -64,12 +65,37 @@
 /*******************************************************************************
  * Global pre-processor symbols/macros ('#define')
  ******************************************************************************/
-#define KEY_PORT    PortD
-#define KEY_UP      Pin04
-#define KEY_DOWN    Pin06
-#define KEY_LEFT    Pin05
-#define KEY_RIGHT   Pin03
+/* KEY0 */
+#define  SW2_PORT       (PortD)
+#define  SW2_PIN        (Pin03)
 
+/* LED0 Port/Pin definition */
+#define  LED0_PORT      (PortE)
+#define  LED0_PIN       (Pin06)
+
+/* LED1 Port/Pin definition */
+#define  LED1_PORT      (PortA)
+#define  LED1_PIN       (Pin07)
+
+/* LED2 Port/Pin definition */
+#define  LED2_PORT      (PortB)
+#define  LED2_PIN       (Pin05)
+
+/* LED3 Port/Pin definition */
+#define  LED3_PORT      (PortB)
+#define  LED3_PIN       (Pin09)
+
+/* LED0~3 toggle definition */
+#define  LED0_TOGGLE()    (PORT_Toggle(LED0_PORT, LED0_PIN))
+#define  LED1_TOGGLE()    (PORT_Toggle(LED1_PORT, LED1_PIN))
+#define  LED2_TOGGLE()    (PORT_Toggle(LED2_PORT, LED2_PIN))
+#define  LED3_TOGGLE()    (PORT_Toggle(LED3_PORT, LED3_PIN))
+
+/* LED0~3 Control definition */
+#define  LED0_CTL(x)      ((Reset != (x))?PORT_SetBits(LED0_PORT, LED0_PIN):PORT_ResetBits(LED0_PORT, LED0_PIN))
+#define  LED1_CTL(x)      ((Reset != (x))?PORT_SetBits(LED1_PORT, LED1_PIN):PORT_ResetBits(LED1_PORT, LED1_PIN))
+#define  LED2_CTL(x)      ((Reset != (x))?PORT_SetBits(LED2_PORT, LED2_PIN):PORT_ResetBits(LED2_PORT, LED2_PIN))
+#define  LED3_CTL(x)      ((Reset != (x))?PORT_SetBits(LED3_PORT, LED3_PIN):PORT_ResetBits(LED3_PORT, LED3_PIN))
 /*******************************************************************************
  * Global variable definitions ('extern')
  ******************************************************************************/

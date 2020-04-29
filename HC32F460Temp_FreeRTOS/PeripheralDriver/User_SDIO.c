@@ -44,7 +44,7 @@ static stc_sdcard_dma_init_t m_stcDmaInitCfg =
     DmaCh0,
 };
 
-static stc_sd_handle_t m_stcSdhandle =
+stc_sd_handle_t m_stcSdhandle =
 {
     M4_SDIOC1,
     SdCardDmaMode,
@@ -136,3 +136,19 @@ void SD_CARD_TEST(void)
         enTestResult = Error;
     }
 }    
+void hd_sdio_hw_init()
+{
+	;
+}
+void enable_sdio_hw(bool enable)
+{
+	;
+}
+en_result_t SD_ReadDisk(uint8_t* buf, uint32_t blk_addr, uint16_t blk_len)
+{
+	;
+}
+en_result_t SD_WriteDisk(uint8_t* buf, uint32_t blk_addr, uint16_t blk_len)
+{
+	;
+}

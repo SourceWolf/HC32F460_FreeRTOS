@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -48,8 +48,8 @@
  **   - 2018-12-26  1.0  wangmin First version for USB demo.
  **
  ******************************************************************************/
-#ifndef __USB_DESC_H
-#define __USB_DESC_H
+#ifndef __USB_DESC_H__
+#define __USB_DESC_H__
 
 /*******************************************************************************
  * Include files
@@ -66,6 +66,12 @@
 #define USB_ENDPOINT_DESCRIPTOR_TYPE            0x05
 #define USB_SIZ_DEVICE_DESC                     18
 #define USB_SIZ_STRING_LANGID                   4
+
+#define DEVICE_ID1                              (0x1FFFF7E8)
+#define DEVICE_ID2                              (0x1FFFF7EA)
+#define DEVICE_ID3                              (0x1FFFF7EC)
+
+#define USB_SIZ_STRING_SERIAL                   0x1A
 
 /*******************************************************************************
  * Global variable definitions ('extern')
@@ -92,7 +98,7 @@ uint8_t *     USBD_USR_USRStringDesc (uint8_t speed, uint8_t idx , uint16_t *len
 #endif /* USB_SUPPORT_USER_STRING_DESC */
 
 
-#endif /* __USBD_DESC_H */
+#endif /* __USBD_DESC_H__ */
 
 /*******************************************************************************
  * EOF (not truncated)

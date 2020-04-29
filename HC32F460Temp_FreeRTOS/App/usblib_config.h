@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -86,28 +86,31 @@ extern "C"
  ******************************************************************************/
 
 /*! File folder on-off define */
-//#define USBLIB_CTL_DRV                              DDL_ON
-#define USBLIB_DEVICE_CORE                          DDL_ON
-#define USBLIB_HOST_CORE                            DDL_OFF
-#define USBLIB_DEVICE_CLASS                         DDL_ON
-#define USBLIB_HOST_CLASS                           DDL_OFF
+#define USBLIB_DEVICE_CORE                          (DDL_ON)
+#define USBLIB_HOST_CORE                            (DDL_OFF)
+#define USBLIB_DEVICE_CLASS                         (DDL_ON)
+#define USBLIB_HOST_CLASS                           (DDL_OFF)
 
 /*! ctl_drv file on-off define */
-#define CTL_DRV_USB_CORE                             DDL_ON
-#define CTL_DRV_USB_OTG                              DDL_ON
-#define CTL_DRV_USB_DCD                              DDL_ON
-#define CTL_DRV_USB_DCD_INT                          DDL_ON
-#define CTL_DRV_USB_HCD                              DDL_OFF
-#define CTL_DRV_USB_HCD_INT                          DDL_OFF
+#define CTL_DRV_USB_CORE                            (DDL_ON)
+#define CTL_DRV_USB_OTG                             (DDL_ON)
+#define CTL_DRV_USB_DCD                             (DDL_ON)
+#define CTL_DRV_USB_DCD_INT                         (DDL_ON)
+#define CTL_DRV_USB_HCD                             (DDL_OFF)
+#define CTL_DRV_USB_HCD_INT                         (DDL_OFF)
 
 /*! device class on-off define */
-#define DEVICE_CLASS_AUDIO                          DDL_OFF
-#define DEVICE_CLASS_HID                            DDL_ON
-#define DEVICE_CLASS_VCP                            DDL_OFF
+#define DEVICE_CLASS_AUDIO                          (DDL_OFF)
+#define DEVICE_CLASS_HID_MOUSE                      (DDL_OFF)
+#define DEVICE_CLASS_MSC                            (DDL_ON)
+#define DEVICE_CLASS_CDC_VCP                        (DDL_OFF)
+#define DEVICE_CLASS_HID_CUSTOM                     (DDL_ON)
+#define DEVICE_CLASS_HID_CDC_WRAPPER                (DDL_OFF)
+#define DEVICE_CLASS_HID_MSC_WRAPPER                (DDL_ON)
 
 /*! host class on-off define */
-#define HOST_CLASS_HID                              DDL_OFF
-#define HOST_CLASS_MSC                              DDL_OFF
+#define HOST_CLASS_HID                              (DDL_OFF)
+#define HOST_CLASS_MSC                              (DDL_OFF)
 
 /*******************************************************************************
  * Global variable definitions ('extern')

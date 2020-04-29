@@ -35,18 +35,18 @@
 #include "HW_I2C.h"
 #include "SEGGER_RTT.h"
 #include "DataRemapping.h"
+#include "hd_sdio.h"
+#include "../Tasks/Task_LED.h"
 //#define Add_UserSystem_Init 0x00040000
 
-USB_OTG_CORE_HANDLE  USB_OTG_dev;
+//USB_OTG_CORE_HANDLE  USB_OTG_dev;
 uint8_t displaydata[4][128];
 extern USB_OTG_CORE_HANDLE  USB_OTG_dev;
-TaskHandle_t Hd_Task_LED, Hd_Task_ADC,Hd_Task_Sleep,Hd_Task_USB,Hd_Task_USBReport,Hd_Task_Display;
+TaskHandle_t Hd_Task_Start, Hd_Task_ADC,Hd_Task_Sleep,Hd_Task_USB,Hd_Task_USBReport,Hd_Task_Display;
 void Task_ADC(void *param);
 //void (*P_UserSystem_Init)(void);
-char line[82];
-FATFS FatFs;
-FRESULT fr;
-FIL Myfile; 
+QueueHandle_t xQueue_ADC;
+void Task_USB(void *param);
 void Sleep_init(void)
 {
     stc_pwc_pwr_mode_cfg_t  stcPwcPwrMdCfg;
@@ -80,46 +80,12 @@ void Task_Display(void* param)
         vTaskDelay(5/portTICK_PERIOD_MS);
 	}
 }
-void Task_LED(void *param)
+void Task_START(void *param)
 {
-	static uint8_t data;
-	en_result_t status;
-    User_Gpio_Init();
-//	P_UserSystem_Init = (void *)(Add_UserSystem_Init+4);
-//	User_I2C1_Init();
-    
-//    User_OTS_Init();
-//	NRF24L01_Init();
-    Ddl_UartInit();
-//	TimerA_config();
-//    User_Timer4_init();
-//    taskENTER_CRITICAL();
-//    OLED_ShowString(0,0,(uint8_t *)"HDSC");
-//    OLED_ShowString(32,2,(uint8_t *)"HC32F460");
-//    printf("system Initailed!\r\n");
-//    Print_CPU_Temperature();
-//    taskEXIT_CRITICAL();
-//    disk_initialize(SD_Card);
-//    f_mount(SD_Card,&FatFs);//Çý¶¯Æ÷0
-//    fr = f_open(&Myfile,"myfile.txt",FA_READ);
-//    f_gets(line, sizeof line, &Myfile);
-//        printf("%s\r\n",line);
-//    f_close(&Myfile);
-//	NRF24L01_Read_Reg(0x00,rxdata,1);
-//    Hw_Uart1_Init();
-//    UART1_TX_DMA_Init();
-//    User_SPI_Init();
-//    User_USART_Init();
-    xTaskCreate(Task_ADC,(const char *)"ADC", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+4, &Hd_Task_ADC );
-//	MLX90615_Init();
-//	P_UserSystem_Init();
-//	User_I2S3_Init();
-//	TimerACaptureInit();
-//	showsin();
-//	OLED_ShowChar2(2,2,'A');	
+	Task_KeyLED_Start();
+	vTaskDelete(Hd_Task_Start);
     while(1)
     {
-		loop();
         vTaskDelay(1000/portTICK_PERIOD_MS);
     }
 }
@@ -134,7 +100,8 @@ void Task_ADC(void *param)
 //    Test_QSPI();
     taskENTER_CRITICAL();
     printf("AIN10 data:%d\r\n",Get_DCU1_Result()-1000);
-    taskEXIT_CRITICAL();    
+    taskEXIT_CRITICAL();
+	xQueue_ADC = xQueueCreate(1,sizeof(uint16_t));
     while(1)
     {      
  //       User_CAN_Test(); 
@@ -153,68 +120,70 @@ void Task_ADC(void *param)
 }
 void Task_USB_Report(void *param)
 {
-    int8_t  x=0, y=0;
-    static uint8_t HID_Buffer [4];        
-    while(1)
-    {
-        if(Reset == PORT_GetBit(Key0_PORT,Key0_Pin))
-        {
-            y = -5;
-        }
-        if(Reset == PORT_GetBit(Key2_PORT,Key2_Pin))
-        {
-            y = 5;
-        }
-        if(Reset == PORT_GetBit(Key1_PORT,Key1_Pin))
-        {
-            x = -5;
-        }
-        if(Reset == PORT_GetBit(Key3_PORT,Key3_Pin))
-        {
-            x = 5;
-        }
-        HID_Buffer[0] = (uint8_t)0;
-        HID_Buffer[1] = (uint8_t)x;
-        HID_Buffer[2] = (uint8_t)y;
-        HID_Buffer[3] = (uint8_t)0;
-         if((HID_Buffer[1] != 0u) ||(HID_Buffer[2] != 0u))
-        {
-            USBD_HID_SendReport (&USB_OTG_dev, HID_Buffer, 4u);
-        }
-        x = y =0;
-        vTaskDelay(100/portTICK_PERIOD_MS);
-    }
+//    int8_t  x=0, y=0;
+//    static uint8_t HID_Buffer [4];        
+//    while(1)
+//    {
+//        if(Reset == PORT_GetBit(Key0_PORT,Key0_Pin))
+//        {
+//            y = -5;
+//        }
+//        if(Reset == PORT_GetBit(Key2_PORT,Key2_Pin))
+//        {
+//            y = 5;
+//        }
+//        if(Reset == PORT_GetBit(Key1_PORT,Key1_Pin))
+//        {
+//            x = -5;
+//        }
+//        if(Reset == PORT_GetBit(Key3_PORT,Key3_Pin))
+//        {
+//            x = 5;
+//        }
+//        HID_Buffer[0] = (uint8_t)0;
+//        HID_Buffer[1] = (uint8_t)x;
+//        HID_Buffer[2] = (uint8_t)y;
+//        HID_Buffer[3] = (uint8_t)0;
+//         if((HID_Buffer[1] != 0u) ||(HID_Buffer[2] != 0u))
+//        {
+//            USBD_HID_SendReport (&USB_OTG_dev, HID_Buffer, 4u);
+//        }
+//        x = y =0;
+//        vTaskDelay(100/portTICK_PERIOD_MS);
+//    }
+	while(1)
+	{
+		vTaskDelay(100/portTICK_PERIOD_MS);
+	}
 }
 void Task_USB(void *param)
 {
     stc_clk_freq_t Clkdata;
-    __IO uint32_t test = 0ul;
-     USBD_Init(&USB_OTG_dev,
-#ifdef USE_USB_OTG_FS
-              USB_OTG_FS_CORE_ID,
-#else
-              USB_OTG_HS_CORE_ID,
-#endif
-              &USR_desc,
-              &USBD_HID_cb,
-              &USR_cb);
     CLK_GetClockFreq(&Clkdata);
-    xTaskCreate(Task_USB_Report,(const char *)"USB_report", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+3, &Hd_Task_USBReport );
+	hd_sdio_hw_init();
+	USBD_Init(&USB_OTG_dev,
+#ifdef USE_USB_OTG_HS
+            USB_OTG_HS_CORE_ID,
+#else
+            USB_OTG_FS_CORE_ID,
+#endif
+            &USR_desc, &USBD_MSC_HID_cb, &USR_cb);
+//    xTaskCreate(Task_USB_Report,(const char *)"USB_report", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+3, &Hd_Task_USBReport );
     while(1)
     {
-        if(test == 0x1ul)
-        {
-            USB_OTG_ActiveRemoteWakeup(&USB_OTG_dev);
-            test  = 0ul;
-        }
+//        if(test == 0x1ul)
+//        {
+//            USB_OTG_ActiveRemoteWakeup(&USB_OTG_dev);
+//            test  = 0ul;
+//        }
         vTaskDelay(1000/portTICK_PERIOD_MS);
     }
 }
 
 void User_Task_Create(void)
 {
-	xTaskCreate(Task_LED,(const char *)"LED", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+3, &Hd_Task_LED );		
-    xTaskCreate(Task_Display,(const char *)"Display", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+3, &Hd_Task_Display);
+	xTaskCreate(Task_START,(const char *)"LED", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+3, &Hd_Task_Start );		
+//	xTaskCreate(Task_Display,(const char *)"Display", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+3, &Hd_Task_Display);
 //    xTaskCreate(Task_Sleep,(const char *)"sleep", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+5, &Hd_Task_Sleep );
 //    xTaskCreate(Task_USB,(const char *)"USB", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY+3, &Hd_Task_USB );
     

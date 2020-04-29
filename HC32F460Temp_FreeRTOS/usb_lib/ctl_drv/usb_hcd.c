@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -44,8 +44,8 @@
  **
  ** A detailed description is available at
  ** @link
-		Host Interface Layer.
-	@endlink
+        Host Interface Layer.
+    @endlink
  **
  **   - 2018-12-26  1.0  wangmin First version for USB demo.
  **
@@ -92,16 +92,16 @@
  ******************************************************************************/
 uint32_t HCD_Init(USB_OTG_CORE_HANDLE *pdev, USB_OTG_CORE_ID_TypeDef coreID)
 {
-    uint8_t i = 0;
-    pdev->host.ConnSts = 0;
+    uint8_t i = 0u;
+    pdev->host.ConnSts = 0u;
 
-    for (i= 0; i< USB_OTG_MAX_TX_FIFOS; i++)
+    for (i= 0u; i< USB_OTG_MAX_TX_FIFOS; i++)
     {
-        pdev->host.ErrCnt[i]  = 0;
-        pdev->host.XferCnt[i]   = 0;
+        pdev->host.ErrCnt[i]  = 0u;
+        pdev->host.XferCnt[i]   = 0u;
         pdev->host.HC_Status[i]   = HC_IDLE;
     }
-    pdev->host.hc[0].max_packet  = 8;
+    pdev->host.hc[0].max_packet  = 8u;
 
     USB_OTG_SelectCore(pdev, coreID);
 #ifndef DUAL_ROLE_MODE_ENABLED
@@ -115,7 +115,7 @@ uint32_t HCD_Init(USB_OTG_CORE_HANDLE *pdev, USB_OTG_CORE_ID_TypeDef coreID)
     USB_OTG_CoreInitHost(pdev);
     USB_OTG_EnableGlobalInt(pdev);
 #endif
-    return 0;
+    return 0ul;
 }
 
 
@@ -129,7 +129,7 @@ uint32_t HCD_Init(USB_OTG_CORE_HANDLE *pdev, USB_OTG_CORE_ID_TypeDef coreID)
 uint32_t HCD_GetCurrentSpeed (USB_OTG_CORE_HANDLE *pdev)
 {
     USB_OTG_HPRT0_TypeDef  HPRT0;
-    HPRT0.d32 = USB_OTG_READ_REG32(pdev->regs.HPRT0);
+    HPRT0.b = *(__IO stc_bUSB_OTG_HPRT0_t*)&USB_OTG_READ_REG32(pdev->regs.HPRT0);   /* C-STAT */
 
     return HPRT0.b.prtspd;
 }
@@ -151,7 +151,7 @@ uint32_t HCD_ResetPort(USB_OTG_CORE_HANDLE *pdev)
     */
 
     USB_OTG_ResetPort(pdev);
-    return 0;
+    return 0ul;
 }
 
 /**
@@ -177,7 +177,7 @@ uint32_t HCD_IsDeviceConnected(USB_OTG_CORE_HANDLE *pdev)
  ******************************************************************************/
 uint32_t HCD_GetCurrentFrame (USB_OTG_CORE_HANDLE *pdev)
 {
-    return (USB_OTG_READ_REG32(&pdev->regs.HREGS->HFNUM) & 0xFFFF) ;
+    return (USB_OTG_READ_REG32(&pdev->regs.HREGS->HFNUM) & 0xFFFFul) ;
 }
 
 /**
@@ -245,7 +245,7 @@ uint32_t HCD_HC_Init (USB_OTG_CORE_HANDLE *pdev , uint8_t hc_num)
 uint32_t HCD_SubmitRequest (USB_OTG_CORE_HANDLE *pdev , uint8_t hc_num)
 {
     pdev->host.URB_State[hc_num] = URB_IDLE;
-    pdev->host.hc[hc_num].xfer_count = 0 ;
+    pdev->host.hc[hc_num].xfer_count = 0u ;
     return USB_OTG_HC_StartXfer(pdev, hc_num);
 }
 

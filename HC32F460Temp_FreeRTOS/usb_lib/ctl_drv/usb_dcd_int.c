@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -44,8 +44,8 @@
  **
  ** A detailed description is available at
  ** @link
-		Peripheral Device interrupt subroutines.
-	@endlink
+        Peripheral Device interrupt subroutines.
+    @endlink
  **
  **   - 2018-12-26  1.0  wangmin First version for USB demo.
  **
@@ -101,13 +101,13 @@ static uint32_t DCD_SessionRequest_ISR(USB_OTG_CORE_HANDLE *pdev);
  ******************************************************************************/
 char const *state_str[7] =
 {
-	"idle",
-	"setup",
-	"data_in",
-	"data_out",
-	"status_in",
-	"status_out",
-	"stall"
+    "idle",
+    "setup",
+    "data_in",
+    "data_out",
+    "status_in",
+    "status_out",
+    "stall"
 };
 /*******************************************************************************
  * Function implementation - global ('extern') and local ('static')
@@ -133,7 +133,7 @@ uint32_t USBD_OTG_EP1OUT_ISR_Handler (USB_OTG_CORE_HANDLE *pdev)
     if ( doepint.b.xfercompl )
     {
         /* Clear the bit in DOEPINTn for this interrupt */
-        CLEAR_OUT_EP_INTR(1, xfercompl);
+        CLEAR_OUT_EP_INTR(1, out_xfercompl);
         if (pdev->cfg.dma_enable == 1)
         {
             deptsiz.d32 = USB_OTG_READ_REG32(&(pdev->regs.OUTEP_REGS[1]->DOEPTSIZ));
@@ -150,7 +150,7 @@ uint32_t USBD_OTG_EP1OUT_ISR_Handler (USB_OTG_CORE_HANDLE *pdev)
     if ( doepint.b.epdisabled )
     {
         /* Clear the bit in DOEPINTn for this interrupt */
-        CLEAR_OUT_EP_INTR(1, epdisabled);
+        CLEAR_OUT_EP_INTR(1, out_epdisabled);
     }
 
     return 1;
@@ -177,30 +177,30 @@ uint32_t USBD_OTG_EP1IN_ISR_Handler (USB_OTG_CORE_HANDLE *pdev)
     {
         fifoemptymsk = 0x1 << 1;
         USB_OTG_MODIFY_REG32(&pdev->regs.DREGS->DIEPEMPMSK, fifoemptymsk, 0);
-        CLEAR_IN_EP_INTR(1, xfercompl);
+        CLEAR_IN_EP_INTR(1, in_xfercompl);
         /* TX COMPLETE */
         USBD_DCD_INT_fops->DataInStage(pdev , 1);
     }
     if ( diepint.b.epdisabled )
     {
-        CLEAR_IN_EP_INTR(1, epdisabled);
+        CLEAR_IN_EP_INTR(1, in_epdisabled);
     }
     if ( diepint.b.timeout )
     {
-        CLEAR_IN_EP_INTR(1, timeout);
+        CLEAR_IN_EP_INTR(1, in_timeout);
     }
     if (diepint.b.intktxfemp)
     {
-        CLEAR_IN_EP_INTR(1, intktxfemp);
+        CLEAR_IN_EP_INTR(1, in_intktxfemp);
     }
     if (diepint.b.inepnakeff)
     {
-        CLEAR_IN_EP_INTR(1, inepnakeff);
+        CLEAR_IN_EP_INTR(1, in_inepnakeff);
     }
     if (diepint.b.emptyintr)
     {
         DCD_WriteEmptyTxFifo(pdev , 1);
-        CLEAR_IN_EP_INTR(1, emptyintr);
+        CLEAR_IN_EP_INTR(1, in_emptyintr);
     }
     return 1;
 }
@@ -216,88 +216,96 @@ uint32_t USBD_OTG_EP1IN_ISR_Handler (USB_OTG_CORE_HANDLE *pdev)
 uint32_t USBD_OTG_ISR_Handler (USB_OTG_CORE_HANDLE *pdev)
 {
     USB_OTG_GINTSTS_TypeDef  gintr_status;
-    uint32_t retval = 0;
+    uint32_t retval = 0ul;
+    uint32_t ReadCoreItrTemp = 0ul;   /* C-STAT */
 
     if (USB_OTG_IsDeviceMode(pdev)) /* ensure that we are in device mode */
     {
-        gintr_status.d32 = USB_OTG_ReadCoreItr(pdev);
-        if (!gintr_status.d32) /* avoid spurious interrupt */
+        ReadCoreItrTemp = USB_OTG_ReadCoreItr(pdev);      /* C-STAT */
+        gintr_status.b = *(stc_bUSB_OTG_GINTSTS_t*)&ReadCoreItrTemp;   /* C-STAT */
+        /* avoid spurious interrupt */
+        if (!*(uint32_t*)&gintr_status.b) /* C-STAT */
         {
-            return 0;
+            //return 0ul;   /* MISRAC 2004*/
+            retval = 0ul;
         }
         /* Out endpoint interrupt */
-        if (gintr_status.b.outepintr)
+        else if (gintr_status.b.outepintr)
         {
             retval |= DCD_HandleOutEP_ISR(pdev);
         }
         /* In endpoint interrupt */
-        if (gintr_status.b.inepint)
+        else if (gintr_status.b.inepint)
         {
             retval |= DCD_HandleInEP_ISR(pdev);
         }
         /* Mode mismatch interrupt */
-        if (gintr_status.b.modemismatch)
+        else if (gintr_status.b.modemismatch)
         {
             USB_OTG_GINTSTS_TypeDef  gintsts;
 
             /* Clear interrupt */
-            gintsts.d32 = 0;
-            gintsts.b.modemismatch = 1;
+            gintsts.d32 = 0ul;
+            gintsts.b.modemismatch = 1u;
             USB_OTG_WRITE_REG32(&pdev->regs.GREGS->GINTSTS, gintsts.d32);
         }
         /* Resume/remote wakeup detected interrupt */
-        if (gintr_status.b.wkupintr)
+        else if (gintr_status.b.wkupintr)
         {
             retval |= DCD_HandleResume_ISR(pdev);
         }
         /* USB suspend interrupt */
-        if (gintr_status.b.usbsuspend)
+        else if (gintr_status.b.usbsuspend)
         {
             retval |= DCD_HandleUSBSuspend_ISR(pdev);
         }
         /* Start of frame interrupt */
-        if (gintr_status.b.sofintr)
+        else if (gintr_status.b.sofintr)
         {
             retval |= DCD_HandleSof_ISR(pdev);
         }
         /* RxFIFO non-empty interrupt */
-        if (gintr_status.b.rxstsqlvl)
+        else if (gintr_status.b.rxstsqlvl)
         {
             retval |= DCD_HandleRxStatusQueueLevel_ISR(pdev);
         }
         /* USB reset interrupt */
-        if (gintr_status.b.usbreset)
+        else if (gintr_status.b.usbreset)
         {
             retval |= DCD_HandleUsbReset_ISR(pdev);
         }
         /* Enumeration done interrupt */
-        if (gintr_status.b.enumdone)
+        else if (gintr_status.b.enumdone)
         {
             retval |= DCD_HandleEnumDone_ISR(pdev);
         }
         /* Incomplete periodic transfer */
-        if (gintr_status.b.incomplisoin)
+        else if (gintr_status.b.incomplisoin)
         {
             retval |= DCD_IsoINIncomplete_ISR(pdev);
         }
         /* Incomplete isochronous IN transfer */
-        if (gintr_status.b.incomplisoout)
+        else if (gintr_status.b.incomplisoout)
         {
             retval |= DCD_IsoOUTIncomplete_ISR(pdev);
         }
 
 #ifdef VBUS_SENSING_ENABLED
         /* VBUS valid interrupt */
-        if (gintr_status.b.vbusvint)
+        else if (gintr_status.b.vbusvint)
         {
             printf("vbus\n");
             retval |= DCD_SessionRequest_ISR(pdev);
         }
 
-    //    if (gintr_status.b.otgintr)
+    //    else if (gintr_status.b.otgintr)
     //    {
     //      retval |= DCD_OTG_ISR(pdev);
     //    }
+        else
+        {
+            //
+        }
 #endif
     }
     return retval;
@@ -314,14 +322,26 @@ uint32_t USBD_OTG_ISR_Handler (USB_OTG_CORE_HANDLE *pdev)
 static uint32_t DCD_SessionRequest_ISR(USB_OTG_CORE_HANDLE *pdev)
 {
     USB_OTG_GINTSTS_TypeDef  gintsts;
+    USB_OTG_PCGCCTL_TypeDef  power;
+
     USBD_DCD_INT_fops->DevConnected (pdev);
 
     printf("SessionRequest !!\n");
     /* Clear interrupt */
-    gintsts.d32 = 0;
-    gintsts.b.vbusvint = 1;
+    gintsts.d32 = 0ul;
+    gintsts.b.vbusvint = 1u;
     USB_OTG_WRITE_REG32 (&pdev->regs.GREGS->GINTSTS, gintsts.d32);
-    return 1;
+
+    if(pdev->cfg.low_power)
+    {
+        /* un-gate USB Core clock */
+        power.d32 = USB_OTG_READ_REG32(&pdev->regs.PCGCCTL);
+        power.b.gatehclk = 0u;
+        power.b.stoppclk = 0u;
+        USB_OTG_WRITE_REG32(pdev->regs.PCGCCTL, power.d32);
+    }
+
+    return 1ul;
 }
 
 /**
@@ -336,7 +356,7 @@ static uint32_t DCD_SessionRequest_ISR(USB_OTG_CORE_HANDLE *pdev)
 //{
 //
 //  USB_OTG_GOTGINT_TypeDef  gotgint;
-//	printf("\tDCD_OTG_ISR !!\n");
+//  printf("\tDCD_OTG_ISR !!\n");
 //  gotgint.d32 = USB_OTG_READ_REG32(&pdev->regs.GREGS->GOTGINT);
 //
 //  if (gotgint.b.sesenddet)
@@ -367,24 +387,24 @@ static uint32_t DCD_HandleResume_ISR(USB_OTG_CORE_HANDLE *pdev)
     {
         /* un-gate USB Core clock */
         power.d32 = USB_OTG_READ_REG32(&pdev->regs.PCGCCTL);
-        power.b.gatehclk = 0;
-        power.b.stoppclk = 0;
+        power.b.gatehclk = 0u;
+        power.b.stoppclk = 0u;
         USB_OTG_WRITE_REG32(pdev->regs.PCGCCTL, power.d32);
     }
 
     /* Clear the Remote Wake-up Signaling */
-    devctl.d32 = 0;
-    devctl.b.rmtwkupsig = 1;
-    USB_OTG_MODIFY_REG32(&pdev->regs.DREGS->DCTL, devctl.d32, 0);
+    devctl.d32 = 0ul;
+    devctl.b.rmtwkupsig = 1u;
+    USB_OTG_MODIFY_REG32(&pdev->regs.DREGS->DCTL, devctl.d32, 0ul);
 
     /* Inform upper layer by the Resume Event */
     USBD_DCD_INT_fops->Resume (pdev);
 
     /* Clear interrupt */
-    gintsts.d32 = 0;
-    gintsts.b.wkupintr = 1;
+    gintsts.d32 = 0ul;
+    gintsts.b.wkupintr = 1u;
     USB_OTG_WRITE_REG32 (&pdev->regs.GREGS->GINTSTS, gintsts.d32);
-    return 1;
+    return 1ul;
 }
 
 /**
@@ -399,35 +419,35 @@ static uint32_t DCD_HandleUSBSuspend_ISR(USB_OTG_CORE_HANDLE *pdev)
     USB_OTG_GINTSTS_TypeDef  gintsts;
     USB_OTG_PCGCCTL_TypeDef  power;
     USB_OTG_DSTS_TypeDef     dsts;
-    __IO uint8_t prev_status = 0;
+    __IO uint8_t prev_status = 0u;
 
     printf("suspend !!\n");
     prev_status = pdev->dev.device_status;
     USBD_DCD_INT_fops->Suspend (pdev);
 
-    dsts.d32 = USB_OTG_READ_REG32(&pdev->regs.DREGS->DSTS);
+    dsts.b = *(__IO stc_bUSB_OTG_DSTS_t*)&USB_OTG_READ_REG32(&pdev->regs.DREGS->DSTS);   /* C-STAT */
 
     /* Clear interrupt */
-    gintsts.d32 = 0;
-    gintsts.b.usbsuspend = 1;
+    gintsts.d32 = 0ul;
+    gintsts.b.usbsuspend = 1u;
     USB_OTG_WRITE_REG32(&pdev->regs.GREGS->GINTSTS, gintsts.d32);
 
-    if((pdev->cfg.low_power) && (dsts.b.suspsts == 1)  &&
-        (pdev->dev.connection_status == 1) &&
-        (prev_status  == USB_OTG_CONFIGURED))
+    if((prev_status  == USB_OTG_CONFIGURED) &&
+       (pdev->cfg.low_power) && (dsts.b.suspsts == 1u)  &&
+       (pdev->dev.connection_status == 1u))
     {
         /*  switch-off the clocks */
-        power.d32 = 0;
-        power.b.stoppclk = 1;
-        USB_OTG_MODIFY_REG32(pdev->regs.PCGCCTL, 0, power.d32);
+        power.d32 = 0ul;
+        power.b.stoppclk = 1u;
+        USB_OTG_MODIFY_REG32(pdev->regs.PCGCCTL, 0ul, power.d32);
 
-        power.b.gatehclk = 1;
-        USB_OTG_MODIFY_REG32(pdev->regs.PCGCCTL, 0, power.d32);
+        power.b.gatehclk = 1u;
+        USB_OTG_MODIFY_REG32(pdev->regs.PCGCCTL, 0ul, power.d32);
 
         /* Request to enter Sleep mode after exit from current ISR */
         // SCB->SCR |= (SCB_SCR_SLEEPDEEP_Msk | SCB_SCR_SLEEPONEXIT_Msk);
     }
-    return 1;
+    return 1ul;
 }
 
 /**
@@ -442,27 +462,32 @@ static uint32_t DCD_HandleInEP_ISR(USB_OTG_CORE_HANDLE *pdev)
     USB_OTG_DIEPINTn_TypeDef  diepint;
 
     uint32_t ep_intr;
-    uint32_t epnum = 0;
+    uint32_t epnum = 0ul;
     uint32_t fifoemptymsk;
-    diepint.d32 = 0;
+    uint32_t u32ReadInEpTmp = 0ul; /* C-STAT */
+
+    *(uint32_t*)&diepint.b = 0ul;    /* C-STAT */
     ep_intr = USB_OTG_ReadDevAllInEPItr(pdev);
 
     while ( ep_intr )
     {
-        if (ep_intr&0x1) /* In ITR */
+        if (ep_intr&0x1u) /* In ITR */
         {
-            diepint.d32 = DCD_ReadDevInEP(pdev , epnum); /* Get In ITR status */
+            //diepint.d32 = DCD_ReadDevInEP(pdev , epnum); /* Get In ITR status */  /* C-STAT */
+            u32ReadInEpTmp = DCD_ReadDevInEP(pdev , (uint8_t)epnum);
+            diepint.b = *(stc_bUSB_OTG_DIEPINTn_t*)&u32ReadInEpTmp;
+
             if ( diepint.b.xfercompl )
             {
-                fifoemptymsk = 0x1 << epnum;
-                USB_OTG_MODIFY_REG32(&pdev->regs.DREGS->DIEPEMPMSK, fifoemptymsk, 0);
-                CLEAR_IN_EP_INTR(epnum, xfercompl);
+                fifoemptymsk = (uint32_t)0x1 << epnum;
+                USB_OTG_MODIFY_REG32(&pdev->regs.DREGS->DIEPEMPMSK, fifoemptymsk, 0ul);
+                CLEAR_IN_EP_INTR(epnum, in_xfercompl);
                 /* TX COMPLETE */
                 USBD_DCD_INT_fops->DataInStage(pdev , epnum);
 
-                if (pdev->cfg.dma_enable == 1)
+                if (pdev->cfg.dma_enable == 1u)
                 {
-                    if((epnum == 0) && (pdev->dev.device_state == USB_OTG_EP0_STATUS_IN))
+                    if((epnum == 0u) && (pdev->dev.device_state == USB_OTG_EP0_STATUS_IN))
                     {
                         /* prepare to rx more setup packets */
                         ///printf("status in\n");
@@ -474,32 +499,32 @@ static uint32_t DCD_HandleInEP_ISR(USB_OTG_CORE_HANDLE *pdev)
             }
             if ( diepint.b.timeout )
             {
-                CLEAR_IN_EP_INTR(epnum, timeout);
+                CLEAR_IN_EP_INTR(epnum, in_timeout);
             }
             if (diepint.b.intktxfemp)
             {
-                CLEAR_IN_EP_INTR(epnum, intktxfemp);
+                CLEAR_IN_EP_INTR(epnum, in_intktxfemp);
             }
             if (diepint.b.inepnakeff)
             {
-                CLEAR_IN_EP_INTR(epnum, inepnakeff);
+                CLEAR_IN_EP_INTR(epnum, in_inepnakeff);
             }
             if ( diepint.b.epdisabled )
             {
-                CLEAR_IN_EP_INTR(epnum, epdisabled);
+                CLEAR_IN_EP_INTR(epnum, in_epdisabled);
             }
             if (diepint.b.emptyintr)
             {
                 //printf("empty ep%d\n",epnum);
                 DCD_WriteEmptyTxFifo(pdev , epnum);
-                CLEAR_IN_EP_INTR(epnum, emptyintr);
+                CLEAR_IN_EP_INTR(epnum, in_emptyintr);
             }
         }
         epnum++;
-        ep_intr >>= 1;
+        ep_intr >>= 1u;
     }
 
-    return 1;
+    return 1ul;
 }
 
 /**
@@ -515,9 +540,9 @@ static uint32_t DCD_HandleOutEP_ISR(USB_OTG_CORE_HANDLE *pdev)
     uint32_t ep_intr;
     USB_OTG_DOEPINTn_TypeDef  doepint;
     USB_OTG_DEPXFRSIZ_TypeDef  deptsiz;
-    uint32_t epnum = 0;
+    uint32_t epnum = 0ul;
 
-    doepint.d32 = 0;
+    doepint.d32 = 0ul;
 
     /* Read in the device interrupt bits */
     ep_intr = USB_OTG_ReadDevAllOutEp_itr(pdev);
@@ -532,7 +557,7 @@ static uint32_t DCD_HandleOutEP_ISR(USB_OTG_CORE_HANDLE *pdev)
             if ( doepint.b.xfercompl )
             {
                 /* Clear the bit in DOEPINTn for this interrupt */
-                CLEAR_OUT_EP_INTR(epnum, xfercompl);
+                CLEAR_OUT_EP_INTR(epnum, out_xfercompl);
                 if (pdev->cfg.dma_enable == 1)
                 {
                     deptsiz.d32 = USB_OTG_READ_REG32(&(pdev->regs.OUTEP_REGS[epnum]->DOEPTSIZ));
@@ -546,16 +571,16 @@ static uint32_t DCD_HandleOutEP_ISR(USB_OTG_CORE_HANDLE *pdev)
                 /* RX COMPLETE */
                 USBD_DCD_INT_fops->DataOutStage(pdev , epnum);
 
-                if (pdev->cfg.dma_enable == 1)
+                if (pdev->cfg.dma_enable == 1u)
                 {
-                    if((epnum == 0) && (pdev->dev.device_state == USB_OTG_EP0_STATUS_OUT))
+                    if((epnum == 0u) && (pdev->dev.device_state == USB_OTG_EP0_STATUS_OUT))
                     {
                         /* prepare to rx more setup packets */
                          // printf("prepare to rx more setup..\n");
                         USB_OTG_EP0_OutStart(pdev);
                     }
                 }
-                if (epnum == 0)
+                if (epnum == 0u)
                 {
                     if (pdev->dev.ep0_state == USB_OTG_EP0_IDLE /*&&
                     (pdev->dev.out_ep[epnum].xfer_count == 8)*/)
@@ -565,7 +590,7 @@ static uint32_t DCD_HandleOutEP_ISR(USB_OTG_CORE_HANDLE *pdev)
                         //if ( doepint.b.setup )
                         if ( (1 << 15)  & USB_OTG_READ_REG32(&pdev->regs.OUTEP_REGS[0]->DOEPINT))
                         {
-                            CLEAR_OUT_EP_INTR(epnum, sr);
+                            CLEAR_OUT_EP_INTR(epnum, out_sr);
                             if (pdev->dev.ep0_state == USB_OTG_EP0_IDLE)
                             {
                                 pdev->dev.ep0_state = USB_OTG_EP0_SETUP;
@@ -573,7 +598,7 @@ static uint32_t DCD_HandleOutEP_ISR(USB_OTG_CORE_HANDLE *pdev)
                                 /* SETUP COMPLETE */
                                 USBD_DCD_INT_fops->SetupStage(pdev);
                                 printf("setup7 %d\n",pdev->dev.device_state);
-                                CLEAR_OUT_EP_INTR(epnum, setup);
+                                CLEAR_OUT_EP_INTR(epnum, out_setup);
                             }
                         }
 
@@ -589,7 +614,7 @@ static uint32_t DCD_HandleOutEP_ISR(USB_OTG_CORE_HANDLE *pdev)
             if ( doepint.b.epdisabled )
             {
                 /* Clear the bit in DOEPINTn for this interrupt */
-                CLEAR_OUT_EP_INTR(epnum, epdisabled);
+                CLEAR_OUT_EP_INTR(epnum, out_epdisabled);
             }
             /* Setup Phase Done (control EPs) */
             doepint.d32 = USB_OTG_ReadDevOutEP_itr(pdev, epnum);
@@ -603,14 +628,14 @@ static uint32_t DCD_HandleOutEP_ISR(USB_OTG_CORE_HANDLE *pdev)
                     USBD_DCD_INT_fops->SetupStage(pdev);
                     printf("setup %d\n",pdev->dev.device_state);
                 }
-                CLEAR_OUT_EP_INTR(epnum, setup);
+                CLEAR_OUT_EP_INTR(epnum, out_setup);
             }
 
         }
         epnum++;
         ep_intr >>= 1;
     }
-    return 1;
+    return 1ul;
 }
 #else
 static uint32_t DCD_HandleOutEP_ISR(USB_OTG_CORE_HANDLE *pdev)
@@ -618,31 +643,39 @@ static uint32_t DCD_HandleOutEP_ISR(USB_OTG_CORE_HANDLE *pdev)
     uint32_t ep_intr;
     USB_OTG_DOEPINTn_TypeDef  doepint;
     USB_OTG_DEPXFRSIZ_TypeDef  deptsiz;
-    uint32_t epnum = 0;
-    int xfer;
-    doepint.d32 = 0;
+    uint32_t epnum = 0ul;
+    uint32_t xfer;   /* MISRAC*/
+    uint32_t u32ReadOutEpTmp = 0ul; /* C-STAT */
+    uint32_t u32ReadEpSizeTmp = 0ul; /* C-STAT */
+
+    *(__IO uint32_t*)&doepint.b = 0ul;  /* C-STAT */
 
     /* Read in the device interrupt bits */
     ep_intr = USB_OTG_ReadDevAllOutEp_itr(pdev);
 
     while ( ep_intr )
     {
-        if (ep_intr&0x1)
+        if (ep_intr&0x1ul)
         {
-            doepint.d32 = USB_OTG_ReadDevOutEP_itr(pdev, epnum);
+            //doepint.d32 = USB_OTG_ReadDevOutEP_itr(pdev, epnum);  /* C-STAT */
+            u32ReadOutEpTmp = USB_OTG_ReadDevOutEP_itr(pdev, (uint8_t)epnum);
+            doepint.b = *(__IO stc_bUSB_OTG_DOEPINTn_t*)&u32ReadOutEpTmp;
 
             /* Transfer complete */
             if ( doepint.b.xfercompl )
             {
                 /* Clear the bit in DOEPINTn for this interrupt */
-                CLEAR_OUT_EP_INTR(epnum, xfercompl);
-                if (pdev->cfg.dma_enable == 1)
+                CLEAR_OUT_EP_INTR(epnum, out_xfercompl);
+                if (pdev->cfg.dma_enable == 1u)
                 {
-                    deptsiz.d32 = USB_OTG_READ_REG32(&(pdev->regs.OUTEP_REGS[epnum]->DOEPTSIZ));
+                    //deptsiz.d32 = USB_OTG_READ_REG32(&(pdev->regs.OUTEP_REGS[epnum]->DOEPTSIZ));  /* C-STAT */
+                    u32ReadEpSizeTmp = USB_OTG_READ_REG32(&(pdev->regs.OUTEP_REGS[epnum]->DOEPTSIZ));
+                    deptsiz.b = *(stc_bUSB_OTG_DEPXFRSIZ_t*)&u32ReadEpSizeTmp;
+
                     /*ToDo : handle more than one single MPS size packet */
                     xfer = __MIN(pdev->dev.out_ep[epnum].maxpacket,pdev->dev.out_ep[epnum].xfer_len);
                     pdev->dev.out_ep[epnum].xfer_count = xfer - deptsiz.b.xfersize;
-                    if (epnum != 0)
+                    if (epnum != 0u)
                     {
                         pdev->dev.out_ep[epnum].xfer_count = pdev->dev.out_ep[epnum].xfer_len - deptsiz.b.xfersize;
                     }
@@ -651,9 +684,9 @@ static uint32_t DCD_HandleOutEP_ISR(USB_OTG_CORE_HANDLE *pdev)
                 /* RX COMPLETE */
                 USBD_DCD_INT_fops->DataOutStage(pdev , epnum);
 
-                if (pdev->cfg.dma_enable == 1)
+                if (pdev->cfg.dma_enable == 1u)
                 {
-                    if((epnum == 0) && (pdev->dev.device_state == USB_OTG_EP0_STATUS_OUT))
+                    if((epnum == 0u) && (pdev->dev.device_state == USB_OTG_EP0_STATUS_OUT))
                     {
                         /* prepare to rx more setup packets */
                         ///printf("status out\n");
@@ -666,22 +699,26 @@ static uint32_t DCD_HandleOutEP_ISR(USB_OTG_CORE_HANDLE *pdev)
             if ( doepint.b.epdisabled )
             {
                 /* Clear the bit in DOEPINTn for this interrupt */
-                CLEAR_OUT_EP_INTR(epnum, epdisabled);
+                CLEAR_OUT_EP_INTR(epnum, out_epdisabled);
             }
-            doepint.d32 = USB_OTG_ReadDevOutEP_itr(pdev, epnum);
+
+            //doepint.d32 = USB_OTG_ReadDevOutEP_itr(pdev, epnum);  /* C-STAT */
+            u32ReadOutEpTmp = USB_OTG_ReadDevOutEP_itr(pdev, (uint8_t)epnum);
+            doepint.b = *(stc_bUSB_OTG_DOEPINTn_t*)&u32ReadOutEpTmp;
+
             /* Setup Phase Done (control EPs) */
             if ( doepint.b.setup )
             {
                 /* inform the upper layer that a setup packet is available */
                 /* SETUP COMPLETE */
                 USBD_DCD_INT_fops->SetupStage(pdev);
-                CLEAR_OUT_EP_INTR(epnum, setup);
+                CLEAR_OUT_EP_INTR(epnum, out_setup);
             }
         }
         epnum++;
-        ep_intr >>= 1;
+        ep_intr >>= 1u;
     }
-    return 1;
+    return 1ul;
 }
 #endif
 /**
@@ -699,11 +736,11 @@ static uint32_t DCD_HandleSof_ISR(USB_OTG_CORE_HANDLE *pdev)
     USBD_DCD_INT_fops->SOF(pdev);
 
     /* Clear interrupt */
-    GINTSTS.d32 = 0;
-    GINTSTS.b.sofintr = 1;
+    GINTSTS.d32 = 0ul;
+    GINTSTS.b.sofintr = 1u;
     USB_OTG_WRITE_REG32 (&pdev->regs.GREGS->GINTSTS, GINTSTS.d32);
 
-    return 1;
+    return 1ul;
 }
 
 /**
@@ -718,14 +755,17 @@ static uint32_t DCD_HandleRxStatusQueueLevel_ISR(USB_OTG_CORE_HANDLE *pdev)
     USB_OTG_GINTMSK_TypeDef  int_mask;
     USB_OTG_DRXSTS_TypeDef   status;
     USB_OTG_EP *ep;
+    uint32_t u32Tmp;
 
     /* Disable the Rx Status Queue Level interrupt */
-    int_mask.d32 = 0;
-    int_mask.b.rxstsqlvl = 1;
-    USB_OTG_MODIFY_REG32( &pdev->regs.GREGS->GINTMSK, int_mask.d32, 0);
+    int_mask.d32 = 0ul;
+    int_mask.b.rxstsqlvl = 1u;
+    USB_OTG_MODIFY_REG32( &pdev->regs.GREGS->GINTMSK, int_mask.d32, 0ul);
 
     /* Get the Status from the top of the FIFO */
-    status.d32 = USB_OTG_READ_REG32( &pdev->regs.GREGS->GRXSTSP );
+    //status.b = *(__IO stc_bUSB_OTG_DRXSTS_t*)&USB_OTG_READ_REG32( &pdev->regs.GREGS->GRXSTSP ); /* C-STAT */
+    u32Tmp = USB_OTG_READ_REG32( &pdev->regs.GREGS->GRXSTSP );
+    status.b = *(__IO stc_bUSB_OTG_DRXSTS_t*)&u32Tmp; /* C-STAT */
     ep = &pdev->dev.out_ep[status.b.epnum];
 
     switch (status.b.pktsts)
@@ -737,7 +777,7 @@ static uint32_t DCD_HandleRxStatusQueueLevel_ISR(USB_OTG_CORE_HANDLE *pdev)
             {
                 //if (status.b.epnum == 2)
                 //    printf("ep%d cnt %d\n",status.b.epnum,status.b.bcnt);
-                USB_OTG_ReadPacket(pdev,ep->xfer_buff, status.b.bcnt);
+                USB_OTG_ReadPacket(pdev,ep->xfer_buff, (uint16_t)status.b.bcnt);
                 ep->xfer_buff += status.b.bcnt;
                 ep->xfer_count += status.b.bcnt;
             } else
@@ -752,15 +792,15 @@ static uint32_t DCD_HandleRxStatusQueueLevel_ISR(USB_OTG_CORE_HANDLE *pdev)
         case STS_SETUP_UPDT:
             /* Copy the setup packet received in FIFO into the setup buffer in RAM */
             //printf("ep%d setup %d\n",status.b.epnum,status.b.bcnt);
-            USB_OTG_ReadPacket(pdev , pdev->dev.setup_packet, 8);
+            USB_OTG_ReadPacket(pdev , pdev->dev.setup_packet, 8u);
             ep->xfer_count += status.b.bcnt;
             break;
         default:
             break;
     }
     /* Enable the Rx Status Queue Level interrupt */
-    USB_OTG_MODIFY_REG32( &pdev->regs.GREGS->GINTMSK, 0, int_mask.d32);
-    return 1;
+    USB_OTG_MODIFY_REG32( &pdev->regs.GREGS->GINTMSK, 0ul, int_mask.d32);
+    return 1ul;
 }
 
 /**
@@ -774,9 +814,10 @@ static uint32_t DCD_WriteEmptyTxFifo(USB_OTG_CORE_HANDLE *pdev, uint32_t epnum)
 {
     USB_OTG_DTXFSTSn_TypeDef  txstatus;
     USB_OTG_EP *ep;
-    uint32_t len = 0;
+    uint32_t len = 0ul;
     uint32_t len32b;
-    txstatus.d32 = 0;
+
+    *(uint32_t*)&txstatus.b = 0ul;  /* C-STAT */
 
     ep = &pdev->dev.in_ep[epnum];
     len = ep->xfer_len - ep->xfer_count;
@@ -786,11 +827,11 @@ static uint32_t DCD_WriteEmptyTxFifo(USB_OTG_CORE_HANDLE *pdev, uint32_t epnum)
         len = ep->maxpacket;
     }
 
-    len32b = (len + 3) / 4;
-    txstatus.d32 = USB_OTG_READ_REG32( &pdev->regs.INEP_REGS[epnum]->DTXFSTS);
+    len32b = (len + 3u) / 4u;
+    txstatus.b = *(__IO stc_bUSB_OTG_DTXFSTSn_t*)&USB_OTG_READ_REG32( &pdev->regs.INEP_REGS[epnum]->DTXFSTS);  /* C-STAT */
     //printf("ep%d tx len %d\n",epnum,len);
 
-    while  (txstatus.b.txfspcavail > len32b &&  ep->xfer_count < ep->xfer_len && ep->xfer_len != 0)
+    while ((txstatus.b.txfspcavail > len32b) && (ep->xfer_count < ep->xfer_len) && (ep->xfer_len != 0u))
     {
         /* Write the FIFO */
         len = ep->xfer_len - ep->xfer_count;
@@ -799,16 +840,16 @@ static uint32_t DCD_WriteEmptyTxFifo(USB_OTG_CORE_HANDLE *pdev, uint32_t epnum)
         {
             len = ep->maxpacket;
         }
-        len32b = (len + 3) / 4;
+        len32b = (len + 3u) / 4u;
 
-        USB_OTG_WritePacket (pdev , ep->xfer_buff, epnum, len);
+        USB_OTG_WritePacket (pdev , ep->xfer_buff, (uint8_t)epnum, (uint16_t)len);
 
         ep->xfer_buff  += len;
         ep->xfer_count += len;
 
-        txstatus.d32 = USB_OTG_READ_REG32(&pdev->regs.INEP_REGS[epnum]->DTXFSTS);
+        txstatus.b = *(__IO stc_bUSB_OTG_DTXFSTSn_t*)&USB_OTG_READ_REG32(&pdev->regs.INEP_REGS[epnum]->DTXFSTS);  /* C-STAT */
     }
-    return 1;
+    return 1ul;
 }
 
 /**
@@ -828,43 +869,43 @@ static uint32_t DCD_HandleUsbReset_ISR(USB_OTG_CORE_HANDLE *pdev)
     USB_OTG_GINTSTS_TypeDef  gintsts;
     uint32_t i;
 
-    dctl.d32 = 0;
-    daintmsk.d32 = 0;
-    doepmsk.d32 = 0;
-    diepmsk.d32 = 0;
-    dcfg.d32 = 0;
-    gintsts.d32 = 0;
+    dctl.d32 = 0ul;
+    daintmsk.d32 = 0ul;
+    doepmsk.d32 = 0ul;
+    diepmsk.d32 = 0ul;
+    dcfg.d32 = 0ul;
+    gintsts.d32 = 0ul;
 
     printf("%s\n",__FUNCTION__);
     /* Clear the Remote Wake-up Signaling */
-    dctl.b.rmtwkupsig = 1;
-    USB_OTG_MODIFY_REG32(&pdev->regs.DREGS->DCTL, dctl.d32, 0 );
+    dctl.b.rmtwkupsig = 1u;
+    USB_OTG_MODIFY_REG32(&pdev->regs.DREGS->DCTL, dctl.d32, 0ul );
 
     /* Flush the Tx FIFO */
-    USB_OTG_FlushTxFifo(pdev ,  0 );
+    USB_OTG_FlushTxFifo(pdev, (uint32_t)0);
 
-    for (i = 0; i < pdev->cfg.dev_endpoints ; i++)
+    for (i = 0ul; i < pdev->cfg.dev_endpoints ; i++)
     {
-        USB_OTG_WRITE_REG32( &pdev->regs.INEP_REGS[i]->DIEPINT, 0xFF);
-        USB_OTG_WRITE_REG32( &pdev->regs.OUTEP_REGS[i]->DOEPINT, 0xFF);
+        USB_OTG_WRITE_REG32( &pdev->regs.INEP_REGS[i]->DIEPINT, 0xFFul);
+        USB_OTG_WRITE_REG32( &pdev->regs.OUTEP_REGS[i]->DOEPINT, 0xFFul);
     }
-    USB_OTG_WRITE_REG32( &pdev->regs.DREGS->DAINT, 0xFFFFFFFF );
+    USB_OTG_WRITE_REG32( &pdev->regs.DREGS->DAINT, 0xFFFFFFFFul );
 
-    daintmsk.ep.in = 1;
-    daintmsk.ep.out = 1;
+    daintmsk.ep.in = 1u;
+    daintmsk.ep.out = 1u;
     USB_OTG_WRITE_REG32( &pdev->regs.DREGS->DAINTMSK, daintmsk.d32 );
 
-    doepmsk.b.setup = 1;
-    doepmsk.b.xfercompl = 1;
-    doepmsk.b.epdisabled = 1;
-    doepmsk.b.stsphsercvd = 1;
+    doepmsk.b.setup = 1u;
+    doepmsk.b.xfercompl = 1u;
+    doepmsk.b.epdisabled = 1u;
+    doepmsk.b.stsphsercvd = 1u;
     USB_OTG_WRITE_REG32( &pdev->regs.DREGS->DOEPMSK, doepmsk.d32 );
 #ifdef USB_OTG_HS_DEDICATED_EP1_ENABLED
     USB_OTG_WRITE_REG32( &pdev->regs.DREGS->DOUTEP1MSK, doepmsk.d32 );
 #endif
-    diepmsk.b.xfercompl = 1;
-    diepmsk.b.timeout = 1;
-    diepmsk.b.epdisabled = 1;
+    diepmsk.b.xfercompl = 1u;
+    diepmsk.b.timeout = 1u;
+    diepmsk.b.epdisabled = 1u;
 
     USB_OTG_WRITE_REG32( &pdev->regs.DREGS->DIEPMSK, diepmsk.d32 );
 #ifdef USB_OTG_HS_DEDICATED_EP1_ENABLED
@@ -872,7 +913,7 @@ static uint32_t DCD_HandleUsbReset_ISR(USB_OTG_CORE_HANDLE *pdev)
 #endif
     /* Reset Device Address */
     dcfg.d32 = USB_OTG_READ_REG32( &pdev->regs.DREGS->DCFG);
-    dcfg.b.devaddr = 0;
+    dcfg.b.devaddr = 0u;
     USB_OTG_WRITE_REG32( &pdev->regs.DREGS->DCFG, dcfg.d32);
 
     /* setup EP0 to receive SETUP packets */
@@ -880,13 +921,13 @@ static uint32_t DCD_HandleUsbReset_ISR(USB_OTG_CORE_HANDLE *pdev)
     USB_OTG_EP0_OutStart(pdev);
 
     /* Clear interrupt */
-    gintsts.d32 = 0;
-    gintsts.b.usbreset = 1;
+    gintsts.d32 = 0ul;
+    gintsts.b.usbreset = 1ul;
     USB_OTG_WRITE_REG32 (&pdev->regs.GREGS->GINTSTS, gintsts.d32);
 
     /*Reset internal state machine */
     USBD_DCD_INT_fops->Reset(pdev);
-    return 1;
+    return 1ul;
 }
 
 /**
@@ -911,22 +952,22 @@ static uint32_t DCD_HandleEnumDone_ISR(USB_OTG_CORE_HANDLE *pdev)
     {
         pdev->cfg.speed            = USB_OTG_SPEED_HIGH;
         pdev->cfg.mps              = USB_OTG_HS_MAX_PACKET_SIZE ;
-        gusbcfg.b.usbtrdtim = 9;
+        gusbcfg.b.usbtrdtim = 9u;
     }
     else
     {
         pdev->cfg.speed            = USB_OTG_SPEED_FULL;
         pdev->cfg.mps              = USB_OTG_FS_MAX_PACKET_SIZE ;
-        gusbcfg.b.usbtrdtim = 9;
+        gusbcfg.b.usbtrdtim = 9u;
     }
 
     USB_OTG_WRITE_REG32(&pdev->regs.GREGS->GUSBCFG, gusbcfg.d32);
 
     /* Clear interrupt */
-    gintsts.d32 = 0;
-    gintsts.b.enumdone = 1;
+    gintsts.d32 = 0ul;
+    gintsts.b.enumdone = 1u;
     USB_OTG_WRITE_REG32( &pdev->regs.GREGS->GINTSTS, gintsts.d32 );
-    return 1;
+    return 1ul;
 }
 
 
@@ -941,15 +982,15 @@ static uint32_t DCD_IsoINIncomplete_ISR(USB_OTG_CORE_HANDLE *pdev)
 {
     USB_OTG_GINTSTS_TypeDef gintsts;
 
-    gintsts.d32 = 0;
+    gintsts.d32 = 0ul;
 
     USBD_DCD_INT_fops->IsoINIncomplete (pdev);
 
     /* Clear interrupt */
-    gintsts.b.incomplisoin = 1;
+    gintsts.b.incomplisoin = 1u;
     USB_OTG_WRITE_REG32(&pdev->regs.GREGS->GINTSTS, gintsts.d32);
 
-    return 1;
+    return 1ul;
 }
 
 /**
@@ -963,14 +1004,14 @@ static uint32_t DCD_IsoOUTIncomplete_ISR(USB_OTG_CORE_HANDLE *pdev)
 {
     USB_OTG_GINTSTS_TypeDef gintsts;
 
-    gintsts.d32 = 0;
+    gintsts.d32 = 0ul;
 
     USBD_DCD_INT_fops->IsoOUTIncomplete (pdev);
 
     /* Clear interrupt */
-    gintsts.b.incomplisoout = 1;
+    gintsts.b.incomplisoout = 1u;
     USB_OTG_WRITE_REG32(&pdev->regs.GREGS->GINTSTS, gintsts.d32);
-    return 1;
+    return 1ul;
 }
 /**
  *******************************************************************************
@@ -984,7 +1025,7 @@ static uint32_t DCD_ReadDevInEP (USB_OTG_CORE_HANDLE *pdev, uint8_t epnum)
     uint32_t v, msk, emp;
     msk = USB_OTG_READ_REG32(&pdev->regs.DREGS->DIEPMSK);
     emp = USB_OTG_READ_REG32(&pdev->regs.DREGS->DIEPEMPMSK);
-    msk |= ((emp >> epnum) & 0x1) << 7;
+    msk |= ((emp >> epnum) & 0x1ul) << 7u;
     v = USB_OTG_READ_REG32(&pdev->regs.INEP_REGS[epnum]->DIEPINT) & msk;
     return v;
 }

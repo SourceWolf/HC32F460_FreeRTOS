@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -44,8 +44,8 @@
  **
  ** A detailed description is available at
  ** @link
-		Peripheral Device Interface Layer
-	@endlink
+        Peripheral Device Interface Layer
+    @endlink
  **
  **   - 2018-12-26  1.0  wangmin First version for USB demo.
  **
@@ -95,36 +95,36 @@ void DCD_Init(USB_OTG_CORE_HANDLE *pdev ,
 
     USB_OTG_SelectCore (pdev , coreID);
 
-    pdev->dev.device_status = USB_OTG_DEFAULT;
-    pdev->dev.device_address = 0;
+    pdev->dev.device_status = (uint8_t)USB_OTG_DEFAULT;
+    pdev->dev.device_address = 0u;
 
     /* Init ep structure */
-    for (i = 0; i < pdev->cfg.dev_endpoints ; i++)
+    for (i = 0ul; i < pdev->cfg.dev_endpoints ; i++)
     {
         ep = &pdev->dev.in_ep[i];
         /* Init ep structure */
-        ep->is_in = 1;
-        ep->num = i;
-        ep->tx_fifo_num = i;
+        ep->is_in = 1u;
+        ep->num = (uint8_t)i;
+        ep->tx_fifo_num = (uint16_t)i;
         /* Control until ep is actvated */
         ep->type = EP_TYPE_CTRL;
         ep->maxpacket =  USB_OTG_MAX_EP0_SIZE;
-        ep->xfer_buff = 0;
-        ep->xfer_len = 0;
+        ep->xfer_buff = 0u;
+        ep->xfer_len = 0u;
     }
 
-    for (i = 0; i < pdev->cfg.dev_endpoints; i++)
+    for (i = 0ul; i < pdev->cfg.dev_endpoints; i++)
     {
         ep = &pdev->dev.out_ep[i];
         /* Init ep structure */
-        ep->is_in = 0;
-        ep->num = i;
-        ep->tx_fifo_num = i;
+        ep->is_in = 0u;
+        ep->num = (uint8_t)i;
+        ep->tx_fifo_num = (uint16_t)i;
         /* Control until ep is activated */
         ep->type = EP_TYPE_CTRL;
         ep->maxpacket = USB_OTG_MAX_EP0_SIZE;
-        ep->xfer_buff = 0;
-        ep->xfer_len = 0;
+        ep->xfer_buff = 0u;
+        ep->xfer_len = 0u;
     }
 
     pdev->dev.device_address = pdev->dev.device_address;
@@ -160,17 +160,17 @@ uint32_t DCD_EP_Open(USB_OTG_CORE_HANDLE *pdev ,
 {
     USB_OTG_EP *ep;
 
-    if ((ep_addr & 0x80) == 0x80)
+    if ((ep_addr & 0x80u) == 0x80u)
     {
-        ep = &pdev->dev.in_ep[ep_addr & 0x7F];
+        ep = &pdev->dev.in_ep[ep_addr & 0x7Fu];
     }
     else
     {
-        ep = &pdev->dev.out_ep[ep_addr & 0x7F];
+        ep = &pdev->dev.out_ep[ep_addr & 0x7Fu];
     }
-    ep->num   = ep_addr & 0x7F;
+    ep->num   = ep_addr & 0x7Fu;
 
-    ep->is_in = (0x80 & ep_addr) != 0;
+    ep->is_in = ((0x80u & ep_addr) != 0u);
     ep->maxpacket = ep_mps;
     ep->type = ep_type;
     if (ep->is_in)
@@ -181,10 +181,10 @@ uint32_t DCD_EP_Open(USB_OTG_CORE_HANDLE *pdev ,
     /* Set initial data PID. */
     if (ep_type == USB_OTG_EP_BULK )
     {
-        ep->data_pid_start = 0;
+        ep->data_pid_start = 0u;
     }
     USB_OTG_EPActivate(pdev , ep );
-    return 0;
+    return 0u;
 }
 
 /**
@@ -198,18 +198,18 @@ uint32_t DCD_EP_Close(USB_OTG_CORE_HANDLE *pdev , uint8_t  ep_addr)
 {
     USB_OTG_EP *ep;
 
-    if ((ep_addr&0x80) == 0x80)
+    if ((ep_addr&0x80u) == 0x80u)
     {
-        ep = &pdev->dev.in_ep[ep_addr & 0x7F];
+        ep = &pdev->dev.in_ep[ep_addr & 0x7Fu];
     }
     else
     {
-        ep = &pdev->dev.out_ep[ep_addr & 0x7F];
+        ep = &pdev->dev.out_ep[ep_addr & 0x7Fu];
     }
-    ep->num   = ep_addr & 0x7F;
-    ep->is_in = (0x80 & ep_addr) != 0;
+    ep->num   = ep_addr & 0x7Fu;
+    ep->is_in = ((0x80u & ep_addr) != 0u);
     USB_OTG_EPDeactivate(pdev , ep );
-    return 0;
+    return 0u;
 }
 
 /**
@@ -228,21 +228,21 @@ uint32_t   DCD_EP_PrepareRx( USB_OTG_CORE_HANDLE *pdev,
 {
     USB_OTG_EP *ep;
 
-    ep = &pdev->dev.out_ep[ep_addr & 0x7F];
+    ep = &pdev->dev.out_ep[ep_addr & 0x7Fu];
 
     /*setup and start the Xfer */
     ep->xfer_buff = pbuf;
     ep->xfer_len = buf_len;
-    ep->xfer_count = 0;
-    ep->is_in = 0;
-    ep->num = ep_addr & 0x7F;
+    ep->xfer_count = 0u;
+    ep->is_in = 0u;
+    ep->num = ep_addr & 0x7Fu;
 
-    if (pdev->cfg.dma_enable == 1)
+    if (pdev->cfg.dma_enable == 1u)
     {
         ep->dma_addr = (uint32_t)pbuf;
     }
 
-    if ( ep->num == 0 )
+    if ( ep->num == 0u )
     {
         USB_OTG_EP0StartXfer(pdev , ep);
     }
@@ -250,7 +250,7 @@ uint32_t   DCD_EP_PrepareRx( USB_OTG_CORE_HANDLE *pdev,
     {
         USB_OTG_EPStartXfer(pdev, ep );
     }
-    return 0;
+    return 0u;
 }
 
 /**
@@ -269,17 +269,17 @@ uint32_t  DCD_EP_Tx ( USB_OTG_CORE_HANDLE *pdev,
 {
     USB_OTG_EP *ep;
 
-    ep = &pdev->dev.in_ep[ep_addr & 0x7F];
+    ep = &pdev->dev.in_ep[ep_addr & 0x7Fu];
 
     /* Setup and start the Transfer */
-    ep->is_in = 1;
-    ep->num = ep_addr & 0x7F;
+    ep->is_in = 1u;
+    ep->num = ep_addr & 0x7Fu;
     ep->xfer_buff = pbuf;
     ep->dma_addr = (uint32_t)pbuf;
-    ep->xfer_count = 0;
+    ep->xfer_count = 0u;
     ep->xfer_len  = buf_len;
 
-    if ( ep->num == 0 )
+    if ( ep->num == 0u )
     {
         USB_OTG_EP0StartXfer(pdev , ep);
     }
@@ -287,7 +287,7 @@ uint32_t  DCD_EP_Tx ( USB_OTG_CORE_HANDLE *pdev,
     {
         USB_OTG_EPStartXfer(pdev, ep );
     }
-    return 0;
+    return 0u;
 }
 
 /**
@@ -300,21 +300,21 @@ uint32_t  DCD_EP_Tx ( USB_OTG_CORE_HANDLE *pdev,
 uint32_t  DCD_EP_Stall (USB_OTG_CORE_HANDLE *pdev, uint8_t   epnum)
 {
     USB_OTG_EP *ep;
-    if ((0x80 & epnum) == 0x80)
+    if ((0x80u & epnum) == 0x80u)
     {
-        ep = &pdev->dev.in_ep[epnum & 0x7F];
+        ep = &pdev->dev.in_ep[epnum & 0x7Fu];
     }
     else
     {
         ep = &pdev->dev.out_ep[epnum];
     }
 
-    ep->is_stall = 1;
-    ep->num   = epnum & 0x7F;
-    ep->is_in = ((epnum & 0x80) == 0x80);
+    ep->is_stall = 1u;
+    ep->num   = epnum & 0x7Fu;
+    ep->is_in = ((epnum & 0x80u) == 0x80u);
 
     USB_OTG_EPSetStall(pdev , ep);
-    return (0);
+    return (0u);
 }
 
 /**
@@ -327,21 +327,21 @@ uint32_t  DCD_EP_Stall (USB_OTG_CORE_HANDLE *pdev, uint8_t   epnum)
 uint32_t  DCD_EP_ClrStall (USB_OTG_CORE_HANDLE *pdev, uint8_t epnum)
 {
     USB_OTG_EP *ep;
-    if ((0x80 & epnum) == 0x80)
+    if ((0x80u & epnum) == 0x80u)
     {
-        ep = &pdev->dev.in_ep[epnum & 0x7F];
+        ep = &pdev->dev.in_ep[epnum & 0x7Fu];
     }
     else
     {
         ep = &pdev->dev.out_ep[epnum];
     }
 
-    ep->is_stall = 0;
-    ep->num   = epnum & 0x7F;
-    ep->is_in = ((epnum & 0x80) == 0x80);
+    ep->is_stall = 0u;
+    ep->num   = epnum & 0x7Fu;
+    ep->is_in = ((epnum & 0x80u) == 0x80u);
 
     USB_OTG_EPClearStall(pdev , ep);
-    return (0);
+    return (0u);
 }
 
 /**
@@ -353,15 +353,15 @@ uint32_t  DCD_EP_ClrStall (USB_OTG_CORE_HANDLE *pdev, uint8_t epnum)
  ******************************************************************************/
 uint32_t  DCD_EP_Flush (USB_OTG_CORE_HANDLE *pdev , uint8_t epnum)
 {
-    if ((epnum & 0x80) == 0x80)
+    if ((epnum & 0x80u) == 0x80u)
     {
-        USB_OTG_FlushTxFifo(pdev, epnum & 0x7F);
+        USB_OTG_FlushTxFifo(pdev, (uint32_t)epnum & (uint32_t)0x7F);
     }
     else
     {
         USB_OTG_FlushRxFifo(pdev);
     }
-    return (0);
+    return (0u);
 }
 
 /**
@@ -374,9 +374,9 @@ uint32_t  DCD_EP_Flush (USB_OTG_CORE_HANDLE *pdev , uint8_t epnum)
 void  DCD_EP_SetAddress (USB_OTG_CORE_HANDLE *pdev, uint8_t address)
 {
     USB_OTG_DCFG_TypeDef  dcfg;
-    dcfg.d32 = 0;
+    dcfg.d32 = 0ul;
     dcfg.b.devaddr = address;
-    USB_OTG_MODIFY_REG32( &pdev->regs.DREGS->DCFG, 0, dcfg.d32);
+    USB_OTG_MODIFY_REG32( &pdev->regs.DREGS->DCFG, 0ul, dcfg.d32);
 }
 
 /**
@@ -391,9 +391,9 @@ void  DCD_DevConnect (USB_OTG_CORE_HANDLE *pdev)
     USB_OTG_DCTL_TypeDef  dctl;
     dctl.d32 = USB_OTG_READ_REG32(&pdev->regs.DREGS->DCTL);
     /* Connect device */
-    dctl.b.sftdiscon  = 0;
+    dctl.b.sftdiscon  = 0u;
     USB_OTG_WRITE_REG32(&pdev->regs.DREGS->DCTL, dctl.d32);
-    USB_OTG_BSP_mDelay(3);
+    USB_OTG_BSP_mDelay(3ul);
 #endif
 }
 
@@ -409,9 +409,9 @@ void  DCD_DevDisconnect (USB_OTG_CORE_HANDLE *pdev)
     USB_OTG_DCTL_TypeDef  dctl;
     dctl.d32 = USB_OTG_READ_REG32(&pdev->regs.DREGS->DCTL);
     /* Disconnect device for 3ms */
-    dctl.b.sftdiscon  = 1;
+    dctl.b.sftdiscon  = 1u;
     USB_OTG_WRITE_REG32(&pdev->regs.DREGS->DCTL, dctl.d32);
-    USB_OTG_BSP_mDelay(3);
+    USB_OTG_BSP_mDelay(3ul);
 #endif
 }
 
@@ -425,11 +425,11 @@ void  DCD_DevDisconnect (USB_OTG_CORE_HANDLE *pdev)
 uint32_t DCD_GetEPStatus(USB_OTG_CORE_HANDLE *pdev ,uint8_t epnum)
 {
     USB_OTG_EP *ep;
-    uint32_t Status = 0;
+    uint32_t Status = 0ul;
 
-    if ((0x80 & epnum) == 0x80)
+    if ((0x80u & epnum) == 0x80u)
     {
-        ep = &pdev->dev.in_ep[epnum & 0x7F];
+        ep = &pdev->dev.in_ep[epnum & 0x7Fu];
     }
     else
     {
@@ -453,9 +453,9 @@ void DCD_SetEPStatus (USB_OTG_CORE_HANDLE *pdev , uint8_t epnum , uint32_t Statu
 {
     USB_OTG_EP *ep;
 
-    if ((0x80 & epnum) == 0x80)
+    if ((0x80u & epnum) == 0x80u)
     {
-        ep = &pdev->dev.in_ep[epnum & 0x7F];
+        ep = &pdev->dev.in_ep[epnum & 0x7Fu];
     }
     else
     {

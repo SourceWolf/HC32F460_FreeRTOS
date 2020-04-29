@@ -17,7 +17,7 @@
 *
 * Disclaimer:
 * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
-* REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+* REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
 * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
 * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
 * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -77,8 +77,9 @@
 #include "usbd_ioreq.h"
 #include "usbd_req.h"
 
-#include "usbd_hid_core.h"
-
+#include "usbd_hid_custom_core.h"
+#include "usbd_msc_core.h"
+#include "usbd_hid_msc_wrapper.h"
 
 /*******************************************************************************
  * Global type definitions ('typedef')

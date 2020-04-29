@@ -51,65 +51,65 @@ static uint32_t u8ExIntFlag = 0, u8TmraUnit1Cnt = 0;
  ** \retval None
  **
  ******************************************************************************/
-void ExtInt03_Callback(void)
-{
-    if (Set == EXINT_IrqFlgGet(ExtiCh03))
-    {
-        u8ExIntFlag = 1u;
-        EXINT_IrqFlgClr(ExtiCh03);
-    }
-}
+//void ExtInt03_Callback(void)
+//{
+//    if (Set == EXINT_IrqFlgGet(ExtiCh03))
+//    {
+//        u8ExIntFlag = 1u;
+//        EXINT_IrqFlgClr(ExtiCh03);
+//    }
+//}
 
-/**
- *******************************************************************************
- ** \brief KEY0(SW2) init function
- **
- ** \param [in] None
- **
- ** \retval None
- **
- ******************************************************************************/
-void Sw2_Init(void)
-{
-    stc_port_init_t stcPortInit;
-    stc_exint_config_t stcExtiConfig;
-    stc_irq_regi_conf_t stcIrqRegiConf;
+///**
+// *******************************************************************************
+// ** \brief KEY0(SW2) init function
+// **
+// ** \param [in] None
+// **
+// ** \retval None
+// **
+// ******************************************************************************/
+//void Sw2_Init(void)
+//{
+//    stc_port_init_t stcPortInit;
+//    stc_exint_config_t stcExtiConfig;
+//    stc_irq_regi_conf_t stcIrqRegiConf;
 
-    /* configure structure initialization */
-    MEM_ZERO_STRUCT(stcPortInit);
-    MEM_ZERO_STRUCT(stcExtiConfig);
-    MEM_ZERO_STRUCT(stcIrqRegiConf);
+//    /* configure structure initialization */
+//    MEM_ZERO_STRUCT(stcPortInit);
+//    MEM_ZERO_STRUCT(stcExtiConfig);
+//    MEM_ZERO_STRUCT(stcIrqRegiConf);
 
-    /* Set PD03 as External Int Ch.3 input */
-    stcPortInit.enExInt = Enable;
-    PORT_Init(KEY0_PORT, KEY0_PIN, &stcPortInit);
+//    /* Set PD03 as External Int Ch.3 input */
+//    stcPortInit.enExInt = Enable;
+//    PORT_Init(KEY0_PORT, KEY0_PIN, &stcPortInit);
 
-    stcExtiConfig.enExitCh = ExtiCh03;
-    /* Filter setting */
-    stcExtiConfig.enFilterEn = Enable;
-    stcExtiConfig.enFltClk = Pclk3Div8;
-    /* Both edge */
-    stcExtiConfig.enExtiLvl = ExIntFallingEdge;
-    EXINT_Init(&stcExtiConfig);
+//    stcExtiConfig.enExitCh = ExtiCh03;
+//    /* Filter setting */
+//    stcExtiConfig.enFilterEn = Enable;
+//    stcExtiConfig.enFltClk = Pclk3Div8;
+//    /* Both edge */
+//    stcExtiConfig.enExtiLvl = ExIntFallingEdge;
+//    EXINT_Init(&stcExtiConfig);
 
-    /* Select External Int Ch.3 */
-    stcIrqRegiConf.enIntSrc = INT_PORT_EIRQ3;
-    /* Register External Int to Vect.No.007 */
-    stcIrqRegiConf.enIRQn = Int007_IRQn;
-    /* Callback function */
-    stcIrqRegiConf.pfnCallback = ExtInt03_Callback;
-    /* Registration IRQ */
-    enIrqRegistration(&stcIrqRegiConf);
+//    /* Select External Int Ch.3 */
+//    stcIrqRegiConf.enIntSrc = INT_PORT_EIRQ3;
+//    /* Register External Int to Vect.No.007 */
+//    stcIrqRegiConf.enIRQn = Int007_IRQn;
+//    /* Callback function */
+//    stcIrqRegiConf.pfnCallback = ExtInt03_Callback;
+//    /* Registration IRQ */
+//    enIrqRegistration(&stcIrqRegiConf);
 
-    /* Clear pending */
-    NVIC_ClearPendingIRQ(stcIrqRegiConf.enIRQn);
-    /* Set priority */
-    NVIC_SetPriority(stcIrqRegiConf.enIRQn, DDL_IRQ_PRIORITY_15);
-    /* Enable NVIC */
-    NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);
-    stcPortInit.enPinMode = Pin_Mode_Out;
-    PORT_Init(LED0_PORT, LED0_PIN, &stcPortInit);
-}
+//    /* Clear pending */
+//    NVIC_ClearPendingIRQ(stcIrqRegiConf.enIRQn);
+//    /* Set priority */
+//    NVIC_SetPriority(stcIrqRegiConf.enIRQn, DDL_IRQ_PRIORITY_15);
+//    /* Enable NVIC */
+//    NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);
+//    stcPortInit.enPinMode = Pin_Mode_Out;
+//    PORT_Init(LED0_PORT, LED0_PIN, &stcPortInit);
+//}
 
 /*******************************************************************************
  * Function implementation - global ('extern') and local ('static')

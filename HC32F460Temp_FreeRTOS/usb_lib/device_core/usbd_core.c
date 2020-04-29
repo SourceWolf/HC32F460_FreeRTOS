@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -44,8 +44,8 @@
  **
  ** A detailed description is available at
  ** @link
-		This file provides the USBD core functions.
-	@endlink
+        This file provides the USBD core functions.
+    @endlink
  **
  **   - 2018-12-26  1.0  wangmin First version for USB demo.
  **
@@ -92,18 +92,18 @@ static uint8_t USBD_RunTestMode (USB_OTG_CORE_HANDLE  *pdev) ;
 __IO USB_OTG_DCTL_TypeDef SET_TEST_MODE;
 USBD_DCD_INT_cb_TypeDef USBD_DCD_INT_cb =
 {
-    USBD_DataOutStage,
-    USBD_DataInStage,
-    USBD_SetupStage,
-    USBD_SOF,
-    USBD_Reset,
-    USBD_Suspend,
-    USBD_Resume,
-    USBD_IsoINIncomplete,
-    USBD_IsoOUTIncomplete,
+    &USBD_DataOutStage,
+    &USBD_DataInStage,
+    &USBD_SetupStage,
+    &USBD_SOF,
+    &USBD_Reset,
+    &USBD_Suspend,
+    &USBD_Resume,
+    &USBD_IsoINIncomplete,
+    &USBD_IsoOUTIncomplete,
 #ifdef VBUS_SENSING_ENABLED
-    USBD_DevConnected,
-    USBD_DevDisconnected,
+    &USBD_DevConnected,
+    &USBD_DevDisconnected,
 #endif
 };
 
@@ -178,7 +178,7 @@ static uint8_t USBD_SetupStage(USB_OTG_CORE_HANDLE *pdev)
 
     USBD_ParseSetupRequest(pdev , &req);
 
-    switch (req.bmRequest & 0x1F)
+    switch (req.bmRequest & 0x1Fu)
     {
         case USB_REQ_RECIPIENT_DEVICE:
             USBD_StdDevReq (pdev, &req);
@@ -193,7 +193,7 @@ static uint8_t USBD_SetupStage(USB_OTG_CORE_HANDLE *pdev)
             break;
 
         default:
-            DCD_EP_Stall(pdev , req.bmRequest & 0x80);
+            DCD_EP_Stall(pdev , req.bmRequest & 0x80u);
             break;
     }
     return USBD_OK;
@@ -211,7 +211,7 @@ static uint8_t USBD_DataOutStage(USB_OTG_CORE_HANDLE *pdev , uint8_t epnum)
 {
     USB_OTG_EP *ep;
 
-    if(epnum == 0)
+    if(epnum == 0u)
     {
         ep = &pdev->dev.out_ep[0];
         if ( pdev->dev.device_state == USB_OTG_EP0_DATA_OUT)
@@ -220,7 +220,7 @@ static uint8_t USBD_DataOutStage(USB_OTG_CORE_HANDLE *pdev , uint8_t epnum)
             {
                 ep->rem_data_len -=  ep->maxpacket;
 
-                if(pdev->cfg.dma_enable == 1)
+                if(pdev->cfg.dma_enable == 1u)
                 {
                     /* in slave mode this, is handled by the RxSTSQLvl ISR */
                     ep->xfer_buff += ep->maxpacket;
@@ -228,16 +228,16 @@ static uint8_t USBD_DataOutStage(USB_OTG_CORE_HANDLE *pdev , uint8_t epnum)
                 ///printf("ContinueRx\n");
                 USBD_CtlContinueRx (pdev,
                 ep->xfer_buff,
-                __MIN(ep->rem_data_len ,ep->maxpacket));
+                (uint16_t)__MIN(ep->rem_data_len ,ep->maxpacket));
             }
             else
             {
                 //printf("out end\n");
                 if (ep->xfer_count > ep->rem_data_len)
                 {
-                    printf("%d %d\n",ep->xfer_count, ep->rem_data_len);
+                    printf("%ld %ld\n",ep->xfer_count, ep->rem_data_len);
                 }
-                ep->rem_data_len = 0;
+                ep->rem_data_len = 0u;
                 if((pdev->dev.class_cb->EP0_RxReady != NULL)&&
                     (pdev->dev.device_status == USB_OTG_CONFIGURED))
                 {
@@ -250,6 +250,10 @@ static uint8_t USBD_DataOutStage(USB_OTG_CORE_HANDLE *pdev , uint8_t epnum)
     else if((pdev->dev.class_cb->DataOut != NULL)&&(pdev->dev.device_status == USB_OTG_CONFIGURED))
     {
         pdev->dev.class_cb->DataOut(pdev, epnum);
+    }
+    else
+    {
+        //
     }
     return USBD_OK;
 }
@@ -266,7 +270,7 @@ static uint8_t USBD_DataInStage(USB_OTG_CORE_HANDLE *pdev , uint8_t epnum)
 {
     USB_OTG_EP *ep;
 
-    if(epnum == 0)
+    if(epnum == 0u)
     {
         ep = &pdev->dev.in_ep[0];
         if ( pdev->dev.device_state == USB_OTG_EP0_DATA_IN)
@@ -274,24 +278,24 @@ static uint8_t USBD_DataInStage(USB_OTG_CORE_HANDLE *pdev , uint8_t epnum)
             if(ep->rem_data_len > ep->maxpacket)
             {
                 ep->rem_data_len -=  ep->maxpacket;
-                if(pdev->cfg.dma_enable == 1)
+                if(pdev->cfg.dma_enable == 1u)
                 {
                     /* in slave mode this, is handled by the TxFifoEmpty ISR */
                     ep->xfer_buff += ep->maxpacket;
                 }
                 USBD_CtlContinueSendData (pdev,
                               ep->xfer_buff,
-                              ep->rem_data_len);
+                              (uint16_t)ep->rem_data_len);
             }
             else
             {
                 /* last packet is MPS multiple, so send ZLP packet */
-                if((ep->total_data_len % ep->maxpacket == 0) &&
+                if((ep->total_data_len % ep->maxpacket == 0u) &&
                     (ep->total_data_len >= ep->maxpacket) &&
                     (ep->total_data_len < ep->ctl_data_len ))
                 {
-                    USBD_CtlContinueSendData(pdev , NULL, 0);
-                    ep->ctl_data_len = 0;
+                    USBD_CtlContinueSendData(pdev , NULL, 0u);
+                    ep->ctl_data_len = 0u;
                 }
                 else
                 {
@@ -304,15 +308,22 @@ static uint8_t USBD_DataInStage(USB_OTG_CORE_HANDLE *pdev , uint8_t epnum)
                 }
             }
         }
-        if (pdev->dev.test_mode == 1)
+        if (pdev->dev.test_mode == 1u)
         {
             USBD_RunTestMode(pdev);
-            pdev->dev.test_mode = 0;
+            pdev->dev.test_mode = 0u;
+        }
+        else
+        {
         }
     }
     else if((pdev->dev.class_cb->DataIn != NULL)&&(pdev->dev.device_status == USB_OTG_CONFIGURED))
     {
         pdev->dev.class_cb->DataIn(pdev, epnum);
+    }
+    else
+    {
+        //
     }
     return USBD_OK;
 }
@@ -341,13 +352,13 @@ static uint8_t USBD_Reset(USB_OTG_CORE_HANDLE  *pdev)
 {
     /* Open EP0 OUT */
     DCD_EP_Open(pdev,
-                0x00,
+                0x00u,
                 USB_OTG_MAX_EP0_SIZE,
                 EP_TYPE_CTRL);
 
     /* Open EP0 IN */
     DCD_EP_Open(pdev,
-                0x80,
+                0x80u,
                 USB_OTG_MAX_EP0_SIZE,
                 EP_TYPE_CTRL);
 
@@ -473,7 +484,7 @@ static uint8_t USBD_IsoOUTIncomplete(USB_OTG_CORE_HANDLE  *pdev)
 static uint8_t USBD_DevConnected(USB_OTG_CORE_HANDLE  *pdev)
 {
     pdev->dev.usr_cb->DeviceConnected();
-    pdev->dev.connection_status = 1;
+    pdev->dev.connection_status = 1u;
     return USBD_OK;
 }
 
@@ -487,8 +498,8 @@ static uint8_t USBD_DevConnected(USB_OTG_CORE_HANDLE  *pdev)
 static uint8_t USBD_DevDisconnected(USB_OTG_CORE_HANDLE  *pdev)
 {
     pdev->dev.usr_cb->DeviceDisconnected();
-    pdev->dev.class_cb->DeInit(pdev, 0);
-    pdev->dev.connection_status = 0;
+    pdev->dev.class_cb->DeInit(pdev, 0u);
+    pdev->dev.connection_status = 0u;
     return USBD_OK;
 }
 #endif

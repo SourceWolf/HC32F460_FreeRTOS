@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -140,44 +140,53 @@
 *        so total FIFO size should be 1012 Only instead of 1024
 *******************************************************************************/
 
+/************** USB DEVICE ENDPOINT CONFIGURATION *****************************/
+#define         MSC_IN_EP       0x84u
+#define         MSC_OUT_EP      0x05u
+
+#define         HID_IN_EP       0x81u
+#define         HID_OUT_EP      0x02u
+
 /****************** USB OTG HS CONFIGURATION **********************************/
 #ifdef USB_OTG_HS_CORE
- #define RX_FIFO_HS_SIZE                          512
- #define TX0_FIFO_HS_SIZE                         128
- #define TX1_FIFO_HS_SIZE                         256
- #define TX2_FIFO_HS_SIZE                          0
- #define TX3_FIFO_HS_SIZE                          0
- #define TX4_FIFO_HS_SIZE                          0
- #define TX5_FIFO_HS_SIZE                          0
- #define TX6_FIFO_HS_SIZE                          0
- #define TX7_FIFO_HS_SIZE                          0
+    #define RX_FIFO_HS_SIZE                          512u
+    #define TX0_FIFO_HS_SIZE                         128u
+    #define TX1_FIFO_HS_SIZE                         256u
+    #define TX2_FIFO_HS_SIZE                          0u
+    #define TX3_FIFO_HS_SIZE                          0u
+    #define TX4_FIFO_HS_SIZE                          0u
+    #define TX5_FIFO_HS_SIZE                          0u
+    #define TX6_FIFO_HS_SIZE                          0u
+    #define TX7_FIFO_HS_SIZE                          0u
 
 // #define USB_OTG_HS_SOF_OUTPUT_ENABLED
 
  #ifdef USE_ULPI_PHY
-  #define USB_OTG_ULPI_PHY_ENABLED
+    #define USB_OTG_ULPI_PHY_ENABLED
  #endif
  #ifdef USE_EMBEDDED_PHY
-	#define USB_OTG_EMBEDDED_PHY_ENABLED
+    #define USB_OTG_EMBEDDED_PHY_ENABLED
  #endif
  #define USB_OTG_HS_INTERNAL_DMA_ENABLED
- //#define USB_OTG_HS_DEDICATED_EP1_ENABLED
-// #define USB_OTG_HS_LOW_PWR_MGMT_SUPPORT
+//#define USB_OTG_HS_DEDICATED_EP1_ENABLED
+//#define USB_OTG_HS_LOW_PWR_MGMT_SUPPORT
 #endif
 
 /****************** USB OTG FS CONFIGURATION **********************************/
 #ifdef USB_OTG_FS_CORE
- #define RX_FIFO_FS_SIZE                          128
- #define TX0_FIFO_FS_SIZE                          64
- #define TX1_FIFO_FS_SIZE                         128
- #define TX2_FIFO_FS_SIZE                          0
- #define TX3_FIFO_FS_SIZE                          0
- #ifdef USE_ULPI_PHY
-  #define USB_OTG_ULPI_PHY_ENABLED
- #endif
- #ifdef USE_EMBEDDED_PHY
-	#define USB_OTG_EMBEDDED_PHY_ENABLED
- #endif
+    #define RX_FIFO_FS_SIZE                          128u
+    #define TX0_FIFO_FS_SIZE                          64u
+    #define TX1_FIFO_FS_SIZE                          64u
+    #define TX2_FIFO_FS_SIZE                          0u
+    #define TX3_FIFO_FS_SIZE                          32u
+    #define TX4_FIFO_FS_SIZE                          32u
+    #define TX5_FIFO_FS_SIZE                          0u
+#ifdef USE_ULPI_PHY
+    #define USB_OTG_ULPI_PHY_ENABLED
+#endif
+#ifdef USE_EMBEDDED_PHY
+    #define USB_OTG_EMBEDDED_PHY_ENABLED
+#endif
 // #define USB_OTG_HS_INTERNAL_DMA_ENABLED
 
 // #define USB_OTG_FS_LOW_PWR_MGMT_SUPPORT
@@ -211,7 +220,7 @@
 #else //USE_USB_OTG_HS
  #ifndef USE_ULPI_PHY
   #ifndef USE_EMBEDDED_PHY
-     #error  "USE_ULPI_PHY or USE_EMBEDDED_PHY should be defined"
+      #error  "USE_ULPI_PHY or USE_EMBEDDED_PHY should be defined"
   #endif
  #endif
 #endif
@@ -243,9 +252,9 @@
 #if defined (__CC_ARM)         /* ARM Compiler */
   #define __packed    __packed
 #elif defined (__ICCARM__)     /* IAR Compiler */
-  #define __packed    __packed
+//  #define __packed    __packed  /* MISRAC2004 19.4*/
 #elif defined   ( __GNUC__ )   /* GNU Compiler */
-  #define __packed    __attribute__ ((__packed__))
+//  #define __packed    __attribute__ ((__packed__))
 #elif defined   (__TASKING__)  /* TASKING Compiler */
   #define __packed    __unaligned
 #endif /* __CC_ARM */

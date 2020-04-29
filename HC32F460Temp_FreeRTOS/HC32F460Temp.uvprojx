@@ -339,7 +339,7 @@
               <MiscControls>--diag_suppress=186,66</MiscControls>
               <Define>HC32F46x,USE_DEVICE_DRIVER_LIB,__TARGET_FPU_VFP,__FPU_PRESENT=1,ARM_MATH_CM4,__CC_ARM,ARM_MATH_MATRIX_CHECK,ARM_MATH_ROUNDING,__MPU_PRESENT=1</Define>
               <Undefine></Undefine>
-              <IncludePath>.\common;.\driver\src;.\driver\inc;.\driver;.\usb_lib\ctl_drv;.\usb_lib\device_class\hid;.\usb_lib\device_core;.\App;.\FreeRTOS;.\FreeRTOS\include;.\FreeRTOS\CMSIS_RTOS;.\FreeRTOS\portable\MemMang;.\FreeRTOS\portable\RVDS;.\PeripheralDriver;.\midware\OLED;.\midware\OLED;.\midware\sd_card\inc;.\midware\sd_card\src;.\midware\sd_card;.\midware\wm8731;.\midware\wm8731\inc;.\midware\wm8731\src;.\FreeRTOS\portable\MDK;.\FileSystem\inc;.\midware\NRF24L01;.\midware\MLX9061x;.\RTT;.\midware\WL2400PTC;.\midware</IncludePath>
+              <IncludePath>.\common;.\driver\src;.\driver\inc;.\driver;.\usb_lib\ctl_drv;.\usb_lib\device_class\hid;.\usb_lib\device_core;.\App;.\FreeRTOS;.\FreeRTOS\include;.\FreeRTOS\CMSIS_RTOS;.\FreeRTOS\portable\MemMang;.\FreeRTOS\portable\RVDS;.\PeripheralDriver;.\midware\OLED;.\midware\OLED;.\midware\sd_card\inc;.\midware\sd_card\src;.\midware\sd_card;.\midware\wm8731;.\midware\wm8731\inc;.\midware\wm8731\src;.\FreeRTOS\portable\MDK;.\FileSystem\inc;.\midware\NRF24L01;.\midware\MLX9061x;.\RTT;.\midware\WL2400PTC;.\midware;.\usb_lib\device_class\hid_custom;.\usb_lib\device_class\hid_msc_wrapper;.\usb_lib\device_class\msc;.\midware\w25qxx\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -594,6 +594,11 @@
               <FilePath>.\App\main.c</FilePath>
             </File>
             <File>
+              <FileName>User_Task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\App\User_Task.c</FilePath>
+            </File>
+            <File>
               <FileName>usb_bsp_template.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\App\usb_bsp_template.c</FilePath>
@@ -604,14 +609,14 @@
               <FilePath>.\App\usbd_desc.c</FilePath>
             </File>
             <File>
-              <FileName>usbd_urs.c</FileName>
+              <FileName>usbd_storage_msd.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\App\usbd_urs.c</FilePath>
+              <FilePath>.\App\usbd_storage_msd.c</FilePath>
             </File>
             <File>
-              <FileName>User_Task.c</FileName>
+              <FileName>usbd_usr.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\App\User_Task.c</FilePath>
+              <FilePath>.\App\usbd_usr.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -702,13 +707,6 @@
         </Group>
         <Group>
           <GroupName>usb_hid</GroupName>
-          <Files>
-            <File>
-              <FileName>usbd_hid_core.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\usb_lib\device_class\hid\usbd_hid_core.c</FilePath>
-            </File>
-          </Files>
         </Group>
         <Group>
           <GroupName>PeripheralDriver</GroupName>
@@ -794,11 +792,6 @@
               <FilePath>.\PeripheralDriver\User_TRNG.c</FilePath>
             </File>
             <File>
-              <FileName>User_SDIO.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\PeripheralDriver\User_SDIO.c</FilePath>
-            </File>
-            <File>
               <FileName>User_QSPI.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\PeripheralDriver\User_QSPI.c</FilePath>
@@ -872,6 +865,16 @@
               <FileName>Hw_SPI4.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\PeripheralDriver\Hw_SPI4.h</FilePath>
+            </File>
+            <File>
+              <FileName>hd_sdio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\PeripheralDriver\hd_sdio.c</FilePath>
+            </File>
+            <File>
+              <FileName>hd_sdio.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\PeripheralDriver\hd_sdio.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1018,6 +1021,16 @@
               <FileType>5</FileType>
               <FilePath>.\midware\DataRemapping.h</FilePath>
             </File>
+            <File>
+              <FileName>w25qxx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\midware\w25qxx\src\w25qxx.c</FilePath>
+            </File>
+            <File>
+              <FileName>w25qxx.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\midware\w25qxx\inc\w25qxx.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1062,6 +1075,111 @@
               <FileName>SEGGER_RTT_printf.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\RTT\SEGGER_RTT_printf.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>usb_msc</GroupName>
+          <Files>
+            <File>
+              <FileName>usbd_hid_custom_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\usb_lib\device_class\hid_custom\usbd_hid_custom_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_hid_custom_core.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\usb_lib\device_class\hid_custom\usbd_hid_custom_core.h</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_hid_msc_wrapper.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\usb_lib\device_class\hid_msc_wrapper\usbd_hid_msc_wrapper.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_hid_msc_wrapper.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\usb_lib\device_class\hid_msc_wrapper\usbd_hid_msc_wrapper.h</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc_bot.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\usb_lib\device_class\msc\usbd_msc_bot.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc_bot.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\usb_lib\device_class\msc\usbd_msc_bot.h</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\usb_lib\device_class\msc\usbd_msc_core.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc_core.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\usb_lib\device_class\msc\usbd_msc_core.h</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc_data.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\usb_lib\device_class\msc\usbd_msc_data.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc_data.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\usb_lib\device_class\msc\usbd_msc_data.h</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc_mem.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\usb_lib\device_class\msc\usbd_msc_mem.h</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc_scsi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\usb_lib\device_class\msc\usbd_msc_scsi.c</FilePath>
+            </File>
+            <File>
+              <FileName>usbd_msc_scsi.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\usb_lib\device_class\msc\usbd_msc_scsi.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Task</GroupName>
+          <Files>
+            <File>
+              <FileName>Task_FileSystem.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Tasks\Task_FileSystem.h</FilePath>
+            </File>
+            <File>
+              <FileName>Task_FileSystem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Tasks\Task_FileSystem.c</FilePath>
+            </File>
+            <File>
+              <FileName>Task_Key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Tasks\Task_Key.c</FilePath>
+            </File>
+            <File>
+              <FileName>Task_Key.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Tasks\Task_Key.h</FilePath>
+            </File>
+            <File>
+              <FileName>Task_LED.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Tasks\Task_LED.c</FilePath>
+            </File>
+            <File>
+              <FileName>Task_LED.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Tasks\Task_LED.h</FilePath>
             </File>
           </Files>
         </Group>

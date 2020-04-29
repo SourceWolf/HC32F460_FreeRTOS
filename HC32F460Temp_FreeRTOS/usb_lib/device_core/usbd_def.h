@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -64,66 +64,66 @@
  * Global pre-processor symbols/macros ('#define')
  ******************************************************************************/
 #ifndef NULL
-#define NULL    0
+#define NULL    0u
 #endif
 
-#define  USB_LEN_DEV_QUALIFIER_DESC                     0x0A
-#define  USB_LEN_DEV_DESC                               0x12
-#define  USB_LEN_CFG_DESC                               0x09
-#define  USB_LEN_IF_DESC                                0x09
-#define  USB_LEN_EP_DESC                                0x07
-#define  USB_LEN_OTG_DESC                               0x03
+#define  USB_LEN_DEV_QUALIFIER_DESC                     (0x0Au)
+#define  USB_LEN_DEV_DESC                               (0x12u)
+#define  USB_LEN_CFG_DESC                               (0x09u)
+#define  USB_LEN_IF_DESC                                (0x09u)
+#define  USB_LEN_EP_DESC                                (0x07u)
+#define  USB_LEN_OTG_DESC                               (0x03u)
 
-#define  USBD_IDX_LANGID_STR                            0x00
-#define  USBD_IDX_MFC_STR                               0x01
-#define  USBD_IDX_PRODUCT_STR                           0x02
-#define  USBD_IDX_SERIAL_STR                            0x03
-#define  USBD_IDX_CONFIG_STR                            0x04
-#define  USBD_IDX_INTERFACE_STR                         0x05
+#define  USBD_IDX_LANGID_STR                            (0x00u)
+#define  USBD_IDX_MFC_STR                               (0x01u)
+#define  USBD_IDX_PRODUCT_STR                           (0x02u)
+#define  USBD_IDX_SERIAL_STR                            (0x03u)
+#define  USBD_IDX_CONFIG_STR                            (0x04u)
+#define  USBD_IDX_INTERFACE_STR                         (0x05u)
 
-#define  USB_REQ_TYPE_STANDARD                          0x00
-#define  USB_REQ_TYPE_CLASS                             0x20
-#define  USB_REQ_TYPE_VENDOR                            0x40
-#define  USB_REQ_TYPE_MASK                              0x60
+#define  USB_REQ_TYPE_STANDARD                          (0x00u)
+#define  USB_REQ_TYPE_CLASS                             (0x20u)
+#define  USB_REQ_TYPE_VENDOR                            (0x40u)
+#define  USB_REQ_TYPE_MASK                              (0x60u)
 
-#define  USB_REQ_RECIPIENT_DEVICE                       0x00
-#define  USB_REQ_RECIPIENT_INTERFACE                    0x01
-#define  USB_REQ_RECIPIENT_ENDPOINT                     0x02
-#define  USB_REQ_RECIPIENT_MASK                         0x03
+#define  USB_REQ_RECIPIENT_DEVICE                       (0x00u)
+#define  USB_REQ_RECIPIENT_INTERFACE                    (0x01u)
+#define  USB_REQ_RECIPIENT_ENDPOINT                     (0x02u)
+#define  USB_REQ_RECIPIENT_MASK                         (0x03u)
 
-#define  USB_REQ_GET_STATUS                             0x00
-#define  USB_REQ_CLEAR_FEATURE                          0x01
-#define  USB_REQ_SET_FEATURE                            0x03
-#define  USB_REQ_SET_ADDRESS                            0x05
-#define  USB_REQ_GET_DESCRIPTOR                         0x06
-#define  USB_REQ_SET_DESCRIPTOR                         0x07
-#define  USB_REQ_GET_CONFIGURATION                      0x08
-#define  USB_REQ_SET_CONFIGURATION                      0x09
-#define  USB_REQ_GET_INTERFACE                          0x0A
-#define  USB_REQ_SET_INTERFACE                          0x0B
-#define  USB_REQ_SYNCH_FRAME                            0x0C
+#define  USB_REQ_GET_STATUS                             (0x00u)
+#define  USB_REQ_CLEAR_FEATURE                          (0x01u)
+#define  USB_REQ_SET_FEATURE                            (0x03u)
+#define  USB_REQ_SET_ADDRESS                            (0x05u)
+#define  USB_REQ_GET_DESCRIPTOR                         (0x06u)
+#define  USB_REQ_SET_DESCRIPTOR                         (0x07u)
+#define  USB_REQ_GET_CONFIGURATION                      (0x08u)
+#define  USB_REQ_SET_CONFIGURATION                      (0x09u)
+#define  USB_REQ_GET_INTERFACE                          (0x0Au)
+#define  USB_REQ_SET_INTERFACE                          (0x0Bu)
+#define  USB_REQ_SYNCH_FRAME                            (0x0Cu)
 
-#define  USB_DESC_TYPE_DEVICE                              1
-#define  USB_DESC_TYPE_CONFIGURATION                       2
-#define  USB_DESC_TYPE_STRING                              3
-#define  USB_DESC_TYPE_INTERFACE                           4
-#define  USB_DESC_TYPE_ENDPOINT                            5
-#define  USB_DESC_TYPE_DEVICE_QUALIFIER                    6
-#define  USB_DESC_TYPE_OTHER_SPEED_CONFIGURATION           7
+#define  USB_DESC_TYPE_DEVICE                              (1u)
+#define  USB_DESC_TYPE_CONFIGURATION                       (2u)
+#define  USB_DESC_TYPE_STRING                              (3u)
+#define  USB_DESC_TYPE_INTERFACE                           (4u)
+#define  USB_DESC_TYPE_ENDPOINT                            (5u)
+#define  USB_DESC_TYPE_DEVICE_QUALIFIER                    (6u)
+#define  USB_DESC_TYPE_OTHER_SPEED_CONFIGURATION           (7u)
 
 
-#define USB_CONFIG_REMOTE_WAKEUP                           2
-#define USB_CONFIG_SELF_POWERED                            1
+#define USB_CONFIG_REMOTE_WAKEUP                           (2u)
+#define USB_CONFIG_SELF_POWERED                            (1u)
 
-#define USB_FEATURE_EP_HALT                                0
-#define USB_FEATURE_REMOTE_WAKEUP                          1
-#define USB_FEATURE_TEST_MODE                              2
+#define USB_FEATURE_EP_HALT                                (0u)
+#define USB_FEATURE_REMOTE_WAKEUP                          (1u)
+#define USB_FEATURE_TEST_MODE                              (2u)
 
 #define  SWAPBYTE(addr)        (((uint16_t)(*((uint8_t *)(addr)))) + \
-                               (((uint16_t)(*(((uint8_t *)(addr)) + 1))) << 8))
+                               (uint16_t)(((uint16_t)(*(((uint8_t *)(addr)) + 1u))) << 8u))
 
-#define LOBYTE(x)  ((uint8_t)(x & 0x00FF))
-#define HIBYTE(x)  ((uint8_t)((x & 0xFF00) >>8))
+#define LOBYTE(x)  ((uint8_t)((uint16_t)(x) & 0x00FFu))
+#define HIBYTE(x)  ((uint8_t)(((uint16_t)(x) & 0xFF00u) >>8u))
 
 /*******************************************************************************
  * Global variable definitions ('extern')

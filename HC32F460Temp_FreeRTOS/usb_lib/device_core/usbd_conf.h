@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -64,25 +64,24 @@
  * Global pre-processor symbols/macros ('#define')
  ******************************************************************************/
 /*---------- -----------*/
-#define USBD_MAX_NUM_INTERFACES     1
+#define USBD_MAX_NUM_INTERFACES         (1u)
 /*---------- -----------*/
-#define USBD_MAX_NUM_CONFIGURATION     1
+#define USBD_MAX_NUM_CONFIGURATION      (1u)
 /*---------- -----------*/
-#define USBD_MAX_STR_DESC_SIZ     512
+#define USBD_MAX_STR_DESC_SIZ           (512u)
 /*---------- -----------*/
-#define USBD_SUPPORT_USER_STRING     0
+#define USBD_SUPPORT_USER_STRING        (0u)
 /*---------- -----------*/
-#define USBD_DEBUG_LEVEL     0
+#define USBD_DEBUG_LEVEL                (0u)
 /*---------- -----------*/
-#define USBD_LPM_ENABLED     0
+#define USBD_LPM_ENABLED                (0u)
 /*---------- -----------*/
-#define USBD_AUDIO_FREQ     48000
+#define USBD_AUDIO_FREQ                 (48000ul)
 
+#define USBD_CFG_MAX_NUM                (1u) /* configuration numbers */
+//#define USBD_ITF_MAX_NUM                1 /* interface numbers */
 
-#define USBD_CFG_MAX_NUM           1 /* configuration numbers */
-#define USBD_ITF_MAX_NUM           1 /* interface numbers */
-
-#define USB_MAX_STR_DESC_SIZ       64
+#define USB_MAX_STR_DESC_SIZ            (64u)
 
 #define USBD_SELF_POWERED
 
@@ -93,44 +92,57 @@
  ** \brief USB_ZERO_Class_Layer_Parameter
  **
  ******************************************************************************/
-#define ZERO_IN_EP                    0x81
-#define ZERO_OUT_EP                   0x02
+#define ZERO_IN_EP                          (0x81u)
+#define ZERO_OUT_EP                         (0x02u)
 #ifdef USE_USB_OTG_FS
-	#define ZERO_IN_PACKET                64
-	#define ZERO_OUT_PACKET               64
+    #define ZERO_IN_PACKET                  (64u)
+    #define ZERO_OUT_PACKET                 (64u)
 #else
-	#define ZERO_IN_PACKET                512
-	#define ZERO_OUT_PACKET               512
+    #define ZERO_IN_PACKET                  (512u)
+    #define ZERO_OUT_PACKET                 (512u)
 #endif
-#define HID_IN_EP                    0x81
-#define HID_OUT_EP                   0x01
 
-#define HID_IN_PACKET                4
-#define HID_OUT_PACKET               4
+#define HID_IN_PACKET                       (4u)
+#define HID_OUT_PACKET                      (4u)
 
 #ifdef USE_USB_OTG_HS
-    #define CDC_DATA_MAX_PACKET_SIZE       512  /* Endpoint IN & OUT Packet size */
-    #define CDC_CMD_PACKET_SZE             8    /* Control Endpoint Packet size */
+    #define CDC_DATA_MAX_PACKET_SIZE    (512u)     /* Endpoint IN & OUT Packet size */
+    #define CDC_CMD_PACKET_SZE          (8u)       /* Control Endpoint Packet size */
 
-    #define CDC_IN_FRAME_INTERVAL          40   /* Number of micro-frames between IN transfers */
-    #define APP_RX_DATA_SIZE               2048 /* Total size of IN buffer:
-                                                APP_RX_DATA_SIZE*8/MAX_BAUDARATE*1000 should be > CDC_IN_FRAME_INTERVAL*8 */
+    #define CDC_IN_FRAME_INTERVAL       (40u)      /* Number of micro-frames between IN transfers */
+    #define APP_RX_DATA_SIZE            (2048u)    /* Total size of IN buffer:
+                                                  APP_RX_DATA_SIZE*8/MAX_BAUDARATE*1000 should be > CDC_IN_FRAME_INTERVAL*8 */
 #else
-    #define CDC_DATA_MAX_PACKET_SIZE       64   /* Endpoint IN & OUT Packet size */
-    #define CDC_CMD_PACKET_SZE             8    /* Control Endpoint Packet size */
+    #define CDC_DATA_MAX_PACKET_SIZE    (64u)      /* Endpoint IN & OUT Packet size */
+    #define CDC_CMD_PACKET_SZE          (8u)       /* Control Endpoint Packet size */
 
-    #define CDC_IN_FRAME_INTERVAL          5    /* Number of frames between IN transfers */
-    #define APP_RX_DATA_SIZE               2048 /* Total size of IN buffer:
+    #define CDC_IN_FRAME_INTERVAL          (5u)    /* Number of frames between IN transfers */
+    #define APP_RX_DATA_SIZE               (2048u) /* Total size of IN buffer:
                                                 APP_RX_DATA_SIZE*8/MAX_BAUDARATE*1000 should be > CDC_IN_FRAME_INTERVAL */
 #endif /* USE_USB_OTG_HS */
 
-#define CDC_IN_EP                       0x81  /* EP1 for data IN */
-#define CDC_OUT_EP                      0x01  /* EP1 for data OUT */
-#define CDC_CMD_EP                      0x82  /* EP2 for CDC commands */
-#define APP_FOPS                        VCP_fops
+#define APP_FOPS                          (VCP_fops)
 
-#define  USB_DESC_TYPE_BOS                                 0x0F
-#define USB_DEVICE_CAPABITY_TYPE                           0x10
+#define USB_DESC_TYPE_BOS                 (0x0Fu)
+#define USB_DEVICE_CAPABITY_TYPE          (0x10u)
+
+#define USBD_ITF_MAX_NUM                  (1u)
+#define USB_MAX_STR_DESC_SIZ              (64u)
+
+/* Class Layer Parameter */
+
+#ifdef USE_USB_OTG_HS
+    #ifdef USE_ULPI_PHY
+        #define MSC_MAX_PACKET            (512u)
+    #else
+        #define MSC_MAX_PACKET            (64u)
+    #endif
+#else  /*USE_USB_OTG_FS*/
+    #define MSC_MAX_PACKET                (64u)
+#endif
+
+#define MSC_MEDIA_PACKET                  (12ul * 1024ul)
+
 /*******************************************************************************
  * Global variable definitions ('extern')
  ******************************************************************************/

@@ -17,7 +17,7 @@
  *
  * Disclaimer:
  * HDSC MAKES NO WARRANTY, EXPRESS OR IMPLIED, ARISING BY LAW OR OTHERWISE,
- * REGARDING THE SOFTWARE (INCLUDING ANY ACOOMPANYING WRITTEN MATERIALS),
+ * REGARDING THE SOFTWARE (INCLUDING ANY ACCOMPANYING WRITTEN MATERIALS),
  * ITS PERFORMANCE OR SUITABILITY FOR YOUR INTENDED USE, INCLUDING,
  * WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, THE IMPLIED
  * WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE OR USE, AND THE IMPLIED
@@ -61,36 +61,36 @@
 /*******************************************************************************
  * Global pre-processor symbols/macros ('#define')
  ******************************************************************************/
-#define USB_OTG_EP0_IDLE                          0
-#define USB_OTG_EP0_SETUP                         1
-#define USB_OTG_EP0_DATA_IN                       2
-#define USB_OTG_EP0_DATA_OUT                      3
-#define USB_OTG_EP0_STATUS_IN                     4
-#define USB_OTG_EP0_STATUS_OUT                    5
-#define USB_OTG_EP0_STALL                         6
+#define USB_OTG_EP0_IDLE                        (0u)
+#define USB_OTG_EP0_SETUP                       (1u)
+#define USB_OTG_EP0_DATA_IN                     (2u)
+#define USB_OTG_EP0_DATA_OUT                    (3u)
+#define USB_OTG_EP0_STATUS_IN                   (4u)
+#define USB_OTG_EP0_STATUS_OUT                  (5u)
+#define USB_OTG_EP0_STALL                       (6u)
 
-#define USB_OTG_EP_TX_DIS       0x0000
-#define USB_OTG_EP_TX_STALL     0x0010
-#define USB_OTG_EP_TX_NAK       0x0020
-#define USB_OTG_EP_TX_VALID     0x0030
+#define USB_OTG_EP_TX_DIS                       (0x0000u)
+#define USB_OTG_EP_TX_STALL                     (0x0010u)
+#define USB_OTG_EP_TX_NAK                       (0x0020u)
+#define USB_OTG_EP_TX_VALID                     (0x0030u)
 
-#define USB_OTG_EP_RX_DIS       0x0000
-#define USB_OTG_EP_RX_STALL     0x1000
-#define USB_OTG_EP_RX_NAK       0x2000
-#define USB_OTG_EP_RX_VALID     0x3000
+#define USB_OTG_EP_RX_DIS                       (0x0000u)
+#define USB_OTG_EP_RX_STALL                     (0x1000u)
+#define USB_OTG_EP_RX_NAK                       (0x2000u)
+#define USB_OTG_EP_RX_VALID                     (0x3000u)
 
-#define   MAX_DATA_LENGTH       0x200
+#define   MAX_DATA_LENGTH                       (0x200u)
 
 /*******************************************************************************
  * Global type definitions ('typedef')
  ******************************************************************************/
 typedef enum {
-    USB_OTG_OK = 0,
+    USB_OTG_OK = 0u,
     USB_OTG_FAIL
 }USB_OTG_STS;
 
 typedef enum {
-    HC_IDLE = 0,
+    HC_IDLE = 0u,
     HC_XFRC,
     HC_HALTED,
     HC_NAK,
@@ -102,15 +102,15 @@ typedef enum {
 }HC_STATUS;
 
 typedef enum {
-  URB_IDLE = 0,
-  URB_DONE,
-  URB_NOTREADY,
-  URB_ERROR,
-  URB_STALL
+    URB_IDLE = 0u,
+    URB_DONE,
+    URB_NOTREADY,
+    URB_ERROR,
+    URB_STALL
 }URB_STATE;
 
 typedef enum {
-    CTRL_START = 0,
+    CTRL_START = 0u,
     CTRL_XFRC,
     CTRL_HALTED,
     CTRL_NAK,
@@ -251,7 +251,7 @@ typedef struct _DCD
     USBD_Usr_cb_TypeDef           *usr_cb;
     USBD_DEVICE                   *usr_device;
     uint8_t        *pConfig_descriptor;
-    uint8_t 	ep0_state;
+    uint8_t        ep0_state;
  }DCD_DEV , *DCD_PDEV;
 
 typedef struct _HCD
@@ -287,8 +287,8 @@ typedef struct USB_OTG_handle
 #ifdef USE_OTG_MODE
     OTG_DEV     otg;
 #endif
-	void        *pClassData;
-	void        *pUserData;
+  void        *pClassData;
+  void        *pUserData;
 }USB_OTG_CORE_HANDLE , *PUSB_OTG_CORE_HANDLE;
 
 /*******************************************************************************
@@ -352,7 +352,6 @@ USB_OTG_STS  USB_OTG_EPSetStall          (USB_OTG_CORE_HANDLE *pdev , USB_OTG_EP
 USB_OTG_STS  USB_OTG_EPClearStall        (USB_OTG_CORE_HANDLE *pdev , USB_OTG_EP *ep);
 uint32_t     USB_OTG_ReadDevAllOutEp_itr (USB_OTG_CORE_HANDLE *pdev);
 uint32_t     USB_OTG_ReadDevOutEP_itr    (USB_OTG_CORE_HANDLE *pdev , uint8_t epnum);
-uint32_t     USB_OTG_ReadDevAllInEPItr   (USB_OTG_CORE_HANDLE *pdev);
 void         USB_OTG_InitDevSpeed        (USB_OTG_CORE_HANDLE *pdev , uint8_t speed);
 uint8_t      USBH_IsEvenFrame (USB_OTG_CORE_HANDLE *pdev);
 void         USB_OTG_EP0_OutStart(USB_OTG_CORE_HANDLE *pdev);
