@@ -214,11 +214,11 @@ static void SD_CARD_TEST(void)
 
 FATFS fs;
 FIL File_1;
-void hd_sdio_hw_init()
+void hd_sdio_hw_init(void)
 {
-    DEBUGN("enter hd sdio \r\n");
-    BYTE buffer[4096];
-    UINT br;
+//    DEBUGN("enter hd sdio \r\n");
+//    BYTE buffer[4096];
+//    UINT br;
     SD_CARD_Init();
 
 //    SD_CARD_TEST();
@@ -232,22 +232,22 @@ void hd_sdio_hw_init()
 	//for debug，格式化文件系统
 	//asl_fop_fs_format();
 
-    static FRESULT res;
-    res = f_mount(0, &fs);
-    if (res)
-    {
-        DEBUGN("文件系统挂载失败.\r\n");
-    }
-    else
-    {
-        DEBUGN("文件系统挂载成功.\r\n");
-    }
+//    static FRESULT res;
+//    res = f_mount(0, &fs);
+//    if (res)
+//    {
+//        DEBUGN("文件系统挂载失败.\r\n");
+//    }
+//    else
+//    {
+//        DEBUGN("文件系统挂载成功.\r\n");
+//    }
 
-    res = f_open(&File_1,"0:a.txt", FA_OPEN_EXISTING | FA_READ);
-    res = f_read(&File_1,buffer,sizeof(buffer),&br);
-    res = f_close(&File_1);
-    res = f_mount(0,NULL);
-    DEBUGN("exit \r\n");
+//    res = f_open(&File_1,"0:a.txt", FA_OPEN_EXISTING | FA_READ);
+//    res = f_read(&File_1,buffer,sizeof(buffer),&br);
+//    res = f_close(&File_1);
+//    res = f_mount(0,NULL);
+//    DEBUGN("exit \r\n");
 }
 
 

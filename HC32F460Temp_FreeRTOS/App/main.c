@@ -13,6 +13,7 @@
 #include "User_I2S.h"
 #include "User_SDIO.h"
 #include "hd_sdio.h"
+#include "Test.h"
 USB_OTG_CORE_HANDLE  USB_OTG_dev;
 stc_clk_freq_t Clkdata;
 int main(void)
@@ -26,17 +27,8 @@ int main(void)
 	NVIC_EnableIRQ(SysTick_IRQn);
 	Ddl_UartInit();
 	Hw_MPU_Init();
-	hd_sdio_hw_init();
-	USBD_Init(&USB_OTG_dev,
-#ifdef USE_USB_OTG_HS
-            USB_OTG_HS_CORE_ID,
-#else
-            USB_OTG_FS_CORE_ID,
-#endif
-            &USR_desc, &USBD_MSC_HID_cb, &USR_cb);
+	Testcpp();
 	User_Task_Create();
-//	
-
     while(1)
     {         
         ;

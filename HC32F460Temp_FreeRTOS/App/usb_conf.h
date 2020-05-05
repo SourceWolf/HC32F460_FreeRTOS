@@ -45,11 +45,11 @@
  ** A detailed description is available at
  ** @link General low level driver configuration @endlink
  **
- **   - 2018-12-26  1.0  wangmin First version for USB demo.
+ **   - 2019-05-15  1.0  Zhangxl First version for USB MSC device demo.
  **
  ******************************************************************************/
-#ifndef __USB_CONF__H__
-#define __USB_CONF__H__
+#ifndef __USB_CONF_H__
+#define __USB_CONF_H__
 
 /*******************************************************************************
  * Include files
@@ -89,15 +89,15 @@
 *     default PHY when HS core is used.
 *******************************************************************************/
 #ifndef USE_USB_OTG_HS
-// #define USE_USB_OTG_HS
+//#define USE_USB_OTG_HS
 #endif /* USE_USB_OTG_HS */
 
 #ifndef USE_ULPI_PHY
- //#define USE_ULPI_PHY
+//#define USE_ULPI_PHY
 #endif /* USE_ULPI_PHY */
 
 #ifndef USE_EMBEDDED_PHY
- #define USE_EMBEDDED_PHY
+    #define USE_EMBEDDED_PHY
 #endif /* USE_EMBEDDED_PHY */
 
 #ifdef USE_USB_OTG_HS
@@ -140,57 +140,53 @@
 *        so total FIFO size should be 1012 Only instead of 1024
 *******************************************************************************/
 
-/************** USB DEVICE ENDPOINT CONFIGURATION *****************************/
-#define         MSC_IN_EP       0x84u
-#define         MSC_OUT_EP      0x05u
+/****************** USB Device Endpoint config ********************************/
+#define MSC_IN_EP                         0x81u
+#define MSC_OUT_EP                        0x01u
 
-#define         HID_IN_EP       0x81u
-#define         HID_OUT_EP      0x02u
 
 /****************** USB OTG HS CONFIGURATION **********************************/
 #ifdef USB_OTG_HS_CORE
-    #define RX_FIFO_HS_SIZE                          512u
-    #define TX0_FIFO_HS_SIZE                         128u
-    #define TX1_FIFO_HS_SIZE                         256u
+    #define RX_FIFO_HS_SIZE                         512u
+    #define TX0_FIFO_HS_SIZE                        128u
+    #define TX1_FIFO_HS_SIZE                        372u
     #define TX2_FIFO_HS_SIZE                          0u
     #define TX3_FIFO_HS_SIZE                          0u
     #define TX4_FIFO_HS_SIZE                          0u
     #define TX5_FIFO_HS_SIZE                          0u
-    #define TX6_FIFO_HS_SIZE                          0u
-    #define TX7_FIFO_HS_SIZE                          0u
 
-// #define USB_OTG_HS_SOF_OUTPUT_ENABLED
+//  #define USB_OTG_HS_LOW_PWR_MGMT_SUPPORT
+//  #define USB_OTG_HS_SOF_OUTPUT_ENABLED
 
- #ifdef USE_ULPI_PHY
-    #define USB_OTG_ULPI_PHY_ENABLED
- #endif
- #ifdef USE_EMBEDDED_PHY
-    #define USB_OTG_EMBEDDED_PHY_ENABLED
- #endif
- #define USB_OTG_HS_INTERNAL_DMA_ENABLED
-//#define USB_OTG_HS_DEDICATED_EP1_ENABLED
-//#define USB_OTG_HS_LOW_PWR_MGMT_SUPPORT
-#endif
-
-/****************** USB OTG FS CONFIGURATION **********************************/
-#ifdef USB_OTG_FS_CORE
-    #define RX_FIFO_FS_SIZE                          128u
-    #define TX0_FIFO_FS_SIZE                          64u
-    #define TX1_FIFO_FS_SIZE                          64u
-    #define TX2_FIFO_FS_SIZE                          0u
-    #define TX3_FIFO_FS_SIZE                          32u
-    #define TX4_FIFO_FS_SIZE                          32u
-    #define TX5_FIFO_FS_SIZE                          0u
 #ifdef USE_ULPI_PHY
     #define USB_OTG_ULPI_PHY_ENABLED
 #endif
 #ifdef USE_EMBEDDED_PHY
     #define USB_OTG_EMBEDDED_PHY_ENABLED
 #endif
-// #define USB_OTG_HS_INTERNAL_DMA_ENABLED
+    #define USB_OTG_HS_INTERNAL_DMA_ENABLED
+    #define USB_OTG_HS_DEDICATED_EP1_ENABLED
+#endif
 
-// #define USB_OTG_FS_LOW_PWR_MGMT_SUPPORT
-// #define USB_OTG_FS_SOF_OUTPUT_ENABLED
+/****************** USB OTG FS CONFIGURATION **********************************/
+#ifdef USB_OTG_FS_CORE
+ #define RX_FIFO_FS_SIZE                          128u
+ #define TX0_FIFO_FS_SIZE                          64u
+ #define TX1_FIFO_FS_SIZE                          64u
+ #define TX2_FIFO_FS_SIZE                          64u
+ #define TX3_FIFO_FS_SIZE                           0u
+ #define TX4_FIFO_FS_SIZE                           0u
+ #define TX5_FIFO_FS_SIZE                           0u
+#ifdef USE_ULPI_PHY
+    #define USB_OTG_ULPI_PHY_ENABLED
+#endif
+#ifdef USE_EMBEDDED_PHY
+    #define USB_OTG_EMBEDDED_PHY_ENABLED
+#endif
+//  #define USB_OTG_HS_INTERNAL_DMA_ENABLED
+
+//  #define USB_OTG_FS_LOW_PWR_MGMT_SUPPORT
+//  #define USB_OTG_FS_SOF_OUTPUT_ENABLED
 #endif
 
 /****************** USB OTG MISC CONFIGURATION ********************************/
@@ -202,65 +198,63 @@
 //#define USE_OTG_MODE
 
 #ifndef USB_OTG_FS_CORE
- #ifndef USB_OTG_HS_CORE
-    #error  "USB_OTG_HS_CORE or USB_OTG_FS_CORE should be defined"
- #endif
+    #ifndef USB_OTG_HS_CORE
+        #error  "USB_OTG_HS_CORE or USB_OTG_FS_CORE should be defined"
+    #endif
 #endif
 
 #ifndef USE_DEVICE_MODE
- #ifndef USE_HOST_MODE
-    #error  "USE_DEVICE_MODE or USE_HOST_MODE should be defined"
- #endif
+    #ifndef USE_HOST_MODE
+        #error  "USE_DEVICE_MODE or USE_HOST_MODE should be defined"
+    #endif
 #endif
 
 #ifndef USE_USB_OTG_HS
- #ifndef USE_USB_OTG_FS
-    #error  "USE_USB_OTG_HS or USE_USB_OTG_FS should be defined"
- #endif
+    #ifndef USE_USB_OTG_FS
+        #error  "USE_USB_OTG_HS or USE_USB_OTG_FS should be defined"
+    #endif
 #else //USE_USB_OTG_HS
- #ifndef USE_ULPI_PHY
-  #ifndef USE_EMBEDDED_PHY
-      #error  "USE_ULPI_PHY or USE_EMBEDDED_PHY should be defined"
-  #endif
- #endif
+    #ifndef USE_ULPI_PHY
+        #ifndef USE_EMBEDDED_PHY
+            #error  "USE_ULPI_PHY or USE_EMBEDDED_PHY should be defined"
+        #endif
+    #endif
 #endif
 
 /****************** C Compilers dependant keywords ****************************/
 /* In HS mode and when the DMA is used, all variables and data structures dealing
    with the DMA during the transaction process should be 4-bytes aligned */
-
 #ifdef USB_OTG_HS_INTERNAL_DMA_ENABLED
-  #if defined   (__GNUC__)        /* GNU Compiler */
-    #define __USB_ALIGN_END    __attribute__ ((aligned (4)))
-    #define __USB_ALIGN_BEGIN
-  #else
-    #define __ALIGN_END
-    #if defined   (__CC_ARM)      /* ARM Compiler */
-      #define __USB_ALIGN_BEGIN    __align(4)
-    #elif defined (__ICCARM__)    /* IAR Compiler */
-      #define __USB_ALIGN_BEGIN
-    #elif defined  (__TASKING__)  /* TASKING Compiler */
-      #define __USB_ALIGN_BEGIN    __align(4)
-    #endif /* __CC_ARM */
-  #endif /* __GNUC__ */
+    #if defined   (__GNUC__)        /* GNU Compiler */
+        #define __USB_ALIGN_END    __attribute__ ((aligned (4)))
+        #define __USB_ALIGN_BEGIN
+    #else
+        #define __ALIGN_END
+        #if defined   (__CC_ARM)      /* ARM Compiler */
+            #define __USB_ALIGN_BEGIN    __align(4)
+        #elif defined (__ICCARM__)    /* IAR Compiler */
+            #define __USB_ALIGN_BEGIN
+        #elif defined  (__TASKING__)  /* TASKING Compiler */
+            #define __USB_ALIGN_BEGIN    __align(4)
+        #endif /* __CC_ARM */
+    #endif /* __GNUC__ */
 #else
-  #define __USB_ALIGN_BEGIN
-  #define __USB_ALIGN_END
+    #define __USB_ALIGN_BEGIN
+    #define __USB_ALIGN_END
 #endif /* USB_OTG_HS_INTERNAL_DMA_ENABLED */
 
 /* __packed keyword used to decrease the data type alignment to 1-byte */
 #if defined (__CC_ARM)         /* ARM Compiler */
-  #define __packed    __packed
+    #define __packed    __packed
 #elif defined (__ICCARM__)     /* IAR Compiler */
-//  #define __packed    __packed  /* MISRAC2004 19.4*/
-#elif defined   ( __GNUC__ )   /* GNU Compiler */
-//  #define __packed    __attribute__ ((__packed__))
+//    #define __packed    __packed
+#elif defined   (__GNUC__)     /* GNU Compiler */
+    #define __packed    __attribute__ ((__packed__))
 #elif defined   (__TASKING__)  /* TASKING Compiler */
-  #define __packed    __unaligned
+    #define __packed    __unaligned
 #endif /* __CC_ARM */
 
-
-#endif //__USB_CONF__H__
+#endif //__USB_CONF_H__
 
 /*******************************************************************************
  * EOF (not truncated)

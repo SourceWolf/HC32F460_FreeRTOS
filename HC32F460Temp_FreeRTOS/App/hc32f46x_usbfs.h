@@ -77,9 +77,8 @@
 #include "usbd_ioreq.h"
 #include "usbd_req.h"
 
-#include "usbd_hid_custom_core.h"
 #include "usbd_msc_core.h"
-#include "usbd_hid_msc_wrapper.h"
+
 
 /*******************************************************************************
  * Global type definitions ('typedef')

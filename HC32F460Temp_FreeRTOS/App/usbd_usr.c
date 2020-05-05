@@ -47,7 +47,7 @@
         This file includes the user application layer.
     @endlink
  **
- **   - 2019-11-19  1.0  zhangxl First version for USB MSC_HID composite demo.
+ **   - 2019-05-15  1.0  Zhangxl First version for USB MSC device demo.
  **
  ******************************************************************************/
 
@@ -56,32 +56,34 @@
  ******************************************************************************/
 #include "hc32_ddl.h"
 #include "usbd_usr.h"
-#include "usbd_ioreq.h"
-#include "usb_conf.h"
+#include "usb_dcd_int.h"
+#include <stdio.h>
 #include "usb_bsp.h"
 
 /*******************************************************************************
  * Local type definitions ('typedef')
  ******************************************************************************/
+/* User callback functions */
+USBD_Usr_cb_TypeDef USR_cb =
+{
+    &USBD_USR_Init,
+    &USBD_USR_DeviceReset,
+    &USBD_USR_DeviceConfigured,
+    &USBD_USR_DeviceSuspended,
+    &USBD_USR_DeviceResumed,
+    &USBD_USR_DeviceConnected,
+    &USBD_USR_DeviceDisconnected,
+};
 
 /*******************************************************************************
  * Local pre-processor symbols/macros ('#define')
  ******************************************************************************/
-#define USER_INFORMATION1      (uint8_t*)"[Key]:RemoteWakeup"
-#define USER_INFORMATION2      (uint8_t*)"[Joystick]:Mouse emulation"
 
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
  ******************************************************************************/
-USBD_Usr_cb_TypeDef USR_cb = {
-    USBD_USR_Init,
-    USBD_USR_DeviceReset,
-    USBD_USR_DeviceConfigured,
-    USBD_USR_DeviceSuspended,
-    USBD_USR_DeviceResumed,
-    USBD_USR_DeviceConnected,
-    USBD_USR_DeviceDisconnected,
-};
+/* Disconnected in default */
+volatile uint8_t bDeviceState = 0u;
 
 /*******************************************************************************
  * Local function prototypes ('static')
@@ -94,99 +96,95 @@ USBD_Usr_cb_TypeDef USR_cb = {
 /*******************************************************************************
  * Function implementation - global ('extern') and local ('static')
  ******************************************************************************/
+
 /**
-* @brief  USBD_USR_Init
-*
-* @param  None
-* @retval None
-*/
+ *******************************************************************************
+ ** \brief  USBD_USR_Init
+ ** \param  None
+ ** \retval None
+ ******************************************************************************/
 void USBD_USR_Init(void)
 {
-
+    printf("USBD_USR_Init\r\n");
 }
 
 /**
-* @brief  USBD_USR_DeviceReset
-*         Displays the message on terminal on device Reset Event
-* @param  speed : device speed
-* @retval None
-*/
+ *******************************************************************************
+ ** \brief  USBD_USR_DeviceReset
+ ** \param  speed : device speed
+ ** \retval None
+ ******************************************************************************/
 void USBD_USR_DeviceReset(uint8_t speed)
 {
     switch (speed)
     {
         case USB_OTG_SPEED_HIGH:
-            printf("     USB Device Library V1.2.1 [HS]");
+            printf("USB Device Library v1.1.0  [HS]\r\n");
             break;
-
         case USB_OTG_SPEED_FULL:
-            printf("     USB Device Library V1.2.1 [FS]");
+            printf("USB Device Library v1.1.0  [FS]\r\n");
             break;
         default:
-            printf("     USB Device Library V1.2.1 [??]");
+            printf("USB Device Library v1.1.0  [??]\r\n");
+            break;
     }
 }
 
-
 /**
-* @brief  USBD_USR_DeviceConfigured
-*         Displays the message on on terminal on device configuration Event
-* @param  None
-* @retval Status
-*/
+ *******************************************************************************
+ ** \brief  USBD_USR_DeviceConfigured
+ ** \param  None
+ ** \retval None
+ ******************************************************************************/
 void USBD_USR_DeviceConfigured(void)
 {
-    printf("> HID Interface started.\n");
-    printf("> MSC Interface started.\n");
-}
-
-
-/**
-* @brief  USBD_USR_DeviceConnected
-*         Displays the message on on terminal on device connection Event
-* @param  None
-* @retval Status
-*/
-void USBD_USR_DeviceConnected(void)
-{
-    printf("> USB Device Connected.\n");
-}
-
-
-/**
-* @brief  USBD_USR_DeviceDisonnected
-*         Displays the message on terminal on device disconnection Event
-* @param  None
-* @retval Status
-*/
-void USBD_USR_DeviceDisconnected(void)
-{
-    printf("> USB Device Disconnected.\n");
+    printf("MSC Interface started.\r\n");
 }
 
 /**
-* @brief  USBD_USR_DeviceSuspended
-*         Displays the message on terminal on device suspend Event
-* @param  None
-* @retval None
-*/
+ *******************************************************************************
+ ** \brief  USBD_USR_DeviceSuspended
+ ** \param  None
+ ** \retval None
+ ******************************************************************************/
 void USBD_USR_DeviceSuspended(void)
 {
-    printf("> USB Device in Suspend Mode.\n");
-    /* Users can do their application actions here for the USB-Reset */
+    printf("Device In suspend mode.\r\n");
 }
 
-
 /**
-* @brief  USBD_USR_DeviceResumed
-*         Displays the message on terminal on device resume Event
-* @param  None
-* @retval None
-*/
+ *******************************************************************************
+ ** \brief  USBD_USR_DeviceResumed
+ ** \param  None
+ ** \retval None
+ ******************************************************************************/
 void USBD_USR_DeviceResumed(void)
 {
-    printf("> USB Device in Idle Mode.\n");
-    /* Users can do their application actions here for the USB-Reset */
+    printf("Device Resumed\r\n");
+}
+
+/**
+ *******************************************************************************
+ ** \brief  USBD_USR_DeviceConnected
+ ** \param  None
+ ** \retval None
+ ******************************************************************************/
+void USBD_USR_DeviceConnected(void)
+{
+    bDeviceState = 1u;
+    printf("USB Device Connected.\r\n");
+}
+
+/**
+ *******************************************************************************
+ ** \brief  USBD_USR_DeviceDisonnected
+ ** \param  None
+ ** \retval None
+ ******************************************************************************/
+void USBD_USR_DeviceDisconnected(void)
+{
+    bDeviceState = 0u;
+    printf("USB Device Disconnected.\r\n");
 }
 
 /*******************************************************************************

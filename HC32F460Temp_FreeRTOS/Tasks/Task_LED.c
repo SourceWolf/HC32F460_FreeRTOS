@@ -11,8 +11,8 @@ static void Task_LED(void* param)
 		     vTaskDelay(1000/portTICK_PERIOD_MS);
 		}
 }
-uint8_t Task_KeyLED_Start(void)
+uint8_t Task_LED_Start(void)
 {
-	xTaskCreate(Task_LED,(const char *)"File System Task",STACKSIZE_LED,NULL,PRIORITY_TASKLED,&H_Task_LED);
+	xTaskCreate(Task_LED,(const char *)"LED Task",STACKSIZE_LED,NULL,PRIORITY_TASKLED,&H_Task_LED);
 	return Ok;
 }

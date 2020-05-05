@@ -17,13 +17,16 @@ uint8_t Task_KeyScan_Start(void)
 uint8_t Task_KeyScan_Suspend(void)
 {
 	vTaskSuspend(H_Task_KEY);
+	return Ok;
 }
 uint8_t Task_KeyScan_Resume(void)
 {
 	vTaskResume(H_Task_KEY);
+	return Ok;
 }
 uint8_t Task_KeyScan_Stop(void)
 {
 	vTaskDelete(H_Task_KEY);
+	return Ok;
 }
 

@@ -14,9 +14,10 @@ static void Task_FS_Operation(void* param)
     f_gets(line, sizeof line, &Myfile);
         printf("%s\r\n",line);
     f_close(&Myfile);
+	vTaskDelete(H_Task_Fs);
 	while(1)
 		{
-			vTaskDelay(5/portTICK_PERIOD_MS);
+			vTaskDelay(100/portTICK_PERIOD_MS);
 		}
 }
 

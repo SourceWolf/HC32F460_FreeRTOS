@@ -35,7 +35,7 @@ void HW_I2C_Init(M4_I2C_TypeDef* pstcI2Cx,uint32_t baudrate)
     
     I2C_Cmd(pstcI2Cx, Enable);
 }
-inline en_result_t I2C_Write_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,uint8_t addr, uint8_t *data, uint8_t len)
+inline uint8_t I2C_Write_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,uint8_t addr, uint8_t *data, uint8_t len)
 {
 	uint32_t u32TimeOut;
 	uint8_t pos;
@@ -155,7 +155,7 @@ inline en_result_t I2C_Write_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,ui
 	return I2C_RET_OK;
 }
 
-inline en_result_t I2C_Read_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,uint8_t addr, uint8_t *data, uint8_t len)
+inline uint8_t I2C_Read_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,uint8_t addr, uint8_t *data, uint8_t len)
 {
 	uint32_t u32TimeOut;
 	uint8_t pos;

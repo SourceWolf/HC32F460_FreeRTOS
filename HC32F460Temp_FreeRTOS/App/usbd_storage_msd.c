@@ -61,8 +61,11 @@
 #include "w25qxx.h"
 #include "hd_sdio.h"
 #include "sd_card.h"
-//#include "sdio_sdcard.h"
+//#include "msg_dbg.h"
 
+#include "diskio.h"
+//SD_Card SPI_Flash
+#define CUR_LUN	SD_Card
 /*******************************************************************************
  * Local type definitions ('typedef')
  ******************************************************************************/
@@ -155,9 +158,17 @@ USBD_STORAGE_cb_TypeDef *USBD_STORAGE_fops = &USBD_MICRO_SDIO_fops;
  ******************************************************************************/
 int8_t STORAGE_Init(uint8_t lun)
 {
-//    SD_Init();
-//	hd_sdio_hw_init();
-    W25QXX_Init();
+	printf("storage init\r\n");
+	//hd_sdio_hw_init();
+	//SD_CARD_Init();
+	if (lun == CUR_LUN)
+	{
+		hd_sdio_hw_init();
+	}
+	else
+	{
+		W25QXX_Init();
+	}   
     return Ok;
 }
 
@@ -176,12 +187,11 @@ int8_t STORAGE_Init(uint8_t lun)
  ******************************************************************************/
 int8_t STORAGE_GetCapacity(uint8_t lun, uint32_t *block_num, uint32_t *block_size)
 {
-    if (lun == 0u)
+    if (lun == CUR_LUN)
     {
         *block_size = 512u;
 		extern stc_sd_handle_t m_stcSdhandle;
 		*block_num = m_stcSdhandle.stcSdCardInfo.u32BlockNbr;
-//        *block_num  = SDCardInfo.CardCapacity / 512;
     }else
     {
         *block_size = 512u;
@@ -243,7 +253,7 @@ int8_t STORAGE_Read(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_l
 {
     int8_t res = (int8_t)0;
     USB_STATUS_REG |= (uint8_t)0X02;
-    if (lun == 0u)
+    if (lun == CUR_LUN)
     {
         res = SD_ReadDisk(buf, blk_addr, blk_len);
         if (res)
@@ -276,7 +286,7 @@ int8_t STORAGE_Write(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_
 {
     int8_t res = (int8_t)0;
     USB_STATUS_REG |= (uint8_t)0X01;
-    if (lun == 0u)
+    if (lun == CUR_LUN)
     {
         res = SD_WriteDisk(buf, blk_addr, blk_len);
         if (res)

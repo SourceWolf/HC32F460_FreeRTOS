@@ -42,21 +42,18 @@
 /******************************************************************************/
 /** \file usb_bsp_template.c
  **
- ** A detailed description is available at
- ** @link
-        This file is responsible to offer board support package and is
-        configurable by user.
-    @endlink
+ ** \brief  This file is responsible to offer board support package and is
+ **         configurable by user.
  **
- **   - 2018-11-19  1.0  zhangxl First version for USB MSC_HID composite demo.
+ **   - 2019-05-15  1.0  zhangxl First version for USB msc demo.
  **
  ******************************************************************************/
 
 /*******************************************************************************
  * Include files
  ******************************************************************************/
-#include "usb_bsp.h"
 #include "hc32_ddl.h"
+#include "usb_bsp.h"
 
 /*******************************************************************************
  * Local type definitions ('typedef')
@@ -69,7 +66,6 @@
 /*******************************************************************************
  * Global variable definitions (declared in header file with 'extern')
  ******************************************************************************/
-uint8_t PrevXferDone = 1u;
 
 /*******************************************************************************
  * Local function prototypes ('static')
@@ -87,7 +83,7 @@ extern  uint32_t USBD_OTG_ISR_Handler (USB_OTG_CORE_HANDLE *pdev);
 
 /**
  ******************************************************************************
- ** \brief  USB IRQ handler
+ ** \brief  Usb interrupt handle
  **
  ** \param  None
  **
@@ -95,42 +91,8 @@ extern  uint32_t USBD_OTG_ISR_Handler (USB_OTG_CORE_HANDLE *pdev);
  ******************************************************************************/
 void USB_IRQ_Handler(void)
 {
-    //printf("usb isr\n");
     USBD_OTG_ISR_Handler(&USB_OTG_dev);
 }
-
-/**
- *******************************************************************************
- ** \brief ExtInt03 callback function
- **
- ** \param  None
- **
- ** \retval None
- **
- ******************************************************************************/
-void ExtInt03_Callback(void)
-{
-    if (Set == EXINT_IrqFlgGet(ExtiCh03))
-    {
-        if ((PrevXferDone) && (USB_OTG_dev.dev.device_status == USB_OTG_CONFIGURED))
-        {
-            Send_Buf[0] = KEY_REPORT_ID;
-
-            if(PORT_GetBit(SW2_PORT, SW2_PIN) == Reset)
-            {
-                Send_Buf[1] = 0x01u;
-            }
-            else
-            {
-                Send_Buf[1] = 0x00u;
-            }
-
-            USBD_CUSTOM_HID_SendReport(&USB_OTG_dev, Send_Buf, 2u);
-            PrevXferDone = 0u;
-        }
-    }
-}
-
 
 /**
  ******************************************************************************
@@ -146,6 +108,7 @@ static void SysClkIni(void)
     stc_clk_sysclk_cfg_t    stcSysClkCfg;
     stc_clk_xtal_cfg_t      stcXtalCfg;
     stc_clk_mpll_cfg_t      stcMpllCfg;
+//    stc_clk_output_cfg_t    stcOutputClkCfg;
     stc_clk_upll_cfg_t      stcUpllCfg;
 
     MEM_ZERO_STRUCT(enSysClkSrc);
@@ -211,76 +174,23 @@ static void SysClkIni(void)
 
     /* Set USB clock source */
     CLK_SetUsbClkSource(ClkUsbSrcUpllp);
-}
 
-static void LedPortIni(void)
-{
-    stc_port_init_t stcPortInit;
+#if 0
+    /* Clk output.*/
+    stcOutputClkCfg.enOutputSrc = ClkOutputSrcUpllp;
+    stcOutputClkCfg.enOutputDiv = ClkOutputDiv8;
+    CLK_OutputClkConfig(ClkOutputCh1,&stcOutputClkCfg);
+    CLK_OutputClkCmd(ClkOutputCh1,Enable);
 
-    /* configuration structure initialization */
-    MEM_ZERO_STRUCT(stcPortInit);
-
-    stcPortInit.enPinMode = Pin_Mode_Out;
-    stcPortInit.enExInt = Enable;
-    stcPortInit.enPullUp = Enable;
-
-    /* LED0 Port/Pin initialization */
-    PORT_Init(LED0_PORT, LED0_PIN, &stcPortInit);
-
-    /* LED1 Port/Pin initialization */
-    PORT_Init(LED1_PORT, LED1_PIN, &stcPortInit);
-
-    /* LED2 Port/Pin initialization */
-    PORT_Init(LED2_PORT, LED2_PIN, &stcPortInit);
-
-    /* LED3 Port/Pin initialization */
-    PORT_Init(LED3_PORT, LED3_PIN, &stcPortInit);
-}
-
-static void SW2_ExitIntIni(void)
-{
-    stc_exint_config_t stcExtiConfig;
-    stc_irq_regi_conf_t stcIrqRegiConf;
-    stc_port_init_t stcPortInit;
-
-    /* configuration structure initialization */
-    MEM_ZERO_STRUCT(stcExtiConfig);
-    MEM_ZERO_STRUCT(stcIrqRegiConf);
-    MEM_ZERO_STRUCT(stcPortInit);
-
-    stcExtiConfig.enExitCh = ExtiCh03;
-    /* Filter setting */
-    stcExtiConfig.enFilterEn = Enable;
-    stcExtiConfig.enFltClk = Pclk3Div8;
-    /* Falling edge */
-    stcExtiConfig.enExtiLvl = ExIntFallingEdge;
-    EXINT_Init(&stcExtiConfig);
-    /* Set PD03 as External Int Ch.3 input */
-    MEM_ZERO_STRUCT(stcPortInit);
-    stcPortInit.enExInt = Enable;
-    PORT_Init(SW2_PORT, SW2_PIN, &stcPortInit);
-    /* Select External Int Ch.3 */
-    stcIrqRegiConf.enIntSrc = INT_PORT_EIRQ3;
-    /* Register External Int to Vect.No.000 */
-    stcIrqRegiConf.enIRQn = Int002_IRQn;
-    /* Callback function */
-    stcIrqRegiConf.pfnCallback = &ExtInt03_Callback;
-    /* Registration IRQ */
-    enIrqRegistration(&stcIrqRegiConf);
-    /* Clear pending */
-    NVIC_ClearPendingIRQ(stcIrqRegiConf.enIRQn);
-    /* Set priority */
-    NVIC_SetPriority(stcIrqRegiConf.enIRQn, DDL_IRQ_PRIORITY_15);
-    /* Enable NVIC */
-    NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);
+    PORT_SetFunc(PortA, Pin08, Func_Mclkout, Disable);
+#endif
 }
 
 /**
- *******************************************************************************
+ ******************************************************************************
  ** \brief  Initilizes BSP configurations
- **
  ** \param  None
- ** \retval None
+ ** \return None
  ******************************************************************************/
 void USB_OTG_BSP_Init(USB_OTG_CORE_HANDLE *pdev)
 {
@@ -288,12 +198,7 @@ void USB_OTG_BSP_Init(USB_OTG_CORE_HANDLE *pdev)
     /* clock config */
 //    SysClkIni();
 
-    /* LED port initialize */
-//    LedPortIni();
-//    /* KEY SW2 interrupt function initialize */
-//    SW2_ExitIntIni();
-
-//    Ddl_UartInit();
+    //Ddl_UartInit();
     printf("USBFS start !!\n");
 
     /* port config */
@@ -302,7 +207,8 @@ void USB_OTG_BSP_Init(USB_OTG_CORE_HANDLE *pdev)
     stcPortInit.enPinMode = Pin_Mode_Ana;
     PORT_Init(PortA, Pin11, &stcPortInit);
     PORT_Init(PortA, Pin12, &stcPortInit);
-    //PORT_SetFunc(PortA, Pin08, Func_UsbF, Disable); //SOF
+
+	//PORT_SetFunc(PortA, Pin08, Func_UsbF, Disable); //SOF
     PORT_SetFunc(PortA, Pin09, Func_UsbF, Disable); //VBUS
     PORT_SetFunc(PortA, Pin11, Func_UsbF, Disable); //DM
     PORT_SetFunc(PortA, Pin12, Func_UsbF, Disable); //DP
@@ -311,16 +217,16 @@ void USB_OTG_BSP_Init(USB_OTG_CORE_HANDLE *pdev)
 }
 
 /**
- *******************************************************************************
+ ******************************************************************************
  ** \brief  Enabele USB Global interrupt
  ** \param  None
- ** \retval None
+ ** \return None
  ******************************************************************************/
 void USB_OTG_BSP_EnableInterrupt(void)
 {
     stc_irq_regi_conf_t stcIrqRegiConf;
     /* Register INT_USBFS_GLB Int to Vect.No.030 */
-    stcIrqRegiConf.enIRQn = Int030_IRQn;//Int000_IRQn;//Int030_IRQn;
+    stcIrqRegiConf.enIRQn = Int030_IRQn;
     /* Select INT_USBFS_GLB interrupt function */
     stcIrqRegiConf.enIntSrc = INT_USBFS_GLB;
     /* Callback function */
@@ -336,11 +242,11 @@ void USB_OTG_BSP_EnableInterrupt(void)
 }
 
 /**
- *******************************************************************************
+ ******************************************************************************
  ** \brief  Drives the Vbus signal through IO
  ** \param  speed : Full, Low
  ** \param  state : VBUS states
- ** \retval None
+ ** \return None
  ******************************************************************************/
 void USB_OTG_BSP_DriveVBUS(uint32_t speed, uint8_t state)
 {
@@ -348,10 +254,10 @@ void USB_OTG_BSP_DriveVBUS(uint32_t speed, uint8_t state)
 }
 
 /**
- *******************************************************************************
+ ******************************************************************************
  ** \brief  Configures the IO for the Vbus and OverCurrent
- ** \param  speed : Full, Low
- ** \retval None
+ ** \param  Speed : Full, Low
+ ** \return None
  ******************************************************************************/
 void  USB_OTG_BSP_ConfigVBUS(uint32_t speed)
 {
@@ -359,10 +265,10 @@ void  USB_OTG_BSP_ConfigVBUS(uint32_t speed)
 }
 
 /**
- *******************************************************************************
+ ******************************************************************************
  ** \brief  Initialises delay unit Systick timer /Timer2
  ** \param  None
- ** \retval None
+ ** \return None
  ******************************************************************************/
 void USB_OTG_BSP_TimeInit ( void )
 {
@@ -370,12 +276,12 @@ void USB_OTG_BSP_TimeInit ( void )
 }
 
 /**
- *******************************************************************************
+ ******************************************************************************
  ** \brief  This function provides delay time in micro sec
  ** \param  usec : Value of delay required in micro sec
- ** \retval None
+ ** \return None
  ******************************************************************************/
-#define Fclk    50000000ul
+#define Fclk    15000000ul
 void USB_OTG_BSP_uDelay (const uint32_t t)
 {
     uint32_t    i;
@@ -388,10 +294,10 @@ void USB_OTG_BSP_uDelay (const uint32_t t)
 }
 
 /**
- *******************************************************************************
+ ******************************************************************************
  ** \brief  This function provides delay time in milli sec
  ** \param  msec : Value of delay required in milli sec
- ** \retval None
+ ** \return None
  ******************************************************************************/
 void USB_OTG_BSP_mDelay (const uint32_t msec)
 {
@@ -399,10 +305,10 @@ void USB_OTG_BSP_mDelay (const uint32_t msec)
 }
 
 /**
- *******************************************************************************
+ ******************************************************************************
  ** \brief  Time base IRQ
  ** \param  None
- ** \retval None
+ ** \return None
  ******************************************************************************/
 void USB_OTG_BSP_TimerIRQ (void)
 {

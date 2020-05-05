@@ -4,6 +4,6 @@
 #include "User_Gpio.h"
 #include "cmsis_os.h"
 
-uint8_t Task_KeyLED_Start(void);
+uint8_t Task_LED_Start(void);
 
 #endif

@@ -24,6 +24,6 @@
 
 void HW_I2C_Port_Init(void);
 void HW_I2C_Init(M4_I2C_TypeDef* pstcI2Cx,uint32_t baudrate);
-en_result_t I2C_Write_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,uint8_t addr, uint8_t *data, uint8_t len);
-en_result_t I2C_Read_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,uint8_t addr, uint8_t *data, uint8_t len);
+uint8_t I2C_Write_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,uint8_t addr, uint8_t *data, uint8_t len);
+uint8_t I2C_Read_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,uint8_t addr, uint8_t *data, uint8_t len);
 #endif
