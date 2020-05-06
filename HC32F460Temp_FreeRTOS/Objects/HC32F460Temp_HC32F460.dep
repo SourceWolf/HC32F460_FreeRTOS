@@ -747,7 +747,7 @@ I (C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\m
 I (.\common\system_hc32f46x.h)(0x5E65ECA2)
 I (.\common\ddl_config.h)(0x5E1FE629)
 I (.\driver\inc\hc32f46x_utility.h)(0x5E658D88)
-F (.\App\main.c)(0x5EAE8E27)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class --diag_suppress=186,66-I.\RTE\_HC32F460-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (.\App\main.c)(0x5EB277DE)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class --diag_suppress=186,66-I.\RTE\_HC32F460-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (.\common\hc32_ddl.h)(0x5E1FE629)
 I (.\common\hc32_common.h)(0x5E1FE629)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5D9AD21A)
@@ -835,7 +835,6 @@ I (.\PeripheralDriver\User_SDIO.h)(0x5E1FE629)
 I (.\midware\sd_card\inc\sd_card.h)(0x5E1FE629)
 I (.\midware\sd_card\inc\sdmmc_cmd.h)(0x5E1FE629)
 I (.\PeripheralDriver\hd_sdio.h)(0x5EAA3F21)
-I (.\Cpp_Class\Test.h)(0x5EAE8E90)
 F (.\App\User_Task.c)(0x5EAEA7C8)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class --diag_suppress=186,66-I.\RTE\_HC32F460-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"-o .\objects\user_task.o --omf_browse .\objects\user_task.crf --depend .\objects\user_task.d)
 I (.\common\hc32_ddl.h)(0x5E1FE629)
 I (.\common\hc32_common.h)(0x5E1FE629)
@@ -1027,7 +1026,7 @@ I (.\usb_lib\device_core\usbd_def.h)(0x5E658D8B)
 I (.\usb_lib\device_core\usbd_conf.h)(0x5E658D8B)
 I (App\usbd_desc.h)(0x5D9D6D77)
 I (.\usb_lib\device_core\usbd_req.h)(0x5E658D8B)
-F (.\App\usbd_storage_msd.c)(0x5EB00D29)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class --diag_suppress=186,66-I.\RTE\_HC32F460-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"-o .\objects\usbd_storage_msd.o --omf_browse .\objects\usbd_storage_msd.crf --depend .\objects\usbd_storage_msd.d)
+F (.\App\usbd_storage_msd.c)(0x5EB2793A)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class --diag_suppress=186,66-I.\RTE\_HC32F460-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"-o .\objects\usbd_storage_msd.o --omf_browse .\objects\usbd_storage_msd.crf --depend .\objects\usbd_storage_msd.d)
 I (.\common\hc32_ddl.h)(0x5E1FE629)
 I (.\common\hc32_common.h)(0x5E1FE629)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5D9AD21A)
@@ -2595,8 +2594,8 @@ I (.\usb_lib\device_class\msc\usbd_msc_core.h)(0x5D9D6D77)
 I (.\driver\inc\hc32f46x_utility.h)(0x5E658D88)
 I (.\driver\inc\hc32f46x_wdt.h)(0x5E658D88)
 F (.\PeripheralDriver\Hw_Uart1.h)(0x5E1FE629)()
-F (.\PeripheralDriver\HW_I2C.c)(0x5EAA3F22)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class --diag_suppress=186,66-I.\RTE\_HC32F460-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"-o .\objects\hw_i2c.o --omf_browse .\objects\hw_i2c.crf --depend .\objects\hw_i2c.d)
-I (PeripheralDriver\HW_I2C.h)(0x5EAA3F22)
+F (.\PeripheralDriver\HW_I2C.c)(0x5EB270EB)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class --diag_suppress=186,66-I.\RTE\_HC32F460-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"-o .\objects\hw_i2c.o --omf_browse .\objects\hw_i2c.crf --depend .\objects\hw_i2c.d)
+I (PeripheralDriver\HW_I2C.h)(0x5EB26E7D)
 I (.\common\hc32_ddl.h)(0x5E1FE629)
 I (.\common\hc32_common.h)(0x5E1FE629)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5D9AD21A)
@@ -2668,7 +2667,7 @@ I (.\usb_lib\device_core\usbd_req.h)(0x5E658D8B)
 I (.\usb_lib\device_class\msc\usbd_msc_core.h)(0x5D9D6D77)
 I (.\driver\inc\hc32f46x_utility.h)(0x5E658D88)
 I (.\driver\inc\hc32f46x_wdt.h)(0x5E658D88)
-F (.\PeripheralDriver\HW_I2C.h)(0x5EAA3F22)()
+F (.\PeripheralDriver\HW_I2C.h)(0x5EB26E7D)()
 F (.\PeripheralDriver\Hw_MPU.c)(0x5E6B514D)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class --diag_suppress=186,66-I.\RTE\_HC32F460-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"-o .\objects\hw_mpu.o --omf_browse .\objects\hw_mpu.crf --depend .\objects\hw_mpu.d)
 I (PeripheralDriver\Hw_MPU.h)(0x5E6991C6)
 I (.\common\hc32_ddl.h)(0x5E1FE629)
@@ -4116,7 +4115,7 @@ I (.\driver\inc\hc32f46x_wdt.h)(0x5E658D88)
 I (.\PeripheralDriver\User_SPI.h)(0x5E55DD2C)
 F (.\midware\NRF24L01\NRF24L01.h)(0x5E8D718E)()
 F (.\midware\MLX9061x\MLX9061x.c)(0x5E7C559A)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class --diag_suppress=186,66-I.\RTE\_HC32F460-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"-o .\objects\mlx9061x.o --omf_browse .\objects\mlx9061x.crf --depend .\objects\mlx9061x.d)
-I (.\PeripheralDriver\HW_I2C.h)(0x5EAA3F22)
+I (.\PeripheralDriver\HW_I2C.h)(0x5EB26E7D)
 I (.\common\hc32_ddl.h)(0x5E1FE629)
 I (.\common\hc32_common.h)(0x5E1FE629)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5D9AD21A)
@@ -4190,7 +4189,7 @@ I (.\driver\inc\hc32f46x_utility.h)(0x5E658D88)
 I (.\driver\inc\hc32f46x_wdt.h)(0x5E658D88)
 F (.\midware\MLX9061x\MLX9061x.h)(0x5E5DFF09)()
 F (.\midware\AT24C02\AT24C02.c)(0x5E7D7844)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class --diag_suppress=186,66-I.\RTE\_HC32F460-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"-o .\objects\at24c02.o --omf_browse .\objects\at24c02.crf --depend .\objects\at24c02.d)
-I (.\PeripheralDriver\HW_I2C.h)(0x5EAA3F22)
+I (.\PeripheralDriver\HW_I2C.h)(0x5EB26E7D)
 I (.\common\hc32_ddl.h)(0x5E1FE629)
 I (.\common\hc32_common.h)(0x5E1FE629)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5D9AD21A)
@@ -4418,7 +4417,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\float.h)(0x5D9AD218)
 I (.\midware\OLED\OLED.h)(0x5E9D332B)
 I (.\PeripheralDriver\User_Gpio.h)(0x5E55C2FA)
 F (.\midware\FFT\User_FFT.h)(0x5E20118F)()
-F (.\midware\OLED\OLED.c)(0x5E9D3541)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class --diag_suppress=186,66-I.\RTE\_HC32F460-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"-o .\objects\oled.o --omf_browse .\objects\oled.crf --depend .\objects\oled.d)
+F (.\midware\OLED\OLED.c)(0x5EB277DE)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class --diag_suppress=186,66-I.\RTE\_HC32F460-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"-o .\objects\oled.o --omf_browse .\objects\oled.crf --depend .\objects\oled.d)
 I (.\common\hc32_ddl.h)(0x5E1FE629)
 I (.\common\hc32_common.h)(0x5E1FE629)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5D9AD21A)
@@ -4491,11 +4490,9 @@ I (.\usb_lib\device_class\msc\usbd_msc_core.h)(0x5D9D6D77)
 I (.\driver\inc\hc32f46x_utility.h)(0x5E658D88)
 I (.\driver\inc\hc32f46x_wdt.h)(0x5E658D88)
 I (midware\OLED\OLED_FRONT.h)(0x5E1FE629)
-I (.\PeripheralDriver\Hw_I2C.h)(0x5EAA3F22)
+I (.\PeripheralDriver\Hw_I2C.h)(0x5EB26E7D)
 I (midware\OLED\OLED.h)(0x5E9D332B)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5D9AD212)
-I (C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include\arm_math.h)(0x5D2590B6)
-I (C:\Keil_v5\ARM\ARMCC\include\float.h)(0x5D9AD218)
 F (.\midware\DataRemapping.c)(0x5EAA40D0)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class --diag_suppress=186,66-I.\RTE\_HC32F460-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"-o .\objects\dataremapping.o --omf_browse .\objects\dataremapping.crf --depend .\objects\dataremapping.d)
 I (midware\DataRemapping.h)(0x5E9FA4E3)
 I (.\common\hc32_ddl.h)(0x5E1FE629)
@@ -5696,7 +5693,7 @@ I (.\FileSystem\inc\integer.h)(0x5E1FE627)
 I (.\FileSystem\inc\ffconf.h)(0x5E1FE627)
 I (.\FileSystem\inc\diskio.h)(0x5E1FE627)
 F (.\Cpp_Class\Class_SPI.h)(0x5EAE8AE9)()
-F (.\Cpp_Class\Test.cpp)(0x5EB008C2)(--cpp -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class --diag_suppress=186,66-I.\RTE\_HC32F460-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"-o .\objects\test.o --omf_browse .\objects\test.crf --depend .\objects\test.d)
+F (.\Cpp_Class\Test.cpp)(0x5EB27080)(--cpp -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class --diag_suppress=186,66-I.\RTE\_HC32F460-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"-o .\objects\test.o --omf_browse .\objects\test.crf --depend .\objects\test.d)
 I (Cpp_Class\Class_SPI.h)(0x5EAE8AE9)
 I (.\common\hc32_ddl.h)(0x5E1FE629)
 I (.\common\hc32_common.h)(0x5E1FE629)
@@ -5769,5 +5766,158 @@ I (.\usb_lib\device_core\usbd_req.h)(0x5E658D8B)
 I (.\usb_lib\device_class\msc\usbd_msc_core.h)(0x5D9D6D77)
 I (.\driver\inc\hc32f46x_utility.h)(0x5E658D88)
 I (.\driver\inc\hc32f46x_wdt.h)(0x5E658D88)
+I (Cpp_Class\Class_I2C.h)(0x5EB27031)
+I (.\PeripheralDriver\Hw_I2C.h)(0x5EB26E7D)
 F (.\Cpp_Class\Test.h)(0x5EAE8E90)()
+F (.\Cpp_Class\Class_Dev.cpp)(0x5EB232B1)(--cpp -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class --diag_suppress=186,66-I.\RTE\_HC32F460-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"-o .\objects\class_dev.o --omf_browse .\objects\class_dev.crf --depend .\objects\class_dev.d)
+I (Cpp_Class\Class_Dev.h)(0x5EB2324E)
+I (.\common\hc32_ddl.h)(0x5E1FE629)
+I (.\common\hc32_common.h)(0x5E1FE629)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5D9AD21A)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5D9AD218)
+I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5D9AD218)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5D9AD218)
+I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5D9AD218)
+I (.\common\hc32f46x.h)(0x5E1FE629)
+I (C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm4.h)(0x5D2590B6)
+I (C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_version.h)(0x5D2590B6)
+I (C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5D2590B6)
+I (C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5D2590B6)
+I (C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h)(0x5C8F4DD4)
+I (.\common\system_hc32f46x.h)(0x5E65ECA2)
+I (.\common\ddl_config.h)(0x5E1FE629)
+I (.\driver\inc\hc32f46x_adc.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_aes.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_can.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_clk.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_cmp.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_dcu.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_dmac.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_efm.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_emb.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_event_port.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_exint_nmi_swi.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_gpio.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_hash.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_i2c.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_i2s.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_icg.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_interrupts.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_keyscan.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_mpu.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_ots.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_pwc.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_qspi.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_rmu.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_rtc.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_sdioc.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_spi.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_sram.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_swdt.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_timer0.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_timer4_cnt.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_timer4_emb.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_timer4_oco.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_timer4_pwm.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_timer4_sevt.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_timer6.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_timera.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_trng.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_usart.h)(0x5E658D88)
+I (.\App\hc32f46x_usbfs.h)(0x5D9D6D77)
+I (.\usb_lib\ctl_drv\usb_core.h)(0x5E658D8B)
+I (.\App\usb_conf.h)(0x5D9D6D77)
+I (.\usb_lib\ctl_drv\usb_otg_regs.h)(0x5E658D8B)
+I (.\usb_lib\ctl_drv\usb_defines.h)(0x5E658D8B)
+I (.\usb_lib\ctl_drv\usb_dcd.h)(0x5E658D8B)
+I (.\usb_lib\ctl_drv\usb_hcd.h)(0x5E658D8B)
+I (.\usb_lib\ctl_drv\usb_dcd_int.h)(0x5E658D8B)
+I (.\usb_lib\ctl_drv\usb_hcd_int.h)(0x5E658D8B)
+I (.\usb_lib\ctl_drv\usb_otg.h)(0x5E658D8B)
+I (.\usb_lib\device_core\usbd_conf.h)(0x5E658D8B)
+I (.\usb_lib\device_core\usbd_core.h)(0x5E658D8B)
+I (.\usb_lib\device_core\usbd_def.h)(0x5E658D8B)
+I (.\usb_lib\device_core\usbd_ioreq.h)(0x5E658D8B)
+I (.\usb_lib\device_core\usbd_req.h)(0x5E658D8B)
+I (.\usb_lib\device_class\msc\usbd_msc_core.h)(0x5D9D6D77)
+I (.\driver\inc\hc32f46x_utility.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_wdt.h)(0x5E658D88)
+F (.\Cpp_Class\Class_Dev.h)(0x5EB2324E)()
+F (.\Cpp_Class\Dev_Reg.cpp)(0x5EB2174B)(--cpp -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class --diag_suppress=186,66-I.\RTE\_HC32F460-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"-o .\objects\dev_reg.o --omf_browse .\objects\dev_reg.crf --depend .\objects\dev_reg.d)
+F (.\Cpp_Class\Dev_reg.h)(0x5EB21809)()
+F (.\Cpp_Class\Class_I2C.cpp)(0x5EB27033)(--cpp -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class --diag_suppress=186,66-I.\RTE\_HC32F460-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include-D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"-o .\objects\class_i2c.o --omf_browse .\objects\class_i2c.crf --depend .\objects\class_i2c.d)
+I (Cpp_Class\Class_I2C.h)(0x5EB27031)
+I (.\PeripheralDriver\Hw_I2C.h)(0x5EB26E7D)
+I (.\common\hc32_ddl.h)(0x5E1FE629)
+I (.\common\hc32_common.h)(0x5E1FE629)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5D9AD21A)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5D9AD218)
+I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5D9AD218)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5D9AD218)
+I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5D9AD218)
+I (.\common\hc32f46x.h)(0x5E1FE629)
+I (C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\core_cm4.h)(0x5D2590B6)
+I (C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_version.h)(0x5D2590B6)
+I (C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5D2590B6)
+I (C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5D2590B6)
+I (C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include\mpu_armv7.h)(0x5C8F4DD4)
+I (.\common\system_hc32f46x.h)(0x5E65ECA2)
+I (.\common\ddl_config.h)(0x5E1FE629)
+I (.\driver\inc\hc32f46x_adc.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_aes.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_can.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_clk.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_cmp.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_dcu.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_dmac.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_efm.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_emb.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_event_port.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_exint_nmi_swi.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_gpio.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_hash.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_i2c.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_i2s.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_icg.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_interrupts.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_keyscan.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_mpu.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_ots.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_pwc.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_qspi.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_rmu.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_rtc.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_sdioc.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_spi.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_sram.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_swdt.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_timer0.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_timer4_cnt.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_timer4_emb.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_timer4_oco.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_timer4_pwm.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_timer4_sevt.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_timer6.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_timera.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_trng.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_usart.h)(0x5E658D88)
+I (.\App\hc32f46x_usbfs.h)(0x5D9D6D77)
+I (.\usb_lib\ctl_drv\usb_core.h)(0x5E658D8B)
+I (.\App\usb_conf.h)(0x5D9D6D77)
+I (.\usb_lib\ctl_drv\usb_otg_regs.h)(0x5E658D8B)
+I (.\usb_lib\ctl_drv\usb_defines.h)(0x5E658D8B)
+I (.\usb_lib\ctl_drv\usb_dcd.h)(0x5E658D8B)
+I (.\usb_lib\ctl_drv\usb_hcd.h)(0x5E658D8B)
+I (.\usb_lib\ctl_drv\usb_dcd_int.h)(0x5E658D8B)
+I (.\usb_lib\ctl_drv\usb_hcd_int.h)(0x5E658D8B)
+I (.\usb_lib\ctl_drv\usb_otg.h)(0x5E658D8B)
+I (.\usb_lib\device_core\usbd_conf.h)(0x5E658D8B)
+I (.\usb_lib\device_core\usbd_core.h)(0x5E658D8B)
+I (.\usb_lib\device_core\usbd_def.h)(0x5E658D8B)
+I (.\usb_lib\device_core\usbd_ioreq.h)(0x5E658D8B)
+I (.\usb_lib\device_core\usbd_req.h)(0x5E658D8B)
+I (.\usb_lib\device_class\msc\usbd_msc_core.h)(0x5D9D6D77)
+I (.\driver\inc\hc32f46x_utility.h)(0x5E658D88)
+I (.\driver\inc\hc32f46x_wdt.h)(0x5E658D88)
+F (.\Cpp_Class\Class_I2C.h)(0x5EB27031)()
 F (C:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Lib\ARM\arm_cortexM4lf_math.lib)(0x5D2590B6)()

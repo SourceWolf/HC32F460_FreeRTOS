@@ -4,7 +4,7 @@ void HW_I2C_Port_Init(void)
 	PORT_SetFunc(I2C1_SCL_PORT, I2C1_SCL_Pin, Func_I2c1_Scl, Disable);
     PORT_SetFunc(I2C1_SDA_PORT, I2C1_SDA_Pin, Func_I2c1_Sda, Disable);
 }
-void HW_I2C_Init(M4_I2C_TypeDef* pstcI2Cx,uint32_t baudrate)
+uint8_t  HW_I2C_Init(M4_I2C_TypeDef* pstcI2Cx,uint32_t baudrate)
 {
 	stc_clk_freq_t freq_clk;
 	stc_i2c_init_t stcI2cInit;	
@@ -23,8 +23,9 @@ void HW_I2C_Init(M4_I2C_TypeDef* pstcI2Cx,uint32_t baudrate)
 	}
 	else
 	{
-		return;
-	}		
+		return 1;
+	}
+	HW_I2C_Port_Init();	
     I2C_DeInit(pstcI2Cx);
     
     MEM_ZERO_STRUCT(stcI2cInit);
@@ -34,8 +35,9 @@ void HW_I2C_Init(M4_I2C_TypeDef* pstcI2Cx,uint32_t baudrate)
     I2C_Init(pstcI2Cx, &stcI2cInit);
     
     I2C_Cmd(pstcI2Cx, Enable);
+	return 0;
 }
-inline uint8_t I2C_Write_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,uint8_t addr, uint8_t *data, uint8_t len)
+inline uint8_t I2C_Write_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,uint8_t addr, const uint8_t *data, uint16_t len)
 {
 	uint32_t u32TimeOut;
 	uint8_t pos;
@@ -155,7 +157,7 @@ inline uint8_t I2C_Write_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,uint8_
 	return I2C_RET_OK;
 }
 
-inline uint8_t I2C_Read_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,uint8_t addr, uint8_t *data, uint8_t len)
+inline uint8_t I2C_Read_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,uint8_t addr, uint8_t *data, uint16_t len)
 {
 	uint32_t u32TimeOut;
 	uint8_t pos;

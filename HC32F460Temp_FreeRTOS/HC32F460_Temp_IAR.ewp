@@ -66,7 +66,7 @@
                 </option>
                 <option>
                     <name>OGLastSavedByProductVersion</name>
-                    <state>8.30.1.17146</state>
+                    <state>8.40.1.21529</state>
                 </option>
                 <option>
                     <name>GeneralEnableMisra</name>
@@ -78,7 +78,7 @@
                 </option>
                 <option>
                     <name>OGChipSelectEditMenu</name>
-                    <state>HC32F460PETB	HDSC HC32F460PETB</state>
+                    <state>Default	None</state>
                 </option>
                 <option>
                     <name>GenLowLevelInterface</name>
@@ -116,7 +116,7 @@
                 </option>
                 <option>
                     <name>GBECoreSlave</name>
-                    <version>26</version>
+                    <version>27</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -133,12 +133,12 @@
                 </option>
                 <option>
                     <name>CoreVariant</name>
-                    <version>26</version>
+                    <version>27</version>
                     <state>39</state>
                 </option>
                 <option>
                     <name>GFPUDeviceSlave</name>
-                    <state>HC32F460PETB	HDSC HC32F460PETB</state>
+                    <state>Default	None</state>
                 </option>
                 <option>
                     <name>FPU2</name>
@@ -156,7 +156,7 @@
                 </option>
                 <option>
                     <name>GFPUCoreSlave2</name>
-                    <version>26</version>
+                    <version>27</version>
                     <state>39</state>
                 </option>
                 <option>
@@ -215,7 +215,7 @@
             <name>ICCARM</name>
             <archiveVersion>2</archiveVersion>
             <data>
-                <version>34</version>
+                <version>35</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
@@ -383,6 +383,10 @@
                     <state>$PROJ_DIR$\FreeRTOS\portable\RVDS\ARM_CM4F</state>
                     <state>$TOOLKIT_DIR$\CMSIS\Core\Include</state>
                     <state>$PROJ_DIR$\FileSystem\inc</state>
+                    <state>$PROJ_DIR$\usb_lib\device_class\msc</state>
+                    <state>$PROJ_DIR$\RTT</state>
+                    <state>$PROJ_DIR$\midware\w25qxx\inc</state>
+                    <state>$PROJ_DIR$\Tasks</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -495,6 +499,10 @@
                 <option>
                     <name>IccRTTI2</name>
                     <state>0</state>
+                </option>
+                <option>
+                    <name>OICompilerExtraOption</name>
+                    <state>1</state>
                 </option>
             </data>
         </settings>
@@ -722,7 +730,7 @@
             <name>ILINK</name>
             <archiveVersion>0</archiveVersion>
             <data>
-                <version>21</version>
+                <version>23</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>1</debug>
                 <option>
@@ -1038,6 +1046,26 @@
                     <name>IlinkTrustzoneImportLibraryOut</name>
                     <state>HC32F460_Temp_IAR_import_lib.o</state>
                 </option>
+                <option>
+                    <name>OILinkExtraOption</name>
+                    <state>1</state>
+                </option>
+                <option>
+                    <name>IlinkRawBinaryFile2</name>
+                    <state></state>
+                </option>
+                <option>
+                    <name>IlinkRawBinarySymbol2</name>
+                    <state></state>
+                </option>
+                <option>
+                    <name>IlinkRawBinarySegment2</name>
+                    <state></state>
+                </option>
+                <option>
+                    <name>IlinkRawBinaryAlign2</name>
+                    <state></state>
+                </option>
             </data>
         </settings>
         <settings>
@@ -1182,7 +1210,7 @@
                 </option>
                 <option>
                     <name>GBECoreSlave</name>
-                    <version>26</version>
+                    <version>27</version>
                     <state>38</state>
                 </option>
                 <option>
@@ -1199,7 +1227,7 @@
                 </option>
                 <option>
                     <name>CoreVariant</name>
-                    <version>26</version>
+                    <version>27</version>
                     <state>38</state>
                 </option>
                 <option>
@@ -1222,7 +1250,7 @@
                 </option>
                 <option>
                     <name>GFPUCoreSlave2</name>
-                    <version>26</version>
+                    <version>27</version>
                     <state>38</state>
                 </option>
                 <option>
@@ -1281,7 +1309,7 @@
             <name>ICCARM</name>
             <archiveVersion>2</archiveVersion>
             <data>
-                <version>34</version>
+                <version>35</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>0</debug>
                 <option>
@@ -1529,6 +1557,10 @@
                     <name>IccRTTI2</name>
                     <state>0</state>
                 </option>
+                <option>
+                    <name>OICompilerExtraOption</name>
+                    <state>1</state>
+                </option>
             </data>
         </settings>
         <settings>
@@ -1749,7 +1781,7 @@
             <name>ILINK</name>
             <archiveVersion>0</archiveVersion>
             <data>
-                <version>21</version>
+                <version>23</version>
                 <wantNonLocal>1</wantNonLocal>
                 <debug>0</debug>
                 <option>
@@ -2065,6 +2097,26 @@
                     <name>IlinkTrustzoneImportLibraryOut</name>
                     <state>###Unitialized###</state>
                 </option>
+                <option>
+                    <name>OILinkExtraOption</name>
+                    <state>1</state>
+                </option>
+                <option>
+                    <name>IlinkRawBinaryFile2</name>
+                    <state></state>
+                </option>
+                <option>
+                    <name>IlinkRawBinarySymbol2</name>
+                    <state></state>
+                </option>
+                <option>
+                    <name>IlinkRawBinarySegment2</name>
+                    <state></state>
+                </option>
+                <option>
+                    <name>IlinkRawBinaryAlign2</name>
+                    <state></state>
+                </option>
             </data>
         </settings>
         <settings>
@@ -2106,7 +2158,10 @@
             <name>$PROJ_DIR$\App\usbd_desc.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\App\usbd_urs.c</name>
+            <name>$PROJ_DIR$\App\usbd_storage_msd.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\App\usbd_usr.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\App\User_Task.c</name>
@@ -2119,6 +2174,21 @@
         </file>
         <file>
             <name>$PROJ_DIR$\common\system_hc32f46x.c</name>
+        </file>
+    </group>
+    <group>
+        <name>Debug_RTT</name>
+        <file>
+            <name>$PROJ_DIR$\RTT\SEGGER_RTT.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\RTT\SEGGER_RTT.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\RTT\SEGGER_RTT_Conf.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\RTT\SEGGER_RTT_printf.c</name>
         </file>
     </group>
     <group>
@@ -2307,11 +2377,20 @@
             <name>$PROJ_DIR$\midware\sd_card\src\sdmmc_cmd.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\midware\w25qxx\src\w25qxx.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\midware\wm8731\src\wm8731.c</name>
         </file>
     </group>
     <group>
         <name>PeripheralDriver</name>
+        <file>
+            <name>$PROJ_DIR$\PeripheralDriver\HW_I2C.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\PeripheralDriver\Hw_MPU.c</name>
+        </file>
         <file>
             <name>$PROJ_DIR$\PeripheralDriver\System_Clk.c</name>
         </file>
@@ -2377,6 +2456,27 @@
         </file>
     </group>
     <group>
+        <name>Tasks</name>
+        <file>
+            <name>$PROJ_DIR$\Tasks\Task_ADC.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Tasks\Task_display.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Tasks\Task_FileSystem.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Tasks\Task_Key.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Tasks\Task_LED.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Tasks\Task_USB.c</name>
+        </file>
+    </group>
+    <group>
         <name>usb_core</name>
         <file>
             <name>$PROJ_DIR$\usb_lib\device_core\usbd_core.c</name>
@@ -2405,8 +2505,35 @@
     </group>
     <group>
         <name>usb_hid</name>
+    </group>
+    <group>
+        <name>usb_msc</name>
         <file>
-            <name>$PROJ_DIR$\usb_lib\device_class\hid\usbd_hid_core.c</name>
+            <name>$PROJ_DIR$\usb_lib\device_class\msc\usbd_msc_bot.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\usb_lib\device_class\msc\usbd_msc_bot.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\usb_lib\device_class\msc\usbd_msc_core.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\usb_lib\device_class\msc\usbd_msc_core.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\usb_lib\device_class\msc\usbd_msc_data.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\usb_lib\device_class\msc\usbd_msc_data.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\usb_lib\device_class\msc\usbd_msc_mem.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\usb_lib\device_class\msc\usbd_msc_scsi.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\usb_lib\device_class\msc\usbd_msc_scsi.h</name>
         </file>
     </group>
 </project>

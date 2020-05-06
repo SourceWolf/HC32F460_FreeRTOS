@@ -1221,6 +1221,36 @@
               <FileType>5</FileType>
               <FilePath>.\Cpp_Class\Test.h</FilePath>
             </File>
+            <File>
+              <FileName>Class_Dev.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\Cpp_Class\Class_Dev.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Class_Dev.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Cpp_Class\Class_Dev.h</FilePath>
+            </File>
+            <File>
+              <FileName>Dev_Reg.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\Cpp_Class\Dev_Reg.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Dev_reg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Cpp_Class\Dev_reg.h</FilePath>
+            </File>
+            <File>
+              <FileName>Class_I2C.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\Cpp_Class\Class_I2C.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Class_I2C.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Cpp_Class\Class_I2C.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

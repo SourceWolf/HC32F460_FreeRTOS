@@ -3,7 +3,7 @@
 #include "Hw_I2C.h"
 #include "OLED.h"
 #include <math.h>
-#include <arm_math.h>
+//#include <arm_math.h>
 #define VERSION_OLED    1//0¾É°æ£¬1ÐÂ°æDEMO
 #define MAX_Y_POS 31
 #if VERSION_OLED

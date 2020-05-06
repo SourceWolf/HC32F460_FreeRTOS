@@ -2385,7 +2385,10 @@
             <name>$PROJ_DIR$\App\usbd_desc.c</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\App\usbd_urs.c</name>
+            <name>$PROJ_DIR$\App\usbd_storage_msd.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\App\usbd_usr.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\App\User_Task.c</name>
@@ -2398,6 +2401,21 @@
         </file>
         <file>
             <name>$PROJ_DIR$\common\system_hc32f46x.c</name>
+        </file>
+    </group>
+    <group>
+        <name>Debug_RTT</name>
+        <file>
+            <name>$PROJ_DIR$\RTT\SEGGER_RTT.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\RTT\SEGGER_RTT.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\RTT\SEGGER_RTT_Conf.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\RTT\SEGGER_RTT_printf.c</name>
         </file>
     </group>
     <group>
@@ -2586,11 +2604,20 @@
             <name>$PROJ_DIR$\midware\sd_card\src\sdmmc_cmd.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\midware\w25qxx\src\w25qxx.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\midware\wm8731\src\wm8731.c</name>
         </file>
     </group>
     <group>
         <name>PeripheralDriver</name>
+        <file>
+            <name>$PROJ_DIR$\PeripheralDriver\HW_I2C.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\PeripheralDriver\Hw_MPU.c</name>
+        </file>
         <file>
             <name>$PROJ_DIR$\PeripheralDriver\System_Clk.c</name>
         </file>
@@ -2656,6 +2683,27 @@
         </file>
     </group>
     <group>
+        <name>Tasks</name>
+        <file>
+            <name>$PROJ_DIR$\Tasks\Task_ADC.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Tasks\Task_display.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Tasks\Task_FileSystem.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Tasks\Task_Key.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Tasks\Task_LED.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Tasks\Task_USB.c</name>
+        </file>
+    </group>
+    <group>
         <name>usb_core</name>
         <file>
             <name>$PROJ_DIR$\usb_lib\device_core\usbd_core.c</name>
@@ -2684,8 +2732,35 @@
     </group>
     <group>
         <name>usb_hid</name>
+    </group>
+    <group>
+        <name>usb_msc</name>
         <file>
-            <name>$PROJ_DIR$\usb_lib\device_class\hid\usbd_hid_core.c</name>
+            <name>$PROJ_DIR$\usb_lib\device_class\msc\usbd_msc_bot.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\usb_lib\device_class\msc\usbd_msc_bot.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\usb_lib\device_class\msc\usbd_msc_core.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\usb_lib\device_class\msc\usbd_msc_core.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\usb_lib\device_class\msc\usbd_msc_data.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\usb_lib\device_class\msc\usbd_msc_data.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\usb_lib\device_class\msc\usbd_msc_mem.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\usb_lib\device_class\msc\usbd_msc_scsi.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\usb_lib\device_class\msc\usbd_msc_scsi.h</name>
         </file>
     </group>
 </project>
