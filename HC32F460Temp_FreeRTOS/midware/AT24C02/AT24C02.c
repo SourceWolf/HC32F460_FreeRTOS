@@ -4,7 +4,7 @@ uint8_t txdata[10]={1,2,3,4,5,6,7,8,9,0},rxdata[10];
 void TestEEPROM(void)
 {
 	uint8_t trytime = 0;
-	en_result_t status;
+	uint8_t status;
 	do
 	{
 		trytime++;

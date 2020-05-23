@@ -65,7 +65,7 @@
 
 #include "diskio.h"
 //SD_Card SPI_Flash
-#define CUR_LUN	SPI_Flash
+#define CUR_LUN	SD_Card
 /*******************************************************************************
  * Local type definitions ('typedef')
  ******************************************************************************/

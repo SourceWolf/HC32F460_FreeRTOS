@@ -3,6 +3,8 @@
 uint16_t ADC1_AIN10_Data;
 #define ADC1_EOCA_IRQn          Int001_IRQn
 #define ADC2_EOCA_IRQn          Int002_IRQn
+#define ADC1_EOCB_IRQn          Int003_IRQn
+#define ADC2_EOCB_IRQn          Int004_IRQn
 void Get_ADC2_Data(uint16_t *data)
 {
     *data = M4_ADC1->DR6;
@@ -34,7 +36,8 @@ void Hw_ADC_Init(void)
     stc_adc_ch_cfg_t  stcAdcBaseCFG;
     stc_irq_regi_conf_t stcIrqRegiConf;
     stc_port_init_t Port_CFG;
-    
+    stc_adc_trg_cfg_t trigger_cfg;
+	MEM_ZERO_STRUCT(trigger_cfg);
     MEM_ZERO_STRUCT(stcAdcInit);
     MEM_ZERO_STRUCT(stcAdcBaseCFG);
     MEM_ZERO_STRUCT(stcIrqRegiConf);
@@ -46,9 +49,15 @@ void Hw_ADC_Init(void)
     stcAdcInit.enDataAlign = AdcDataAlign_Right;
     stcAdcInit.enResolution = AdcResolution_12Bit;
     stcAdcInit.enAutoClear = AdcClren_Enable;
+	/* Enable PTDIS(AOS) clock*/
+    PWC_Fcg0PeriphClockCmd(PWC_FCG0_PERIPH_PTDIS,Enable);
 //    stcAdcInit.enAverageCount = AdcAvcnt_4;
-    
-    
+    trigger_cfg.enInTrg0 = EVT_TMR41_SCMUH;//Timer4触发
+	trigger_cfg.enTrgSel = AdcTrgsel_TRGX0_TRGX1;
+	trigger_cfg.u8Sequence = ADC_SEQ_A;
+	ADC_ConfigTriggerSrc(M4_ADC1,&trigger_cfg);
+	ADC_TriggerSrcCmd(M4_ADC1,ADC_SEQ_A,Enable);//使能序列A扫描触发事件
+	
     ADC_Init(M4_ADC1, &stcAdcInit);//配置ADC
     ADC_Init(M4_ADC2, &stcAdcInit);
     
@@ -62,7 +71,7 @@ void Hw_ADC_Init(void)
     stcAdcBaseCFG.u32Channel = ADC1_CH6;
 //    stcAdcBaseCFG.enAvgEnable = true;
     stcAdcBaseCFG.pu8SampTime = &au8Adc1SaSampTime;
-    stcAdcBaseCFG.u8Sequence = ADC_SEQ_A;//Must be setting, Default can nog convert data
+    stcAdcBaseCFG.u8Sequence = ADC_SEQ_A;//Must be setting, Default can not convert data
     ADC_AddAdcChannel(M4_ADC1, &stcAdcBaseCFG);
     
     stcAdcBaseCFG.u32Channel = ADC2_CH5;
@@ -72,18 +81,19 @@ void Hw_ADC_Init(void)
 	stcIrqRegiConf.pfnCallback = ADC1_EOCA_CallBack;
 	stcIrqRegiConf.enIRQn = ADC1_EOCA_IRQn;
 	enIrqRegistration(&stcIrqRegiConf);
-    
+	NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);//Enable Interrupt    
+
     stcIrqRegiConf.enIntSrc = INT_ADC2_EOCA;
 	stcIrqRegiConf.pfnCallback = ADC2_EOCA_CallBack;
 	stcIrqRegiConf.enIRQn = ADC2_EOCA_IRQn;
 	enIrqRegistration(&stcIrqRegiConf);
+	NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);//Enable Interrupt    	
+	
     
+
 	M4_ADC1->ISR_f.EOCAF  = 0;
     M4_ADC1->ICR_f.EOCAIEN = 1;
     M4_ADC2->ISR_f.EOCAF  = 0;
     M4_ADC2->ICR_f.EOCAIEN = 1;
-    
-//	NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);//Enable Interrupt
-	
 }
 

@@ -13,7 +13,6 @@ rt_device_ops_t I2C_Ops =
 	I2C_Read_data,
 	I2C_Write_data
 };
-
 void Testcpp(void)
 {
 	I2C_Class I2C_DV1(M4_I2C1,&I2C_Ops);

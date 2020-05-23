@@ -8,6 +8,7 @@ FATFS FatFsADC;
 FRESULT fr_Adc;
 FIL DataFile;
 char buffer[200],num;
+char string[16];
 static void Task_ADC(void* param)
 {
 	 User_DCU_Init();
@@ -25,8 +26,18 @@ static void Task_ADC(void* param)
             flag_DCU1_INT = false;
 //            printf("DCU_INT occur!\r\n");
         } 
-		insertdisplaydata((Get_DCU1_Result()-1000)/128);
-		num = sprintf(buffer,"%d\r\n",Get_DCU1_Result()-1000);
+		insertdisplaydata((Get_DCU1_Result()-1000)/64);
+		num = sprintf(string,"ADC: %d",(Get_DCU1_Result()-1000));
+		if(num<10)
+		{
+			for(int i = 0;i<(10-num);i++)
+			{
+				string[num+i] = ' ';
+			}
+			string[10] = '\0';
+		}
+		OLED_ShowString2(0,0,(unsigned char *)string);
+//		num = sprintf(buffer,"%d\r\n",Get_DCU1_Result()-1000);
 //		f_write(&DataFile,buffer,num,NULL);
         vTaskDelay(10/portTICK_PERIOD_MS);
 	}

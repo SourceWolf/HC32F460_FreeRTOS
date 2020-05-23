@@ -113,7 +113,7 @@ static uint8_t m_u32WriteBlocks[512 * 4];
 
 static void SD_CARD_Init(void)
 {
-    DEBUGN("enter \r\n");
+//    DEBUGN("enter \r\n");
 
     en_result_t enTestResult = Ok;
     SdiocInitPins();
@@ -121,18 +121,18 @@ static void SD_CARD_Init(void)
     enTestResult = SDCARD_Init(&m_stcSdhandle, &m_stcCardInitCfg);
     if(Ok != enTestResult)
     {
-		DEBUGE("sd nand init fail, enTestResult = %d \r\n", enTestResult);
+//		DEBUGE("sd nand init fail, enTestResult = %d \r\n", enTestResult);
 //		printf("sd nand init fail, enTestResult = %d \r\n", enTestResult);
         enTestResult = Error;
     }    
     else{
         //DEBUGN("sd nand init OK , capacity : %d, u32BlockSize = %d\r\n",
         //       m_stcSdhandle.stcSdCardInfo.u32BlockNbr, m_stcSdhandle.stcSdCardInfo.u32BlockSize);
-		DEBUGN("sd nand init OK , capacity : %d, u32BlockSize = %d\r\n",
-			m_stcSdhandle.stcSdCardInfo.u32BlockNbr, m_stcSdhandle.stcSdCardInfo.u32BlockSize);
+//		DEBUGN("sd nand init OK , capacity : %d, u32BlockSize = %d\r\n",
+//			m_stcSdhandle.stcSdCardInfo.u32BlockNbr, m_stcSdhandle.stcSdCardInfo.u32BlockSize);
     }
 
-    DEBUGN("exit \r\n");
+//    DEBUGN("exit \r\n");
 }    
 static void SD_CARD_TEST(void)
 {

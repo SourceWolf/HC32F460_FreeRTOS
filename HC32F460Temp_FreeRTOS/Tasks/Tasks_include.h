@@ -6,5 +6,7 @@
 #include "../Tasks/Task_FileSystem.h"
 #include "../Tasks/Task_ADC.h"
 #include "../Tasks/Task_USB.h"
+#include "Hw_I2C.h"
+#include "Hw_I2C_Slave.h"
 #endif
 

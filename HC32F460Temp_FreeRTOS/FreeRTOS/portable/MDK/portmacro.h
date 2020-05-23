@@ -114,8 +114,9 @@ typedef unsigned long UBaseType_t;
 /* Architecture specifics. */
 #define portSTACK_GROWTH			( -1 )
 #define portTICK_PERIOD_MS			( ( TickType_t ) 1000 / configTICK_RATE_HZ )
+//#define portTICK_PERIOD_10US		( ( TickType_t ) 1000 / configTICK_RATE_HZ )
 #define portBYTE_ALIGNMENT			8
-
+#define PortTiCK_Times				100
 /* Constants used with memory barrier intrinsics. */
 #define portSY_FULL_READ_WRITE		( 15 )
 

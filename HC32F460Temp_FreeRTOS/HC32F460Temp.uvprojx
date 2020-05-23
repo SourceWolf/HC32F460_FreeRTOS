@@ -81,10 +81,10 @@
             <nStopB2X>0</nStopB2X>
           </BeforeMake>
           <AfterMake>
-            <RunUserProg1>1</RunUserProg1>
-            <RunUserProg2>0</RunUserProg2>
+            <RunUserProg1>0</RunUserProg1>
+            <RunUserProg2>1</RunUserProg2>
             <UserProg1Name>fromelf --bincombined --bincombined_base=0x00000000 --output .\Objects\@L.bin .\Objects\@L.axf</UserProg1Name>
-            <UserProg2Name></UserProg2Name>
+            <UserProg2Name>fromelf  --bin -o "$L@L.bin" "#L"</UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopA1X>0</nStopA1X>
@@ -857,11 +857,6 @@
               <FilePath>.\PeripheralDriver\User_SPI.h</FilePath>
             </File>
             <File>
-              <FileName>Hw_SPI4.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\PeripheralDriver\Hw_SPI4.h</FilePath>
-            </File>
-            <File>
               <FileName>hd_sdio.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\PeripheralDriver\hd_sdio.c</FilePath>
@@ -872,9 +867,14 @@
               <FilePath>.\PeripheralDriver\hd_sdio.h</FilePath>
             </File>
             <File>
-              <FileName>Hw_SPI4.c</FileName>
+              <FileName>Hw_I2C_Slave.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\PeripheralDriver\Hw_SPI4.c</FilePath>
+              <FilePath>.\PeripheralDriver\Hw_I2C_Slave.c</FilePath>
+            </File>
+            <File>
+              <FileName>Hw_I2C_Slave.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\PeripheralDriver\Hw_I2C_Slave.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1030,6 +1030,16 @@
               <FileName>w25qxx.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\midware\w25qxx\inc\w25qxx.h</FilePath>
+            </File>
+            <File>
+              <FileName>OLED_port.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\midware\OLED\OLED_port.c</FilePath>
+            </File>
+            <File>
+              <FileName>OLED_FRONT.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\midware\OLED\OLED_FRONT.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1220,26 +1230,6 @@
               <FileName>Test.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Cpp_Class\Test.h</FilePath>
-            </File>
-            <File>
-              <FileName>Class_Dev.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\Cpp_Class\Class_Dev.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Class_Dev.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Cpp_Class\Class_Dev.h</FilePath>
-            </File>
-            <File>
-              <FileName>Dev_Reg.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\Cpp_Class\Dev_Reg.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Dev_reg.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Cpp_Class\Dev_reg.h</FilePath>
             </File>
             <File>
               <FileName>Class_I2C.cpp</FileName>

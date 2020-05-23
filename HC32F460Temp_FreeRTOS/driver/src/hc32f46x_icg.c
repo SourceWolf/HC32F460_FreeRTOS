@@ -55,7 +55,7 @@
 #include "hc32f46x_icg.h"
 
 #if (DDL_ICG_ENABLE == DDL_ON)
-
+#ifndef APP_VERSION
 /**
  *******************************************************************************
  ** \addtogroup IcgGroup
@@ -102,7 +102,7 @@ __root const uint32_t u32ICG[] @ 0x400 =
     ICG6_REGISTER_CONSTANT,
     ICG7_REGISTER_CONSTANT,
 };
-
+#endif //end #ifndef APP_VERSION
 /*******************************************************************************
  * Function implementation - global ('extern') and local ('static')
  ******************************************************************************/

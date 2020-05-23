@@ -66,7 +66,6 @@ void fft_test(float *sourcedata, float *Result)
 void User_FFT_Test()
 {
     static int i;//,cnt,j;
-//    int display_data,disp_pos;
     InitBufInArray();
     printf("fft_inpurt:");
 //    for(i = 0;i < NPT; i++)
@@ -86,7 +85,6 @@ void User_FFT_Test()
     for(i = 0;i < NPT/2; i++)
     {
         printf("%f ",f_testOutput[i]/NPT);
-//        display_data=f_testOutput[i]/NPT;
         printf("\r\n");
     }
     printf("\r\n");

@@ -13,11 +13,21 @@
 #include "User_I2S.h"
 #include "User_SDIO.h"
 #include "hd_sdio.h"
+#include "SEGGER_RTT.h"
 //#include "Test.h"
 USB_OTG_CORE_HANDLE  USB_OTG_dev;
 stc_clk_freq_t Clkdata;
+#ifdef APP_VERSION
+#define APP_START_ADDRESS 0x40000
+#endif 
 int main(void)
-{    
+{
+#ifdef APP_VERSION
+	 __set_MSP(*(uint32_t *) APP_START_ADDRESS);
+
+	/* Rebase the vector table base address */
+	SCB->VTOR = ((uint32_t) APP_START_ADDRESS & SCB_VTOR_TBLOFF_Msk); 
+#endif    
 #if defined (__CC_ARM) && defined (__TARGET_FPU_VFP)
 	SCB->CPACR |= 0x00F00000;
 #endif  
@@ -25,8 +35,9 @@ int main(void)
 	CLK_GetClockFreq(&Clkdata);
 	SysTick_Config(Clkdata.hclkFreq/1000);
 	NVIC_EnableIRQ(SysTick_IRQn);
-	Ddl_UartInit();
+//	Ddl_UartInit();
 	Hw_MPU_Init();
+//	printf("System Init!\r\n");
 //	Testcpp();
 	User_Task_Create();
     while(1)

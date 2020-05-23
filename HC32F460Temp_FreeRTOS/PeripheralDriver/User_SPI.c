@@ -102,14 +102,14 @@ void User_SPI_Init(void)
 //    PORT_SetFunc(SPI_MISO_PORT, SPI_MISO_PIN, SPI_MISO_FUNC, Disable);
 
     /* Configuration SPI structure */
-    stcSpiInit.enClkDiv = SpiClkDiv256;
+    stcSpiInit.enClkDiv = SpiClkDiv4;
     stcSpiInit.enFrameNumber = SpiFrameNumber1;
     stcSpiInit.enDataLength = SpiDataLengthBit8;
     stcSpiInit.enFirstBitPosition = SpiFirstBitPositionMSB;
     stcSpiInit.enSckPolarity = SpiSckIdleLevelLow;
     stcSpiInit.enSckPhase = SpiSckOddSampleEvenChange;
     stcSpiInit.enReadBufferObject = SpiReadReceiverBuffer;
-    stcSpiInit.enWorkMode = SpiWorkMode3Line;
+    stcSpiInit.enWorkMode = SpiWorkMode4Line;
     stcSpiInit.enTransMode = SpiTransFullDuplex;
     stcSpiInit.enCommAutoSuspendEn = Disable;
     stcSpiInit.enModeFaultErrorDetectEn = Disable;
@@ -203,7 +203,9 @@ void USER_SPI_TEST(void)
 void SPI_Writedata(uint8_t data)
 {	
 	SPI_SendData8(SPI_UNIT,data);
-	while(SPI_UNIT->SR_f.IDLNF == 0);
+	while(PORT_GetBit(SPI_NSS_PORT,SPI_NSS_PIN) ==  0);
+//	while(SPI_UNIT->SR_f.TDEF == 0);
+//	Ddl_Delay1us(2);
 }
 uint8_t SPI_ReadData(void)
 {

@@ -8,6 +8,7 @@ TaskHandle_t H_Task_Fs;
 #define PRIORITY_TASKFS	(tskIDLE_PRIORITY+3)
 static void Task_FS_Operation(void* param)
 {
+	hd_sdio_hw_init();
 	disk_initialize(SD_Card);
     f_mount(SD_Card,&FatFs);//Çý¶¯Æ÷0
     fr = f_open(&Myfile,"myfile.txt",FA_READ);

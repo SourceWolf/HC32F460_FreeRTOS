@@ -95,11 +95,13 @@
  ******************************************************************************/
 void DebugOutput(uint8_t u8Data)
 {
+#ifdef __DEBUG
     M4_USART3->DR = u8Data;
     while (0ul == M4_USART3->SR_f.TC)
     {
         ;
     }
+#endif
 }
 
 /**
@@ -226,7 +228,7 @@ en_result_t Ddl_UartInit(void)
     M4_USART3->CR1_f.PCE = 0ul;   // no parity bit
 
     /* baudrate set */
-    if( Ok != SetUartBaudrate(115200ul))
+    if( Ok != SetUartBaudrate(2000000ul))
     {
         enRet = Error;
     }
