@@ -20,6 +20,7 @@ static void Task_ADC(void* param)
 //    fr_Adc = f_open(&DataFile,"a.txt",FA_READ|FA_WRITE|FA_CREATE_NEW);
 	while(1)
 	{
+		SEGGER_RTT_printf(0,"%s\r\n",string);
 		ADC1_Start_convert();
         if(flag_DCU1_INT)
         {

@@ -153,7 +153,56 @@
           <Name>UL2CM3(-S0 -C0 -P0 -FD1FFF8000 -FC1000 -FN1 -FF0HC32F46x -FS00 -FL080000 -FP0($$Device:HC32F460PETB$Flash\HC32F46x.FLM))</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint/>
+      <Breakpoint>
+        <Bp>
+          <Number>0</Number>
+          <Type>0</Type>
+          <LineNumber>40</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>36456</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\App\User_Task.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\HC32F460Temp\App/User_Task.c\40</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>385</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>11056</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\driver\src\hc32f46x_interrupts.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\HC32F460Temp\driver/src/hc32f46x_interrupts.c\385</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>18</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>0</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>0</BreakIfRCount>
+          <Filename>.\Cpp_Class\Test.cpp</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
+        </Bp>
+      </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
@@ -164,6 +213,11 @@
           <count>1</count>
           <WinNumber>1</WinNumber>
           <ItemText>req</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>buffer1</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
@@ -248,6 +302,10 @@
         <Entry>
           <Name>System Viewer\SPI3</Name>
           <WinId>35900</WinId>
+        </Entry>
+        <Entry>
+          <Name>System Viewer\SYSREG</Name>
+          <WinId>35897</WinId>
         </Entry>
         <Entry>
           <Name>System Viewer\TMR41</Name>
@@ -758,7 +816,7 @@
 
   <Group>
     <GroupName>App</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -838,7 +896,7 @@
 
   <Group>
     <GroupName>Common</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1874,7 +1932,7 @@
 
   <Group>
     <GroupName>Debug_RTT</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1930,7 +1988,7 @@
 
   <Group>
     <GroupName>usb_msc</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -2046,7 +2104,7 @@
 
   <Group>
     <GroupName>Task</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -2210,7 +2268,7 @@
 
   <Group>
     <GroupName>Cpp_Class</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -2229,24 +2287,24 @@
     <File>
       <GroupNumber>14</GroupNumber>
       <FileNumber>155</FileNumber>
-      <FileType>5</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\Cpp_Class\Class_SPI.h</PathWithFileName>
-      <FilenameWithoutPath>Class_SPI.h</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>14</GroupNumber>
-      <FileNumber>156</FileNumber>
       <FileType>8</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Cpp_Class\Test.cpp</PathWithFileName>
       <FilenameWithoutPath>Test.cpp</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>14</GroupNumber>
+      <FileNumber>156</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\Cpp_Class\Class_SPI.h</PathWithFileName>
+      <FilenameWithoutPath>Class_SPI.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

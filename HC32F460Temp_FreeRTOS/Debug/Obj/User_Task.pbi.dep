@@ -113,6 +113,7 @@ User_Task.pbi: \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver\User_Gpio.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Tasks/../Tasks/Task_display.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\midware\OLED\OLED.h \
+  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver\Hw_I2C.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Tasks/../Tasks/Task_Key.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Tasks/../Tasks/Task_FileSystem.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver\hd_sdio.h \
@@ -124,8 +125,12 @@ User_Task.pbi: \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver\User_DCU.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver\User_DMA.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver\User_ADC.h \
+  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\RTT\SEGGER_RTT.h \
+  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\RTT/SEGGER_RTT_Conf.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Tasks/../Tasks/Task_USB.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\App\usbd_usr.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\App\usbd_desc.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\App\usb_bsp.h \
-  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\App/usb_conf.h
+  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\App/usb_conf.h \
+  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver\Hw_I2C_Slave.h \
+  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver/Hw_I2C.h

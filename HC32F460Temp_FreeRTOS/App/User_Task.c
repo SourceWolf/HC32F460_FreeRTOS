@@ -1,6 +1,7 @@
 #include "hc32_ddl.h"//只需要添加这个头文件即可，代码包含裁剪由ddl_config.h设置
 #include "cmsis_os.h"
 #include "../Tasks/Tasks_include.h"
+#include "Test.h"
 uint8_t displaydata[4][128],a[100] = {0,1,2,3,4,5,6,7,8,9},b[100];
 
 TaskHandle_t Hd_Task_Start;
@@ -29,11 +30,12 @@ void Task_START(void *param)
 	Task_LED_Start();
 	Task_Display_Start();
 	Task_ADC_Start();
-//	Task_USB_Start();
+	Task_USB_Start();
 	Fs_Task_Start();
 //	HW_I2C_Init(I2C1_UNIT,400000);
 //	Hw_I2C_Slave_Init(I2C1_UNIT);
 //	I2C_Read_data(I2C1_UNIT,0x06,0x00,a,5);
+	Testcpp();
 	vTaskDelete(Hd_Task_Start);
     while(1)
     {

@@ -377,6 +377,13 @@ void NMI_Handler(void)
  ******************************************************************************/
 void HardFault_Handler(void)
 {
+	static uint32_t CFSR,HFSR,DFSR;
+	CFSR = SCB->CFSR;
+	HFSR = SCB->HFSR;
+	DFSR = SCB->DFSR;
+	SCB->CFSR = CFSR;
+	SCB->HFSR = HFSR;
+	SCB->DFSR = DFSR;
     HardFault_IrqHandler();
 }
 

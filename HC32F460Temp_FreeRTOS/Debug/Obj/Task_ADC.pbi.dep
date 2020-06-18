@@ -113,7 +113,10 @@ Task_ADC.pbi: \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver\User_DMA.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver\User_ADC.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\midware\OLED\OLED.h \
+  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver\Hw_I2C.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\FileSystem\inc\ff.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\FileSystem\inc/integer.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\FileSystem\inc/ffconf.h \
-  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\FileSystem\inc\diskio.h
+  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\FileSystem\inc\diskio.h \
+  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\RTT\SEGGER_RTT.h \
+  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\RTT/SEGGER_RTT_Conf.h

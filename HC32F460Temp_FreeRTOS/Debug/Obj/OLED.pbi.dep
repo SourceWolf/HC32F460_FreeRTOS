@@ -1,5 +1,7 @@
 OLED.pbi: \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\midware\OLED\OLED.c \
+  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\midware\OLED/OLEDfont.h \
+  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\midware\OLED/OLED.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\common\hc32_ddl.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\common/hc32_common.h \
   C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\arm\inc\c\stdio.h \
@@ -89,8 +91,10 @@ OLED.pbi: \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\usb_lib\device_class\msc\usbd_msc_core.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\driver\inc\hc32f46x_utility.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\driver\inc\hc32f46x_wdt.h \
-  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\midware\OLED/OLED_FRONT.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver\Hw_I2C.h \
-  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\midware\OLED/OLED.h \
   C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\arm\inc\c\math.h \
-  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\arm\inc\c\DLib_float_setup.h
+  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\arm\inc\c\DLib_float_setup.h \
+  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\arm\..\..\Embedded\ Workbench\ 8.4\arm\CMSIS\DSP\Include\arm_math.h \
+  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\arm\CMSIS\Core\Include\cmsis_compiler.h \
+  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\arm\inc\c\float.h \
+  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\arm\inc\c\limits.h

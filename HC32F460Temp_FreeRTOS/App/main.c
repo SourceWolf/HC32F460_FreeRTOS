@@ -14,12 +14,13 @@
 #include "User_SDIO.h"
 #include "hd_sdio.h"
 #include "SEGGER_RTT.h"
-//#include "Test.h"
+
 USB_OTG_CORE_HANDLE  USB_OTG_dev;
 stc_clk_freq_t Clkdata;
 #ifdef APP_VERSION
 #define APP_START_ADDRESS 0x40000
 #endif 
+char buffer1[100] = "abcde";
 int main(void)
 {
 #ifdef APP_VERSION
@@ -30,15 +31,16 @@ int main(void)
 #endif    
 #if defined (__CC_ARM) && defined (__TARGET_FPU_VFP)
 	SCB->CPACR |= 0x00F00000;
-#endif  
+#endif 
 	system_clk_init();
 	CLK_GetClockFreq(&Clkdata);
 	SysTick_Config(Clkdata.hclkFreq/1000);
 	NVIC_EnableIRQ(SysTick_IRQn);
-//	Ddl_UartInit();
-	Hw_MPU_Init();
-//	printf("System Init!\r\n");
-//	Testcpp();
+	Ddl_UartInit();
+//	Hw_MPU_Init();
+	SEGGER_RTT_printf(0,"system init\r\n");
+	printf("System Init!\r\n");
+	PORT_DebugPortSetting(0x1C,Disable);
 	User_Task_Create();
     while(1)
     {         

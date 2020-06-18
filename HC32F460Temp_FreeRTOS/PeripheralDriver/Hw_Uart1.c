@@ -5,7 +5,7 @@ static void USART1_RX_Callback(void)
 {
     uint8_t data;
     data = USART1_UNIT->DR_f.RDR;
-    while(USART1_UNIT->SR_f.TC == 0);
+    while(USART1_UNIT->SR_f.TC == 0){;}
     USART_SendData(USART1_UNIT, data);
 }
 static void USART1_RX_ERROR_Callback(void)
@@ -81,7 +81,7 @@ void Test_UART1_TX(void)
 }
 void DMA_CH0_TC_Callback(void)
 {
-    ;
+    ;//
 }
 void UART1_TX_DMA_Init(void)
 {
@@ -121,7 +121,7 @@ void UART1_TX_DMA_Init(void)
     /* Initialize DMA. */
     DMA_InitChannel(M4_DMA1, DmaCh1, &stcDmaCfg);
     /* Enable DMA1 channel0. */
-    DMA_ChannelCmd(M4_DMA1, DmaCh1,Enable);
+    DMA_ChannelCmd(M4_DMA1, DmaCh1,Disable);
     /* Clear DMA transfer complete interrupt flag. */
     DMA_ClearIrqFlag(M4_DMA1, DmaCh1,TrnCpltIrq);
     
@@ -144,6 +144,7 @@ void UART1_DMA_TX_Write_Buffer(uint8_t *data, uint8_t len)
     DMA_SetTransferCnt(M4_DMA1,DmaCh1,len);
     DMA_ClearIrqFlag(M4_DMA1,DmaCh1, TrnCpltIrq);
     DMA_ChannelCmd(M4_DMA1, DmaCh1,Enable);
+	while(USART1_UNIT->SR_f.TC == 0){;}
     USART1_UNIT->CR1_f.TE = 0;
     USART1_UNIT->CR1_f.TE = 1;
 }

@@ -53,7 +53,7 @@
  * Include files
  ******************************************************************************/
 #include "hc32f46x_utility.h"
-
+#define __DEBUG//注释这一行，将不打印调试信息
 #if (DDL_UTILITY_ENABLE == DDL_ON)
 
 /**

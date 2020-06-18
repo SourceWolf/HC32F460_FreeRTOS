@@ -8,6 +8,7 @@
 #include "OLED.h"
 #include "ff.h"
 #include "diskio.h"
+#include "SEGGER_RTT.h"
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -1217,14 +1217,14 @@
               <FilePath>.\Cpp_Class\Class_SPI.cpp</FilePath>
             </File>
             <File>
-              <FileName>Class_SPI.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Cpp_Class\Class_SPI.h</FilePath>
-            </File>
-            <File>
               <FileName>Test.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\Cpp_Class\Test.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Class_SPI.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Cpp_Class\Class_SPI.h</FilePath>
             </File>
             <File>
               <FileName>Test.h</FileName>

@@ -2598,6 +2598,9 @@
             <name>$PROJ_DIR$\midware\OLED\OLED.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\midware\OLED\OLED_port.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\midware\sd_card\src\sd_card.c</name>
         </file>
         <file>

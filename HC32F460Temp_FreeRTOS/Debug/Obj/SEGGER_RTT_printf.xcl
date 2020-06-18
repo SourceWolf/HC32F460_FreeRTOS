@@ -74,6 +74,8 @@ D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\midware\w25qxx\inc
 -I
 D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Tasks
 -I
+C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\arm\..\..\Embedded Workbench 8.4\arm\CMSIS\DSP\Include
+-I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\arm\inc
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\arm\inc\c
@@ -141,6 +143,8 @@ D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\RTT
 D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\midware\w25qxx\inc
 -I
 D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\Tasks
+-I
+C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\arm\CMSIS\DSP\Include
 -D__CHAR_BITS__=8
 -D__CHAR_MAX__=0xff
 -D__CHAR_MIN__=0
