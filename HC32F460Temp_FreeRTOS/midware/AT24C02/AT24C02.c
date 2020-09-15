@@ -14,6 +14,10 @@ void TestEEPROM(void)
 			break;
 		}
 		status = I2C_Write_data(I2C1_UNIT,0x54,0x00,txdata,8);	
+		if(status == I2C_BADADDR)
+		{
+			break;
+		}
 		SEGGER_RTT_printf(0,"0x54 Write I2C_Status1 = %d,trytime = %d\r\n",status,trytime);	
 		Ddl_Delay1ms(10);
 	}while(status !=I2C_RET_OK);

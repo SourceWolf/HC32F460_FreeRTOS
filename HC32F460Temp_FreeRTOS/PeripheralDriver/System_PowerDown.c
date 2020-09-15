@@ -1,4 +1,5 @@
 #include "System_PowerDown.h"
+#include "System_InterruptCFG_Def.h"
 /**
  *******************************************************************************
  ** \brief System_Enter_StopMode
@@ -15,9 +16,10 @@ void System_Enter_StopMode(void)
     MEM_ZERO_STRUCT(stcPwcStopCfg);
 
     /* Config stop mode. */
-    stcPwcStopCfg.enStpDrvAbi = StopHighspeed;
+    stcPwcStopCfg.enStpDrvAbi = StopUlowspeed;
     stcPwcStopCfg.enStopClk = ClkFix;
     stcPwcStopCfg.enStopFlash = Wait;
+    stcPwcStopCfg.enPll = Enable; 
     PWC_StopModeCfg(&stcPwcStopCfg);
     PWC_EnterStopMd();
 }
@@ -50,7 +52,7 @@ uint16_t GetWakeupFlag(void)
  ******************************************************************************/
 static void WakeupSourceEnable(void)
 {
-    PWC_PdWakeup0Cmd(KEY_WK0_EN | KEY_WK1_EN | KEY_WK02_EN | KEY_WK13_EN,Enable);
+    PWC_PdWakeup0Cmd(KEY_WK0_EN | KEY_WK1_EN,Enable);
     PWC_PdWakeup1Cmd(KEY_WK2_EN | KEY_WK3_EN,Enable);
 }
 /**
@@ -66,17 +68,16 @@ void System_Enter_PowerDown(void)
 {
     stc_pwc_pwr_mode_cfg_t  stcPwcPwrMdCfg;
     /* Config power down mode. */
-    stcPwcPwrMdCfg.enPwrDownMd = PowerDownMd2;
+    stcPwcPwrMdCfg.enPwrDownMd = PowerDownMd4;
     stcPwcPwrMdCfg.enRLdo = Disable;
     stcPwcPwrMdCfg.enIoRetain = IoPwrDownRetain;
-    stcPwcPwrMdCfg.enRetSram = Enable;
-    stcPwcPwrMdCfg.enVHrc = Disable;
-    stcPwcPwrMdCfg.enVPll = Disable;
-    stcPwcPwrMdCfg.enDynVol =  Voltage09;
-    stcPwcPwrMdCfg.enDrvAbility = Ulowspeed;
+    stcPwcPwrMdCfg.enRetSram = Disable;
+    stcPwcPwrMdCfg.enVHrc = Enable;
+    stcPwcPwrMdCfg.enVPll = Enable;
+    stcPwcPwrMdCfg.enDynVol =  Voltage11;
+    stcPwcPwrMdCfg.enDrvAbility = HighSpeed;
     stcPwcPwrMdCfg.enPwrDWkupTm = Vcap0047;
     PWC_PowerModeCfg(&stcPwcPwrMdCfg);
-    CLK_LrcCmd(Disable); //关闭LRC
     PWC_EnterPowerDownMd();
 }
 /**
@@ -141,6 +142,7 @@ static void KeyWakeup2_Callback(void)
  ******************************************************************************/
 static void KeyWakeup3_Callback(void)
 {
+	PWC_IrqClkRecover();
     if (Set == EXINT_IrqFlgGet(KEY_WK3_EICH))
     {
         /* clear int request flag */
@@ -166,7 +168,7 @@ void Key_Wakeup_Init(void)
     MEM_ZERO_STRUCT(stcExtiConfig);
     MEM_ZERO_STRUCT(stcIrqRegiConf);
     MEM_ZERO_STRUCT(stcPortInit);
-    PWC_PdWakeup0Cmd(KEY_WK0_EN | KEY_WK1_EN | KEY_WK02_EN | KEY_WK13_EN,Disable);
+    PWC_PdWakeup0Cmd(KEY_WK0_EN | KEY_WK1_EN,Disable);
     PWC_PdWakeup1Cmd(KEY_WK2_EN | KEY_WK3_EN,Disable);
     EXINT_IrqFlgClr(KEY_WK0_EICH);
     EXINT_IrqFlgClr(KEY_WK1_EICH);
@@ -178,7 +180,7 @@ void Key_Wakeup_Init(void)
     
     /* Filter setting */
     stcExtiConfig.enFilterEn = Enable;
-    stcExtiConfig.enFltClk = Pclk3Div64;
+    stcExtiConfig.enFltClk = Pclk3Div8;
     /* falling edge for keyscan function */
     stcExtiConfig.enExtiLvl = ExIntFallingEdge;
     stcExtiConfig.enExitCh = KEY_WK0_EICH;
@@ -191,15 +193,12 @@ void Key_Wakeup_Init(void)
     EXINT_Init(&stcExtiConfig); 
     /* Set PD12 as External Int Ch.12 input */
     MEM_ZERO_STRUCT(stcPortInit);
-    stcPortInit.enPinMode = Pin_Mode_In;
     stcPortInit.enExInt = Enable;
     stcPortInit.enPullUp = Enable;
     PORT_Init(KEY_WK0_PORT, KEY_WK0_PIN, &stcPortInit);
     PORT_Init(KEY_WK1_PORT, KEY_WK1_PIN, &stcPortInit);
     PORT_Init(KEY_WK2_PORT, KEY_WK2_PIN, &stcPortInit);
     PORT_Init(KEY_WK3_PORT, KEY_WK3_PIN, &stcPortInit);
-    PORT_Init(KEY_WK02_PORT,KEY_WK02_PIN, &stcPortInit);
-    PORT_Init(PortB, Pin07, &stcPortInit);
 
     /* Select External Int Ch.01 */
     stcIrqRegiConf.enIntSrc = KEY_WK0_INT;
@@ -287,25 +286,46 @@ void Key_Wakeup_Init(void)
     /* Enable NVIC */
     NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);
     WakeupSourceEnable();
-    GetWakeupFlag();
-    M4_INTC->EICFR = 0xFF;//清除所有外部中断标志
     
+}
+void System_Clk_8MHZ(void)
+{
+    stc_pwc_pwr_mode_cfg_t PWR_mode;
+    MEM_ZERO_STRUCT(PWR_mode);
+    CLK_MrcCmd(Enable);
+    CLK_SetSysClkSource(ClkSysSrcMRC);
+    PWR_mode.enDrvAbility = Ulowspeed;
+    PWR_mode.enDynVol = Voltage09;
+    PWC_PowerModeCfg(&PWR_mode);
+}
+void  PowertoHighspeed(void)
+{
+    stc_pwc_pwr_mode_cfg_t PWR_mode;
+    MEM_ZERO_STRUCT(PWR_mode);
+    PWR_mode.enDrvAbility = HighSpeed;
+    PWR_mode.enDynVol = Voltage11;
+    PWC_PowerModeCfg(&PWR_mode);
 }
 void LPM_TEST(void)
 {
+    
+//    Ddl_Delay1ms(2000);
+//    System_Clk_8MHZ();
+//    Ddl_UartInit();
 //    printf("System Enter sleep!\r\n");  
 //    PWC_EnterSleepMd(); 
+//    PowertoHighspeed();
 //    printf("System_Wakeup\r\n");
-//    Ddl_Delay1ms(5000);
 //    
-//    printf("System Enter Stop!\r\n"); 
-//    enIntWakeupEnable(Extint4WU);
-//    System_Enter_StopMode(); 
-//    printf("System_Wakeup\r\n");
-    Key_Wakeup_Init();
-    Ddl_Delay1ms(5000);
-    
-    printf("System Enter Powerdown!\r\n"); 
-    System_Enter_PowerDown(); 
+    printf("System Enter Stop!\r\n");
+//	Key_Wakeup_Init();	
+    enIntWakeupEnable(Extint4WU);
+    System_Enter_StopMode(); 
+    printf("System_Wakeup\r\n");
+//    Ddl_Delay1ms(5000);
+//    CLK_Xtal32Cmd(Disable);
+//    CLK_LrcCmd(Disable);
+//    printf("System Enter Powerdown!\r\n"); 
+//    System_Enter_PowerDown(); 
 }
 

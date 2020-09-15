@@ -23,9 +23,14 @@
 #define USART4_RX_IRQn          Int019_IRQn
 #define USART2_RTO_IRQn         Int020_IRQn
 #define DMA2_CH0_IRQn           Int021_IRQn
+#define XTAL_FAULT_IRQn			Int022_IRQn
+#define KEY_WK0_IRQn            Int025_IRQn
+#define KEY_WK1_IRQn            Int026_IRQn
+#define KEY_WK2_IRQn            Int023_IRQn
+#define KEY_WK3_IRQn            Int024_IRQn
 //#define CAN_ERROR_IRQn          Int018_IRQn
 
-
+//--diag_suppress=186,66
 #endif
 
 

@@ -94,7 +94,7 @@
 #define PERICLK_UPLL_R  13u
 
 //------------------Configure XTAL---------------------------//
-#define XTAL_ENABLE         DISABLE
+#define XTAL_ENABLE         ENABLE
 #define XTAL_SUPDRV_ENABLE  Enable
 #define XTAL_MODE           XTAL_OSCMODE
 #define XTAL_DRV            XTALDRV_H
@@ -145,23 +145,23 @@
 #define MPLL_CLK_NUM        42u//75u//
 //MPLL_P,Q,R分频
 #define MPLL_CLK_P_DIV      PLL_DIV2+1//MPLL 预分频数
-#define MPLL_CLK_Q_DIV      PLL_DIV6+1
+#define MPLL_CLK_Q_DIV      PLL_DIV7+1
 #define MPLL_CLK_R_DIV      PLL_DIV15+1
 
 
 //------------------Configure UPLL CLK------------------------//
 #define UPLL_CLK_ENABLE  ENABLE
 #define UPLL_CLK_SOURCE  PLL_CLK_SOURCE//必须与MPLL相同
-#define UPLL_CLK_M_DIV   2//PLL_DIV2+1
+#define UPLL_CLK_M_DIV   8//PLL_DIV2+1
 //倍频系数，最低倍频数20，最高80/
-#define UPLL_CLK_NUM      84u
+#define UPLL_CLK_NUM      384u
 
-#define UPLL_CLK_P_DIV      PLL_DIV7+1//UPLL 预分频数
-#define UPLL_CLK_Q_DIV      PLL_DIV7+1
-#define UPLL_CLK_R_DIV      PLL_DIV7+1
+#define UPLL_CLK_P_DIV      1//UPLL 预分频数
+#define UPLL_CLK_Q_DIV      PLL_DIV2+1
+#define UPLL_CLK_R_DIV      PLL_DIV2+1
 
 //-----------------Configure USB CLK------------------------//
-#define USB_CLK_SOURCE      USBCLK_UPLL_P
+#define USB_CLK_SOURCE      USBCLK_MPLL_Q
 
 //-----------------Configure AD & PERIPHERAL TRNG CLK---------------------//
 #define PERI_CLK_SOURCE     PERICLK_MPLL_Q

@@ -9,6 +9,7 @@ FRESULT fr_Adc;
 FIL DataFile;
 char buffer[200],num;
 char string[16];
+uint16_t adc_v11;
 static void Task_ADC(void* param)
 {
 	 User_DCU_Init();
@@ -27,8 +28,9 @@ static void Task_ADC(void* param)
             flag_DCU1_INT = false;
 //            printf("DCU_INT occur!\r\n");
         } 
+		Get_ADC_V11(&adc_v11);
 		insertdisplaydata((Get_DCU1_Result()-1000)/64);
-		num = sprintf(string,"ADC: %d",(Get_DCU1_Result()-1000));
+		num = sprintf(string,"ADC: %5.4f V",(Get_DCU1_Result()-1000)*1.1/adc_v11);
 		if(num<10)
 		{
 			for(int i = 0;i<(10-num);i++)

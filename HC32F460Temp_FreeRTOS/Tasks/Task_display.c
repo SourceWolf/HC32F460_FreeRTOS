@@ -7,7 +7,7 @@ static void Task_Display(void* param)
 {
 	OLED_Init();
 //	TestDrawline();
-	OLED_ShowString2(0,16,(unsigned char *)"HC32F460 DEMO");
+//	OLED_ShowString2(0,16,(unsigned char *)"HC32F460 DEMO");
 	while(1)
 	{
 		OLED_Refresh();

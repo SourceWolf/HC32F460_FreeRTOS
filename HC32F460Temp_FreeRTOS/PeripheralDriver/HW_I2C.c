@@ -26,7 +26,6 @@ uint8_t  HW_I2C_Init(M4_I2C_TypeDef* pstcI2Cx,uint32_t baudrate)
 	{
 		return 1;
 	}
-	HW_I2C_Port_Init();	
     I2C_DeInit(pstcI2Cx);
     
     MEM_ZERO_STRUCT(stcI2cInit);
@@ -398,7 +397,9 @@ inline uint8_t I2C_Read_Buffer(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr, uint
 {
 	uint32_t u32TimeOut;
 	uint8_t pos;
+#ifndef AUTOACK	
 	pstcI2Cx->CR3_f.FACKEN = 1;//非自动写ACK
+#endif
 	if(Set == I2C_GetStatus(pstcI2Cx, I2C_SR_NACKDETECTF))//启动I2C前先清除上一次读写失败的NAK标志，否则无法写数据
 	{
 		I2C_ClearStatus(pstcI2Cx,I2C_CLR_NACKFCLR);

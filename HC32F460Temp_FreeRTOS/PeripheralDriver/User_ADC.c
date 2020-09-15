@@ -11,6 +11,10 @@ void Get_ADC1_Data(uint16_t *data)
 {
     *data = M4_ADC1->DR10;
 }
+void Get_ADC_V11(uint16_t *data)
+{
+	 *data = M4_ADC1->DR16;
+}
 void Set_ADC_Data(uint16_t data)
 {
     ADC1_AIN10_Data = data;
@@ -27,7 +31,7 @@ void ADC1_Start_convert(void)
 
 void User_ADC_Init(void)
 {
-	uint8_t au8Adc1SaSampTime = 0xFF;
+	uint8_t au8Adc1SaSampTime[3] = {0xFF,0xFF,0xFF};
 	stc_adc_init_t stcAdcInit;
     stc_adc_ch_cfg_t  stcAdcBaseCFG;
     stc_irq_regi_conf_t stcIrqRegiConf;
@@ -40,12 +44,12 @@ void User_ADC_Init(void)
     MEM_ZERO_STRUCT(Port_CFG);
 //    MEM_ZERO_STRUCT(ADC_PGA_CFG);
     
-//    CLK_SetPeriClkSource(ClkAdcSrcMpllp);//MPLLP 3分频56MHz
-    PWC_Fcg3PeriphClockCmd(PWC_FCG3_PERIPH_ADC1, Enable);
+//    CLK_SetPeriClkSource(ClkPeriSrcMpllp);//MPLLP 3分频56MHz
+    PWC_Fcg3PeriphClockCmd(PWC_FCG3_PERIPH_ADC1|PWC_FCG3_PERIPH_CMP, Enable);
     stcAdcInit.enScanMode = AdcMode_SAOnce;
     stcAdcInit.enDataAlign = AdcDataAlign_Right;
     stcAdcInit.enResolution = AdcResolution_12Bit;
-    stcAdcInit.enAutoClear = AdcClren_Enable;
+//    stcAdcInit.enAutoClear = AdcClren_Enable;
     
 //    stcAdcInit.enAverageCount = AdcAvcnt_4;
     
@@ -63,9 +67,9 @@ void User_ADC_Init(void)
     Port_CFG.enPinMode = Pin_Mode_Ana;
     PORT_Init(PortC, Pin00, &Port_CFG);//config PC00 As ADC_IN10
     
-    stcAdcBaseCFG.u32Channel = ADC1_CH10;
+    stcAdcBaseCFG.u32Channel = ADC1_CH10|ADC1_CH16;
 //    stcAdcBaseCFG.enAvgEnable = true;
-    stcAdcBaseCFG.pu8SampTime = &au8Adc1SaSampTime;
+    stcAdcBaseCFG.pu8SampTime = au8Adc1SaSampTime;
     stcAdcBaseCFG.u8Sequence = ADC_SEQ_A;//Must be setting, Default can not convert data
     ADC_AddAdcChannel(M4_ADC1, &stcAdcBaseCFG);
 
@@ -75,7 +79,9 @@ void User_ADC_Init(void)
 	enIrqRegistration(&stcIrqRegiConf);
 	M4_ADC1->ISR_f.EOCAF  = 0;
     M4_ADC1->ICR_f.EOCAIEN = 1;
-    
-//	NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);//Enable Interrupt
+	M4_CMP_CR->RVADC = 0x5500;
+    M4_CMP_CR->RVADC_f.VREFSW = 1;
+	PWC_PwrMonitorCmd(Enable);
+	NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);//Enable Interrupt
 	
 }

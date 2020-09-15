@@ -5,6 +5,8 @@
 #include "ff.h"
 #include "cmsis_os.h"
 #include "diskio.h"
+#include "wavefile.h"
+#include "data_sound_i2s.h"
 uint8_t Fs_Task_Start(void);
 
 #endif

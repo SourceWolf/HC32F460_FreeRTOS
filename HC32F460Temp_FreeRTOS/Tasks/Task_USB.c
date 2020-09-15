@@ -19,22 +19,22 @@ static void Task_USB(void* param)
               &USR_cb);
     while(1)
     {
-        if(Reset == PORT_GetBit(Key0_PORT,Key0_Pin))
-        {
-            y = -5;
-        }
-        if(Reset == PORT_GetBit(Key2_PORT,Key2_Pin))
-        {
-            y = 5;
-        }
-        if(Reset == PORT_GetBit(Key1_PORT,Key1_Pin))
-        {
-            x = -5;
-        }
-        if(Reset == PORT_GetBit(Key3_PORT,Key3_Pin))
-        {
-            x = 5;
-        }
+//        if(Reset == PORT_GetBit(Key0_PORT,Key0_Pin))
+//        {
+//            y = -5;
+//        }
+//        if(Reset == PORT_GetBit(Key2_PORT,Key2_Pin))
+//        {
+//            y = 5;
+//        }
+//        if(Reset == PORT_GetBit(Key1_PORT,Key1_Pin))
+//        {
+//            x = -5;
+//        }
+//        if(Reset == PORT_GetBit(Key3_PORT,Key3_Pin))
+//        {
+//            x = 5;
+//        }
         HID_Buffer[0] = (uint8_t)0;
         HID_Buffer[1] = (uint8_t)x;
         HID_Buffer[2] = (uint8_t)y;

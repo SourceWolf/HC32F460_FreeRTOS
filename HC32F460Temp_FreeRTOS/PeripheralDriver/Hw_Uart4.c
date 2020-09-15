@@ -41,10 +41,10 @@ void Hw_Uart4_Init(void)
     stcUsartConf.enDetectMode = UsartStartBitFallEdge;//RX起始位为下降沿
 
     PWC_Fcg1PeriphClockCmd(USART4_CLK,Enable);
-    Port_CFG.enPinMode = Pin_Mode_Out;
-	PORT_Init(USART4_TX_PORT, USART4_TX_PIN, &Port_CFG);
-    Port_CFG.enPinMode = Pin_Mode_In;
-    PORT_Init(USART4_TX_PORT, USART4_TX_PIN, &Port_CFG);
+//    Port_CFG.enPinMode = Pin_Mode_Out;
+//	PORT_Init(USART4_TX_PORT, USART4_TX_PIN, &Port_CFG);
+//    Port_CFG.enPinMode = Pin_Mode_In;
+//    PORT_Init(USART4_TX_PORT, USART4_TX_PIN, &Port_CFG);
     
     PORT_SetFunc(USART4_RX_PORT, USART4_RX_PIN, USART4_RX_FUNC, Disable);
     PORT_SetFunc(USART4_TX_PORT, USART4_TX_PIN, USART4_TX_FUNC, Disable);

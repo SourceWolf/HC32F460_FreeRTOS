@@ -23,10 +23,14 @@
 #define TIMERA_UNIT1_CH2_INT            (TimeraIrqCaptureOrCompareCh2)
 
 
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 void TimerACaptureInit(void);
 uint32_t GetTime(void);
 uint32_t GetFrequence(void);
-
+#ifdef __cplusplus
+};
+#endif
 #endif
 

@@ -6,12 +6,12 @@
 
 #define USART4_BAUDRATE      (115200)
 
-#define USART4_RX_PORT       PortB
-#define USART4_RX_PIN        Pin14
+#define USART4_RX_PORT       PortC//PortB
+#define USART4_RX_PIN        Pin13//Pin14
 #define USART4_RX_FUNC       Func_Usart4_Rx
 
-#define USART4_TX_PORT       PortB
-#define USART4_TX_PIN        Pin15
+#define USART4_TX_PORT       PortH//PortB
+#define USART4_TX_PIN        Pin02//Pin15
 #define USART4_TX_FUNC       Func_Usart4_Tx
 
 #define USART4_RI_NUM        INT_USART4_RI

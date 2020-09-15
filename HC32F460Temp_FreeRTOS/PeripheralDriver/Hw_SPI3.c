@@ -1,58 +1,13 @@
-#include "hc32_ddl.h"
 #include "Hw_SPI3.h"
 
-#define SPI3_TX_IRQn            Int004_IRQn
-#define SPI3_RX_IRQn            Int005_IRQn
-#define SPI3_ERR_IRQn           Int006_IRQn
-#define SPI3_IDEL_IRQn          Int007_IRQn
-#define DMA2_CH0_IRQn           Int003_IRQn
-//unsigned char SPI_DATA;
-/* Choose SPI master or slave mode */
-#define SPI_MASTER_MODE
-//#define SPI_SLAVE_MODE
-/* SPI_SCK Port/Pin definition */
-#define SPI3_SCK_PORT                    PortB
-#define SPI3_SCK_PIN                     Pin12
-#define SPI3_SCK_FUNC                    Func_Spi3_Sck
 
-/* SPI_NSS Port/Pin definition */
-#define SPI3_NSS_PORT                    PortB
-#define SPI3_NSS_PIN                     Pin13
-#define SPI3_NSS_FUNC                    Func_Spi3_Nss0
-
-/* SPI_MOSI Port/Pin definition */
-#define SPI3_MOSI_PORT                   PortB
-#define SPI3_MOSI_PIN                    Pin14
-#define SPI3_MOSI_FUNC                   Func_Spi3_Mosi
-
-/* SPI_MISO Port/Pin definition */
-#define SPI3_MISO_PORT                   PortB
-#define SPI3_MISO_PIN                    Pin10
-#define SPI3_MISO_FUNC                   Func_Spi3_Miso
-
-/* SPI unit and clock definition */
-#define SPI3_UNIT                        M4_SPI3
-#define SPI3_UNIT_CLOCK                  PWC_FCG1_PERIPH_SPI3
-#define SPI3_TX_INT_SOURCE               INT_SPI3_SRTI
-#define SPI3_RX_INT_SOURCE               INT_SPI3_SRRI
-#define SPI3_ERR_INT_SOURCE              INT_SPI3_SPEI
-#define SPI3_ERR_IDEL_SOURCE             INT_SPI3_SPII
-
-#define SPI3_DMA_UNIT2                (M4_DMA2)
-#define SPI3_DMA_CH                  (DmaCh0)
-#define SPI3_DMA_CLK                 PWC_FCG0_PERIPH_DMA2
-#define SPI3_DMA_TRNCNT              (50u)//传输次数
-#define DMA_BLKSIZE             (1u)
-#define SPI3_DMA_RPT_SIZE            (50u)
-#define DMA_INT_SRC             INT_DMA2_BTC0
-#define DMA_Trg_Src             EVT_SPI3_SRRI
 
 uint8_t SPI3_RX_Data;
 bool flag_SPI3_RX, flag_SPI3_TX;
 uint8_t SPI3_RXbuff[SPI3_DMA_TRNCNT],spi3_rx_counter;
 void Hw_SPI3_TX_Callback(void)
 {  
-    SPI_SendData8(SPI3_UNIT,0xFF);
+    SPI_SendData8(SPI3_UNIT,0x60);
     flag_SPI3_TX = true;
 }
 void Hw_SPI3_RX_Callback(void)
@@ -102,24 +57,31 @@ void Hw_SPI3_Init(void)
 {
     stc_spi_init_t stcSpiInit;
     stc_irq_regi_conf_t stcIrqRegiConf;
-
+	stc_port_init_t Port_CFG;
     /* configuration structure initialization */
     MEM_ZERO_STRUCT(stcSpiInit);
     MEM_ZERO_STRUCT(stcIrqRegiConf);
-
+	MEM_ZERO_STRUCT(Port_CFG);
+	
+	Port_CFG.enPinMode = Pin_Mode_Out;
+	Port_CFG.enPinOType = Pin_OType_Od;//OD输出
+	Port_CFG.enPullUp = Enable;
+	PORT_Init(SPI3_NSS_PORT,SPI3_NSS_PIN,&Port_CFG);
+	
+	
     /* Configuration peripheral clock */
     PWC_Fcg1PeriphClockCmd(SPI3_UNIT_CLOCK, Enable);
 
     /* Configuration SPI pin */
     PORT_SetFunc(SPI3_SCK_PORT, SPI3_SCK_PIN, SPI3_SCK_FUNC, Disable);
-    PORT_SetFunc(SPI3_NSS_PORT, SPI3_NSS_PIN, SPI3_NSS_FUNC, Disable);
+//    PORT_SetFunc(SPI3_NSS_PORT, SPI3_NSS_PIN, SPI3_NSS_FUNC, Disable);
     PORT_SetFunc(SPI3_MOSI_PORT, SPI3_MOSI_PIN, SPI3_MOSI_FUNC, Disable);
     PORT_SetFunc(SPI3_MISO_PORT, SPI3_MISO_PIN, SPI3_MISO_FUNC, Disable);
 
     /* Configuration SPI structure */
     stcSpiInit.enClkDiv = SpiClkDiv128;//SPI datarate,PCLK1/128
     stcSpiInit.enFrameNumber = SpiFrameNumber1;
-    stcSpiInit.enDataLength = SpiDataLengthBit8;
+    stcSpiInit.enDataLength = SpiDataLengthBit16;
     stcSpiInit.enFirstBitPosition = SpiFirstBitPositionMSB;
     stcSpiInit.enSckPolarity = SpiSckIdleLevelLow;
     stcSpiInit.enSckPhase = SpiSckOddSampleEvenChange;
@@ -173,7 +135,7 @@ void Hw_SPI3_Init(void)
 
     NVIC_ClearPendingIRQ(stcIrqRegiConf.enIRQn);
     NVIC_SetPriority(stcIrqRegiConf.enIRQn, DDL_IRQ_PRIORITY_15);
-//    NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);
+    NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);
     
     /* SPI3 Error interrupt */
     stcIrqRegiConf.enIntSrc = SPI3_ERR_INT_SOURCE;
@@ -202,17 +164,17 @@ void Hw_SPI3_Init(void)
 //    SPI_UNIT->CR1_f.SPE = 1;
     Ddl_Delay1ms(10);
     SPI_IrqCmd(SPI3_UNIT, SpiIrqReceive, Enable);
-    SPI_IrqCmd(SPI3_UNIT, SpiIrqSend, Enable);
+//    SPI_IrqCmd(SPI3_UNIT, SpiIrqSend, Enable);
     SPI_IrqCmd(SPI3_UNIT, SpiIrqError, Enable);
 //    SPI_IrqCmd(SPI_UNIT, SpiIrqIdel, Enable);
 //    SPI_Cmd(SPI_UNIT, Enable);
-    Hw_SPI3_DMA_Init();
+//    Hw_SPI3_DMA_Init();
 }
 
 void Hw_SPI3_TEST(void)
 {	
     while(SPI3_UNIT->SR_f.TDEF == 0);
-    SPI_SendData8(SPI3_UNIT,0x55);	
+    SPI_SendData8(SPI3_UNIT,0x50);	
 }
 void SPI3_DMA_Callback(void)
 {

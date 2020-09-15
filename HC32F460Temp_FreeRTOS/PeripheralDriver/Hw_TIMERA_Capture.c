@@ -1,8 +1,9 @@
 #include "Hw_TIMERA_Capture.h"
 static uint32_t period_cnt,cap_cnt=0;
-uint32_t Cap_data[2];
+uint16_t Cap_data[11];
 uint32_t CapTime;
 #define TimerPeriod 0x802C
+
 void TimerACaptureCallback(void)
 {
 	if(Set==UNIT_CAPTIM->STFLR_f.CMPF1)
@@ -14,10 +15,10 @@ void TimerACaptureCallback(void)
 		}
 		Cap_data[cap_cnt] = UNIT_CAPTIM->CMPAR1;
 		cap_cnt++;
-		if(cap_cnt>1)
+		if(cap_cnt>11)
 		{
 			cap_cnt = 0;
-			CapTime = Cap_data[1]+(period_cnt*TimerPeriod)-Cap_data[0];
+			CapTime = Cap_data[10]+(period_cnt*TimerPeriod)-Cap_data[0];
 		}			
 	}
 }
@@ -31,7 +32,7 @@ uint32_t GetTime(void)
 }
 uint32_t GetFrequence(void)
 {
-	return 84000000/CapTime;//84MHZ	PCLK1,时钟，64分频
+	return 840000000/CapTime;//84MHZ	PCLK1,时钟，64分频
 }
 void TimerACaptureInit(void)
 {
@@ -97,12 +98,11 @@ void TimerACaptureInit(void)
     enIrqRegistration(&stcIrqRegiConf);
     NVIC_ClearPendingIRQ(stcIrqRegiConf.enIRQn);
     NVIC_SetPriority(stcIrqRegiConf.enIRQn, DDL_IRQ_PRIORITY_15);
-    NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);
+//    NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);
 //    /* Set external Int Ch.4 trigger timera compare */
 //    stcPortInit.enExInt = Enable;
 //    PORT_Init(KEY1_PORT, KEY1_PIN, &stcPortInit);
 //    TIMERA_SetCaptureTriggerSrc(KEY1_TRIGGER_EVENT);
-
     /* Timera unit 1 startup */
     TIMERA_Cmd(UNIT_CAPTIM, Enable);
 }

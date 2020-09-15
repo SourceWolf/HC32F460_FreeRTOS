@@ -211,6 +211,7 @@ typedef struct stc_i2s_config
 #define I2S_AudioFreq_16k                           (16000ul)
 #define I2S_AudioFreq_11k                           (11025ul)
 #define I2S_AudioFreq_8k                            (8000ul)
+#define I2S_AudioFreq_4k                            (4000ul)
 #define I2S_AudioFreq_Default                       (2ul)
 
 /* if use external clock open this define */

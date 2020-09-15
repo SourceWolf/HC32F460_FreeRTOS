@@ -19,6 +19,7 @@ void Testcpp(void)
 	myspi.SPI_Open(0,0,Mode0);
 //	I2C_DV1.I2C_init(1000);
 }
+
 #ifdef __cplusplus
 };
 #endif

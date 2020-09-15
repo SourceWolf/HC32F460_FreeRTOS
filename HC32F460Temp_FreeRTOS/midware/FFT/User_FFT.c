@@ -6,7 +6,7 @@
 #define RFFT 0
 #define RFFT_FAST 1
 #define CFFT_RADIX4 2
-#define RFFT_MODE CFFT_RADIX4
+#define RFFT_MODE RFFT_FAST
 
 //#define Fs 10240//采样频率,分辩率10HZ,
 #define FS  12800//采样频率 50x256 = 12.8K,分辨率12800/256 = 50HZ，每格数据是50HZ
@@ -15,7 +15,8 @@
 #define FFT_SIZE_4096           4096
 #define FFT_SIZE_1024           1024
 #define FFT_SIZE_256            256
-#define NPT FFT_SIZE_256//1024点FFT
+#define FFT_SIZE_2048			2048
+#define NPT FFT_SIZE_2048//1024点FFT
 #define Sameples NPT
 #if     RFFT_MODE == RFFT_FAST  //实域FFT
 float32_t f_testInput[NPT];      
@@ -27,7 +28,7 @@ float32_t f_testOutput[NPT];
 float32_t mag_in_buffer[NPT];
 arm_cfft_radix4_instance_f32 *f_fft_data;
 
-void InitBufInArray()
+void InitBufInArray(void)
 {
      unsigned short i;
 //     static float fx;

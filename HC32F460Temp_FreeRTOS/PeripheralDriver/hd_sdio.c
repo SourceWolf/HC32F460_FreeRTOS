@@ -113,26 +113,24 @@ static uint8_t m_u32WriteBlocks[512 * 4];
 
 static void SD_CARD_Init(void)
 {
-//    DEBUGN("enter \r\n");
-
+	uint8_t trytime = 0;
     en_result_t enTestResult = Ok;
     SdiocInitPins();
-    /* Initialilze SD card */
-    enTestResult = SDCARD_Init(&m_stcSdhandle, &m_stcCardInitCfg);
-    if(Ok != enTestResult)
-    {
-//		DEBUGE("sd nand init fail, enTestResult = %d \r\n", enTestResult);
-//		printf("sd nand init fail, enTestResult = %d \r\n", enTestResult);
-        enTestResult = Error;
-    }    
-    else{
-        //DEBUGN("sd nand init OK , capacity : %d, u32BlockSize = %d\r\n",
-        //       m_stcSdhandle.stcSdCardInfo.u32BlockNbr, m_stcSdhandle.stcSdCardInfo.u32BlockSize);
-//		DEBUGN("sd nand init OK , capacity : %d, u32BlockSize = %d\r\n",
-//			m_stcSdhandle.stcSdCardInfo.u32BlockNbr, m_stcSdhandle.stcSdCardInfo.u32BlockSize);
-    }
-
-//    DEBUGN("exit \r\n");
+    /* Initialilze SD card */   
+	do{
+		enTestResult = SDCARD_Init(&m_stcSdhandle, &m_stcCardInitCfg);
+		if(Ok != enTestResult)
+		{
+			trytime++;
+			
+		}
+		else
+		{
+			return;
+		}
+		Ddl_Delay1ms(10);
+//		printf("sd nand init, enTestResult = %d trytime = %d\r\n", enTestResult,trytime);
+	}while(trytime<10);
 }    
 static void SD_CARD_TEST(void)
 {

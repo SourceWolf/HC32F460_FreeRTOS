@@ -8,5 +8,8 @@
 #include "../Tasks/Task_USB.h"
 #include "Hw_I2C.h"
 #include "Hw_I2C_Slave.h"
+#include "Hw_TIMERA_Capture.h"
+#include "AT24C02.h"
+#include "User_ADC.h"
 #endif
 

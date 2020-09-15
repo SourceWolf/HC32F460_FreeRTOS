@@ -13,7 +13,7 @@
 #define I2C2_CLK			PWC_FCG1_PERIPH_I2C2
 #define I2C3_CLK			PWC_FCG1_PERIPH_I2C3
 
-#define TIMEOUT                         ((uint32_t)0x1000)
+#define TIMEOUT                         ((uint32_t)0x2000)
 
 #define I2C_RET_OK                      0
 #define I2C_RET_ERROR                   1

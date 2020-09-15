@@ -42,12 +42,11 @@ static uint16_t pos = 0;
  ******************************************************************************/
 void I2sTxFifoCallback(void)
 {	
-    I2S_SendData(I2S_CH, *pu16SoundData++);
+    I2S_SendData(I2S_CH, au16PixieDustSoundI2s[pos]);
 	pos++;
-    if (pos > 250)     // End of sound reached?
+    if (pos > 249)     // End of sound reached?
     {
 		pos = 0;
-        pu16SoundData = &au16PixieDustSoundI2s[0];
     }
 }
 void User_I2S3_Init(void)
@@ -61,7 +60,7 @@ void User_I2S3_Init(void)
     MEM_ZERO_STRUCT(stcIrqRegiConf);
     MEM_ZERO_STRUCT(stcPortIni);
 	MEM_ZERO_STRUCT(au16PixieDustSoundI2s);
-	for(uint16_t i = 0;i<320;i++)
+	for(uint16_t i = 0;i<250;i++)
 	{
 		au16PixieDustSoundI2s[i] = i;
 	}
@@ -148,16 +147,16 @@ void User_I2S3_Init(void)
     PWC_Fcg1PeriphClockCmd(PWC_FCG1_PERIPH_I2S3, Enable);
     
     /* Config clock source for i2s */
-    CLK_SetI2sClkSource(I2S_CH, ClkPeriSrcMpllr);
+    CLK_SetI2sClkSource(I2S_CH, ClkPeriSrcUpllp);
     /* Config i2s peripheral */
     I2s_DeInit(I2S_CH);
     stcI2sCfg.enStandrad = Std_Philips;
     stcI2sCfg.enMode = I2sMaster;
     stcI2sCfg.enChanelLen = I2s_ChLen_32Bit;
-    stcI2sCfg.enDataBits = I2s_DataLen_16Bit;
-    stcI2sCfg.u32AudioFreq = I2S_AudioFreq_8k;
-    stcI2sCfg.enMcoOutEn = Enable;
-	stcI2sCfg.u32I2sInterClkFreq = 24000000;
+    stcI2sCfg.enDataBits = I2s_DataLen_32Bit;
+    stcI2sCfg.u32AudioFreq = I2S_AudioFreq_48k;
+    stcI2sCfg.enMcoOutEn = Disable;
+	stcI2sCfg.u32I2sInterClkFreq = 384000000;
     I2s_Init(I2S_CH, &stcI2sCfg);
 //	I2S_CH->CTRL_f.DUPLEX = 1;//È«Ë«¹¤
     /* Register TXIRQOUT Int to Vect.No.001 */

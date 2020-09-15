@@ -1,8 +1,10 @@
 #include "hc32_ddl.h"
 #include "system_clk_cfg.h"
+#include "System_InterruptCFG_Def.h"
 /*
 system clock initial, all parameter refer to system_clk_cfg.h setting.
 */
+void XTAL_FAULT_Config(void);
 void system_clk_init(void)
 {
     stc_clk_xtal_cfg_t XTAL_CFG;
@@ -92,6 +94,37 @@ void system_clk_init(void)
     SRAM_CK_Disable();
 //-------------Switch system clock-----------------------//
     CLK_SetSysClkSource(SYSTEMCLKSOURCE);
-    CLK_SysClkConfig(&SYS_CLK_CFG);  
+    CLK_SysClkConfig(&SYS_CLK_CFG); 
+	XTAL_FAULT_Config();	
+}
+static void XTAL_FAULT_Callback(void)
+{
+	stc_clk_mpll_cfg_t MPLL_CFG;
+	MEM_ZERO_STRUCT(MPLL_CFG);
+	CLK_ClearXtalStdFlag();
+	CLK_SetPllSource(ClkPllSrcHRC);//MPLL&UPLL Clock source
+    MPLL_CFG.pllmDiv = MPLL_CLK_M_DIV+1;
+    MPLL_CFG.plln = MPLL_CLK_NUM;
+    MPLL_CFG.PllpDiv = MPLL_CLK_P_DIV;
+    MPLL_CFG.PllqDiv = MPLL_CLK_Q_DIV;
+    MPLL_CFG.PllrDiv = MPLL_CLK_R_DIV;    
+    CLK_MpllConfig(&MPLL_CFG);
+	NVIC_DisableIRQ(XTAL_FAULT_IRQn);
+}
+void XTAL_FAULT_Config(void)
+{
+	stc_clk_xtal_stp_cfg_t XtalstpCfg;
+	stc_irq_regi_conf_t stcIrqRegiCfg;
+	MEM_ZERO_STRUCT(XtalstpCfg);
+	MEM_ZERO_STRUCT(stcIrqRegiCfg);
+	XtalstpCfg.enDetect = Enable;
+	XtalstpCfg.enMode = ClkXtalStpModeInt;
+	XtalstpCfg.enModeInt = Enable;
+	CLK_XtalStpConfig(&XtalstpCfg);
+	stcIrqRegiCfg.enIntSrc = INT_XTAL_STOP;
+	stcIrqRegiCfg.enIRQn = XTAL_FAULT_IRQn;
+	stcIrqRegiCfg.pfnCallback = XTAL_FAULT_Callback;
+	enIrqRegistration(&stcIrqRegiCfg);
+    NVIC_EnableIRQ(stcIrqRegiCfg.enIRQn);
 }
 /*End of file*/
