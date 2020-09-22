@@ -70,7 +70,7 @@
 /*******************************************************************************
  * Local pre-processor symbols/macros ('#define')
  ******************************************************************************/
-#define ENABLE_FCG0_REG_WRITE()             (M4_MSTP->FCG0PC |= 0xa5a50001u)
+#define ENABLE_FCG0_REG_WRITE()             (M4_MSTP->FCG0PC = 0xa5a50001u)
 #define DISABLE_FCG0_REG_WRITE()            (M4_MSTP->FCG0PC = 0xa5a50000u)
 
 #define ENABLE_PWR_REG0_WRITE()             (M4_SYSREG->PWR_FPRC |= 0xa503u)
@@ -83,16 +83,18 @@
 #define DISABLE_PVD_REG_WRITE()             (M4_SYSREG->PWR_FPRC = (0xa500u | (M4_SYSREG->PWR_FPRC & (uint16_t)(~8u))))
 
 /*! Parameter validity check for wake up event. */
-#define IS_PWC_WKUP_EVENT(evt)              ((0x00u) != (evt))
+#define IS_PWC_WKUP_EVENT(evt)              ((0x00u) != ((evt) & (0xFF)))
 
 /*! Parameter validity check for wake up event. */
-#define IS_PWC_WKUP2_EVENT(evt)             ((0x08u) != (evt))
+#define IS_PWC_WKUP2_EVENT(evt)             ((0x00u) != ((evt) & (0xB7)))
+
+#define IS_PWC_WKUP_EDGE_EVENT(evt)         ((0x00u) != ((evt) & (0x7F)))
 
 /*! Parameter validity check for wake up flag. */
-#define IS_PWC_WKUP0_FLAG(flag)             ((0x80u) != (flag))
+#define IS_PWC_WKUP0_FLAG(flag)             ((0x00u) != ((flag) & (0x7F)))
 
 /*! Parameter validity check for wake up flag. */
-#define IS_PWC_WKUP1_FLAG(flag)             ((0x07u) != (flag))
+#define IS_PWC_WKUP1_FLAG(flag)             ((0x07u) != ((flag) & (0xB8)))
 
 /*! Parameter validity check for power down mode. */
 #define IS_PWC_PWR_DOWN_MODE(md)                                               \
@@ -124,36 +126,33 @@
 
 /*! Parameter validity check for dynamic voltage. */
 #define IS_PWC_DYNAMIC_VOLTAGE(val)                                            \
-(   ((val) == Voltage09)                ||                                     \
-    ((val) == Voltage11))
+(   ((val) == RunUHighspeed)            ||                                     \
+    ((val) == RunUlowspeed)             ||                                     \
+    ((val) == RunHighspeed))
 
 /*! Parameter validity check for wake_up edge. */
-#define IS_PWC_WKUP_EDGE(edg)                                                  \
+#define IS_PWC_EDGE_SEL(edg)                                                   \
 (   ((edg) == EdgeFalling)              ||                                     \
     ((edg) == EdgeRising))
 
-#define IS_PWC_PVDWKUP_EDGE(edg)                                               \
-(   ((edg) == OverVcc)                  ||                                     \
-    ((edg) == BelowVcc))
-
 /*! Parameter validity check for peripheral in fcg0. */
 #define IS_PWC_FCG0_PERIPH(per)                                                \
-(   (((per) & (0x700C3AEEu)) == (0X00u))  &&                                   \
+(   (((per) & (0x700C3AEEu)) == (0x00u))  &&                                   \
     ((0x00u) != (per)))
 
 /*! Parameter validity check for peripheral in fcg1. */
 #define IS_PWC_FCG1_PERIPH(per)                                                \
-(   (((per) & (0xF0F00286u)) == (0X00u))  &&                                     \
+(   (((per) & (0xF0F00286u)) == (0x00u))  &&                                     \
     ((0x00u) != (per)))
 
 /*! Parameter validity check for peripheral in fcg2. */
 #define IS_PWC_FCG2_PERIPH(per)                                                \
-(   (((per) & (0xFFF87800u)) == (0X00u))  &&                                   \
+(   (((per) & (0xFFF87800u)) == (0x00u))  &&                                   \
     ((0x00u) != (per)))
 
 /*! Parameter validity check for peripheral in fcg3. */
 #define IS_PWC_FCG3_PERIPH(per)                                                \
-(   (((per) & (0XFFFFEEECu)) == (0X00u))  &&                                   \
+(   (((per) & (0xFFFFEEECu)) == (0x00u))  &&                                   \
     ((0x00u) != (per)))
 
 /*! Parameter validity check for clock value while stop mode mode. */
@@ -203,25 +202,25 @@
 
 /*! Parameter validity check for pvd2 level. */
 #define IS_PWC_PVD2_LEVEL(lvl)                                                 \
-(   ((lvl) == Pvd2Level21)              ||                                     \
-    ((lvl) == Pvd2Level23)              ||                                     \
-    ((lvl) == Pvd2Level25)              ||                                     \
-    ((lvl) == Pvd2Level26)              ||                                     \
-    ((lvl) == Pvd2Level27)              ||                                     \
-    ((lvl) == Pvd2Level28)              ||                                     \
-    ((lvl) == Pvd2Level29)              ||                                     \
-    ((lvl) == Pvd2Level11))
+(   ((lvl) == Pvd2Level0)               ||                                     \
+    ((lvl) == Pvd2Level1)               ||                                     \
+    ((lvl) == Pvd2Level2)               ||                                     \
+    ((lvl) == Pvd2Level3)               ||                                     \
+    ((lvl) == Pvd2Level4)               ||                                     \
+    ((lvl) == Pvd2Level5)               ||                                     \
+    ((lvl) == Pvd2Level6)               ||                                     \
+    ((lvl) == Pvd2Level7))
 
 /*! Parameter validity check for pvd1 level. */
 #define IS_PWC_PVD1_LEVEL(lvl)                                                 \
-(   ((lvl) == Pvd1Level20)              ||                                     \
-    ((lvl) == Pvd1Level21)              ||                                     \
-    ((lvl) == Pvd1Level23)              ||                                     \
-    ((lvl) == Pvd1Level25)              ||                                     \
-    ((lvl) == Pvd1Level26)              ||                                     \
-    ((lvl) == Pvd1Level27)              ||                                     \
-    ((lvl) == Pvd1Level28)              ||                                     \
-    ((lvl) == Pvd1Level29))
+(   ((lvl) == Pvd1Level0)               ||                                     \
+    ((lvl) == Pvd1Level1)               ||                                     \
+    ((lvl) == Pvd1Level2)               ||                                     \
+    ((lvl) == Pvd1Level3)               ||                                     \
+    ((lvl) == Pvd1Level4)               ||                                     \
+    ((lvl) == Pvd1Level5)               ||                                     \
+    ((lvl) == Pvd1Level6)               ||                                     \
+    ((lvl) == Pvd1Level7))
 
 /*! Parameter validity check for pvd interrupt. */
 #define IS_PWC_PVD_INT_SEL(x)                                                  \
@@ -306,7 +305,7 @@ void PWC_PowerModeCfg(const stc_pwc_pwr_mode_cfg_t* pstcPwrMdCfg)
     DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcPwrMdCfg->enVHrc));
     DDL_ASSERT(IS_PWC_PWR_DWON_IO_STATE(pstcPwrMdCfg->enIoRetain));
     DDL_ASSERT(IS_PWC_DRIVER_ABILITY(pstcPwrMdCfg->enDrvAbility));
-    DDL_ASSERT(IS_PWC_DYNAMIC_VOLTAGE(pstcPwrMdCfg->enDynVol));
+    DDL_ASSERT(IS_PWC_DYNAMIC_VOLTAGE(pstcPwrMdCfg->enRunDrvs));
     DDL_ASSERT(IS_PWC_PWR_DOWN_WKUP_TIM(pstcPwrMdCfg->enPwrDWkupTm));
 
     ENABLE_PWR_REG_WRITE();
@@ -320,7 +319,7 @@ void PWC_PowerModeCfg(const stc_pwc_pwr_mode_cfg_t* pstcPwrMdCfg)
     M4_SYSREG->PWR_PWRC1_f.VPLLSD = ((Enable == pstcPwrMdCfg->enVPll) ? 0u : 1u);
 
     M4_SYSREG->PWR_PWRC2 = (pstcPwrMdCfg->enDrvAbility         |
-                           (pstcPwrMdCfg->enDynVol << 4u));
+                           (pstcPwrMdCfg->enRunDrvs << 4u));
 
     M4_SYSREG->PWR_PWRC3_f.PDTS = pstcPwrMdCfg->enPwrDWkupTm;
 
@@ -334,6 +333,8 @@ void PWC_PowerModeCfg(const stc_pwc_pwr_mode_cfg_t* pstcPwrMdCfg)
  ** \param  None
  **
  ** \retval None
+ **
+ ** \note   This function should be put ram
  **
  ******************************************************************************/
 #if defined (__ICCARM__)
@@ -459,7 +460,6 @@ void PWC_PdWakeup1Cmd(uint32_t u32Wkup1Event, en_functional_state_t enNewState)
  ** \arg    PWC_PDWKEN2_NMI             Wake_up NMI event
  ** \arg    PWC_PDWKEN2_RTCPRD          Wake_up RTCPRD event
  ** \arg    PWC_PDWKEN2_RTCAL           Wake_up RTCAL event
- ** \arg    PWC_PDWKEN2_XTAL32          Wake_up XTAL32 event
  ** \arg    PWC_PDWKEN2_WKTM            Wake_up WKTM event
  **
  ** \param  [in] enNewState             The new state of the wake_up event.
@@ -492,41 +492,41 @@ void PWC_PdWakeup2Cmd(uint32_t u32Wkup2Event, en_functional_state_t enNewState)
 
 /**
  *******************************************************************************
- ** \brief  The power down wake up event edge configuration.
+ ** \brief  Configure the power down wake up event edge.
  **
- ** \param  [in] pstcWkupEdgeCfg        The wake_up event edge configuration.
- ** \arg    enPtwk0Edge                 Ptwk0 edge
- ** \arg    enPtwk1Edge                 Ptwk1 edge
- ** \arg    enPtwk2Edge                 Ptwk2 edge
- ** \arg    enPtwk3Edge                 Ptwk3 edge
- ** \arg    enPvd1Edge                  Pvd1 edge
- ** \arg    enPvd1Edge                  Pvd2 edge
- ** \arg    enNmiEdge                   Nmi edge
+ ** \param  [in] u32Wkup2Event           The wake_up event in PDWKEN0.
+ ** \arg    PWC_PDWKUP_EDGE_WKP0          Wake_up NMI event
+ ** \arg    PWC_PDWKUP_EDGE_WKP1          Wake_up PVD1 event
+ ** \arg    PWC_PDWKUP_EDGE_WKP2          Wake_up PVD2 event
+ ** \arg    PWC_PDWKUP_EDGE_WKP3          Wake_up WKP0 event
+ ** \arg    PWC_PDWKUP_EDGE_PVD1          Wake_up WKP1 event
+ ** \arg    PWC_PDWKUP_EDGE_PVD2          Wake_up WKP2 event
+ ** \arg    PWC_PDWKUP_EDGE_NMI           Wake_up WKP3 event
+ **
+ ** \param  [in] enEdge                 The wake_up event edge select.
+ ** \arg    EdgeRising                   Wake_up event edge rising.
+ ** \arg    EdgeFalling                  Wake_up event edge falling.
  **
  ** \retval None
  **
  ** \note   None
  **
  ******************************************************************************/
-void PWC_PdWkupEdgeCfg(const stc_pwc_wkup_edge_cfg_t* pstcWkupEdgeCfg)
+void PWC_PdWakeupEvtEdgeCfg(uint8_t u8WkupEvent, en_pwc_edge_sel_t enEdge)
 {
-    DDL_ASSERT(IS_PWC_WKUP_EDGE(pstcWkupEdgeCfg->enPtwk0Edge));
-    DDL_ASSERT(IS_PWC_WKUP_EDGE(pstcWkupEdgeCfg->enPtwk1Edge));
-    DDL_ASSERT(IS_PWC_WKUP_EDGE(pstcWkupEdgeCfg->enPtwk2Edge));
-    DDL_ASSERT(IS_PWC_WKUP_EDGE(pstcWkupEdgeCfg->enPtwk3Edge));
-    DDL_ASSERT(IS_PWC_WKUP_EDGE(pstcWkupEdgeCfg->enNmiEdge));
-    DDL_ASSERT(IS_PWC_PVDWKUP_EDGE(pstcWkupEdgeCfg->enPvd1Edge));
-    DDL_ASSERT(IS_PWC_PVDWKUP_EDGE(pstcWkupEdgeCfg->enPvd1Edge));
+    DDL_ASSERT(IS_PWC_WKUP_EDGE_EVENT(u8WkupEvent));
+    DDL_ASSERT(IS_PWC_EDGE_SEL(enEdge));
 
     ENABLE_PWR_REG_WRITE();
 
-    M4_SYSREG->PWR_PDWKES = (pstcWkupEdgeCfg->enPtwk0Edge         |
-                              (pstcWkupEdgeCfg->enPtwk1Edge << 1) |
-                              (pstcWkupEdgeCfg->enPtwk2Edge << 2) |
-                              (pstcWkupEdgeCfg->enPtwk3Edge << 3) |
-                              (pstcWkupEdgeCfg->enPvd1Edge << 4)  |
-                              (pstcWkupEdgeCfg->enPvd1Edge << 5)  |
-                              (pstcWkupEdgeCfg->enNmiEdge << 6));
+    if(EdgeRising == enEdge)
+    {
+        M4_SYSREG->PWR_PDWKES |= (uint8_t)u8WkupEvent;
+    }
+    else
+    {
+        M4_SYSREG->PWR_PDWKES &= (uint8_t)(~u8WkupEvent);
+    }
 
     DISABLE_PWR_REG_WRITE();
 }
@@ -567,7 +567,6 @@ en_flag_status_t PWC_GetWakeup0Flag(uint8_t u8WkupFlag)
  ** \arg    PWC_RXD0_WKUPFLAG           Rxd0 wake_up flag
  ** \arg    PWC_RTCPRD_WKUPFALG         Rtcprd wake_up flag
  ** \arg    PWC_RTCAL_WKUPFLAG          Rtcal wake_up flag
- ** \arg    PWC_XTAL32ER_WKUPFALG       Xtal32er wake_up flag
  ** \arg    PWC_WKTM_WKUPFLAG           Wktm wake_up flag
  **
  ** \retval en_flag_status_t
@@ -622,7 +621,6 @@ void PWC_ClearWakeup0Flag(uint8_t u8WkupFlag)
  ** \arg    PWC_RXD0_WKUPFLAG           Rxd0 wake_up flag
  ** \arg    PWC_RTCPRD_WKUPFALG         Rtcprd wake_up flag
  ** \arg    PWC_RTCAL_WKUPFLAG          Rtcal wake_up flag
- ** \arg    PWC_XTAL32ER_WKUPFALG       Xtal32er wake_up flag
  ** \arg    PWC_WKTM_WKUPFLAG           Wktm wake_up flag
  **
  ** \retval en_flag_status_t
@@ -672,14 +670,14 @@ void PWC_PwrMonitorCmd(en_functional_state_t enNewState)
  **         software has to enable this clock before using it.
  **
  ** \param  [in] u32Fcg0Periph          The peripheral in FCG0.
- ** \arg    PWC_FCG0_PERIPH_RAMHS       RAMHS clock
- ** \arg    PWC_FCG0_PERIPH_RAM0        RAM0 clock
- ** \arg    PWC_FCG0_PERIPH_ECCRAM      ECCRAM clock
- ** \arg    PWC_FCG0_PERIPH_RetRAM      RetRAM clock
+ ** \arg    PWC_FCG0_PERIPH_SRAMH       RAMHS clock
+ ** \arg    PWC_FCG0_PERIPH_SRAM12      RAM0 clock
+ ** \arg    PWC_FCG0_PERIPH_SRAM3       ECCRAM clock
+ ** \arg    PWC_FCG0_PERIPH_SRAMRET     RetRAM clock
  ** \arg    PWC_FCG0_PERIPH_DMA1        DMA1 clock
  ** \arg    PWC_FCG0_PERIPH_DMA2        DMA2 clock
  ** \arg    PWC_FCG0_PERIPH_FCM         FCM clock
- ** \arg    PWC_FCG0_PERIPH_PTDIS       PTDIS clock
+ ** \arg    PWC_FCG0_PERIPH_AOS         PTDIS clock
  ** \arg    PWC_FCG0_PERIPH_AES         AES clock
  ** \arg    PWC_FCG0_PERIPH_HASH        HASH clock
  ** \arg    PWC_FCG0_PERIPH_TRNG        TRNG clock
@@ -830,7 +828,6 @@ void PWC_Fcg2PeriphClockCmd(uint32_t u32Fcg2Periph, en_functional_state_t enNewS
  ** \param  [in] u32Fcg3Periph          The peripheral in FCG3.
  ** \arg    PWC_FCG3_PERIPH_ADC1        ADC1 clock
  ** \arg    PWC_FCG3_PERIPH_ADC2        ADC2 clock
- ** \arg    PWC_FCG3_PERIPH_DAC         DAC clock
  ** \arg    PWC_FCG3_PERIPH_CMP         CMP clock
  ** \arg    PWC_FCG3_PERIPH_OTS         OTS clock
  **
@@ -1218,27 +1215,59 @@ void PWC_ExVccCmd(en_functional_state_t enNewState)
 
 /**
  *******************************************************************************
- ** \brief  Get pvd detection flag.
+ ** \brief  Get pvd detection status.
  **
- ** \param  [in] enPvdFlag              The flag of pvd detection.
- ** \arg    Pvd1Flag                    The flag of pvd1 detection.
- ** \arg    Pvd2Flag                    The flag of pvd2 detection.
+ ** \param  [in] enPvd              The unit of pvd detection.
+ ** \arg    PvdU1                   The unit1 of pvd detection.
+ ** \arg    PvdU2                   The unit2 of pvd detection.
  **
  ** \retval en_flag_status_t
  **
  ** \note   None
  **
  ******************************************************************************/
-en_flag_status_t PWC_GetPvdFlag(en_pwc_pvd_flag_t enPvdFlag)
+en_flag_status_t PWC_GetPvdStatus(en_pwc_pvd_t enPvd)
 {
     uint8_t u8flag = 0u;
 
-    switch(enPvdFlag)
+    switch(enPvd)
     {
-        case Pvd1Flag:
+        case PvdU1:
+            u8flag = M4_SYSREG->PWR_PVDDSR_f.PVD1MON;
+            break;
+        case PvdU2:
+            u8flag = M4_SYSREG->PWR_PVDDSR_f.PVD2MON;
+            break;
+        default:
+            break;
+    }
+
+    return ((1u == u8flag) ? Set : Reset);
+}
+
+/**
+ *******************************************************************************
+ ** \brief  Get pvd detection flag.
+ **
+ ** \param  [in] enPvd                  The unit of pvd detection.
+ ** \arg    PvdU1                       The unit1 of pvd detection.
+ ** \arg    PvdU2                       The unit2 of pvd detection.
+ **
+ ** \retval en_flag_status_t
+ **
+ ** \note   None
+ **
+ ******************************************************************************/
+en_flag_status_t PWC_GetPvdFlag(en_pwc_pvd_t enPvd)
+{
+    uint8_t u8flag = 0u;
+
+    switch(enPvd)
+    {
+        case PvdU1:
             u8flag = M4_SYSREG->PWR_PVDDSR_f.PVD1DETFLG;
             break;
-        case Pvd2Flag:
+        case PvdU2:
             u8flag = M4_SYSREG->PWR_PVDDSR_f.PVD2DETFLG;
             break;
         default:
@@ -1246,6 +1275,34 @@ en_flag_status_t PWC_GetPvdFlag(en_pwc_pvd_flag_t enPvdFlag)
     }
 
     return ((1u == u8flag) ? Set : Reset);
+}
+
+/**
+ *******************************************************************************
+ ** \brief  Clear pvd detection flag.
+ **
+ ** \param  [in] enPvd                  The unit of pvd detection.
+ ** \arg    PvdU1                       The unit1 of pvd detection.
+ ** \arg    PvdU2                       The unit2 of pvd detection.
+ **
+ ** \note   None
+ **
+ ******************************************************************************/
+void PWC_ClearPvdFlag(en_pwc_pvd_t enPvd)
+{
+    ENABLE_PVD_REG_WRITE();
+    switch(enPvd)
+    {
+        case PvdU1:
+            M4_SYSREG->PWR_PVDDSR_f.PVD1MON = 0u;
+            break;
+        case PvdU2:
+            M4_SYSREG->PWR_PVDDSR_f.PVD2MON = 0u;
+            break;
+        default:
+            break;
+    }
+    DISABLE_PVD_REG_WRITE();
 }
 
 /**
@@ -1263,11 +1320,11 @@ void PWC_HrcPwrCmd(en_functional_state_t enNewState)
 {
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewState));
 
-    ENABLE_PVD_REG_WRITE();
+    ENABLE_PWR_REG_WRITE();
 
      M4_SYSREG->PWR_PWRC1_f.VHRCSD = ((Enable == enNewState) ? 0u : 1u);
 
-    DISABLE_PVD_REG_WRITE();
+    DISABLE_PWR_REG_WRITE();
 }
 
 /**
@@ -1285,11 +1342,11 @@ void PWC_PllPwrCmd(en_functional_state_t enNewState)
 {
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewState));
 
-    ENABLE_PVD_REG_WRITE();
+    ENABLE_PWR_REG_WRITE();
 
      M4_SYSREG->PWR_PWRC1_f.VPLLSD = ((Enable == enNewState) ? 0u : 1u);
 
-    DISABLE_PVD_REG_WRITE();
+    DISABLE_PWR_REG_WRITE();
 }
 /**
  *******************************************************************************
@@ -1329,7 +1386,7 @@ static en_result_t PWC_enNvicBackup(void)
             switch (stcIntSel->INTSEL)
             {
                 case INT_USART1_WUPI:
-                    if (Reset == bM4_INTC_WUPEN_SCIWEN)
+                    if (Reset == bM4_INTC_WUPEN_RXWUEN)
                     {
                         NVIC_DisableIRQ((IRQn_Type)u8Cnt);
                     }
@@ -1781,10 +1838,243 @@ void PWC_EnterStopMd(void)
     PWC_enNvicRecover();
 }
 
+/**
+ *******************************************************************************
+ ** \brief  Switch MCU from low_speed (HCLK < 8MHz) to high-speed (HCLK > 8MHz) mode.
+ **
+ ** \param  None
+ **
+ ** \retval Ok:     Mode switch sucessfully.
+ **
+ ******************************************************************************/
+en_result_t PWC_HS2LS(void)
+{
+    uint32_t u32To = 10000ul;
+
+    if(0ul == M4_EFM->FAPRT)
+    {
+        M4_EFM->FAPRT = 0x0123ul;
+        M4_EFM->FAPRT = 0x3210ul;
+        M4_EFM->FRMC_f.LVM = 0u;
+        M4_EFM->FAPRT = 0x0123ul;
+        M4_EFM->FAPRT = 0x0123ul;
+    }
+    else
+    {
+        M4_EFM->FRMC_f.LVM = 0u;
+    }
+
+    M4_SYSREG->PWR_RAMOPM = 0x9062u;
+    while((0x9062 != M4_SYSREG->PWR_RAMOPM) || (1u != M4_EFM->FRMC_f.LVM))
+    {
+        if (0ul == u32To--)
+        {
+            return Error;
+        }
+    }
+
+    ENABLE_PWR_REG_WRITE();
+    M4_SYSREG->PWR_PWRC2_f.DDAS = 1u;
+    M4_SYSREG->PWR_PWRC2_f.DVS = 1u;
+    M4_SYSREG->PWR_MDSWCR = 0x10u;
+    DISABLE_PWR_REG_WRITE();
+    
+    Ddl_Delay1ms(1ul);
+
+    return Ok;
+}
+
+/**
+ *******************************************************************************
+ ** \brief  Switch MCU from high-speed (HCLK > 8MHz) to low_speed (HCLK < 8MHz) mode.
+ **
+ ** \param  None
+ **
+ ** \retval Ok:     Mode switch sucessfully.
+ **         Error:  Mode switch failure.
+ **
+ ******************************************************************************/
+en_result_t PWC_LS2HS(void)
+{
+    uint32_t u32To = 10000ul;
+
+    ENABLE_PWR_REG_WRITE();
+    M4_SYSREG->PWR_PWRC2_f.DDAS = 0xfu;
+    M4_SYSREG->PWR_PWRC2_f.DVS = 3u;
+    M4_SYSREG->PWR_MDSWCR = 0x10u;
+    DISABLE_PWR_REG_WRITE();
+
+    Ddl_Delay1ms(1ul);
+
+    if(0ul == M4_EFM->FAPRT)
+    {
+        M4_EFM->FAPRT = 0x0123ul;
+        M4_EFM->FAPRT = 0x3210ul;
+        M4_EFM->FRMC_f.LVM = 0u;
+        M4_EFM->FAPRT = 0x0123ul;
+        M4_EFM->FAPRT = 0x0123ul;
+    }
+    else
+    {
+        M4_EFM->FRMC_f.LVM = 0u;
+    }
+    
+    M4_SYSREG->PWR_RAMOPM = 0x8043u;
+    while((0x8043 != M4_SYSREG->PWR_RAMOPM) || (0u != M4_EFM->FRMC_f.LVM))
+    {
+        if (0ul == u32To--)
+        {
+            return Error;
+        }
+    }
+
+    return Ok;
+}
+
+/**
+ *******************************************************************************
+ ** \brief  Switch MCU from high-speed (HCLK > 8MHz) to high-performance mode.
+ **
+ ** \param  None
+ **
+ ** \retval Ok:     Mode switch sucessfully.
+ **         Error:  Mode switch failure.
+ **
+ ******************************************************************************/
+en_result_t PWC_HS2HP(void)
+{
+    ENABLE_PWR_REG_WRITE();
+    M4_SYSREG->PWR_PWRC2_f.DDAS = 0xfu;
+    M4_SYSREG->PWR_PWRC2_f.DVS = 0u;
+    M4_SYSREG->PWR_MDSWCR = 0x10u;
+    DISABLE_PWR_REG_WRITE();
+    Ddl_Delay1ms(1ul);
+
+    return Ok;
+}
+
+/**
+ *******************************************************************************
+ ** \brief  Switch MCU from high-performance to high-speed (HCLK > 8MHz) mode.
+ **
+ ** \param  None
+ **
+ ** \retval Ok:     Mode switch sucessfully.
+ **         Error:  Mode switch failure.
+ **
+ ******************************************************************************/
+en_result_t PWC_HP2HS(void)
+{
+    ENABLE_PWR_REG_WRITE();
+    M4_SYSREG->PWR_PWRC2_f.DDAS = 0xfu;
+    M4_SYSREG->PWR_PWRC2_f.DVS = 3u;
+    M4_SYSREG->PWR_MDSWCR = 0x10u;
+    DISABLE_PWR_REG_WRITE();
+    Ddl_Delay1ms(1ul);
+
+    return Ok;
+}
+
+/**
+ *******************************************************************************
+ ** \brief  Switch MCU from low-speed (HCLK <= 8MHz) to high-performance mode.
+ **
+ ** \param  None
+ **
+ ** \retval Ok:     Mode switch sucessfully.
+ **         Error:  Mode switch failure.
+ **
+ ******************************************************************************/
+en_result_t PWC_LS2HP(void)
+{
+    uint32_t u32To = 10000ul;
+
+    ENABLE_PWR_REG_WRITE();
+    M4_SYSREG->PWR_PWRC2_f.DDAS = 0xfu;
+    M4_SYSREG->PWR_PWRC2_f.DVS = 0u;
+    M4_SYSREG->PWR_MDSWCR = 0x10u;
+
+    Ddl_Delay1ms(1);
+
+    if(0ul == M4_EFM->FAPRT)
+    {
+        M4_EFM->FAPRT = 0x0123ul;
+        M4_EFM->FAPRT = 0x3210ul;
+        M4_EFM->FRMC_f.LVM = 0u;
+        M4_EFM->FAPRT = 0x0123ul;
+        M4_EFM->FAPRT = 0x0123ul;
+    }
+    else
+    {
+        M4_EFM->FRMC_f.LVM = 0u;
+    }
+
+    M4_SYSREG->PWR_RAMOPM = 0x8043u;
+    while((0x8043 != M4_SYSREG->PWR_RAMOPM) || (0u != M4_EFM->FRMC_f.LVM))
+    {
+        if (0ul == u32To--)
+        {
+            return Error;
+        }
+    }
+
+    DISABLE_PWR_REG_WRITE();
+
+    return Ok;
+}
+
+/**
+ *******************************************************************************
+ ** \brief  Switch MCU from high-performance to low-speed (HCLK <= 8MHz) mode.
+ **
+ ** \param  None
+ **
+ ** \retval Ok:     Mode switch sucessfully.
+ **         Error:  Mode switch failure.
+ **
+ ******************************************************************************/
+en_result_t PWC_HP2LS(void)
+{
+    uint32_t u32To = 10000ul;
+
+    if(0ul == M4_EFM->FAPRT)
+    {
+        M4_EFM->FAPRT = 0x0123ul;
+        M4_EFM->FAPRT = 0x3210ul;
+        M4_EFM->FRMC_f.LVM = 0u;
+        M4_EFM->FAPRT = 0x0123ul;
+        M4_EFM->FAPRT = 0x0123ul;
+    }
+    else
+    {
+        M4_EFM->FRMC_f.LVM = 0u;
+    }
+
+    ENABLE_PWR_REG_WRITE();
+    M4_SYSREG->PWR_RAMOPM = 0x9062u;
+    u32To = 10000ul;
+    while((0x9062 != M4_SYSREG->PWR_RAMOPM) || (1u != M4_EFM->FRMC_f.LVM))
+    {
+        if (0ul == u32To--)
+        {
+            return Error;
+        }
+    }
+
+    M4_SYSREG->PWR_PWRC2_f.DDAS = 1u;
+    M4_SYSREG->PWR_PWRC2_f.DVS = 2u;
+    M4_SYSREG->PWR_MDSWCR = 0x10u;
+
+    DISABLE_PWR_REG_WRITE();
+
+    Ddl_Delay1ms(1);
+
+    return Ok;
+}
+
 #endif /* DDL_PWC_ENABLE */
 
 //@} // PwcGroup
-
 
 /*******************************************************************************
  * EOF (not truncated)

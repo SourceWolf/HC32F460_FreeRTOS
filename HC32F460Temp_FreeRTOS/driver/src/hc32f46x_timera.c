@@ -655,7 +655,7 @@ en_result_t TIMERA_CompareInit(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t enC
 
         /* Set compare output function */
         pstcTimeraCapture = (stc_tmra_cconr_field_t *)TIMERA_CALC_REG_ADDR(TIMERAx->CCONR1, enChannel);
-        pstcTimeraCapture->CAPMDA = 0u;
+        pstcTimeraCapture->CAPMD = 0u;
         enRet = Ok;
     }
 
@@ -1021,7 +1021,7 @@ en_result_t TIMERA_CaptureInit(M4_TMRA_TypeDef *TIMERAx, en_timera_channel_t enC
         }
 
         /* Set capture input function */
-        pstcTimeraCapture->CAPMDA = 1u;
+        pstcTimeraCapture->CAPMD = 1u;
         enRet = Ok;
     }
 

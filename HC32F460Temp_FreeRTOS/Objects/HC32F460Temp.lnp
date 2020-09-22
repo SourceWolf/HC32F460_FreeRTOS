@@ -81,6 +81,7 @@
 ".\objects\hw_spi3.o"
 ".\objects\hw_uart4.o"
 ".\objects\system_powerdown.o"
+".\objects\bsp_i2s_full_duplex.o"
 ".\objects\croutine.o"
 ".\objects\event_groups.o"
 ".\objects\list.o"

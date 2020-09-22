@@ -896,6 +896,16 @@
               <FileType>5</FileType>
               <FilePath>.\PeripheralDriver\System_InterruptCFG_Def.h</FilePath>
             </File>
+            <File>
+              <FileName>bsp_I2S_Full_Duplex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\PeripheralDriver\bsp_I2S_Full_Duplex.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_I2S_Full_Duplex.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\PeripheralDriver\bsp_I2S_Full_Duplex.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

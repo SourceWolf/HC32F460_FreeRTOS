@@ -742,7 +742,7 @@ uint8_t I2C_ReadData(M4_I2C_TypeDef* pstcI2Cx)
 {
     DDL_ASSERT(IS_VALID_UNIT(pstcI2Cx));
 
-    return (uint8_t)pstcI2Cx->DRR;
+    return pstcI2Cx->DRR;
 }
 
 /**

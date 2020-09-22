@@ -168,16 +168,11 @@
         <Probe0>I0</Probe0>
         <ProbeSetup0>2 1 1 2 0 0</ProbeSetup0>
     </PowerProbe>
-    <DisassembleMode>
-        <mode>0</mode>
-    </DisassembleMode>
-    <Breakpoints2>
-        <Bp0>_ 0 "EMUL_DATA" "QspiReadModeFourWiresIO" 0 0 0 0 4294967295</Bp0>
-        <Bp1>_ 0 "EMUL_CODE" "{$PROJ_DIR$\PeripheralDriver\User_SPI.c}.190.5" 0 0 1 "" 0 "" 0</Bp1>
-        <Count>2</Count>
-    </Breakpoints2>
     <Aliases>
         <Count>0</Count>
         <SuppressDialog>0</SuppressDialog>
     </Aliases>
+    <DisassembleMode>
+        <mode>0</mode>
+    </DisassembleMode>
 </settings>

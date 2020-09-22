@@ -4,7 +4,7 @@
 #include "System_InterruptCFG_Def.h"
 
 #define DMA_UNIT                (M4_DMA1)
-#define DMA_CH                  (DmaCh0)
+#define DMA_CH                  (DmaCh1)
 #define DMA_TRNCNT              (1000u)//传输次数
 #define DMA_BLKSIZE             (1u)
 #define DMA_RPT_SIZE            (1000u)
@@ -75,7 +75,7 @@ void User_DMA_Init(void)
 
     
     /* Enable PTDIS(AOS) clock*/
-    PWC_Fcg0PeriphClockCmd(PWC_FCG0_PERIPH_PTDIS,Enable);
+    PWC_Fcg0PeriphClockCmd(PWC_FCG0_PERIPH_AOS,Enable);
     
     DMA_SetTriggerSrc(DMA_UNIT,DMA_CH,EVT_ADC1_EOCA);
        

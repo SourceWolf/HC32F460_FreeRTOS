@@ -21,7 +21,7 @@ void User_DCU_Init(void)
     stcDcuInit.enDataSize = DcuDataBit16;
     stcDcuInit.enOperation = DcuHwTrigOpAdd;
     
-    PWC_Fcg0PeriphClockCmd(PWC_FCG0_PERIPH_PTDIS | PWC_FCG0_PERIPH_DCU1, Enable);
+    PWC_Fcg0PeriphClockCmd(PWC_FCG0_PERIPH_AOS | PWC_FCG0_PERIPH_DCU1, Enable);
     
     DCU_Init(DCU_UNIT, &stcDcuInit);
     DCU_UNIT->CTL_f.INTEN = 1;

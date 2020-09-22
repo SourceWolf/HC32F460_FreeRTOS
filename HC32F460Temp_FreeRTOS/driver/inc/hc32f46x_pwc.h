@@ -114,14 +114,15 @@ typedef enum en_pwc_stopdas
 
 /**
  *******************************************************************************
- ** \brief  The dynamic voltage scaling.
+ ** \brief  The dynamic power driver voltage select.
  **
  ******************************************************************************/
-typedef enum en_pwc_dynvol_sca
+typedef enum en_pwc_rundrvs
 {
-    Voltage09                       = 2u,   ///< The voltage 0.9V.
-    Voltage11                       = 3u,   ///< The voltage 1.1V.
-}en_pwc_dvoltage_sca_t;
+    RunUHighspeed                  = 0u,   ///< The ultra_high speed.
+    RunUlowspeed                   = 2u,   ///< The ultra_low speed.
+    RunHighspeed                   = 3u,   ///< The high speed.
+}en_pwc_rundrvs_t;
 
 /**
  *******************************************************************************
@@ -254,14 +255,14 @@ typedef enum en_pwc_pvdfiltclk_sel
  ******************************************************************************/
 typedef enum en_pwc_pvd2level_sel
 {
-    Pvd2Level21                     = 0u,  ///< 2.1V.
-    Pvd2Level23                     = 1u,  ///< 2.3V.
-    Pvd2Level25                     = 2u,  ///< 2.5V.
-    Pvd2Level26                     = 3u,  ///< 2.6V.
-    Pvd2Level27                     = 4u,  ///< 2.7V.
-    Pvd2Level28                     = 5u,  ///< 2.8V.
-    Pvd2Level29                     = 6u,  ///< 2.9V.
-    Pvd2Level11                     = 7u,  ///< 1.1V.
+    Pvd2Level0                     = 0u,  ///< 2.1V.while high_speed & ultra_low speed mode, 2.20V.while ultra_high speed mode.
+    Pvd2Level1                     = 1u,  ///< 2.3V.while high_speed & ultra_low speed mode, 2.40V.while ultra_high speed mode.
+    Pvd2Level2                     = 2u,  ///< 2.5V.while high_speed & ultra_low speed mode, 2.67V.while ultra_high speed mode.
+    Pvd2Level3                     = 3u,  ///< 2.6V.while high_speed & ultra_low speed mode, 2.77V.while ultra_high speed mode.
+    Pvd2Level4                     = 4u,  ///< 2.7V.while high_speed & ultra_low speed mode, 2.88V.while ultra_high speed mode.
+    Pvd2Level5                     = 5u,  ///< 2.8V.while high_speed & ultra_low speed mode, 2.98V.while ultra_high speed mode.
+    Pvd2Level6                     = 6u,  ///< 2.9V.while high_speed & ultra_low speed mode, 3.08V.while ultra_high speed mode.
+    Pvd2Level7                     = 7u,  ///< 1.1V.while high_speed & ultra_low speed mode, 1.15V.while ultra_high speed mode.
 }en_pwc_pvd2level_sel_t;
 
 /**
@@ -271,14 +272,14 @@ typedef enum en_pwc_pvd2level_sel
  ******************************************************************************/
 typedef enum en_pwc_pvd1level_sel
 {
-    Pvd1Level20                     = 0u,  ///< 2.0V.
-    Pvd1Level21                     = 1u,  ///< 2.1V.
-    Pvd1Level23                     = 2u,  ///< 2.3V.
-    Pvd1Level25                     = 3u,  ///< 2.5V.
-    Pvd1Level26                     = 4u,  ///< 2.6V.
-    Pvd1Level27                     = 5u,  ///< 2.7V.
-    Pvd1Level28                     = 6u,  ///< 2.8V.
-    Pvd1Level29                     = 7u,  ///< 2.9V.
+    Pvd1Level0                     = 0u,  ///< 2.0V.while high_speed & ultra_low speed mode, 2.09V.while ultra_high speed mode.
+    Pvd1Level1                     = 1u,  ///< 2.1V.while high_speed & ultra_low speed mode, 2.20V.while ultra_high speed mode.
+    Pvd1Level2                     = 2u,  ///< 2.3V.while high_speed & ultra_low speed mode, 2.40V.while ultra_high speed mode.
+    Pvd1Level3                     = 3u,  ///< 2.5V.while high_speed & ultra_low speed mode, 2.67V.while ultra_high speed mode.
+    Pvd1Level4                     = 4u,  ///< 2.6V.while high_speed & ultra_low speed mode, 2.77V.while ultra_high speed mode.
+    Pvd1Level5                     = 5u,  ///< 2.7V.while high_speed & ultra_low speed mode, 2.88V.while ultra_high speed mode.
+    Pvd1Level6                     = 6u,  ///< 2.8V.while high_speed & ultra_low speed mode, 2.98V.while ultra_high speed mode.
+    Pvd1Level7                     = 7u,  ///< 2.9V.while high_speed & ultra_low speed mode, 3.08V.while ultra_high speed mode.
 }en_pwc_pvd1level_sel_t;
 
 /**
@@ -305,14 +306,14 @@ typedef enum en_pwc_pvd1level_sel
 
 /**
  *******************************************************************************
- ** \brief  The flag of pvd detect.
+ ** \brief  The unit of pvd detect.
  **
  ******************************************************************************/
- typedef enum en_pwc_pvd_flag
+ typedef enum en_pwc_pvd
 {
-    Pvd1Flag                        = 0u,  ///< The flag of pvd1 detect.
-    Pvd2Flag                        = 1u,  ///< The flag of pvd2 detect.
-}en_pwc_pvd_flag_t;
+    PvdU1                        = 0u,      ///< The uint1 of pvd detect.
+    PvdU2                        = 1u,      ///< The unit2 of pvd detect.
+}en_pwc_pvd_t;
 
 /**
  *******************************************************************************
@@ -328,7 +329,7 @@ typedef struct stc_pwc_pwr_mode_cfg
     en_functional_state_t   enVPll;         ///< Enable or disable PLL vcc.
     en_functional_state_t   enVHrc;         ///< Enable or disable HRC vcc.
     en_pwc_drvability_sca_t enDrvAbility;   ///< Driver ability scale.
-    en_pwc_dvoltage_sca_t   enDynVol;       ///< Dynamic voltage.
+    en_pwc_rundrvs_t        enRunDrvs;      ///< Run drive select.
     en_pwc_waketime_sel_t   enPwrDWkupTm;   ///< The power down wake up time select.
 }stc_pwc_pwr_mode_cfg_t;
 
@@ -344,22 +345,6 @@ typedef struct stc_pwc_stop_mode_cfg
     en_pwc_stop_clk_sel_t   enStopClk;      ///< Clock value while stop mode awake.
     en_functional_state_t   enPll;          ///< Whether the PLL enable or disable while enter stop mode.
 }stc_pwc_stop_mode_cfg_t;
-
-/**
- *******************************************************************************
- ** \brief  The power down wake_up event configuration.
- **
- ******************************************************************************/
-typedef struct stc_pwc_wkup_edge_cfg
-{
-    en_pwc_edge_sel_t       enPtwk0Edge;    ///< Ptwk0 edge cfg (rising or falling).
-    en_pwc_edge_sel_t       enPtwk1Edge;    ///< Ptwk1 edge cfg (rising or falling).
-    en_pwc_edge_sel_t       enPtwk2Edge;    ///< Ptwk2 edge cfg (rising or falling).
-    en_pwc_edge_sel_t       enPtwk3Edge;    ///< Ptwk2 edge cfg (rising or falling).
-    en_pwc_pvdedge_sel_t    enPvd1Edge;     ///< Pvd1 edge cfg.
-    en_pwc_pvdedge_sel_t    enPvd2Edge;     ///< Pvd1 edge cfg.
-    en_pwc_edge_sel_t       enNmiEdge;      ///< Ptwk2 edge cfg (rising or falling).
-}stc_pwc_wkup_edge_cfg_t;
 
 /**
  *******************************************************************************
@@ -450,8 +435,15 @@ typedef struct stc_pwc_pvd_cfg
 #define PWC_PDWKEN2_NMI             ((uint8_t)0x04)
 #define PWC_PDWKEN2_RTCPRD          ((uint8_t)0x10)
 #define PWC_PDWKEN2_RTCAL           ((uint8_t)0x20)
-#define PWC_PDWKEN2_XTAL32          ((uint8_t)0x40)
 #define PWC_PDWKEN2_WKTM            ((uint8_t)0x80)
+
+#define PWC_PDWKUP_EDGE_WKP0        ((uint8_t)0x01)
+#define PWC_PDWKUP_EDGE_WKP1        ((uint8_t)0x02)
+#define PWC_PDWKUP_EDGE_WKP2        ((uint8_t)0x04)
+#define PWC_PDWKUP_EDGE_WKP3        ((uint8_t)0x08)
+#define PWC_PDWKUP_EDGE_PVD1        ((uint8_t)0x10)
+#define PWC_PDWKUP_EDGE_PVD2        ((uint8_t)0x20)
+#define PWC_PDWKUP_EDGE_NMI         ((uint8_t)0x40)
 
 #define PWC_STOPWKUPEN_EIRQ0        ((uint32_t)0x00000001)
 #define PWC_STOPWKUPEN_EIRQ1        ((uint32_t)0x00000002)
@@ -490,19 +482,18 @@ typedef struct stc_pwc_pvd_cfg
 #define PWC_RXD0_WKUPFLAG           ((uint8_t)0x04)
 #define PWC_RTCPRD_WKUPFALG         ((uint8_t)0x10)
 #define PWC_RTCAL_WKUPFLAG          ((uint8_t)0x20)
-#define PWC_XTAL32ER_WKUPFALG       ((uint8_t)0x30)
 #define PWC_WKTM_WKUPFLAG           ((uint8_t)0x40)
 
 #define PWC_WKTMCMP_MSK             ((uint16_t)0x0FFF)
 
-#define PWC_FCG0_PERIPH_RAMHS       ((uint32_t)0x00000001)
-#define PWC_FCG0_PERIPH_RAM0        ((uint32_t)0x00000010)
-#define PWC_FCG0_PERIPH_ECCRAM      ((uint32_t)0x00000100)
-#define PWC_FCG0_PERIPH_RetRAM      ((uint32_t)0x00000400)
+#define PWC_FCG0_PERIPH_SRAMH       ((uint32_t)0x00000001)
+#define PWC_FCG0_PERIPH_SRAM12      ((uint32_t)0x00000010)
+#define PWC_FCG0_PERIPH_SRAM3       ((uint32_t)0x00000100)
+#define PWC_FCG0_PERIPH_SRAMRET     ((uint32_t)0x00000400)
 #define PWC_FCG0_PERIPH_DMA1        ((uint32_t)0x00004000)
 #define PWC_FCG0_PERIPH_DMA2        ((uint32_t)0x00008000)
 #define PWC_FCG0_PERIPH_FCM         ((uint32_t)0x00010000)
-#define PWC_FCG0_PERIPH_PTDIS       ((uint32_t)0x00020000)
+#define PWC_FCG0_PERIPH_AOS         ((uint32_t)0x00020000)
 #define PWC_FCG0_PERIPH_AES         ((uint32_t)0x00100000)
 #define PWC_FCG0_PERIPH_HASH        ((uint32_t)0x00200000)
 #define PWC_FCG0_PERIPH_TRNG        ((uint32_t)0x00400000)
@@ -553,7 +544,6 @@ typedef struct stc_pwc_pvd_cfg
 
 #define PWC_FCG3_PERIPH_ADC1        ((uint32_t)0x00000001)
 #define PWC_FCG3_PERIPH_ADC2        ((uint32_t)0x00000002)
-#define PWC_FCG3_PERIPH_DAC         ((uint32_t)0x00000010)
 #define PWC_FCG3_PERIPH_CMP         ((uint32_t)0x00000100)
 #define PWC_FCG3_PERIPH_OTS         ((uint32_t)0x00001000)
 
@@ -570,7 +560,7 @@ void PWC_EnterPowerDownMd(void);
 void PWC_PdWakeup0Cmd(uint32_t u32Wkup0Event, en_functional_state_t enNewState);
 void PWC_PdWakeup1Cmd(uint32_t u32Wkup1Event, en_functional_state_t enNewState);
 void PWC_PdWakeup2Cmd(uint32_t u32Wkup2Event, en_functional_state_t enNewState);
-void PWC_PdWkupEdgeCfg(const stc_pwc_wkup_edge_cfg_t* pstcWkupEdgeCfg);
+void PWC_PdWakeupEvtEdgeCfg(uint8_t u8WkupEvent, en_pwc_edge_sel_t enEdge);
 
 en_flag_status_t PWC_GetWakeup0Flag(uint8_t u8WkupFlag);
 en_flag_status_t PWC_GetWakeup1Flag(uint8_t u8WkupFlag);
@@ -597,7 +587,9 @@ void PWC_PvdCfg(const stc_pwc_pvd_cfg_t* pstcPvdCfg);
 void PWC_Pvd1Cmd(en_functional_state_t enNewState);
 void PWC_Pvd2Cmd(en_functional_state_t enNewState);
 void PWC_ExVccCmd(en_functional_state_t enNewState);
-en_flag_status_t PWC_GetPvdFlag(en_pwc_pvd_flag_t enPvdFlag);
+void PWC_ClearPvdFlag(en_pwc_pvd_t enPvd);
+en_flag_status_t PWC_GetPvdFlag(en_pwc_pvd_t enPvd);
+en_flag_status_t PWC_GetPvdStatus(en_pwc_pvd_t enPvd);
 
 void PWC_HrcPwrCmd(en_functional_state_t enNewState);
 void PWC_PllPwrCmd(en_functional_state_t enNewState);
@@ -605,6 +597,12 @@ void PWC_PllPwrCmd(en_functional_state_t enNewState);
 void PWC_IrqClkBackup(void);
 void PWC_IrqClkRecover(void);
 
+en_result_t PWC_HS2LS(void);
+en_result_t PWC_LS2HS(void);
+en_result_t PWC_HS2HP(void);
+en_result_t PWC_HP2HS(void);
+en_result_t PWC_LS2HP(void);
+en_result_t PWC_HP2LS(void);
 
 //@} // PwcGroup
 

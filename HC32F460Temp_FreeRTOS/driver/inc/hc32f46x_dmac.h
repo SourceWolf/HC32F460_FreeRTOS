@@ -277,8 +277,6 @@ typedef struct stc_dma_recfg_ctl
 {
     uint16_t                    u16SrcRptBSize; ///< The source repeat size.
     uint16_t                    u16DesRptBSize; ///< The destination repeat size.
-    en_functional_state_t       enReCfgLlp;     ///< Enable llp re_config function or not.
-    en_dma_channel_t            enReCfgCh;      ///< DMA re_config channel.
     en_dma_recfg_saddr_mode_t   enSaddrMd;      ///< DMA re_config source address mode.
     en_dma_recfg_daddr_mode_t   enDaddrMd;      ///< DMA re_config destination address mode.
     en_dma_recfg_cnt_mode_t     enCntMd;        ///< DMA re_config count mode.

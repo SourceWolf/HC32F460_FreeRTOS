@@ -56,6 +56,7 @@
 #include "hc32f46x_interrupts.h"
 #include "hc32f46x_utility.h"
 #include "cmsis_os.h"
+
 #if (DDL_INTERRUPTS_ENABLE == DDL_ON)
 
 /**
@@ -377,7 +378,7 @@ void NMI_Handler(void)
  ******************************************************************************/
 void HardFault_Handler(void)
 {
-	static uint32_t CFSR,HFSR,DFSR;
+    static uint32_t CFSR,HFSR,DFSR;
 	CFSR = SCB->CFSR;
 	HFSR = SCB->HFSR;
 	DFSR = SCB->DFSR;
@@ -2443,9 +2444,9 @@ void IRQ129_Handler(void)
         }
     }
     /* EFM collision Error */
-    if (1ul == bM4_EFM_FITE_RDCOLERRITE)
+    if (1ul == bM4_EFM_FITE_COLERRITE)
     {
-        if ((1ul == bM4_EFM_FSR_RDCOLERR) && (VSSEL129 & BIT_MASK_19))
+        if ((1ul == bM4_EFM_FSR_COLERR) && (VSSEL129 & BIT_MASK_19))
         {
             EfmColErr_IrqHandler();
         }
@@ -3652,20 +3653,20 @@ void IRQ141_Handler(void)
     {
         I2c3Err_IrqHandler();
     }
-    /* LVD Ch.1 detected */
+    /* PVD Ch.1 detected */
     if (1ul == bM4_SYSREG_PWR_PVDCR1_PVD1IRE)
     {
         if((1ul == bM4_SYSREG_PWR_PVDDSR_PVD1DETFLG) && (VSSEL141 & BIT_MASK_17))
         {
-            Lvd1_IrqHandler();
+            Pvd1_IrqHandler();
         }
     }
     if (1ul == bM4_SYSREG_PWR_PVDCR1_PVD2IRE)
     {
-        /* LVD Ch.2 detected */
+        /* PVD Ch.2 detected */
         if((1ul == bM4_SYSREG_PWR_PVDDSR_PVD2DETFLG) && (VSSEL141 & BIT_MASK_18))
         {
-            Lvd2_IrqHandler();
+            Pvd2_IrqHandler();
         }
     }
     /* Freq. calculate error detected */

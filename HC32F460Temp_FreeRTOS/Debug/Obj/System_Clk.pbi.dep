@@ -89,4 +89,5 @@ System_Clk.pbi: \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\usb_lib\device_class\msc\usbd_msc_core.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\driver\inc\hc32f46x_utility.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\driver\inc\hc32f46x_wdt.h \
-  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver/system_clk_cfg.h
+  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver/system_clk_cfg.h \
+  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver/System_InterruptCFG_Def.h

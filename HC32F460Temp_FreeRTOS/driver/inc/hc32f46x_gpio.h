@@ -168,7 +168,7 @@ typedef enum en_read_wait
     WaitCycle0  = 0,                    ///< no wait cycle, operation freq. lower than 42MHz
     WaitCycle1  = 1,                    ///< one wait cycle, operation freq. @[42~84)MHz
     WaitCycle2  = 2,                    ///< two wait cycles, operation freq. @[84~126)MHz
-    WaitCycle3  = 3,                    ///< three wait cycles, operation freq. @[126~168)MHz
+    WaitCycle3  = 3,                    ///< three wait cycles, operation freq. @[126~200)MHz
 }en_read_wait_t;
 
 /**

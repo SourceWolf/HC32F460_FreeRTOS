@@ -104,6 +104,9 @@
 #define CLK_PLL_VCO_OUT_MIN                 (240u*1000u*1000u)
 #define CLK_PLL_VCO_OUT_MAX                 (480u*1000u*1000u)
 
+#define ENABLE_FCG0_REG_WRITE()             (M4_MSTP->FCG0PC = 0xa5a50001u)
+#define DISABLE_FCG0_REG_WRITE()            (M4_MSTP->FCG0PC = 0xa5a50000u)
+
 #define ENABLE_CLOCK_REG_WRITE()            (M4_SYSREG->PWR_FPRC |= 0xa501u)
 #define DISABLE_CLOCK_REG_WRITE()           (M4_SYSREG->PWR_FPRC = (0xa500u | (M4_SYSREG->PWR_FPRC & (uint16_t)(~1u))))
 
@@ -473,7 +476,6 @@ void CLK_Xtal32Config(const stc_clk_xtal32_cfg_t *pstcXtal32Cfg)
     {
         ENABLE_CLOCK_REG_WRITE();
 
-        M4_SYSREG->CMU_XTAL32CFGR_f.XTAL32SUPDRV = pstcXtal32Cfg->enFastStartup;
         M4_SYSREG->CMU_XTAL32CFGR_f.XTAL32DRV = pstcXtal32Cfg->enDrv;
         M4_SYSREG->CMU_XTAL32NFR_f.XTAL32NF = pstcXtal32Cfg->enFilterMode;
 
@@ -988,6 +990,8 @@ void CLK_SetSysClkSource(en_clk_sys_source_t enTargetSysSrc)
 
     DDL_ASSERT(IS_SYSCLK_SOURCE(enTargetSysSrc));
 
+    ENABLE_FCG0_REG_WRITE();
+
     /* Only current system clock source or target system clock source is MPLL
     need to close fcg0~fcg3 and open fcg0~fcg3 during switch system clock source.
     We need to backup fcg0~fcg3 before close them. */
@@ -1025,6 +1029,8 @@ void CLK_SetSysClkSource(en_clk_sys_source_t enTargetSysSrc)
     M4_MSTP->FCG1 = fcg1;
     M4_MSTP->FCG2 = fcg2;
     M4_MSTP->FCG3 = fcg3;
+
+    DISABLE_FCG0_REG_WRITE();
 
     /* Wait stable after open fcg. */
     timeout = 0ul;
@@ -1073,6 +1079,8 @@ void CLK_SysClkConfig(const stc_clk_sysclk_cfg_t *pstcSysclkCfg)
     __IO uint32_t fcg2 = M4_MSTP->FCG2;
     __IO uint32_t fcg3 = M4_MSTP->FCG3;
 
+    ENABLE_FCG0_REG_WRITE();
+
     if(NULL != pstcSysclkCfg)
     {
         DDL_ASSERT(IS_SYSCLK_CONFIG_VALID(pstcSysclkCfg));
@@ -1120,6 +1128,8 @@ void CLK_SysClkConfig(const stc_clk_sysclk_cfg_t *pstcSysclkCfg)
         M4_MSTP->FCG1 = fcg1;
         M4_MSTP->FCG2 = fcg2;
         M4_MSTP->FCG3 = fcg3;
+
+        DISABLE_FCG0_REG_WRITE();
 
         /* Wait stable after open fcg. */
         timeout = 0ul;
@@ -1307,41 +1317,8 @@ void CLK_GetPllClockFreq(stc_pll_clk_freq_t *pstcPllClkFreq)
  ******************************************************************************/
 void CLK_SetUsbClkSource(en_clk_usb_source_t enTargetUsbSrc)
 {
-    __IO uint32_t timeout = 0ul;
-    __IO uint32_t fcg0 = M4_MSTP->FCG0;
-    __IO uint32_t fcg1 = M4_MSTP->FCG1;
-    __IO uint32_t fcg2 = M4_MSTP->FCG2;
-    __IO uint32_t fcg3 = M4_MSTP->FCG3;
 
     DDL_ASSERT(IS_USBCLK_SOURCE(enTargetUsbSrc));
-
-    /* Only current system clock source is MPLL need to close fcg0~fcg3 and
-    open fcg0~fcg3 during switch USB clock source.
-    We need to backup fcg0~fcg3 before close them. */
-    if(CLKSysSrcMPLL == M4_SYSREG->CMU_CKSWR_f.CKSW)
-    {
-        /* Close fcg0~fcg3.Set bit to close it. */
-        BIT_SET(M4_MSTP->FCG0,  BIT_VALUE(FCG0_OFFSET_FCM));
-        BIT_SET(M4_MSTP->FCG1,  BIT_VALUE(FCG1_OFFSET_CAN)  |
-                                BIT_VALUE(FCG1_OFFSET_QSPI) |
-                                BIT_VALUE(FCG1_OFFSET_USBFS)|
-                                BIT_VALUE(FCG1_OFFSET_SPI1) |
-                                BIT_VALUE(FCG1_OFFSET_SPI2) |
-                                BIT_VALUE(FCG1_OFFSET_SPI3) |
-                                BIT_VALUE(FCG1_OFFSET_SPI4));
-
-        M4_MSTP->FCG2 = FCG2_WITHOUT_EMB | fcg2;
-
-        BIT_SET(M4_MSTP->FCG3,  BIT_VALUE(FCG3_OFFSET_ADC1) |
-                                BIT_VALUE(FCG3_OFFSET_ADC2) |
-                                BIT_VALUE(FCG3_OFFSET_DAC));
-
-        /* Wait stable after close fcg. */
-        do
-        {
-            timeout++;
-        }while(timeout < CLK_FCG_STABLE);
-    }
 
     /* Switch to target usb clock source. */
     ENABLE_CLOCK_REG_WRITE();
@@ -1349,25 +1326,6 @@ void CLK_SetUsbClkSource(en_clk_usb_source_t enTargetUsbSrc)
     M4_SYSREG->CMU_UFSCKCFGR_f.USBCKS = enTargetUsbSrc;
 
     DISABLE_CLOCK_REG_WRITE();
-
-    timeout = 0ul;
-    do
-    {
-        timeout++;
-    }while(timeout < CLK_USBCLK_STABLE);
-
-    /* Open fcg0~fcg3. Write the backup value. */
-    M4_MSTP->FCG0 = fcg0;
-    M4_MSTP->FCG1 = fcg1;
-    M4_MSTP->FCG2 = fcg2;
-    M4_MSTP->FCG3 = fcg3;
-
-    /* Wait stable after open fcg. */
-    timeout = 0ul;
-    do
-    {
-        timeout++;
-    }while(timeout < CLK_FCG_STABLE);
 }
 
 /**
@@ -1384,9 +1342,6 @@ void CLK_SetUsbClkSource(en_clk_usb_source_t enTargetUsbSrc)
  ** \arg    ClkPeriSrcUpllr             Select UPLLR as peripheral(adc/trng) clock source.
  **
  ** \retval None
- **
- ** \note   Must close usb,ether,exbus,can,qspi,spi,timer,fcm,adc and dac
- **         before switch adc clock source.
  **
  ******************************************************************************/
 void CLK_SetPeriClkSource(en_clk_peri_source_t enTargetPeriSrc)

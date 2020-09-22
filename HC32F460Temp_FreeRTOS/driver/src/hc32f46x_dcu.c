@@ -139,7 +139,7 @@
     (((x) >= EVT_TMRA1_OVF) && ((x) <= EVT_TMRA5_CMP))                 ||      \
     (((x) >= EVT_TMRA6_OVF) && ((x) <= EVT_TMRA6_CMP))                 ||      \
     (((x) >= EVT_USART1_EI) && ((x) <= EVT_USART4_RTO))                ||      \
-    (((x) >= EVT_SPI1_SRRI) && ((x) <= EVT_AOS_STRG))                  ||      \
+    (((x) >= EVT_SPI1_SPRI) && ((x) <= EVT_AOS_STRG))                  ||      \
     (((x) >= EVT_TMR41_SCMUH) && ((x) <= EVT_TMR42_SCMWL))             ||      \
     (((x) >= EVT_TMR43_SCMUH) && ((x) <= EVT_TMR43_SCMWL))             ||      \
     (((x) >= EVT_EVENT_PORT1)  && ((x) <= EVT_EVENT_PORT4))            ||      \
@@ -207,24 +207,24 @@ en_result_t DCU_Init(M4_DCU_TypeDef *DCUx, const stc_dcu_init_t *pstcInitCfg)
         DDL_ASSERT(IS_VALID_DCU_DATAZ_SIZE(pstcInitCfg->enDataSize));
         DDL_ASSERT(IS_VALID_DCU_INT_WIN_MODE(pstcInitCfg->enIntWinMode));
         DDL_ASSERT(IS_VALID_DCU_CMP_TRIG_MODE(pstcInitCfg->enCmpTriggerMode));
-        
+
         /* De-initialize dcu register value */
         DCUx->CTL = 0ul;
         DCUx->INTSEL = 0ul;
         DCUx->FLAGCLR = 0x7Ful;
-        
+
         /* Set dcu operation mode */
         DCUx->CTL_f.MODE = (uint32_t)pstcInitCfg->enOperation;
-        
+
         /* Set dcu data sieze */
         DCUx->CTL_f.DATASIZE = (uint32_t)pstcInitCfg->enDataSize;
-        
+
         /* Set dcu compare trigger mode */
         DCUx->CTL_f.COMP_TRG = (uint32_t)pstcInitCfg->enCmpTriggerMode;
-        
+
         /* Set dcu interrupt window mode */
         DCUx->INTSEL_f.INT_WIN = (uint32_t)pstcInitCfg->enIntWinMode;
-        
+
         DCUx->INTSEL = pstcInitCfg->u32IntSel;
         DCUx->CTL_f.INTEN = (uint32_t)(pstcInitCfg->enIntCmd);
 

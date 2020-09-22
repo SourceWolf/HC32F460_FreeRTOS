@@ -15,7 +15,7 @@ typedef struct
 	uint16_t NumOfChannels;
 	uint32_t SampleRate;
 	uint32_t ByteRate;
-	uint32_t BlockAlign;
+	uint16_t BlockAlign;
 	uint16_t BitsPerSample;
 }ChunkFMT;
 typedef struct

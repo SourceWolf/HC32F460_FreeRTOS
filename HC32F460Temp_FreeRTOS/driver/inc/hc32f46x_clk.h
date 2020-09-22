@@ -263,8 +263,6 @@ typedef enum en_clk_xtal32_drv
 {
     ClkXtal32MidDrv                 = 0u,   ///< Middle drive capability.32.768KHz.
     ClkXtal32HighDrv                = 1u,   ///< High drive capability.32.768KHz.
-    ClkXtal32LowDrv                 = 2u,   ///< Low drive capability.32.768KHz.
-    ClkXtal32TinyDrv                = 3u,   ///< Tiny drive capability.32.768KHz.
 }en_clk_xtal32_drv_t;
 
 /**
@@ -446,7 +444,6 @@ typedef struct stc_clk_xtal_stp_cfg
  ******************************************************************************/
 typedef struct stc_clk_xtal32_cfg
 {
-    en_functional_state_t           enFastStartup;  ///< Enable fast start up or not.
     en_clk_xtal32_drv_t             enDrv;          ///< Select xtal32 drive capability.
     en_clk_xtal32_filter_mode_t     enFilterMode;   ///< The filter mode of xtal32.
 }stc_clk_xtal32_cfg_t;

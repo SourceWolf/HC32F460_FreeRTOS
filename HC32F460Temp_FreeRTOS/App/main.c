@@ -15,6 +15,9 @@
 #include "hd_sdio.h"
 #include "SEGGER_RTT.h"
 #include "User_Gpio.h"
+#include "Hw_SPI3.h"
+#include "Hw_I2C.h"
+#include "AT24C02.h"
 USB_OTG_CORE_HANDLE  USB_OTG_dev;
 stc_clk_freq_t Clkdata;
 #ifdef APP_VERSION
@@ -43,10 +46,16 @@ int main(void)
 	Ddl_UartInit();
 	Hw_MPU_Init();
 	CLK_GetPllClockFreq(&pllfreq);
-	
+	printf("system base software initialed.--------%s, %d\r\n",__FILE__, __LINE__);
+//    Hw_SPI3_Init();
+//    HW_I2C_Port_Init();
+//	HW_I2C_Init(I2C1_UNIT,300000);
 	User_Task_Create();
     while(1)
-    {   		
+    {   
+//        SPI_TX_8bit((uint8_t*)buffer1+10,(uint8_t*)"1234567890",10);
+//        TestEEPROM();
+//        Ddl_Delay1ms(100);
 //        LPM_TEST();
 		;
     }

@@ -7,33 +7,41 @@ uint32_t bw,len;
 WaveHeader Wavedata;
 char line[512];
 TaskHandle_t H_Task_Fs;
+//QueueHandle_t H_xQueue_Recode = NULL;
+AudioBuff_type *pwavdata;
 #define STACKSIZE_FS	configMINIMAL_STACK_SIZE
 #define PRIORITY_TASKFS	(tskIDLE_PRIORITY+3)
 static void Task_FS_Operation(void* param)
 {
+//    H_xQueue_Recode = xQueueGenericCreate(2,sizeof(AudioBuff_type),queueQUEUE_TYPE_BASE);
 	hd_sdio_hw_init();
 	disk_initialize(SD_Card);
 	wavefileinfo_init(&Wavedata);
     f_mount(SD_Card,&FatFs);//Çý¶¯Æ÷0
-    fr = f_open(&Myfile,"myfile.txt",FA_READ|FA_WRITE|FA_CREATE_ALWAYS);
+    fr = f_open(&Myfile,"myfile.wav",FA_READ|FA_WRITE|FA_CREATE_ALWAYS);
 	fr = f_write(&Myfile,&Wavedata,sizeof(Wavedata),&bw);
-//    f_gets(line, sizeof line, &Myfile);
-//        printf("%s\r\n",line);
-   
-//	fr = f_open(&f_Wave,"wave.txt",FA_WRITE|FA_READ|FA_CREATE_ALWAYS);
-//	f_lseek(&f_Wave,0);	
-//	len = sizeof(Wavedata);
-//	fr = f_write(&f_Wave,&Wavedata,sizeof(Wavedata),&bw);
-	fr = f_write(&Myfile,&au16PixieDustSoundI2s_8,u32WavLen_8k*2,&bw);
-	Wavedata.data.ChunkSize = u32WavLen_8k*2;
-	Wavedata.riff.ChunkSize = Wavedata.data.ChunkSize+46;
-//	f_lseek(&Myfile,0);
-//	fr = f_write(&Myfile,&Wavedata,sizeof(Wavedata),&bw);
-	 f_close(&Myfile);
-//	vTaskDelete(H_Task_Fs);
+    i2s_record_duplex_init();
+    
+	fr = f_write(&Myfile,&au16PixieDustSoundI2s_8,u32WavLen_8k,&bw);
+	Wavedata.data.ChunkSize = u32WavLen_8k;
+	Wavedata.riff.ChunkSize = Wavedata.data.ChunkSize+36;
+	f_lseek(&Myfile,0);
+	fr = f_write(&Myfile,&Wavedata,sizeof(Wavedata),&bw);
+	f_close(&Myfile);
+	vTaskDelete(H_Task_Fs);
 	while(1)
 		{
-			vTaskDelay(100/portTICK_PERIOD_MS);
+
+//            fr = f_write(&Myfile,pwavdata,sizeof(AudioBuff_type),&bw);
+//            Wavedata.data.ChunkSize += sizeof(AudioBuff_type);
+//            Wavedata.riff.ChunkSize = Wavedata.data.ChunkSize+36;
+//            if(Wavedata.data.ChunkSize>500000)
+//            {
+//                f_lseek(&Myfile,0);
+//               	fr = f_write(&Myfile,&Wavedata,sizeof(Wavedata),&bw);
+//                f_close(&Myfile);
+//                vTaskDelete(H_Task_Fs);
+//            }
 		}
 }
 

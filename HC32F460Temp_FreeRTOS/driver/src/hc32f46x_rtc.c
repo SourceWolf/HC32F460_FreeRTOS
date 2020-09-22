@@ -263,12 +263,12 @@ en_result_t RTC_EnterRwMode(void)
     /* Mode switch when RTC is running */
     if (0u != M4_RTC->CR1_f.START)
     {
-        M4_RTC->CR2_f.WAIT = 1u;
-        /* Waiting for WAITF bit set */
+        M4_RTC->CR2_f.RWREQ = 1u;
+        /* Waiting for RWEN bit set */
         u32Timeout = SystemCoreClock >> 8u;
         do
         {
-            u8RegSta = (uint8_t)M4_RTC->CR2_f.WAITF;
+            u8RegSta = (uint8_t)M4_RTC->CR2_f.RWEN;
             u32TimeCnt++;
         } while ((u32TimeCnt < u32Timeout) && (u8RegSta == 0u));
 
@@ -300,12 +300,12 @@ en_result_t RTC_ExitRwMode(void)
     /* Mode switch when RTC is running */
     if (0u != M4_RTC->CR1_f.START)
     {
-        M4_RTC->CR2_f.WAIT = 0u;
-        /* Waiting for WAITF bit reset */
+        M4_RTC->CR2_f.RWREQ = 0u;
+        /* Waiting for RWEN bit reset */
         u32Timeout = SystemCoreClock >> 8u;
         do
         {
-            u8RegSta = (uint8_t)M4_RTC->CR2_f.WAITF;
+            u8RegSta = (uint8_t)M4_RTC->CR2_f.RWEN;
             u32TimeCnt++;
         } while ((u32TimeCnt < u32Timeout) && (u8RegSta == 1u));
 
@@ -403,12 +403,12 @@ en_result_t RTC_LowPowerSwitch(void)
     /* Check RTC work status */
     if (0u != M4_RTC->CR1_f.START)
     {
-        M4_RTC->CR2_f.WAIT = 1u;
-        /* Waiting for RTC WAITF bit set */
+        M4_RTC->CR2_f.RWREQ = 1u;
+        /* Waiting for RTC RWEN bit set */
         u32Timeout = SystemCoreClock / 100u;
         do
         {
-            u8RegSta = (uint8_t)M4_RTC->CR2_f.WAITF;
+            u8RegSta = (uint8_t)M4_RTC->CR2_f.RWEN;
             u32TimeCnt++;
         } while ((u32TimeCnt < u32Timeout) && (u8RegSta == 0u));
 
@@ -418,12 +418,12 @@ en_result_t RTC_LowPowerSwitch(void)
         }
         else
         {
-            M4_RTC->CR2_f.WAIT = 0u;
-            /* Waiting for RTC WAITF bit reset */
+            M4_RTC->CR2_f.RWREQ = 0u;
+            /* Waiting for RTC RWEN bit reset */
             u32TimeCnt = 0u;
             do
             {
-                u8RegSta = (uint8_t)M4_RTC->CR2_f.WAITF;
+                u8RegSta = (uint8_t)M4_RTC->CR2_f.RWEN;
                 u32TimeCnt++;
             } while ((u32TimeCnt < u32Timeout) && (u8RegSta == 1u));
 

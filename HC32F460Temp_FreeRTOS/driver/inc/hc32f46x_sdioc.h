@@ -75,6 +75,16 @@ extern "C"
 /*******************************************************************************
  * Global type definitions ('typedef')
  ******************************************************************************/
+/**
+ *******************************************************************************
+ ** \brief SDIOC mode enumeration
+ **
+ ******************************************************************************/
+typedef enum en_sdioc_mode
+{
+    SdiocModeSD  = 0u,                      ///< The SD mode
+    SdiocModeMMC = 1u,                      ///< The MMC mode
+} en_sdioc_mode_t;
 
 /**
  *******************************************************************************
@@ -496,6 +506,7 @@ void SDIOC_IrqHandler(M4_SDIOC_TypeDef *SDIOCx);
 en_result_t SDIOC_Init(M4_SDIOC_TypeDef *SDIOCx,
                                 const stc_sdioc_init_t *pstcInitCfg);
 en_result_t SDIOC_DeInit(M4_SDIOC_TypeDef *SDIOCx);
+void SDIOC_SetMode(const M4_SDIOC_TypeDef *SDIOCx, en_sdioc_mode_t enMode);
 en_result_t SDIOC_SendCommand(M4_SDIOC_TypeDef *SDIOCx,
                                 const stc_sdioc_cmd_cfg_t *pstcCmdCfg);
 uint32_t SDIOC_GetResponse(const M4_SDIOC_TypeDef *SDIOCx,

@@ -40,19 +40,19 @@
  * at all times.
  */
 /******************************************************************************/
-/** \file HC32F46x.h
+/** \file HC32F46X.h
  **
  ** Auto generate.
- ** Headerfile for HC32F46x series MCU
+ ** Headerfile for HC32F46X series MCU
  **
  ** History:
  **
- **   - 2019-08-22  1.03   First version for Device Driver Library of HC32F46x series MCU.
+ **   - 2020-08-27  1.03   First version for Device Driver Library of HC32F46X series MCU.
  **
  ******************************************************************************/
 
-#ifndef __HC32F46x_H__
-#define __HC32F46x_H__
+#ifndef __HC32F46X_H__
+#define __HC32F46X_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -62,8 +62,8 @@ extern "C" {
  * Configuration of the Cortex-M4 Processor and Core Peripherals
  ******************************************************************************/
 #define __CM4_REV                 0x0001  /*!< Core revision r0p1                                   */
-#define __MPU_PRESENT             1       /*!< HC32F46x provides an MPU                             */
-#define __NVIC_PRIO_BITS          4       /*!< HC32F46x uses 4 Bits for the Priority Levels         */
+#define __MPU_PRESENT             1       /*!< HC32F46X provides an MPU                             */
+#define __NVIC_PRIO_BITS          4       /*!< HC32F46X uses 4 Bits for the Priority Levels         */
 #define __Vendor_SysTickConfig    0       /*!< Set to 1 if different SysTick Config is used         */
 #define __FPU_PRESENT             1       /*!< FPU present                                          */
 
@@ -403,23 +403,23 @@ typedef enum en_event_src
     EVT_USART4_RTO          = 297u,
 
     /* SPI */
-    EVT_SPI1_SRRI           = 299u,
-    EVT_SPI1_SRTI           = 300u,
+    EVT_SPI1_SPRI           = 299u,
+    EVT_SPI1_SPTI           = 300u,
     EVT_SPI1_SPII           = 301u,
     EVT_SPI1_SPEI           = 302u,
     EVT_SPI1_SPTEND         = 303u,
-    EVT_SPI2_SRRI           = 304u,
-    EVT_SPI2_SRTI           = 305u,
+    EVT_SPI2_SPRI           = 304u,
+    EVT_SPI2_SPTI           = 305u,
     EVT_SPI2_SPII           = 306u,
     EVT_SPI2_SPEI           = 307u,
     EVT_SPI2_SPTEND         = 308u,
-    EVT_SPI3_SRRI           = 309u,
-    EVT_SPI3_SRTI           = 310u,
+    EVT_SPI3_SPRI           = 309u,
+    EVT_SPI3_SPTI           = 310u,
     EVT_SPI3_SPII           = 311u,
     EVT_SPI3_SPEI           = 312u,
     EVT_SPI3_SPTEND         = 313u,
-    EVT_SPI4_SRRI           = 314u,
-    EVT_SPI4_SRTI           = 315u,
+    EVT_SPI4_SPRI           = 314u,
+    EVT_SPI4_SPTI           = 315u,
     EVT_SPI4_SPII           = 316u,
     EVT_SPI4_SPEI           = 317u,
     EVT_SPI4_SPTEND         = 318u,
@@ -708,20 +708,20 @@ typedef enum en_int_src
     INT_USART4_RTO          = 297u,
 
     /* SPI */
-    INT_SPI1_SRRI           = 299u,
-    INT_SPI1_SRTI           = 300u,
+    INT_SPI1_SPRI           = 299u,
+    INT_SPI1_SPTI           = 300u,
     INT_SPI1_SPII           = 301u,
     INT_SPI1_SPEI           = 302u,
-    INT_SPI2_SRRI           = 304u,
-    INT_SPI2_SRTI           = 305u,
+    INT_SPI2_SPRI           = 304u,
+    INT_SPI2_SPTI           = 305u,
     INT_SPI2_SPII           = 306u,
     INT_SPI2_SPEI           = 307u,
-    INT_SPI3_SRRI           = 309u,
-    INT_SPI3_SRTI           = 310u,
+    INT_SPI3_SPRI           = 309u,
+    INT_SPI3_SPTI           = 310u,
     INT_SPI3_SPII           = 311u,
     INT_SPI3_SPEI           = 312u,
-    INT_SPI4_SRRI           = 314u,
-    INT_SPI4_SRTI           = 315u,
+    INT_SPI4_SPRI           = 314u,
+    INT_SPI4_SPTI           = 315u,
     INT_SPI4_SPII           = 316u,
     INT_SPI4_SPEI           = 317u,
 
@@ -1094,7 +1094,7 @@ typedef struct
 {
     __IO uint32_t TRGSEL                    : 9;
     uint32_t RESERVED9                      :23;
-} stc_aos_dmatrgselrc_field_t;
+} stc_aos_dma_trgselrc_field_t;
 
 typedef struct
 {
@@ -1167,20 +1167,6 @@ typedef struct
     __IO uint32_t TRGSEL                    : 9;
     uint32_t RESERVED9                      :23;
 } stc_aos_adc2_itrgselr1_field_t;
-
-typedef struct
-{
-    __IO uint32_t TRGSEL                    : 9;
-    uint32_t RESERVED9                      :21;
-    __IO uint32_t COMTRG_EN                 : 2;
-} stc_aos_comtrg1_field_t;
-
-typedef struct
-{
-    __IO uint32_t TRGSEL                    : 9;
-    uint32_t RESERVED9                      :21;
-    __IO uint32_t COMTRG_EN                 : 2;
-} stc_aos_comtrg2_field_t;
 
 typedef struct
 {
@@ -1578,13 +1564,14 @@ typedef struct
     __IO uint16_t DA2SW                     : 1;
     uint16_t RESERVED2                      : 2;
     __IO uint16_t VREFSW                    : 1;
-    uint16_t RESERVED5                      :11;
+    uint16_t RESERVED5                      : 3;
+    __IO uint16_t WPRT                      : 8;
 } stc_cmp_cr_rvadc_field_t;
 
 typedef struct
 {
     uint32_t RESERVED0                      : 1;
-    __IO uint32_t SEL                       : 1;
+    __IO uint32_t CRC_SEL                   : 1;
     __IO uint32_t REFIN                     : 1;
     __IO uint32_t REFOUT                    : 1;
     __IO uint32_t XOROUT                    : 1;
@@ -1638,9 +1625,9 @@ typedef struct
     __IO uint32_t SWDTSTP                   : 1;
     __IO uint32_t WDTSTP                    : 1;
     __IO uint32_t RTCSTP                    : 1;
-    __IO uint32_t VDU0STP                   : 1;
-    __IO uint32_t VDU1STP                   : 1;
-    __IO uint32_t VDU2STP                   : 1;
+    __IO uint32_t PVD0STP                   : 1;
+    __IO uint32_t PVD1STP                   : 1;
+    __IO uint32_t PVD2STP                   : 1;
     uint32_t RESERVED6                      : 8;
     __IO uint32_t TMR01STP                  : 1;
     __IO uint32_t TMR02STP                  : 1;
@@ -1661,8 +1648,8 @@ typedef struct
 
 typedef struct
 {
-    __IO uint32_t TRACEIOEN                 : 1;
     __IO uint32_t TRACEMODE                 : 2;
+    __IO uint32_t TRACEIOEN                 : 1;
     uint32_t RESERVED3                      :29;
 } stc_dbgc_mcutracectl_field_t;
 
@@ -1977,7 +1964,7 @@ typedef struct
     __IO uint32_t PGSZERR                   : 1;
     __IO uint32_t PGMISMTCH                 : 1;
     __IO uint32_t OPTEND                    : 1;
-    __IO uint32_t RDCOLERR                  : 1;
+    __IO uint32_t COLERR                    : 1;
     uint32_t RESERVED6                      : 2;
     __IO uint32_t RDY                       : 1;
     uint32_t RESERVED9                      :23;
@@ -1990,7 +1977,7 @@ typedef struct
     __IO uint32_t PGSZERRCLR                : 1;
     __IO uint32_t PGMISMTCHCLR              : 1;
     __IO uint32_t OPTENDCLR                 : 1;
-    __IO uint32_t RDCOLERRCLR               : 1;
+    __IO uint32_t COLERRCLR                 : 1;
     uint32_t RESERVED6                      :26;
 } stc_efm_fsclr_field_t;
 
@@ -1998,7 +1985,7 @@ typedef struct
 {
     __IO uint32_t PEERRITE                  : 1;
     __IO uint32_t OPTENDITE                 : 1;
-    __IO uint32_t RDCOLERRITE               : 1;
+    __IO uint32_t COLERRITE                 : 1;
     uint32_t RESERVED3                      :29;
 } stc_efm_fite_field_t;
 
@@ -2010,14 +1997,14 @@ typedef struct
 
 typedef struct
 {
-    __IO uint32_t FPMTSW                    :20;
-    uint32_t RESERVED20                     :12;
+    __IO uint32_t FPMTSW                    :19;
+    uint32_t RESERVED19                     :13;
 } stc_efm_fpmtsw_field_t;
 
 typedef struct
 {
-    __IO uint32_t FPMTEW                    :20;
-    uint32_t RESERVED20                     :12;
+    __IO uint32_t FPMTEW                    :19;
+    uint32_t RESERVED19                     :13;
 } stc_efm_fpmtew_field_t;
 
 typedef struct
@@ -2046,11 +2033,20 @@ typedef struct
 
 typedef struct
 {
+    uint32_t RESERVED0                      : 1;
+    __IO uint32_t FRANDS                    :14;
+    uint32_t RESERVED15                     : 1;
+    __IO uint32_t FRANDFG                   : 1;
+    uint32_t RESERVED17                     :15;
+} stc_efm_efm_frands_field_t;
+
+typedef struct
+{
     __IO uint32_t PORTINEN                  : 1;
     __IO uint32_t CMPEN                     : 3;
     uint32_t RESERVED4                      : 1;
     __IO uint32_t OSCSTPEN                  : 1;
-    __IO uint32_t PWMSEL                    : 3;
+    __IO uint32_t PWMSEN                    : 3;
     uint32_t RESERVED9                      :19;
     __IO uint32_t NFSEL                     : 2;
     __IO uint32_t NFEN                      : 1;
@@ -2216,7 +2212,7 @@ typedef struct
     uint32_t RESERVED15                     : 5;
     __IO uint32_t GENCALLIE                 : 1;
     __IO uint32_t SMBDEFAULTIE              : 1;
-    __IO uint32_t SMHOSTIE                  : 1;
+    __IO uint32_t SMBHOSTIE                 : 1;
     __IO uint32_t SMBALRTIE                 : 1;
     uint32_t RESERVED24                     : 8;
 } stc_i2c_cr2_field_t;
@@ -2312,14 +2308,12 @@ typedef struct
 
 typedef struct
 {
-    __IO uint32_t DT                        : 8;
-    uint32_t RESERVED8                      :24;
+    __IO uint8_t DT                         : 8;
 } stc_i2c_dtr_field_t;
 
 typedef struct
 {
-    __IO uint32_t DR                        : 8;
-    uint32_t RESERVED8                      :24;
+    __IO uint8_t DR                         : 8;
 } stc_i2c_drr_field_t;
 
 typedef struct
@@ -2371,9 +2365,9 @@ typedef struct
     __IO uint32_t TXBA                      : 1;
     __IO uint32_t RXBA                      : 1;
     __IO uint32_t TXBE                      : 1;
-    __IO uint32_t TXBUF                     : 1;
+    __IO uint32_t TXBF                      : 1;
     __IO uint32_t RXBE                      : 1;
-    __IO uint32_t RXBUF                     : 1;
+    __IO uint32_t RXBF                      : 1;
     uint32_t RESERVED6                      :26;
 } stc_i2s_sr_field_t;
 
@@ -2449,7 +2443,7 @@ typedef struct
     __IO uint32_t SWDTENR                   : 1;
     __IO uint32_t PVD1ENR                   : 1;
     __IO uint32_t PVD2ENR                   : 1;
-    __IO uint32_t XTAL32STPENR              : 1;
+    uint32_t RESERVED4                      : 1;
     __IO uint32_t XTALSTPENR                : 1;
     uint32_t RESERVED6                      : 2;
     __IO uint32_t REPENR                    : 1;
@@ -2465,7 +2459,7 @@ typedef struct
     __IO uint32_t SWDTFR                    : 1;
     __IO uint32_t PVD1FR                    : 1;
     __IO uint32_t PVD2FR                    : 1;
-    __IO uint32_t XTAL32STPFR               : 1;
+    uint32_t RESERVED4                      : 1;
     __IO uint32_t XTALSTPFR                 : 1;
     uint32_t RESERVED6                      : 2;
     __IO uint32_t REPFR                     : 1;
@@ -2481,7 +2475,7 @@ typedef struct
     __IO uint32_t SWDTCFR                   : 1;
     __IO uint32_t PVD1CFR                   : 1;
     __IO uint32_t PVD2CFR                   : 1;
-    __IO uint32_t XTAL32STPCFR              : 1;
+    uint32_t RESERVED4                      : 1;
     __IO uint32_t XTALSTPCFR                : 1;
     uint32_t RESERVED6                      : 2;
     __IO uint32_t REPCFR                    : 1;
@@ -2513,7 +2507,7 @@ typedef struct
     __IO uint32_t RTCPRDWUEN                : 1;
     __IO uint32_t TMR0WUEN                  : 1;
     uint32_t RESERVED24                     : 1;
-    __IO uint32_t SCIWEN                    : 1;
+    __IO uint32_t RXWUEN                    : 1;
     uint32_t RESERVED26                     : 6;
 } stc_intc_wupen_field_t;
 
@@ -3117,13 +3111,13 @@ typedef struct
 
 typedef struct
 {
-    __IO uint32_t RAMHS                     : 1;
+    __IO uint32_t SRAMH                     : 1;
     uint32_t RESERVED1                      : 3;
-    __IO uint32_t RAM0                      : 1;
+    __IO uint32_t SRAM12                    : 1;
     uint32_t RESERVED5                      : 3;
-    __IO uint32_t ECCRAM                    : 1;
+    __IO uint32_t SRAM3                     : 1;
     uint32_t RESERVED9                      : 1;
-    __IO uint32_t RETRAM                    : 1;
+    __IO uint32_t SRAMRET                   : 1;
     uint32_t RESERVED11                     : 3;
     __IO uint32_t DMA1                      : 1;
     __IO uint32_t DMA2                      : 1;
@@ -3196,9 +3190,7 @@ typedef struct
 {
     __IO uint32_t ADC1                      : 1;
     __IO uint32_t ADC2                      : 1;
-    uint32_t RESERVED2                      : 2;
-    __IO uint32_t DAC                       : 1;
-    uint32_t RESERVED5                      : 3;
+    uint32_t RESERVED2                      : 6;
     __IO uint32_t CMP                       : 1;
     uint32_t RESERVED9                      : 3;
     __IO uint32_t OTS                       : 1;
@@ -3223,66 +3215,6 @@ typedef struct
 
 typedef struct
 {
-    __IO uint16_t TSDC0                     : 1;
-    __IO uint16_t TSDC1                     : 1;
-    __IO uint16_t TSDC2                     : 1;
-    __IO uint16_t TSDC3                     : 1;
-    __IO uint16_t TSDC4                     : 1;
-    __IO uint16_t TSDC5                     : 1;
-    __IO uint16_t TSDC6                     : 1;
-    __IO uint16_t TSDC7                     : 1;
-    __IO uint16_t TSDC8                     : 1;
-    __IO uint16_t TSDC9                     : 1;
-    __IO uint16_t TSDC10                    : 1;
-    __IO uint16_t TSDC11                    : 1;
-    __IO uint16_t TSDC12                    : 1;
-    __IO uint16_t TSDC13                    : 1;
-    __IO uint16_t TSDC14                    : 1;
-    __IO uint16_t TSDC15                    : 1;
-} stc_ots_dr1_field_t;
-
-typedef struct
-{
-    __IO uint16_t TSDC0                     : 1;
-    __IO uint16_t TSDC1                     : 1;
-    __IO uint16_t TSDC2                     : 1;
-    __IO uint16_t TSDC3                     : 1;
-    __IO uint16_t TSDC4                     : 1;
-    __IO uint16_t TSDC5                     : 1;
-    __IO uint16_t TSDC6                     : 1;
-    __IO uint16_t TSDC7                     : 1;
-    __IO uint16_t TSDC8                     : 1;
-    __IO uint16_t TSDC9                     : 1;
-    __IO uint16_t TSDC10                    : 1;
-    __IO uint16_t TSDC11                    : 1;
-    __IO uint16_t TSDC12                    : 1;
-    __IO uint16_t TSDC13                    : 1;
-    __IO uint16_t TSDC14                    : 1;
-    __IO uint16_t TSDC15                    : 1;
-} stc_ots_dr2_field_t;
-
-typedef struct
-{
-    __IO uint16_t TSEC0                     : 1;
-    __IO uint16_t TSEC1                     : 1;
-    __IO uint16_t TSEC2                     : 1;
-    __IO uint16_t TSEC3                     : 1;
-    __IO uint16_t TSEC4                     : 1;
-    __IO uint16_t TSEC5                     : 1;
-    __IO uint16_t TSEC6                     : 1;
-    __IO uint16_t TSEC7                     : 1;
-    __IO uint16_t TSEC8                     : 1;
-    __IO uint16_t TSEC9                     : 1;
-    __IO uint16_t TSEC10                    : 1;
-    __IO uint16_t TSEC11                    : 1;
-    __IO uint16_t TSEC12                    : 1;
-    __IO uint16_t TSEC13                    : 1;
-    __IO uint16_t TSEC14                    : 1;
-    __IO uint16_t TSEC15                    : 1;
-} stc_ots_ecr_field_t;
-
-typedef struct
-{
     __IO uint32_t TSOFS                     : 8;
     __IO uint32_t TSSLP                     :24;
 } stc_ots_lpr_field_t;
@@ -3296,9 +3228,9 @@ typedef struct
 
 typedef struct
 {
-    __IO uint32_t ABINT1                    : 1;
+    uint32_t RESERVED0                      : 1;
     __IO uint32_t SELMMC1                   : 1;
-    __IO uint32_t ABINT2                    : 1;
+    uint32_t RESERVED2                      : 1;
     __IO uint32_t SELMMC2                   : 1;
     uint32_t RESERVED4                      :28;
 } stc_peric_sdioc_syctlreg_field_t;
@@ -3624,8 +3556,8 @@ typedef struct
 
 typedef struct
 {
-    __IO uint32_t WAIT                      : 1;
-    __IO uint32_t WAITF                     : 1;
+    __IO uint32_t RWREQ                     : 1;
+    __IO uint32_t RWEN                      : 1;
     uint32_t RESERVED2                      : 1;
     __IO uint32_t ALMF                      : 1;
     uint32_t RESERVED4                      : 1;
@@ -4006,29 +3938,29 @@ typedef struct
     __IO uint32_t SSA                       : 3;
     __IO uint32_t DSIZE                     : 4;
     __IO uint32_t LSBF                      : 1;
-    __IO uint32_t NXTDLE                    : 1;
-    __IO uint32_t SSDLE                     : 1;
-    __IO uint32_t SCKDLE                    : 1;
+    __IO uint32_t MIDIE                     : 1;
+    __IO uint32_t MSSDLE                    : 1;
+    __IO uint32_t MSSIE                     : 1;
     uint32_t RESERVED16                     :16;
 } stc_spi_cfg2_field_t;
 
 typedef struct
 {
-    __IO uint32_t SRAMSYSRWT                : 3;
+    __IO uint32_t SRAM12_RWT                : 3;
     uint32_t RESERVED3                      : 1;
-    __IO uint32_t SRAMSYSWWT                : 3;
+    __IO uint32_t SRAM12_WWT                : 3;
     uint32_t RESERVED7                      : 1;
-    __IO uint32_t SRAMECCRWT                : 3;
+    __IO uint32_t SRAM3_RWT                 : 3;
     uint32_t RESERVED11                     : 1;
-    __IO uint32_t SRAMECCWWT                : 3;
+    __IO uint32_t SRAM3_WWT                 : 3;
     uint32_t RESERVED15                     : 1;
-    __IO uint32_t SRAMHSRWT                 : 3;
+    __IO uint32_t SRAMH_RWT                 : 3;
     uint32_t RESERVED19                     : 1;
-    __IO uint32_t SRAMHSWWT                 : 3;
+    __IO uint32_t SRAMH_WWT                 : 3;
     uint32_t RESERVED23                     : 1;
-    __IO uint32_t SRAMBKRWT                 : 3;
+    __IO uint32_t SRAMR_RWT                 : 3;
     uint32_t RESERVED27                     : 1;
-    __IO uint32_t SRAMBKWWT                 : 3;
+    __IO uint32_t SRAMR_WWT                 : 3;
     uint32_t RESERVED31                     : 1;
 } stc_sramc_wtcr_field_t;
 
@@ -4058,11 +3990,11 @@ typedef struct
 
 typedef struct
 {
-    __IO uint32_t SRAMECC1ERR               : 1;
-    __IO uint32_t SRAMECC2ERR               : 1;
-    __IO uint32_t SRAMSYSPYERR              : 1;
-    __IO uint32_t SRAMHSPYERR               : 1;
-    __IO uint32_t SRAMBKPYERR               : 1;
+    __IO uint32_t SRAM3_1ERR                : 1;
+    __IO uint32_t SRAM3_2ERR                : 1;
+    __IO uint32_t SRAM12_PYERR              : 1;
+    __IO uint32_t SRAMH_PYERR               : 1;
+    __IO uint32_t SRAMR_PYERR               : 1;
     uint32_t RESERVED5                      :27;
 } stc_sramc_cksr_field_t;
 
@@ -4115,12 +4047,6 @@ typedef struct
     __IO uint32_t RAMPDC8                   : 1;
     uint32_t RESERVED9                      :23;
 } stc_sysreg_pwr_rampc0_field_t;
-
-typedef struct
-{
-    __IO uint32_t RAMOPM                    :16;
-    uint32_t RESERVED16                     :16;
-} stc_sysreg_pwr_ramopm_field_t;
 
 typedef struct
 {
@@ -4300,9 +4226,10 @@ typedef struct
 
 typedef struct
 {
-    uint8_t RESERVED0                       : 1;
+    __IO uint8_t PVD1MON                    : 1;
     __IO uint8_t PVD1DETFLG                 : 1;
-    uint8_t RESERVED2                       : 3;
+    uint8_t RESERVED2                       : 2;
+    __IO uint8_t PVD2MON                    : 1;
     __IO uint8_t PVD2DETFLG                 : 1;
     uint8_t RESERVED6                       : 2;
 } stc_sysreg_pwr_pvddsr_field_t;
@@ -4404,7 +4331,7 @@ typedef struct
     uint8_t RESERVED3                       : 1;
     __IO uint8_t RTCPRDWKE                  : 1;
     __IO uint8_t RTCALMWKE                  : 1;
-    __IO uint8_t XTAL32ERWKE                : 1;
+    uint8_t RESERVED6                       : 1;
     __IO uint8_t WKTMWKE                    : 1;
 } stc_sysreg_pwr_pdwke2_field_t;
 
@@ -4438,7 +4365,7 @@ typedef struct
     __IO uint8_t RXD0WKF                    : 1;
     __IO uint8_t RTCPRDWKF                  : 1;
     __IO uint8_t RTCALMWKF                  : 1;
-    __IO uint8_t XTAL32ERWKF                : 1;
+    uint8_t RESERVED6                       : 1;
     __IO uint8_t WKTMWKF                    : 1;
 } stc_sysreg_pwr_pdwkf1_field_t;
 
@@ -4503,8 +4430,7 @@ typedef struct
 
 typedef struct
 {
-    __IO uint8_t XTAL32DRV                  : 2;
-    __IO uint8_t XTAL32SUPDRV               : 1;
+    __IO uint8_t XTAL32DRV                  : 3;
     uint8_t RESERVED3                       : 5;
 } stc_sysreg_cmu_xtal32cfgr_field_t;
 
@@ -4914,7 +4840,7 @@ typedef struct
     __IO uint32_t CMPCA                     : 2;
     __IO uint32_t PERCA                     : 2;
     __IO uint32_t OUTENA                    : 1;
-    __IO uint32_t EMBSELA                   : 2;
+    uint32_t RESERVED9                      : 2;
     __IO uint32_t EMBVALA                   : 2;
     uint32_t RESERVED13                     : 3;
     __IO uint32_t CAPMDB                    : 1;
@@ -4924,7 +4850,7 @@ typedef struct
     __IO uint32_t CMPCB                     : 2;
     __IO uint32_t PERCB                     : 2;
     __IO uint32_t OUTENB                    : 1;
-    __IO uint32_t EMBSELB                   : 2;
+    uint32_t RESERVED25                     : 2;
     __IO uint32_t EMBVALB                   : 2;
     uint32_t RESERVED29                     : 3;
 } stc_tmr6_pconr_field_t;
@@ -5313,7 +5239,7 @@ typedef struct
 
 typedef struct
 {
-    __IO uint32_t CAPMDA                    : 1;
+    __IO uint32_t CAPMD                     : 1;
     uint32_t RESERVED1                      : 3;
     __IO uint32_t HICP0                     : 1;
     __IO uint32_t HICP1                     : 1;
@@ -5446,6 +5372,14 @@ typedef struct
 
 typedef struct
 {
+    uint32_t RESERVED0                      : 6;
+    __IO uint32_t VBUSOVEN                  : 1;
+    __IO uint32_t VBUSVAL                   : 1;
+    uint32_t RESERVED8                      :24;
+} stc_usbfs_usbfs_gvbuscfg_field_t;
+
+typedef struct
+{
     __IO uint32_t GINTMSK                   : 1;
     __IO uint32_t HBSTLEN                   : 4;
     __IO uint32_t DMAEN                     : 1;
@@ -5488,10 +5422,10 @@ typedef struct
     __IO uint32_t MMIS                      : 1;
     uint32_t RESERVED2                      : 1;
     __IO uint32_t SOF                       : 1;
-    __IO uint32_t RXFLNE                    : 1;
+    __IO uint32_t RXFNE                     : 1;
     __IO uint32_t NPTXFE                    : 1;
     __IO uint32_t GINAKEFF                  : 1;
-    __IO uint32_t GOUTNAKEFF                : 1;
+    __IO uint32_t GONAKEFF                  : 1;
     uint32_t RESERVED8                      : 2;
     __IO uint32_t ESUSP                     : 1;
     __IO uint32_t USBSUSP                   : 1;
@@ -5503,7 +5437,7 @@ typedef struct
     __IO uint32_t IEPINT                    : 1;
     __IO uint32_t OEPINT                    : 1;
     __IO uint32_t IISOIXFR                  : 1;
-    __IO uint32_t IPXFR_INCOMPISO           : 1;
+    __IO uint32_t IPXFR_INCOMPISOOUT        : 1;
     __IO uint32_t DATAFSUSP                 : 1;
     uint32_t RESERVED23                     : 1;
     __IO uint32_t HPRTINT                   : 1;
@@ -5525,7 +5459,7 @@ typedef struct
     __IO uint32_t RXFNEM                    : 1;
     __IO uint32_t NPTXFEM                   : 1;
     __IO uint32_t GINAKEFFM                 : 1;
-    __IO uint32_t GOUTNAKEFFM               : 1;
+    __IO uint32_t GONAKEFFM                 : 1;
     uint32_t RESERVED8                      : 2;
     __IO uint32_t ESUSPM                    : 1;
     __IO uint32_t USBSUSPM                  : 1;
@@ -5731,7 +5665,7 @@ typedef struct
     __IO uint32_t SDIS                      : 1;
     __IO uint32_t GINSTS                    : 1;
     __IO uint32_t GONSTS                    : 1;
-    __IO uint32_t TCTL                      : 3;
+    uint32_t RESERVED4                      : 3;
     __IO uint32_t SGINAK                    : 1;
     __IO uint32_t CGINAK                    : 1;
     __IO uint32_t SGONAK                    : 1;
@@ -5758,7 +5692,7 @@ typedef struct
     __IO uint32_t TOM                       : 1;
     __IO uint32_t ITTXFEMSK                 : 1;
     __IO uint32_t INEPNMM                   : 1;
-    __IO uint32_t IINEPNEM                  : 1;
+    __IO uint32_t INEPNEM                   : 1;
     uint32_t RESERVED7                      :25;
 } stc_usbfs_diepmsk_field_t;
 
@@ -5820,7 +5754,7 @@ typedef struct
     __IO uint32_t TOC                       : 1;
     __IO uint32_t TTXFE                     : 1;
     uint32_t RESERVED5                      : 1;
-    __IO uint32_t NEPNE                     : 1;
+    __IO uint32_t INEPNE                    : 1;
     __IO uint32_t TXFE                      : 1;
     uint32_t RESERVED8                      :24;
 } stc_usbfs_diepint0_field_t;
@@ -5866,7 +5800,7 @@ typedef struct
     __IO uint32_t TOC                       : 1;
     __IO uint32_t TTXFE                     : 1;
     uint32_t RESERVED5                      : 1;
-    __IO uint32_t NEPNE                     : 1;
+    __IO uint32_t INEPNE                    : 1;
     __IO uint32_t TXFE                      : 1;
     uint32_t RESERVED8                      :24;
 } stc_usbfs_diepint_field_t;
@@ -5875,8 +5809,7 @@ typedef struct
 {
     __IO uint32_t XFRSIZ                    :19;
     __IO uint32_t PKTCNT                    :10;
-    __IO uint32_t MC                        : 2;
-    uint32_t RESERVED31                     : 1;
+    uint32_t RESERVED29                     : 3;
 } stc_usbfs_dieptsiz_field_t;
 
 typedef struct
@@ -6242,8 +6175,8 @@ typedef struct
     };
     union
     {
-        __IO uint32_t DMATRGSELRC;
-        stc_aos_dmatrgselrc_field_t DMATRGSELRC_f;
+        __IO uint32_t DMA_TRGSELRC;
+        stc_aos_dma_trgselrc_field_t DMA_TRGSELRC_f;
     };
     union
     {
@@ -6305,17 +6238,7 @@ typedef struct
         __IO uint32_t ADC2_ITRGSELR1;
         stc_aos_adc2_itrgselr1_field_t ADC2_ITRGSELR1_f;
     };
-    union
-    {
-        __IO uint32_t COMTRG1;
-        stc_aos_comtrg1_field_t COMTRG1_f;
-    };
-    union
-    {
-        __IO uint32_t COMTRG2;
-        stc_aos_comtrg2_field_t COMTRG2_f;
-    };
-    uint8_t RESERVED28[144];
+    uint8_t RESERVED26[152];
     union
     {
         __IO uint32_t PEVNTDIRR1;
@@ -6465,16 +6388,10 @@ typedef struct
 
 typedef struct
 {
-    __IO uint32_t RBUF0;
-    __IO uint32_t RBUF1;
-    __IO uint32_t RBUF2;
-    __IO uint32_t RBUF3;
-    uint8_t RESERVED4[64];
-    __IO uint32_t TBUF0;
-    __IO uint32_t TBUF1;
-    __IO uint32_t TBUF2;
-    __IO uint32_t TBUF3;
-    uint8_t RESERVED8[64];
+    __IO uint32_t RBUF;
+    uint8_t RESERVED1[76];
+    __IO uint32_t TBUF;
+    uint8_t RESERVED2[76];
     union
     {
         __IO uint8_t CFG_STAT;
@@ -6520,13 +6437,13 @@ typedef struct
         __IO uint32_t BT;
         stc_can_bt_field_t BT_f;
     };
-    uint8_t RESERVED17[4];
+    uint8_t RESERVED11[4];
     union
     {
         __IO uint8_t EALCAP;
         stc_can_ealcap_field_t EALCAP_f;
     };
-    uint8_t RESERVED18[1];
+    uint8_t RESERVED12[1];
     __IO uint8_t RECNT;
     __IO uint8_t TECNT;
     union
@@ -6534,19 +6451,19 @@ typedef struct
         __IO uint8_t ACFCTRL;
         stc_can_acfctrl_field_t ACFCTRL_f;
     };
-    uint8_t RESERVED21[1];
+    uint8_t RESERVED15[1];
     union
     {
         __IO uint8_t ACFEN;
         stc_can_acfen_field_t ACFEN_f;
     };
-    uint8_t RESERVED22[1];
+    uint8_t RESERVED16[1];
     union
     {
         __IO uint32_t ACF;
         stc_can_acf_field_t ACF_f;
     };
-    uint8_t RESERVED23[2];
+    uint8_t RESERVED17[2];
     union
     {
         __IO uint8_t TBSLOT;
@@ -7113,6 +7030,12 @@ typedef struct
         __IO uint32_t MMF_REMCR1;
         stc_efm_mmf_remcr1_field_t MMF_REMCR1_f;
     };
+    uint8_t RESERVED16[248];
+    union
+    {
+        __IO uint32_t EFM_FRANDS;
+        stc_efm_efm_frands_field_t EFM_FRANDS_f;
+    };
 }M4_EFM_TypeDef;
 
 typedef struct
@@ -7278,14 +7201,16 @@ typedef struct
     };
     union
     {
-        __IO uint32_t DTR;
+        __IO uint8_t DTR;
         stc_i2c_dtr_field_t DTR_f;
     };
+    uint8_t RESERVED9[3];
     union
     {
-        __IO uint32_t DRR;
+        __IO uint8_t DRR;
         stc_i2c_drr_field_t DRR_f;
     };
+    uint8_t RESERVED10[3];
     union
     {
         __IO uint32_t CCR;
@@ -8442,21 +8367,9 @@ typedef struct
         __IO uint16_t CTL;
         stc_ots_ctl_field_t CTL_f;
     };
-    union
-    {
-        __IO uint16_t DR1;
-        stc_ots_dr1_field_t DR1_f;
-    };
-    union
-    {
-        __IO uint16_t DR2;
-        stc_ots_dr2_field_t DR2_f;
-    };
-    union
-    {
-        __IO uint16_t ECR;
-        stc_ots_ecr_field_t ECR_f;
-    };
+    __IO uint16_t DR1;
+    __IO uint16_t DR2;
+    __IO uint16_t ECR;
     union
     {
         __IO uint32_t LPR;
@@ -9871,11 +9784,8 @@ typedef struct
         __IO uint32_t PWR_RAMPC0;
         stc_sysreg_pwr_rampc0_field_t PWR_RAMPC0_f;
     };
-    union
-    {
-        __IO uint32_t PWR_RAMOPM;
-        stc_sysreg_pwr_ramopm_field_t PWR_RAMOPM_f;
-    };
+    __IO uint16_t PWR_RAMOPM;
+    uint8_t RESERVED5[2];
     union
     {
         __IO uint32_t MPU_IPPR;
@@ -10838,7 +10748,12 @@ typedef struct
 
 typedef struct
 {
-    uint8_t RESERVED0[8];
+    union
+    {
+        __IO uint32_t USBFS_GVBUSCFG;
+        stc_usbfs_usbfs_gvbuscfg_field_t USBFS_GVBUSCFG_f;
+    };
+    uint8_t RESERVED1[4];
     union
     {
         __IO uint32_t GAHBCFG;
@@ -10889,9 +10804,9 @@ typedef struct
         __IO uint32_t HNPTXSTS;
         stc_usbfs_hnptxsts_field_t HNPTXSTS_f;
     };
-    uint8_t RESERVED10[12];
+    uint8_t RESERVED11[12];
     __IO uint32_t CID;
-    uint8_t RESERVED11[192];
+    uint8_t RESERVED12[192];
     union
     {
         __IO uint32_t HPTXFSIZ;
@@ -10922,7 +10837,7 @@ typedef struct
         __IO uint32_t DIEPTXF5;
         stc_usbfs_dieptxf_field_t DIEPTXF5_f;
     };
-    uint8_t RESERVED17[744];
+    uint8_t RESERVED18[744];
     union
     {
         __IO uint32_t HCFG;
@@ -10938,7 +10853,7 @@ typedef struct
         __IO uint32_t HFNUM;
         stc_usbfs_hfnum_field_t HFNUM_f;
     };
-    uint8_t RESERVED20[4];
+    uint8_t RESERVED21[4];
     union
     {
         __IO uint32_t HPTXSTS;
@@ -10954,19 +10869,19 @@ typedef struct
         __IO uint32_t HAINTMSK;
         stc_usbfs_haintmsk_field_t HAINTMSK_f;
     };
-    uint8_t RESERVED23[36];
+    uint8_t RESERVED24[36];
     union
     {
         __IO uint32_t HPRT;
         stc_usbfs_hprt_field_t HPRT_f;
     };
-    uint8_t RESERVED24[188];
+    uint8_t RESERVED25[188];
     union
     {
         __IO uint32_t HCCHAR0;
         stc_usbfs_hcchar_field_t HCCHAR0_f;
     };
-    uint8_t RESERVED25[4];
+    uint8_t RESERVED26[4];
     union
     {
         __IO uint32_t HCINT0;
@@ -10983,13 +10898,13 @@ typedef struct
         stc_usbfs_hctsiz_field_t HCTSIZ0_f;
     };
     __IO uint32_t HCDMA0;
-    uint8_t RESERVED29[8];
+    uint8_t RESERVED30[8];
     union
     {
         __IO uint32_t HCCHAR1;
         stc_usbfs_hcchar_field_t HCCHAR1_f;
     };
-    uint8_t RESERVED30[4];
+    uint8_t RESERVED31[4];
     union
     {
         __IO uint32_t HCINT1;
@@ -11006,13 +10921,13 @@ typedef struct
         stc_usbfs_hctsiz_field_t HCTSIZ1_f;
     };
     __IO uint32_t HCDMA1;
-    uint8_t RESERVED34[8];
+    uint8_t RESERVED35[8];
     union
     {
         __IO uint32_t HCCHAR2;
         stc_usbfs_hcchar_field_t HCCHAR2_f;
     };
-    uint8_t RESERVED35[4];
+    uint8_t RESERVED36[4];
     union
     {
         __IO uint32_t HCINT2;
@@ -11029,13 +10944,13 @@ typedef struct
         stc_usbfs_hctsiz_field_t HCTSIZ2_f;
     };
     __IO uint32_t HCDMA2;
-    uint8_t RESERVED39[8];
+    uint8_t RESERVED40[8];
     union
     {
         __IO uint32_t HCCHAR3;
         stc_usbfs_hcchar_field_t HCCHAR3_f;
     };
-    uint8_t RESERVED40[4];
+    uint8_t RESERVED41[4];
     union
     {
         __IO uint32_t HCINT3;
@@ -11052,13 +10967,13 @@ typedef struct
         stc_usbfs_hctsiz_field_t HCTSIZ3_f;
     };
     __IO uint32_t HCDMA3;
-    uint8_t RESERVED44[8];
+    uint8_t RESERVED45[8];
     union
     {
         __IO uint32_t HCCHAR4;
         stc_usbfs_hcchar_field_t HCCHAR4_f;
     };
-    uint8_t RESERVED45[4];
+    uint8_t RESERVED46[4];
     union
     {
         __IO uint32_t HCINT4;
@@ -11075,13 +10990,13 @@ typedef struct
         stc_usbfs_hctsiz_field_t HCTSIZ4_f;
     };
     __IO uint32_t HCDMA4;
-    uint8_t RESERVED49[8];
+    uint8_t RESERVED50[8];
     union
     {
         __IO uint32_t HCCHAR5;
         stc_usbfs_hcchar_field_t HCCHAR5_f;
     };
-    uint8_t RESERVED50[4];
+    uint8_t RESERVED51[4];
     union
     {
         __IO uint32_t HCINT5;
@@ -11098,13 +11013,13 @@ typedef struct
         stc_usbfs_hctsiz_field_t HCTSIZ5_f;
     };
     __IO uint32_t HCDMA5;
-    uint8_t RESERVED54[8];
+    uint8_t RESERVED55[8];
     union
     {
         __IO uint32_t HCCHAR6;
         stc_usbfs_hcchar_field_t HCCHAR6_f;
     };
-    uint8_t RESERVED55[4];
+    uint8_t RESERVED56[4];
     union
     {
         __IO uint32_t HCINT6;
@@ -11121,13 +11036,13 @@ typedef struct
         stc_usbfs_hctsiz_field_t HCTSIZ6_f;
     };
     __IO uint32_t HCDMA6;
-    uint8_t RESERVED59[8];
+    uint8_t RESERVED60[8];
     union
     {
         __IO uint32_t HCCHAR7;
         stc_usbfs_hcchar_field_t HCCHAR7_f;
     };
-    uint8_t RESERVED60[4];
+    uint8_t RESERVED61[4];
     union
     {
         __IO uint32_t HCINT7;
@@ -11144,13 +11059,13 @@ typedef struct
         stc_usbfs_hctsiz_field_t HCTSIZ7_f;
     };
     __IO uint32_t HCDMA7;
-    uint8_t RESERVED64[8];
+    uint8_t RESERVED65[8];
     union
     {
         __IO uint32_t HCCHAR8;
         stc_usbfs_hcchar_field_t HCCHAR8_f;
     };
-    uint8_t RESERVED65[4];
+    uint8_t RESERVED66[4];
     union
     {
         __IO uint32_t HCINT8;
@@ -11167,13 +11082,13 @@ typedef struct
         stc_usbfs_hctsiz_field_t HCTSIZ8_f;
     };
     __IO uint32_t HCDMA8;
-    uint8_t RESERVED69[8];
+    uint8_t RESERVED70[8];
     union
     {
         __IO uint32_t HCCHAR9;
         stc_usbfs_hcchar_field_t HCCHAR9_f;
     };
-    uint8_t RESERVED70[4];
+    uint8_t RESERVED71[4];
     union
     {
         __IO uint32_t HCINT9;
@@ -11190,13 +11105,13 @@ typedef struct
         stc_usbfs_hctsiz_field_t HCTSIZ9_f;
     };
     __IO uint32_t HCDMA9;
-    uint8_t RESERVED74[8];
+    uint8_t RESERVED75[8];
     union
     {
         __IO uint32_t HCCHAR10;
         stc_usbfs_hcchar_field_t HCCHAR10_f;
     };
-    uint8_t RESERVED75[4];
+    uint8_t RESERVED76[4];
     union
     {
         __IO uint32_t HCINT10;
@@ -11213,13 +11128,13 @@ typedef struct
         stc_usbfs_hctsiz_field_t HCTSIZ10_f;
     };
     __IO uint32_t HCDMA10;
-    uint8_t RESERVED79[8];
+    uint8_t RESERVED80[8];
     union
     {
         __IO uint32_t HCCHAR11;
         stc_usbfs_hcchar_field_t HCCHAR11_f;
     };
-    uint8_t RESERVED80[4];
+    uint8_t RESERVED81[4];
     union
     {
         __IO uint32_t HCINT11;
@@ -11236,7 +11151,7 @@ typedef struct
         stc_usbfs_hctsiz_field_t HCTSIZ11_f;
     };
     __IO uint32_t HCDMA11;
-    uint8_t RESERVED84[392];
+    uint8_t RESERVED85[392];
     union
     {
         __IO uint32_t DCFG;
@@ -11252,7 +11167,7 @@ typedef struct
         __IO uint32_t DSTS;
         stc_usbfs_dsts_field_t DSTS_f;
     };
-    uint8_t RESERVED87[4];
+    uint8_t RESERVED88[4];
     union
     {
         __IO uint32_t DIEPMSK;
@@ -11273,25 +11188,25 @@ typedef struct
         __IO uint32_t DAINTMSK;
         stc_usbfs_daintmsk_field_t DAINTMSK_f;
     };
-    uint8_t RESERVED91[20];
+    uint8_t RESERVED92[20];
     union
     {
         __IO uint32_t DIEPEMPMSK;
         stc_usbfs_diepempmsk_field_t DIEPEMPMSK_f;
     };
-    uint8_t RESERVED92[200];
+    uint8_t RESERVED93[200];
     union
     {
         __IO uint32_t DIEPCTL0;
         stc_usbfs_diepctl0_field_t DIEPCTL0_f;
     };
-    uint8_t RESERVED93[4];
+    uint8_t RESERVED94[4];
     union
     {
         __IO uint32_t DIEPINT0;
         stc_usbfs_diepint0_field_t DIEPINT0_f;
     };
-    uint8_t RESERVED94[4];
+    uint8_t RESERVED95[4];
     union
     {
         __IO uint32_t DIEPTSIZ0;
@@ -11303,19 +11218,19 @@ typedef struct
         __IO uint32_t DTXFSTS0;
         stc_usbfs_dtxfsts0_field_t DTXFSTS0_f;
     };
-    uint8_t RESERVED97[4];
+    uint8_t RESERVED98[4];
     union
     {
         __IO uint32_t DIEPCTL1;
         stc_usbfs_diepctl_field_t DIEPCTL1_f;
     };
-    uint8_t RESERVED98[4];
+    uint8_t RESERVED99[4];
     union
     {
         __IO uint32_t DIEPINT1;
         stc_usbfs_diepint_field_t DIEPINT1_f;
     };
-    uint8_t RESERVED99[4];
+    uint8_t RESERVED100[4];
     union
     {
         __IO uint32_t DIEPTSIZ1;
@@ -11327,19 +11242,19 @@ typedef struct
         __IO uint32_t DTXFSTS1;
         stc_usbfs_dtxfsts_field_t DTXFSTS1_f;
     };
-    uint8_t RESERVED102[4];
+    uint8_t RESERVED103[4];
     union
     {
         __IO uint32_t DIEPCTL2;
         stc_usbfs_diepctl_field_t DIEPCTL2_f;
     };
-    uint8_t RESERVED103[4];
+    uint8_t RESERVED104[4];
     union
     {
         __IO uint32_t DIEPINT2;
         stc_usbfs_diepint_field_t DIEPINT2_f;
     };
-    uint8_t RESERVED104[4];
+    uint8_t RESERVED105[4];
     union
     {
         __IO uint32_t DIEPTSIZ2;
@@ -11351,19 +11266,19 @@ typedef struct
         __IO uint32_t DTXFSTS2;
         stc_usbfs_dtxfsts_field_t DTXFSTS2_f;
     };
-    uint8_t RESERVED107[4];
+    uint8_t RESERVED108[4];
     union
     {
         __IO uint32_t DIEPCTL3;
         stc_usbfs_diepctl_field_t DIEPCTL3_f;
     };
-    uint8_t RESERVED108[4];
+    uint8_t RESERVED109[4];
     union
     {
         __IO uint32_t DIEPINT3;
         stc_usbfs_diepint_field_t DIEPINT3_f;
     };
-    uint8_t RESERVED109[4];
+    uint8_t RESERVED110[4];
     union
     {
         __IO uint32_t DIEPTSIZ3;
@@ -11375,19 +11290,19 @@ typedef struct
         __IO uint32_t DTXFSTS3;
         stc_usbfs_dtxfsts_field_t DTXFSTS3_f;
     };
-    uint8_t RESERVED112[4];
+    uint8_t RESERVED113[4];
     union
     {
         __IO uint32_t DIEPCTL4;
         stc_usbfs_diepctl_field_t DIEPCTL4_f;
     };
-    uint8_t RESERVED113[4];
+    uint8_t RESERVED114[4];
     union
     {
         __IO uint32_t DIEPINT4;
         stc_usbfs_diepint_field_t DIEPINT4_f;
     };
-    uint8_t RESERVED114[4];
+    uint8_t RESERVED115[4];
     union
     {
         __IO uint32_t DIEPTSIZ4;
@@ -11399,19 +11314,19 @@ typedef struct
         __IO uint32_t DTXFSTS4;
         stc_usbfs_dtxfsts_field_t DTXFSTS4_f;
     };
-    uint8_t RESERVED117[4];
+    uint8_t RESERVED118[4];
     union
     {
         __IO uint32_t DIEPCTL5;
         stc_usbfs_diepctl_field_t DIEPCTL5_f;
     };
-    uint8_t RESERVED118[4];
+    uint8_t RESERVED119[4];
     union
     {
         __IO uint32_t DIEPINT5;
         stc_usbfs_diepint_field_t DIEPINT5_f;
     };
-    uint8_t RESERVED119[4];
+    uint8_t RESERVED120[4];
     union
     {
         __IO uint32_t DIEPTSIZ5;
@@ -11423,121 +11338,121 @@ typedef struct
         __IO uint32_t DTXFSTS5;
         stc_usbfs_dtxfsts_field_t DTXFSTS5_f;
     };
-    uint8_t RESERVED122[324];
+    uint8_t RESERVED123[324];
     union
     {
         __IO uint32_t DOEPCTL0;
         stc_usbfs_doepctl0_field_t DOEPCTL0_f;
     };
-    uint8_t RESERVED123[4];
+    uint8_t RESERVED124[4];
     union
     {
         __IO uint32_t DOEPINT0;
         stc_usbfs_doepint_field_t DOEPINT0_f;
     };
-    uint8_t RESERVED124[4];
+    uint8_t RESERVED125[4];
     union
     {
         __IO uint32_t DOEPTSIZ0;
         stc_usbfs_doeptsiz0_field_t DOEPTSIZ0_f;
     };
     __IO uint32_t DOEPDMA0;
-    uint8_t RESERVED126[8];
+    uint8_t RESERVED127[8];
     union
     {
         __IO uint32_t DOEPCTL1;
         stc_usbfs_doepctl_field_t DOEPCTL1_f;
     };
-    uint8_t RESERVED127[4];
+    uint8_t RESERVED128[4];
     union
     {
         __IO uint32_t DOEPINT1;
         stc_usbfs_doepint_field_t DOEPINT1_f;
     };
-    uint8_t RESERVED128[4];
+    uint8_t RESERVED129[4];
     union
     {
         __IO uint32_t DOEPTSIZ1;
         stc_usbfs_doeptsiz_field_t DOEPTSIZ1_f;
     };
     __IO uint32_t DOEPDMA1;
-    uint8_t RESERVED130[8];
+    uint8_t RESERVED131[8];
     union
     {
         __IO uint32_t DOEPCTL2;
         stc_usbfs_doepctl_field_t DOEPCTL2_f;
     };
-    uint8_t RESERVED131[4];
+    uint8_t RESERVED132[4];
     union
     {
         __IO uint32_t DOEPINT2;
         stc_usbfs_doepint_field_t DOEPINT2_f;
     };
-    uint8_t RESERVED132[4];
+    uint8_t RESERVED133[4];
     union
     {
         __IO uint32_t DOEPTSIZ2;
         stc_usbfs_doeptsiz_field_t DOEPTSIZ2_f;
     };
     __IO uint32_t DOEPDMA2;
-    uint8_t RESERVED134[8];
+    uint8_t RESERVED135[8];
     union
     {
         __IO uint32_t DOEPCTL3;
         stc_usbfs_doepctl_field_t DOEPCTL3_f;
     };
-    uint8_t RESERVED135[4];
+    uint8_t RESERVED136[4];
     union
     {
         __IO uint32_t DOEPINT3;
         stc_usbfs_doepint_field_t DOEPINT3_f;
     };
-    uint8_t RESERVED136[4];
+    uint8_t RESERVED137[4];
     union
     {
         __IO uint32_t DOEPTSIZ3;
         stc_usbfs_doeptsiz_field_t DOEPTSIZ3_f;
     };
     __IO uint32_t DOEPDMA3;
-    uint8_t RESERVED138[8];
+    uint8_t RESERVED139[8];
     union
     {
         __IO uint32_t DOEPCTL4;
         stc_usbfs_doepctl_field_t DOEPCTL4_f;
     };
-    uint8_t RESERVED139[4];
+    uint8_t RESERVED140[4];
     union
     {
         __IO uint32_t DOEPINT4;
         stc_usbfs_doepint_field_t DOEPINT4_f;
     };
-    uint8_t RESERVED140[4];
+    uint8_t RESERVED141[4];
     union
     {
         __IO uint32_t DOEPTSIZ4;
         stc_usbfs_doeptsiz_field_t DOEPTSIZ4_f;
     };
     __IO uint32_t DOEPDMA4;
-    uint8_t RESERVED142[8];
+    uint8_t RESERVED143[8];
     union
     {
         __IO uint32_t DOEPCTL5;
         stc_usbfs_doepctl_field_t DOEPCTL5_f;
     };
-    uint8_t RESERVED143[4];
+    uint8_t RESERVED144[4];
     union
     {
         __IO uint32_t DOEPINT5;
         stc_usbfs_doepint_field_t DOEPINT5_f;
     };
-    uint8_t RESERVED144[4];
+    uint8_t RESERVED145[4];
     union
     {
         __IO uint32_t DOEPTSIZ5;
         stc_usbfs_doeptsiz_field_t DOEPTSIZ5_f;
     };
     __IO uint32_t DOEPDMA5;
-    uint8_t RESERVED146[584];
+    uint8_t RESERVED147[584];
     union
     {
         __IO uint32_t PCGCCTL;
@@ -12016,15 +11931,15 @@ typedef struct
 #define bM4_AOS_DMA2_TRGSEL3_TRGSEL6              (*((volatile unsigned int*)(0x42210618UL)))
 #define bM4_AOS_DMA2_TRGSEL3_TRGSEL7              (*((volatile unsigned int*)(0x4221061CUL)))
 #define bM4_AOS_DMA2_TRGSEL3_TRGSEL8              (*((volatile unsigned int*)(0x42210620UL)))
-#define bM4_AOS_DMATRGSELRC_TRGSEL0               (*((volatile unsigned int*)(0x42210680UL)))
-#define bM4_AOS_DMATRGSELRC_TRGSEL1               (*((volatile unsigned int*)(0x42210684UL)))
-#define bM4_AOS_DMATRGSELRC_TRGSEL2               (*((volatile unsigned int*)(0x42210688UL)))
-#define bM4_AOS_DMATRGSELRC_TRGSEL3               (*((volatile unsigned int*)(0x4221068CUL)))
-#define bM4_AOS_DMATRGSELRC_TRGSEL4               (*((volatile unsigned int*)(0x42210690UL)))
-#define bM4_AOS_DMATRGSELRC_TRGSEL5               (*((volatile unsigned int*)(0x42210694UL)))
-#define bM4_AOS_DMATRGSELRC_TRGSEL6               (*((volatile unsigned int*)(0x42210698UL)))
-#define bM4_AOS_DMATRGSELRC_TRGSEL7               (*((volatile unsigned int*)(0x4221069CUL)))
-#define bM4_AOS_DMATRGSELRC_TRGSEL8               (*((volatile unsigned int*)(0x422106A0UL)))
+#define bM4_AOS_DMA_TRGSELRC_TRGSEL0              (*((volatile unsigned int*)(0x42210680UL)))
+#define bM4_AOS_DMA_TRGSELRC_TRGSEL1              (*((volatile unsigned int*)(0x42210684UL)))
+#define bM4_AOS_DMA_TRGSELRC_TRGSEL2              (*((volatile unsigned int*)(0x42210688UL)))
+#define bM4_AOS_DMA_TRGSELRC_TRGSEL3              (*((volatile unsigned int*)(0x4221068CUL)))
+#define bM4_AOS_DMA_TRGSELRC_TRGSEL4              (*((volatile unsigned int*)(0x42210690UL)))
+#define bM4_AOS_DMA_TRGSELRC_TRGSEL5              (*((volatile unsigned int*)(0x42210694UL)))
+#define bM4_AOS_DMA_TRGSELRC_TRGSEL6              (*((volatile unsigned int*)(0x42210698UL)))
+#define bM4_AOS_DMA_TRGSELRC_TRGSEL7              (*((volatile unsigned int*)(0x4221069CUL)))
+#define bM4_AOS_DMA_TRGSELRC_TRGSEL8              (*((volatile unsigned int*)(0x422106A0UL)))
 #define bM4_AOS_TMR6_HTSSR1_TRGSEL0               (*((volatile unsigned int*)(0x42210700UL)))
 #define bM4_AOS_TMR6_HTSSR1_TRGSEL1               (*((volatile unsigned int*)(0x42210704UL)))
 #define bM4_AOS_TMR6_HTSSR1_TRGSEL2               (*((volatile unsigned int*)(0x42210708UL)))
@@ -12133,28 +12048,6 @@ typedef struct
 #define bM4_AOS_ADC2_ITRGSELR1_TRGSEL6            (*((volatile unsigned int*)(0x42210C98UL)))
 #define bM4_AOS_ADC2_ITRGSELR1_TRGSEL7            (*((volatile unsigned int*)(0x42210C9CUL)))
 #define bM4_AOS_ADC2_ITRGSELR1_TRGSEL8            (*((volatile unsigned int*)(0x42210CA0UL)))
-#define bM4_AOS_COMTRG1_TRGSEL0                   (*((volatile unsigned int*)(0x42210D00UL)))
-#define bM4_AOS_COMTRG1_TRGSEL1                   (*((volatile unsigned int*)(0x42210D04UL)))
-#define bM4_AOS_COMTRG1_TRGSEL2                   (*((volatile unsigned int*)(0x42210D08UL)))
-#define bM4_AOS_COMTRG1_TRGSEL3                   (*((volatile unsigned int*)(0x42210D0CUL)))
-#define bM4_AOS_COMTRG1_TRGSEL4                   (*((volatile unsigned int*)(0x42210D10UL)))
-#define bM4_AOS_COMTRG1_TRGSEL5                   (*((volatile unsigned int*)(0x42210D14UL)))
-#define bM4_AOS_COMTRG1_TRGSEL6                   (*((volatile unsigned int*)(0x42210D18UL)))
-#define bM4_AOS_COMTRG1_TRGSEL7                   (*((volatile unsigned int*)(0x42210D1CUL)))
-#define bM4_AOS_COMTRG1_TRGSEL8                   (*((volatile unsigned int*)(0x42210D20UL)))
-#define bM4_AOS_COMTRG1_COMTRG_EN0                (*((volatile unsigned int*)(0x42210D78UL)))
-#define bM4_AOS_COMTRG1_COMTRG_EN1                (*((volatile unsigned int*)(0x42210D7CUL)))
-#define bM4_AOS_COMTRG2_TRGSEL0                   (*((volatile unsigned int*)(0x42210D80UL)))
-#define bM4_AOS_COMTRG2_TRGSEL1                   (*((volatile unsigned int*)(0x42210D84UL)))
-#define bM4_AOS_COMTRG2_TRGSEL2                   (*((volatile unsigned int*)(0x42210D88UL)))
-#define bM4_AOS_COMTRG2_TRGSEL3                   (*((volatile unsigned int*)(0x42210D8CUL)))
-#define bM4_AOS_COMTRG2_TRGSEL4                   (*((volatile unsigned int*)(0x42210D90UL)))
-#define bM4_AOS_COMTRG2_TRGSEL5                   (*((volatile unsigned int*)(0x42210D94UL)))
-#define bM4_AOS_COMTRG2_TRGSEL6                   (*((volatile unsigned int*)(0x42210D98UL)))
-#define bM4_AOS_COMTRG2_TRGSEL7                   (*((volatile unsigned int*)(0x42210D9CUL)))
-#define bM4_AOS_COMTRG2_TRGSEL8                   (*((volatile unsigned int*)(0x42210DA0UL)))
-#define bM4_AOS_COMTRG2_COMTRG_EN0                (*((volatile unsigned int*)(0x42210DF8UL)))
-#define bM4_AOS_COMTRG2_COMTRG_EN1                (*((volatile unsigned int*)(0x42210DFCUL)))
 #define bM4_AOS_PEVNTDIRR1_PDIR00                 (*((volatile unsigned int*)(0x42212000UL)))
 #define bM4_AOS_PEVNTDIRR1_PDIR01                 (*((volatile unsigned int*)(0x42212004UL)))
 #define bM4_AOS_PEVNTDIRR1_PDIR02                 (*((volatile unsigned int*)(0x42212008UL)))
@@ -12954,7 +12847,15 @@ typedef struct
 #define bM4_CMP_CR_RVADC_DA1SW                    (*((volatile unsigned int*)(0x42942180UL)))
 #define bM4_CMP_CR_RVADC_DA2SW                    (*((volatile unsigned int*)(0x42942184UL)))
 #define bM4_CMP_CR_RVADC_VREFSW                   (*((volatile unsigned int*)(0x42942190UL)))
-#define bM4_CRC_CR_SEL                            (*((volatile unsigned int*)(0x42118004UL)))
+#define bM4_CMP_CR_RVADC_WPRT0                    (*((volatile unsigned int*)(0x429421A0UL)))
+#define bM4_CMP_CR_RVADC_WPRT1                    (*((volatile unsigned int*)(0x429421A4UL)))
+#define bM4_CMP_CR_RVADC_WPRT2                    (*((volatile unsigned int*)(0x429421A8UL)))
+#define bM4_CMP_CR_RVADC_WPRT3                    (*((volatile unsigned int*)(0x429421ACUL)))
+#define bM4_CMP_CR_RVADC_WPRT4                    (*((volatile unsigned int*)(0x429421B0UL)))
+#define bM4_CMP_CR_RVADC_WPRT5                    (*((volatile unsigned int*)(0x429421B4UL)))
+#define bM4_CMP_CR_RVADC_WPRT6                    (*((volatile unsigned int*)(0x429421B8UL)))
+#define bM4_CMP_CR_RVADC_WPRT7                    (*((volatile unsigned int*)(0x429421BCUL)))
+#define bM4_CRC_CR_CRC_SEL                        (*((volatile unsigned int*)(0x42118004UL)))
 #define bM4_CRC_CR_REFIN                          (*((volatile unsigned int*)(0x42118008UL)))
 #define bM4_CRC_CR_REFOUT                         (*((volatile unsigned int*)(0x4211800CUL)))
 #define bM4_CRC_CR_XOROUT                         (*((volatile unsigned int*)(0x42118010UL)))
@@ -16032,17 +15933,17 @@ typedef struct
 #define bM4_EFM_FSR_PGSZERR                       (*((volatile unsigned int*)(0x42208208UL)))
 #define bM4_EFM_FSR_PGMISMTCH                     (*((volatile unsigned int*)(0x4220820CUL)))
 #define bM4_EFM_FSR_OPTEND                        (*((volatile unsigned int*)(0x42208210UL)))
-#define bM4_EFM_FSR_RDCOLERR                      (*((volatile unsigned int*)(0x42208214UL)))
+#define bM4_EFM_FSR_COLERR                        (*((volatile unsigned int*)(0x42208214UL)))
 #define bM4_EFM_FSR_RDY                           (*((volatile unsigned int*)(0x42208220UL)))
 #define bM4_EFM_FSCLR_PEWERRCLR                   (*((volatile unsigned int*)(0x42208280UL)))
 #define bM4_EFM_FSCLR_PEPRTERRCLR                 (*((volatile unsigned int*)(0x42208284UL)))
 #define bM4_EFM_FSCLR_PGSZERRCLR                  (*((volatile unsigned int*)(0x42208288UL)))
 #define bM4_EFM_FSCLR_PGMISMTCHCLR                (*((volatile unsigned int*)(0x4220828CUL)))
 #define bM4_EFM_FSCLR_OPTENDCLR                   (*((volatile unsigned int*)(0x42208290UL)))
-#define bM4_EFM_FSCLR_RDCOLERRCLR                 (*((volatile unsigned int*)(0x42208294UL)))
+#define bM4_EFM_FSCLR_COLERRCLR                   (*((volatile unsigned int*)(0x42208294UL)))
 #define bM4_EFM_FITE_PEERRITE                     (*((volatile unsigned int*)(0x42208300UL)))
 #define bM4_EFM_FITE_OPTENDITE                    (*((volatile unsigned int*)(0x42208304UL)))
-#define bM4_EFM_FITE_RDCOLERRITE                  (*((volatile unsigned int*)(0x42208308UL)))
+#define bM4_EFM_FITE_COLERRITE                    (*((volatile unsigned int*)(0x42208308UL)))
 #define bM4_EFM_FSWP_FSWP                         (*((volatile unsigned int*)(0x42208380UL)))
 #define bM4_EFM_FPMTSW_FPMTSW0                    (*((volatile unsigned int*)(0x42208400UL)))
 #define bM4_EFM_FPMTSW_FPMTSW1                    (*((volatile unsigned int*)(0x42208404UL)))
@@ -16063,7 +15964,6 @@ typedef struct
 #define bM4_EFM_FPMTSW_FPMTSW16                   (*((volatile unsigned int*)(0x42208440UL)))
 #define bM4_EFM_FPMTSW_FPMTSW17                   (*((volatile unsigned int*)(0x42208444UL)))
 #define bM4_EFM_FPMTSW_FPMTSW18                   (*((volatile unsigned int*)(0x42208448UL)))
-#define bM4_EFM_FPMTSW_FPMTSW19                   (*((volatile unsigned int*)(0x4220844CUL)))
 #define bM4_EFM_FPMTEW_FPMTEW0                    (*((volatile unsigned int*)(0x42208480UL)))
 #define bM4_EFM_FPMTEW_FPMTEW1                    (*((volatile unsigned int*)(0x42208484UL)))
 #define bM4_EFM_FPMTEW_FPMTEW2                    (*((volatile unsigned int*)(0x42208488UL)))
@@ -16083,7 +15983,6 @@ typedef struct
 #define bM4_EFM_FPMTEW_FPMTEW16                   (*((volatile unsigned int*)(0x422084C0UL)))
 #define bM4_EFM_FPMTEW_FPMTEW17                   (*((volatile unsigned int*)(0x422084C4UL)))
 #define bM4_EFM_FPMTEW_FPMTEW18                   (*((volatile unsigned int*)(0x422084C8UL)))
-#define bM4_EFM_FPMTEW_FPMTEW19                   (*((volatile unsigned int*)(0x422084CCUL)))
 #define bM4_EFM_MMF_REMPRT_REMPRT0                (*((volatile unsigned int*)(0x4220A000UL)))
 #define bM4_EFM_MMF_REMPRT_REMPRT1                (*((volatile unsigned int*)(0x4220A004UL)))
 #define bM4_EFM_MMF_REMPRT_REMPRT2                (*((volatile unsigned int*)(0x4220A008UL)))
@@ -16146,14 +16045,29 @@ typedef struct
 #define bM4_EFM_MMF_REMCR1_RM1TADDR15             (*((volatile unsigned int*)(0x4220A16CUL)))
 #define bM4_EFM_MMF_REMCR1_RM1TADDR16             (*((volatile unsigned int*)(0x4220A170UL)))
 #define bM4_EFM_MMF_REMCR1_EN1                    (*((volatile unsigned int*)(0x4220A17CUL)))
+#define bM4_EFM_EFM_FRANDS_FRANDS0                (*((volatile unsigned int*)(0x4220C084UL)))
+#define bM4_EFM_EFM_FRANDS_FRANDS1                (*((volatile unsigned int*)(0x4220C088UL)))
+#define bM4_EFM_EFM_FRANDS_FRANDS2                (*((volatile unsigned int*)(0x4220C08CUL)))
+#define bM4_EFM_EFM_FRANDS_FRANDS3                (*((volatile unsigned int*)(0x4220C090UL)))
+#define bM4_EFM_EFM_FRANDS_FRANDS4                (*((volatile unsigned int*)(0x4220C094UL)))
+#define bM4_EFM_EFM_FRANDS_FRANDS5                (*((volatile unsigned int*)(0x4220C098UL)))
+#define bM4_EFM_EFM_FRANDS_FRANDS6                (*((volatile unsigned int*)(0x4220C09CUL)))
+#define bM4_EFM_EFM_FRANDS_FRANDS7                (*((volatile unsigned int*)(0x4220C0A0UL)))
+#define bM4_EFM_EFM_FRANDS_FRANDS8                (*((volatile unsigned int*)(0x4220C0A4UL)))
+#define bM4_EFM_EFM_FRANDS_FRANDS9                (*((volatile unsigned int*)(0x4220C0A8UL)))
+#define bM4_EFM_EFM_FRANDS_FRANDS10               (*((volatile unsigned int*)(0x4220C0ACUL)))
+#define bM4_EFM_EFM_FRANDS_FRANDS11               (*((volatile unsigned int*)(0x4220C0B0UL)))
+#define bM4_EFM_EFM_FRANDS_FRANDS12               (*((volatile unsigned int*)(0x4220C0B4UL)))
+#define bM4_EFM_EFM_FRANDS_FRANDS13               (*((volatile unsigned int*)(0x4220C0B8UL)))
+#define bM4_EFM_EFM_FRANDS_FRANDFG                (*((volatile unsigned int*)(0x4220C0C0UL)))
 #define bM4_EMB1_CTL_PORTINEN                     (*((volatile unsigned int*)(0x422F8000UL)))
 #define bM4_EMB1_CTL_CMPEN0                       (*((volatile unsigned int*)(0x422F8004UL)))
 #define bM4_EMB1_CTL_CMPEN1                       (*((volatile unsigned int*)(0x422F8008UL)))
 #define bM4_EMB1_CTL_CMPEN2                       (*((volatile unsigned int*)(0x422F800CUL)))
 #define bM4_EMB1_CTL_OSCSTPEN                     (*((volatile unsigned int*)(0x422F8014UL)))
-#define bM4_EMB1_CTL_PWMSEL0                      (*((volatile unsigned int*)(0x422F8018UL)))
-#define bM4_EMB1_CTL_PWMSEL1                      (*((volatile unsigned int*)(0x422F801CUL)))
-#define bM4_EMB1_CTL_PWMSEL2                      (*((volatile unsigned int*)(0x422F8020UL)))
+#define bM4_EMB1_CTL_PWMSEN0                      (*((volatile unsigned int*)(0x422F8018UL)))
+#define bM4_EMB1_CTL_PWMSEN1                      (*((volatile unsigned int*)(0x422F801CUL)))
+#define bM4_EMB1_CTL_PWMSEN2                      (*((volatile unsigned int*)(0x422F8020UL)))
 #define bM4_EMB1_CTL_NFSEL0                       (*((volatile unsigned int*)(0x422F8070UL)))
 #define bM4_EMB1_CTL_NFSEL1                       (*((volatile unsigned int*)(0x422F8074UL)))
 #define bM4_EMB1_CTL_NFEN                         (*((volatile unsigned int*)(0x422F8078UL)))
@@ -16181,9 +16095,9 @@ typedef struct
 #define bM4_EMB2_CTL_CMPEN1                       (*((volatile unsigned int*)(0x422F8408UL)))
 #define bM4_EMB2_CTL_CMPEN2                       (*((volatile unsigned int*)(0x422F840CUL)))
 #define bM4_EMB2_CTL_OSCSTPEN                     (*((volatile unsigned int*)(0x422F8414UL)))
-#define bM4_EMB2_CTL_PWMSEL0                      (*((volatile unsigned int*)(0x422F8418UL)))
-#define bM4_EMB2_CTL_PWMSEL1                      (*((volatile unsigned int*)(0x422F841CUL)))
-#define bM4_EMB2_CTL_PWMSEL2                      (*((volatile unsigned int*)(0x422F8420UL)))
+#define bM4_EMB2_CTL_PWMSEN0                      (*((volatile unsigned int*)(0x422F8418UL)))
+#define bM4_EMB2_CTL_PWMSEN1                      (*((volatile unsigned int*)(0x422F841CUL)))
+#define bM4_EMB2_CTL_PWMSEN2                      (*((volatile unsigned int*)(0x422F8420UL)))
 #define bM4_EMB2_CTL_NFSEL0                       (*((volatile unsigned int*)(0x422F8470UL)))
 #define bM4_EMB2_CTL_NFSEL1                       (*((volatile unsigned int*)(0x422F8474UL)))
 #define bM4_EMB2_CTL_NFEN                         (*((volatile unsigned int*)(0x422F8478UL)))
@@ -16211,9 +16125,9 @@ typedef struct
 #define bM4_EMB3_CTL_CMPEN1                       (*((volatile unsigned int*)(0x422F8808UL)))
 #define bM4_EMB3_CTL_CMPEN2                       (*((volatile unsigned int*)(0x422F880CUL)))
 #define bM4_EMB3_CTL_OSCSTPEN                     (*((volatile unsigned int*)(0x422F8814UL)))
-#define bM4_EMB3_CTL_PWMSEL0                      (*((volatile unsigned int*)(0x422F8818UL)))
-#define bM4_EMB3_CTL_PWMSEL1                      (*((volatile unsigned int*)(0x422F881CUL)))
-#define bM4_EMB3_CTL_PWMSEL2                      (*((volatile unsigned int*)(0x422F8820UL)))
+#define bM4_EMB3_CTL_PWMSEN0                      (*((volatile unsigned int*)(0x422F8818UL)))
+#define bM4_EMB3_CTL_PWMSEN1                      (*((volatile unsigned int*)(0x422F881CUL)))
+#define bM4_EMB3_CTL_PWMSEN2                      (*((volatile unsigned int*)(0x422F8820UL)))
 #define bM4_EMB3_CTL_NFSEL0                       (*((volatile unsigned int*)(0x422F8870UL)))
 #define bM4_EMB3_CTL_NFSEL1                       (*((volatile unsigned int*)(0x422F8874UL)))
 #define bM4_EMB3_CTL_NFEN                         (*((volatile unsigned int*)(0x422F8878UL)))
@@ -16241,9 +16155,9 @@ typedef struct
 #define bM4_EMB4_CTL_CMPEN1                       (*((volatile unsigned int*)(0x422F8C08UL)))
 #define bM4_EMB4_CTL_CMPEN2                       (*((volatile unsigned int*)(0x422F8C0CUL)))
 #define bM4_EMB4_CTL_OSCSTPEN                     (*((volatile unsigned int*)(0x422F8C14UL)))
-#define bM4_EMB4_CTL_PWMSEL0                      (*((volatile unsigned int*)(0x422F8C18UL)))
-#define bM4_EMB4_CTL_PWMSEL1                      (*((volatile unsigned int*)(0x422F8C1CUL)))
-#define bM4_EMB4_CTL_PWMSEL2                      (*((volatile unsigned int*)(0x422F8C20UL)))
+#define bM4_EMB4_CTL_PWMSEN0                      (*((volatile unsigned int*)(0x422F8C18UL)))
+#define bM4_EMB4_CTL_PWMSEN1                      (*((volatile unsigned int*)(0x422F8C1CUL)))
+#define bM4_EMB4_CTL_PWMSEN2                      (*((volatile unsigned int*)(0x422F8C20UL)))
 #define bM4_EMB4_CTL_NFSEL0                       (*((volatile unsigned int*)(0x422F8C70UL)))
 #define bM4_EMB4_CTL_NFSEL1                       (*((volatile unsigned int*)(0x422F8C74UL)))
 #define bM4_EMB4_CTL_NFEN                         (*((volatile unsigned int*)(0x422F8C78UL)))
@@ -16369,7 +16283,7 @@ typedef struct
 #define bM4_I2C1_CR2_TMOUTIE                      (*((volatile unsigned int*)(0x429C00B8UL)))
 #define bM4_I2C1_CR2_GENCALLIE                    (*((volatile unsigned int*)(0x429C00D0UL)))
 #define bM4_I2C1_CR2_SMBDEFAULTIE                 (*((volatile unsigned int*)(0x429C00D4UL)))
-#define bM4_I2C1_CR2_SMHOSTIE                     (*((volatile unsigned int*)(0x429C00D8UL)))
+#define bM4_I2C1_CR2_SMBHOSTIE                    (*((volatile unsigned int*)(0x429C00D8UL)))
 #define bM4_I2C1_CR2_SMBALRTIE                    (*((volatile unsigned int*)(0x429C00DCUL)))
 #define bM4_I2C1_CR3_TMOUTEN                      (*((volatile unsigned int*)(0x429C0100UL)))
 #define bM4_I2C1_CR3_LTMOUT                       (*((volatile unsigned int*)(0x429C0104UL)))
@@ -16519,7 +16433,7 @@ typedef struct
 #define bM4_I2C2_CR2_TMOUTIE                      (*((volatile unsigned int*)(0x429C80B8UL)))
 #define bM4_I2C2_CR2_GENCALLIE                    (*((volatile unsigned int*)(0x429C80D0UL)))
 #define bM4_I2C2_CR2_SMBDEFAULTIE                 (*((volatile unsigned int*)(0x429C80D4UL)))
-#define bM4_I2C2_CR2_SMHOSTIE                     (*((volatile unsigned int*)(0x429C80D8UL)))
+#define bM4_I2C2_CR2_SMBHOSTIE                    (*((volatile unsigned int*)(0x429C80D8UL)))
 #define bM4_I2C2_CR2_SMBALRTIE                    (*((volatile unsigned int*)(0x429C80DCUL)))
 #define bM4_I2C2_CR3_TMOUTEN                      (*((volatile unsigned int*)(0x429C8100UL)))
 #define bM4_I2C2_CR3_LTMOUT                       (*((volatile unsigned int*)(0x429C8104UL)))
@@ -16669,7 +16583,7 @@ typedef struct
 #define bM4_I2C3_CR2_TMOUTIE                      (*((volatile unsigned int*)(0x429D00B8UL)))
 #define bM4_I2C3_CR2_GENCALLIE                    (*((volatile unsigned int*)(0x429D00D0UL)))
 #define bM4_I2C3_CR2_SMBDEFAULTIE                 (*((volatile unsigned int*)(0x429D00D4UL)))
-#define bM4_I2C3_CR2_SMHOSTIE                     (*((volatile unsigned int*)(0x429D00D8UL)))
+#define bM4_I2C3_CR2_SMBHOSTIE                    (*((volatile unsigned int*)(0x429D00D8UL)))
 #define bM4_I2C3_CR2_SMBALRTIE                    (*((volatile unsigned int*)(0x429D00DCUL)))
 #define bM4_I2C3_CR3_TMOUTEN                      (*((volatile unsigned int*)(0x429D0100UL)))
 #define bM4_I2C3_CR3_LTMOUT                       (*((volatile unsigned int*)(0x429D0104UL)))
@@ -16821,9 +16735,9 @@ typedef struct
 #define bM4_I2S1_SR_TXBA                          (*((volatile unsigned int*)(0x423C0080UL)))
 #define bM4_I2S1_SR_RXBA                          (*((volatile unsigned int*)(0x423C0084UL)))
 #define bM4_I2S1_SR_TXBE                          (*((volatile unsigned int*)(0x423C0088UL)))
-#define bM4_I2S1_SR_TXBUF                         (*((volatile unsigned int*)(0x423C008CUL)))
+#define bM4_I2S1_SR_TXBF                          (*((volatile unsigned int*)(0x423C008CUL)))
 #define bM4_I2S1_SR_RXBE                          (*((volatile unsigned int*)(0x423C0090UL)))
-#define bM4_I2S1_SR_RXBUF                         (*((volatile unsigned int*)(0x423C0094UL)))
+#define bM4_I2S1_SR_RXBF                          (*((volatile unsigned int*)(0x423C0094UL)))
 #define bM4_I2S1_ER_TXERR                         (*((volatile unsigned int*)(0x423C0100UL)))
 #define bM4_I2S1_ER_RXERR                         (*((volatile unsigned int*)(0x423C0104UL)))
 #define bM4_I2S1_CFGR_I2SSTD0                     (*((volatile unsigned int*)(0x423C0180UL)))
@@ -16865,9 +16779,9 @@ typedef struct
 #define bM4_I2S2_SR_TXBA                          (*((volatile unsigned int*)(0x423C8080UL)))
 #define bM4_I2S2_SR_RXBA                          (*((volatile unsigned int*)(0x423C8084UL)))
 #define bM4_I2S2_SR_TXBE                          (*((volatile unsigned int*)(0x423C8088UL)))
-#define bM4_I2S2_SR_TXBUF                         (*((volatile unsigned int*)(0x423C808CUL)))
+#define bM4_I2S2_SR_TXBF                          (*((volatile unsigned int*)(0x423C808CUL)))
 #define bM4_I2S2_SR_RXBE                          (*((volatile unsigned int*)(0x423C8090UL)))
-#define bM4_I2S2_SR_RXBUF                         (*((volatile unsigned int*)(0x423C8094UL)))
+#define bM4_I2S2_SR_RXBF                          (*((volatile unsigned int*)(0x423C8094UL)))
 #define bM4_I2S2_ER_TXERR                         (*((volatile unsigned int*)(0x423C8100UL)))
 #define bM4_I2S2_ER_RXERR                         (*((volatile unsigned int*)(0x423C8104UL)))
 #define bM4_I2S2_CFGR_I2SSTD0                     (*((volatile unsigned int*)(0x423C8180UL)))
@@ -16909,9 +16823,9 @@ typedef struct
 #define bM4_I2S3_SR_TXBA                          (*((volatile unsigned int*)(0x42440080UL)))
 #define bM4_I2S3_SR_RXBA                          (*((volatile unsigned int*)(0x42440084UL)))
 #define bM4_I2S3_SR_TXBE                          (*((volatile unsigned int*)(0x42440088UL)))
-#define bM4_I2S3_SR_TXBUF                         (*((volatile unsigned int*)(0x4244008CUL)))
+#define bM4_I2S3_SR_TXBF                          (*((volatile unsigned int*)(0x4244008CUL)))
 #define bM4_I2S3_SR_RXBE                          (*((volatile unsigned int*)(0x42440090UL)))
-#define bM4_I2S3_SR_RXBUF                         (*((volatile unsigned int*)(0x42440094UL)))
+#define bM4_I2S3_SR_RXBF                          (*((volatile unsigned int*)(0x42440094UL)))
 #define bM4_I2S3_ER_TXERR                         (*((volatile unsigned int*)(0x42440100UL)))
 #define bM4_I2S3_ER_RXERR                         (*((volatile unsigned int*)(0x42440104UL)))
 #define bM4_I2S3_CFGR_I2SSTD0                     (*((volatile unsigned int*)(0x42440180UL)))
@@ -16953,9 +16867,9 @@ typedef struct
 #define bM4_I2S4_SR_TXBA                          (*((volatile unsigned int*)(0x42448080UL)))
 #define bM4_I2S4_SR_RXBA                          (*((volatile unsigned int*)(0x42448084UL)))
 #define bM4_I2S4_SR_TXBE                          (*((volatile unsigned int*)(0x42448088UL)))
-#define bM4_I2S4_SR_TXBUF                         (*((volatile unsigned int*)(0x4244808CUL)))
+#define bM4_I2S4_SR_TXBF                          (*((volatile unsigned int*)(0x4244808CUL)))
 #define bM4_I2S4_SR_RXBE                          (*((volatile unsigned int*)(0x42448090UL)))
-#define bM4_I2S4_SR_RXBUF                         (*((volatile unsigned int*)(0x42448094UL)))
+#define bM4_I2S4_SR_RXBF                          (*((volatile unsigned int*)(0x42448094UL)))
 #define bM4_I2S4_ER_TXERR                         (*((volatile unsigned int*)(0x42448100UL)))
 #define bM4_I2S4_ER_RXERR                         (*((volatile unsigned int*)(0x42448104UL)))
 #define bM4_I2S4_CFGR_I2SSTD0                     (*((volatile unsigned int*)(0x42448180UL)))
@@ -16980,7 +16894,6 @@ typedef struct
 #define bM4_INTC_NMIENR_SWDTENR                   (*((volatile unsigned int*)(0x42A20084UL)))
 #define bM4_INTC_NMIENR_PVD1ENR                   (*((volatile unsigned int*)(0x42A20088UL)))
 #define bM4_INTC_NMIENR_PVD2ENR                   (*((volatile unsigned int*)(0x42A2008CUL)))
-#define bM4_INTC_NMIENR_XTAL32STPENR              (*((volatile unsigned int*)(0x42A20090UL)))
 #define bM4_INTC_NMIENR_XTALSTPENR                (*((volatile unsigned int*)(0x42A20094UL)))
 #define bM4_INTC_NMIENR_REPENR                    (*((volatile unsigned int*)(0x42A200A0UL)))
 #define bM4_INTC_NMIENR_RECCENR                   (*((volatile unsigned int*)(0x42A200A4UL)))
@@ -16990,7 +16903,6 @@ typedef struct
 #define bM4_INTC_NMIFR_SWDTFR                     (*((volatile unsigned int*)(0x42A20104UL)))
 #define bM4_INTC_NMIFR_PVD1FR                     (*((volatile unsigned int*)(0x42A20108UL)))
 #define bM4_INTC_NMIFR_PVD2FR                     (*((volatile unsigned int*)(0x42A2010CUL)))
-#define bM4_INTC_NMIFR_XTAL32STPFR                (*((volatile unsigned int*)(0x42A20110UL)))
 #define bM4_INTC_NMIFR_XTALSTPFR                  (*((volatile unsigned int*)(0x42A20114UL)))
 #define bM4_INTC_NMIFR_REPFR                      (*((volatile unsigned int*)(0x42A20120UL)))
 #define bM4_INTC_NMIFR_RECCFR                     (*((volatile unsigned int*)(0x42A20124UL)))
@@ -17000,7 +16912,6 @@ typedef struct
 #define bM4_INTC_NMICFR_SWDTCFR                   (*((volatile unsigned int*)(0x42A20184UL)))
 #define bM4_INTC_NMICFR_PVD1CFR                   (*((volatile unsigned int*)(0x42A20188UL)))
 #define bM4_INTC_NMICFR_PVD2CFR                   (*((volatile unsigned int*)(0x42A2018CUL)))
-#define bM4_INTC_NMICFR_XTAL32STPCFR              (*((volatile unsigned int*)(0x42A20190UL)))
 #define bM4_INTC_NMICFR_XTALSTPCFR                (*((volatile unsigned int*)(0x42A20194UL)))
 #define bM4_INTC_NMICFR_REPCFR                    (*((volatile unsigned int*)(0x42A201A0UL)))
 #define bM4_INTC_NMICFR_RECCCFR                   (*((volatile unsigned int*)(0x42A201A4UL)))
@@ -17110,7 +17021,7 @@ typedef struct
 #define bM4_INTC_WUPEN_RTCALMWUEN                 (*((volatile unsigned int*)(0x42A20A54UL)))
 #define bM4_INTC_WUPEN_RTCPRDWUEN                 (*((volatile unsigned int*)(0x42A20A58UL)))
 #define bM4_INTC_WUPEN_TMR0WUEN                   (*((volatile unsigned int*)(0x42A20A5CUL)))
-#define bM4_INTC_WUPEN_SCIWEN                     (*((volatile unsigned int*)(0x42A20A64UL)))
+#define bM4_INTC_WUPEN_RXWUEN                     (*((volatile unsigned int*)(0x42A20A64UL)))
 #define bM4_INTC_EIFR_EIFR0                       (*((volatile unsigned int*)(0x42A20A80UL)))
 #define bM4_INTC_EIFR_EIFR1                       (*((volatile unsigned int*)(0x42A20A84UL)))
 #define bM4_INTC_EIFR_EIFR2                       (*((volatile unsigned int*)(0x42A20A88UL)))
@@ -19605,10 +19516,10 @@ typedef struct
 #define bM4_MPU_WP_WKEY12                         (*((volatile unsigned int*)(0x42A011B4UL)))
 #define bM4_MPU_WP_WKEY13                         (*((volatile unsigned int*)(0x42A011B8UL)))
 #define bM4_MPU_WP_WKEY14                         (*((volatile unsigned int*)(0x42A011BCUL)))
-#define bM4_MSTP_FCG0_RAMHS                       (*((volatile unsigned int*)(0x42900000UL)))
-#define bM4_MSTP_FCG0_RAM0                        (*((volatile unsigned int*)(0x42900010UL)))
-#define bM4_MSTP_FCG0_ECCRAM                      (*((volatile unsigned int*)(0x42900020UL)))
-#define bM4_MSTP_FCG0_RETRAM                      (*((volatile unsigned int*)(0x42900028UL)))
+#define bM4_MSTP_FCG0_SRAMH                       (*((volatile unsigned int*)(0x42900000UL)))
+#define bM4_MSTP_FCG0_SRAM12                      (*((volatile unsigned int*)(0x42900010UL)))
+#define bM4_MSTP_FCG0_SRAM3                       (*((volatile unsigned int*)(0x42900020UL)))
+#define bM4_MSTP_FCG0_SRAMRET                     (*((volatile unsigned int*)(0x42900028UL)))
 #define bM4_MSTP_FCG0_DMA1                        (*((volatile unsigned int*)(0x42900038UL)))
 #define bM4_MSTP_FCG0_DMA2                        (*((volatile unsigned int*)(0x4290003CUL)))
 #define bM4_MSTP_FCG0_FCM                         (*((volatile unsigned int*)(0x42900040UL)))
@@ -19659,7 +19570,6 @@ typedef struct
 #define bM4_MSTP_FCG2_TIMER6_3                    (*((volatile unsigned int*)(0x42900148UL)))
 #define bM4_MSTP_FCG3_ADC1                        (*((volatile unsigned int*)(0x42900180UL)))
 #define bM4_MSTP_FCG3_ADC2                        (*((volatile unsigned int*)(0x42900184UL)))
-#define bM4_MSTP_FCG3_DAC                         (*((volatile unsigned int*)(0x42900190UL)))
 #define bM4_MSTP_FCG3_CMP                         (*((volatile unsigned int*)(0x429001A0UL)))
 #define bM4_MSTP_FCG3_OTS                         (*((volatile unsigned int*)(0x429001B0UL)))
 #define bM4_MSTP_FCG0PC_PRT0                      (*((volatile unsigned int*)(0x42900200UL)))
@@ -19683,54 +19593,6 @@ typedef struct
 #define bM4_OTS_CTL_OTSCK                         (*((volatile unsigned int*)(0x42948004UL)))
 #define bM4_OTS_CTL_OTSIE                         (*((volatile unsigned int*)(0x42948008UL)))
 #define bM4_OTS_CTL_TSSTP                         (*((volatile unsigned int*)(0x4294800CUL)))
-#define bM4_OTS_DR1_TSDC0                         (*((volatile unsigned int*)(0x42948040UL)))
-#define bM4_OTS_DR1_TSDC1                         (*((volatile unsigned int*)(0x42948044UL)))
-#define bM4_OTS_DR1_TSDC2                         (*((volatile unsigned int*)(0x42948048UL)))
-#define bM4_OTS_DR1_TSDC3                         (*((volatile unsigned int*)(0x4294804CUL)))
-#define bM4_OTS_DR1_TSDC4                         (*((volatile unsigned int*)(0x42948050UL)))
-#define bM4_OTS_DR1_TSDC5                         (*((volatile unsigned int*)(0x42948054UL)))
-#define bM4_OTS_DR1_TSDC6                         (*((volatile unsigned int*)(0x42948058UL)))
-#define bM4_OTS_DR1_TSDC7                         (*((volatile unsigned int*)(0x4294805CUL)))
-#define bM4_OTS_DR1_TSDC8                         (*((volatile unsigned int*)(0x42948060UL)))
-#define bM4_OTS_DR1_TSDC9                         (*((volatile unsigned int*)(0x42948064UL)))
-#define bM4_OTS_DR1_TSDC10                        (*((volatile unsigned int*)(0x42948068UL)))
-#define bM4_OTS_DR1_TSDC11                        (*((volatile unsigned int*)(0x4294806CUL)))
-#define bM4_OTS_DR1_TSDC12                        (*((volatile unsigned int*)(0x42948070UL)))
-#define bM4_OTS_DR1_TSDC13                        (*((volatile unsigned int*)(0x42948074UL)))
-#define bM4_OTS_DR1_TSDC14                        (*((volatile unsigned int*)(0x42948078UL)))
-#define bM4_OTS_DR1_TSDC15                        (*((volatile unsigned int*)(0x4294807CUL)))
-#define bM4_OTS_DR2_TSDC0                         (*((volatile unsigned int*)(0x42948080UL)))
-#define bM4_OTS_DR2_TSDC1                         (*((volatile unsigned int*)(0x42948084UL)))
-#define bM4_OTS_DR2_TSDC2                         (*((volatile unsigned int*)(0x42948088UL)))
-#define bM4_OTS_DR2_TSDC3                         (*((volatile unsigned int*)(0x4294808CUL)))
-#define bM4_OTS_DR2_TSDC4                         (*((volatile unsigned int*)(0x42948090UL)))
-#define bM4_OTS_DR2_TSDC5                         (*((volatile unsigned int*)(0x42948094UL)))
-#define bM4_OTS_DR2_TSDC6                         (*((volatile unsigned int*)(0x42948098UL)))
-#define bM4_OTS_DR2_TSDC7                         (*((volatile unsigned int*)(0x4294809CUL)))
-#define bM4_OTS_DR2_TSDC8                         (*((volatile unsigned int*)(0x429480A0UL)))
-#define bM4_OTS_DR2_TSDC9                         (*((volatile unsigned int*)(0x429480A4UL)))
-#define bM4_OTS_DR2_TSDC10                        (*((volatile unsigned int*)(0x429480A8UL)))
-#define bM4_OTS_DR2_TSDC11                        (*((volatile unsigned int*)(0x429480ACUL)))
-#define bM4_OTS_DR2_TSDC12                        (*((volatile unsigned int*)(0x429480B0UL)))
-#define bM4_OTS_DR2_TSDC13                        (*((volatile unsigned int*)(0x429480B4UL)))
-#define bM4_OTS_DR2_TSDC14                        (*((volatile unsigned int*)(0x429480B8UL)))
-#define bM4_OTS_DR2_TSDC15                        (*((volatile unsigned int*)(0x429480BCUL)))
-#define bM4_OTS_ECR_TSEC0                         (*((volatile unsigned int*)(0x429480C0UL)))
-#define bM4_OTS_ECR_TSEC1                         (*((volatile unsigned int*)(0x429480C4UL)))
-#define bM4_OTS_ECR_TSEC2                         (*((volatile unsigned int*)(0x429480C8UL)))
-#define bM4_OTS_ECR_TSEC3                         (*((volatile unsigned int*)(0x429480CCUL)))
-#define bM4_OTS_ECR_TSEC4                         (*((volatile unsigned int*)(0x429480D0UL)))
-#define bM4_OTS_ECR_TSEC5                         (*((volatile unsigned int*)(0x429480D4UL)))
-#define bM4_OTS_ECR_TSEC6                         (*((volatile unsigned int*)(0x429480D8UL)))
-#define bM4_OTS_ECR_TSEC7                         (*((volatile unsigned int*)(0x429480DCUL)))
-#define bM4_OTS_ECR_TSEC8                         (*((volatile unsigned int*)(0x429480E0UL)))
-#define bM4_OTS_ECR_TSEC9                         (*((volatile unsigned int*)(0x429480E4UL)))
-#define bM4_OTS_ECR_TSEC10                        (*((volatile unsigned int*)(0x429480E8UL)))
-#define bM4_OTS_ECR_TSEC11                        (*((volatile unsigned int*)(0x429480ECUL)))
-#define bM4_OTS_ECR_TSEC12                        (*((volatile unsigned int*)(0x429480F0UL)))
-#define bM4_OTS_ECR_TSEC13                        (*((volatile unsigned int*)(0x429480F4UL)))
-#define bM4_OTS_ECR_TSEC14                        (*((volatile unsigned int*)(0x429480F8UL)))
-#define bM4_OTS_ECR_TSEC15                        (*((volatile unsigned int*)(0x429480FCUL)))
 #define bM4_OTS_LPR_TSOFS0                        (*((volatile unsigned int*)(0x42948100UL)))
 #define bM4_OTS_LPR_TSOFS1                        (*((volatile unsigned int*)(0x42948104UL)))
 #define bM4_OTS_LPR_TSOFS2                        (*((volatile unsigned int*)(0x42948108UL)))
@@ -19765,9 +19627,7 @@ typedef struct
 #define bM4_OTS_LPR_TSSLP23                       (*((volatile unsigned int*)(0x4294817CUL)))
 #define bM4_PERIC_USBFS_SYCTLREG_DFB              (*((volatile unsigned int*)(0x42AA8000UL)))
 #define bM4_PERIC_USBFS_SYCTLREG_SOFEN            (*((volatile unsigned int*)(0x42AA8004UL)))
-#define bM4_PERIC_SDIOC_SYCTLREG_ABINT1           (*((volatile unsigned int*)(0x42AA8080UL)))
 #define bM4_PERIC_SDIOC_SYCTLREG_SELMMC1          (*((volatile unsigned int*)(0x42AA8084UL)))
-#define bM4_PERIC_SDIOC_SYCTLREG_ABINT2           (*((volatile unsigned int*)(0x42AA8088UL)))
 #define bM4_PERIC_SDIOC_SYCTLREG_SELMMC2          (*((volatile unsigned int*)(0x42AA808CUL)))
 #define bM4_PORT_PIDRA_PIN00                      (*((volatile unsigned int*)(0x42A70000UL)))
 #define bM4_PORT_PIDRA_PIN01                      (*((volatile unsigned int*)(0x42A70004UL)))
@@ -21796,8 +21656,8 @@ typedef struct
 #define bM4_RTC_CR1_ONEHZOE                       (*((volatile unsigned int*)(0x42980094UL)))
 #define bM4_RTC_CR1_ONEHZSEL                      (*((volatile unsigned int*)(0x42980098UL)))
 #define bM4_RTC_CR1_START                         (*((volatile unsigned int*)(0x4298009CUL)))
-#define bM4_RTC_CR2_WAIT                          (*((volatile unsigned int*)(0x42980100UL)))
-#define bM4_RTC_CR2_WAITF                         (*((volatile unsigned int*)(0x42980104UL)))
+#define bM4_RTC_CR2_RWREQ                         (*((volatile unsigned int*)(0x42980100UL)))
+#define bM4_RTC_CR2_RWEN                          (*((volatile unsigned int*)(0x42980104UL)))
 #define bM4_RTC_CR2_ALMF                          (*((volatile unsigned int*)(0x4298010CUL)))
 #define bM4_RTC_CR2_PRDIE                         (*((volatile unsigned int*)(0x42980114UL)))
 #define bM4_RTC_CR2_ALMIE                         (*((volatile unsigned int*)(0x42980118UL)))
@@ -22211,9 +22071,9 @@ typedef struct
 #define bM4_SPI1_CFG2_DSIZE2                      (*((volatile unsigned int*)(0x42380328UL)))
 #define bM4_SPI1_CFG2_DSIZE3                      (*((volatile unsigned int*)(0x4238032CUL)))
 #define bM4_SPI1_CFG2_LSBF                        (*((volatile unsigned int*)(0x42380330UL)))
-#define bM4_SPI1_CFG2_NXTDLE                      (*((volatile unsigned int*)(0x42380334UL)))
-#define bM4_SPI1_CFG2_SSDLE                       (*((volatile unsigned int*)(0x42380338UL)))
-#define bM4_SPI1_CFG2_SCKDLE                      (*((volatile unsigned int*)(0x4238033CUL)))
+#define bM4_SPI1_CFG2_MIDIE                       (*((volatile unsigned int*)(0x42380334UL)))
+#define bM4_SPI1_CFG2_MSSDLE                      (*((volatile unsigned int*)(0x42380338UL)))
+#define bM4_SPI1_CFG2_MSSIE                       (*((volatile unsigned int*)(0x4238033CUL)))
 #define bM4_SPI2_CR1_SPIMDS                       (*((volatile unsigned int*)(0x42388080UL)))
 #define bM4_SPI2_CR1_TXMDS                        (*((volatile unsigned int*)(0x42388084UL)))
 #define bM4_SPI2_CR1_MSTR                         (*((volatile unsigned int*)(0x4238808CUL)))
@@ -22265,9 +22125,9 @@ typedef struct
 #define bM4_SPI2_CFG2_DSIZE2                      (*((volatile unsigned int*)(0x42388328UL)))
 #define bM4_SPI2_CFG2_DSIZE3                      (*((volatile unsigned int*)(0x4238832CUL)))
 #define bM4_SPI2_CFG2_LSBF                        (*((volatile unsigned int*)(0x42388330UL)))
-#define bM4_SPI2_CFG2_NXTDLE                      (*((volatile unsigned int*)(0x42388334UL)))
-#define bM4_SPI2_CFG2_SSDLE                       (*((volatile unsigned int*)(0x42388338UL)))
-#define bM4_SPI2_CFG2_SCKDLE                      (*((volatile unsigned int*)(0x4238833CUL)))
+#define bM4_SPI2_CFG2_MIDIE                       (*((volatile unsigned int*)(0x42388334UL)))
+#define bM4_SPI2_CFG2_MSSDLE                      (*((volatile unsigned int*)(0x42388338UL)))
+#define bM4_SPI2_CFG2_MSSIE                       (*((volatile unsigned int*)(0x4238833CUL)))
 #define bM4_SPI3_CR1_SPIMDS                       (*((volatile unsigned int*)(0x42400080UL)))
 #define bM4_SPI3_CR1_TXMDS                        (*((volatile unsigned int*)(0x42400084UL)))
 #define bM4_SPI3_CR1_MSTR                         (*((volatile unsigned int*)(0x4240008CUL)))
@@ -22319,9 +22179,9 @@ typedef struct
 #define bM4_SPI3_CFG2_DSIZE2                      (*((volatile unsigned int*)(0x42400328UL)))
 #define bM4_SPI3_CFG2_DSIZE3                      (*((volatile unsigned int*)(0x4240032CUL)))
 #define bM4_SPI3_CFG2_LSBF                        (*((volatile unsigned int*)(0x42400330UL)))
-#define bM4_SPI3_CFG2_NXTDLE                      (*((volatile unsigned int*)(0x42400334UL)))
-#define bM4_SPI3_CFG2_SSDLE                       (*((volatile unsigned int*)(0x42400338UL)))
-#define bM4_SPI3_CFG2_SCKDLE                      (*((volatile unsigned int*)(0x4240033CUL)))
+#define bM4_SPI3_CFG2_MIDIE                       (*((volatile unsigned int*)(0x42400334UL)))
+#define bM4_SPI3_CFG2_MSSDLE                      (*((volatile unsigned int*)(0x42400338UL)))
+#define bM4_SPI3_CFG2_MSSIE                       (*((volatile unsigned int*)(0x4240033CUL)))
 #define bM4_SPI4_CR1_SPIMDS                       (*((volatile unsigned int*)(0x42408080UL)))
 #define bM4_SPI4_CR1_TXMDS                        (*((volatile unsigned int*)(0x42408084UL)))
 #define bM4_SPI4_CR1_MSTR                         (*((volatile unsigned int*)(0x4240808CUL)))
@@ -22373,33 +22233,33 @@ typedef struct
 #define bM4_SPI4_CFG2_DSIZE2                      (*((volatile unsigned int*)(0x42408328UL)))
 #define bM4_SPI4_CFG2_DSIZE3                      (*((volatile unsigned int*)(0x4240832CUL)))
 #define bM4_SPI4_CFG2_LSBF                        (*((volatile unsigned int*)(0x42408330UL)))
-#define bM4_SPI4_CFG2_NXTDLE                      (*((volatile unsigned int*)(0x42408334UL)))
-#define bM4_SPI4_CFG2_SSDLE                       (*((volatile unsigned int*)(0x42408338UL)))
-#define bM4_SPI4_CFG2_SCKDLE                      (*((volatile unsigned int*)(0x4240833CUL)))
-#define bM4_SRAMC_WTCR_SRAMSYSRWT0                (*((volatile unsigned int*)(0x42A10000UL)))
-#define bM4_SRAMC_WTCR_SRAMSYSRWT1                (*((volatile unsigned int*)(0x42A10004UL)))
-#define bM4_SRAMC_WTCR_SRAMSYSRWT2                (*((volatile unsigned int*)(0x42A10008UL)))
-#define bM4_SRAMC_WTCR_SRAMSYSWWT0                (*((volatile unsigned int*)(0x42A10010UL)))
-#define bM4_SRAMC_WTCR_SRAMSYSWWT1                (*((volatile unsigned int*)(0x42A10014UL)))
-#define bM4_SRAMC_WTCR_SRAMSYSWWT2                (*((volatile unsigned int*)(0x42A10018UL)))
-#define bM4_SRAMC_WTCR_SRAMECCRWT0                (*((volatile unsigned int*)(0x42A10020UL)))
-#define bM4_SRAMC_WTCR_SRAMECCRWT1                (*((volatile unsigned int*)(0x42A10024UL)))
-#define bM4_SRAMC_WTCR_SRAMECCRWT2                (*((volatile unsigned int*)(0x42A10028UL)))
-#define bM4_SRAMC_WTCR_SRAMECCWWT0                (*((volatile unsigned int*)(0x42A10030UL)))
-#define bM4_SRAMC_WTCR_SRAMECCWWT1                (*((volatile unsigned int*)(0x42A10034UL)))
-#define bM4_SRAMC_WTCR_SRAMECCWWT2                (*((volatile unsigned int*)(0x42A10038UL)))
-#define bM4_SRAMC_WTCR_SRAMHSRWT0                 (*((volatile unsigned int*)(0x42A10040UL)))
-#define bM4_SRAMC_WTCR_SRAMHSRWT1                 (*((volatile unsigned int*)(0x42A10044UL)))
-#define bM4_SRAMC_WTCR_SRAMHSRWT2                 (*((volatile unsigned int*)(0x42A10048UL)))
-#define bM4_SRAMC_WTCR_SRAMHSWWT0                 (*((volatile unsigned int*)(0x42A10050UL)))
-#define bM4_SRAMC_WTCR_SRAMHSWWT1                 (*((volatile unsigned int*)(0x42A10054UL)))
-#define bM4_SRAMC_WTCR_SRAMHSWWT2                 (*((volatile unsigned int*)(0x42A10058UL)))
-#define bM4_SRAMC_WTCR_SRAMBKRWT0                 (*((volatile unsigned int*)(0x42A10060UL)))
-#define bM4_SRAMC_WTCR_SRAMBKRWT1                 (*((volatile unsigned int*)(0x42A10064UL)))
-#define bM4_SRAMC_WTCR_SRAMBKRWT2                 (*((volatile unsigned int*)(0x42A10068UL)))
-#define bM4_SRAMC_WTCR_SRAMBKWWT0                 (*((volatile unsigned int*)(0x42A10070UL)))
-#define bM4_SRAMC_WTCR_SRAMBKWWT1                 (*((volatile unsigned int*)(0x42A10074UL)))
-#define bM4_SRAMC_WTCR_SRAMBKWWT2                 (*((volatile unsigned int*)(0x42A10078UL)))
+#define bM4_SPI4_CFG2_MIDIE                       (*((volatile unsigned int*)(0x42408334UL)))
+#define bM4_SPI4_CFG2_MSSDLE                      (*((volatile unsigned int*)(0x42408338UL)))
+#define bM4_SPI4_CFG2_MSSIE                       (*((volatile unsigned int*)(0x4240833CUL)))
+#define bM4_SRAMC_WTCR_SRAM12_RWT0                (*((volatile unsigned int*)(0x42A10000UL)))
+#define bM4_SRAMC_WTCR_SRAM12_RWT1                (*((volatile unsigned int*)(0x42A10004UL)))
+#define bM4_SRAMC_WTCR_SRAM12_RWT2                (*((volatile unsigned int*)(0x42A10008UL)))
+#define bM4_SRAMC_WTCR_SRAM12_WWT0                (*((volatile unsigned int*)(0x42A10010UL)))
+#define bM4_SRAMC_WTCR_SRAM12_WWT1                (*((volatile unsigned int*)(0x42A10014UL)))
+#define bM4_SRAMC_WTCR_SRAM12_WWT2                (*((volatile unsigned int*)(0x42A10018UL)))
+#define bM4_SRAMC_WTCR_SRAM3_RWT0                 (*((volatile unsigned int*)(0x42A10020UL)))
+#define bM4_SRAMC_WTCR_SRAM3_RWT1                 (*((volatile unsigned int*)(0x42A10024UL)))
+#define bM4_SRAMC_WTCR_SRAM3_RWT2                 (*((volatile unsigned int*)(0x42A10028UL)))
+#define bM4_SRAMC_WTCR_SRAM3_WWT0                 (*((volatile unsigned int*)(0x42A10030UL)))
+#define bM4_SRAMC_WTCR_SRAM3_WWT1                 (*((volatile unsigned int*)(0x42A10034UL)))
+#define bM4_SRAMC_WTCR_SRAM3_WWT2                 (*((volatile unsigned int*)(0x42A10038UL)))
+#define bM4_SRAMC_WTCR_SRAMH_RWT0                 (*((volatile unsigned int*)(0x42A10040UL)))
+#define bM4_SRAMC_WTCR_SRAMH_RWT1                 (*((volatile unsigned int*)(0x42A10044UL)))
+#define bM4_SRAMC_WTCR_SRAMH_RWT2                 (*((volatile unsigned int*)(0x42A10048UL)))
+#define bM4_SRAMC_WTCR_SRAMH_WWT0                 (*((volatile unsigned int*)(0x42A10050UL)))
+#define bM4_SRAMC_WTCR_SRAMH_WWT1                 (*((volatile unsigned int*)(0x42A10054UL)))
+#define bM4_SRAMC_WTCR_SRAMH_WWT2                 (*((volatile unsigned int*)(0x42A10058UL)))
+#define bM4_SRAMC_WTCR_SRAMR_RWT0                 (*((volatile unsigned int*)(0x42A10060UL)))
+#define bM4_SRAMC_WTCR_SRAMR_RWT1                 (*((volatile unsigned int*)(0x42A10064UL)))
+#define bM4_SRAMC_WTCR_SRAMR_RWT2                 (*((volatile unsigned int*)(0x42A10068UL)))
+#define bM4_SRAMC_WTCR_SRAMR_WWT0                 (*((volatile unsigned int*)(0x42A10070UL)))
+#define bM4_SRAMC_WTCR_SRAMR_WWT1                 (*((volatile unsigned int*)(0x42A10074UL)))
+#define bM4_SRAMC_WTCR_SRAMR_WWT2                 (*((volatile unsigned int*)(0x42A10078UL)))
 #define bM4_SRAMC_WTPR_WTPRC                      (*((volatile unsigned int*)(0x42A10080UL)))
 #define bM4_SRAMC_WTPR_WTPRKW0                    (*((volatile unsigned int*)(0x42A10084UL)))
 #define bM4_SRAMC_WTPR_WTPRKW1                    (*((volatile unsigned int*)(0x42A10088UL)))
@@ -22420,11 +22280,11 @@ typedef struct
 #define bM4_SRAMC_CKPR_CKPRKW4                    (*((volatile unsigned int*)(0x42A10194UL)))
 #define bM4_SRAMC_CKPR_CKPRKW5                    (*((volatile unsigned int*)(0x42A10198UL)))
 #define bM4_SRAMC_CKPR_CKPRKW6                    (*((volatile unsigned int*)(0x42A1019CUL)))
-#define bM4_SRAMC_CKSR_SRAMECC1ERR                (*((volatile unsigned int*)(0x42A10200UL)))
-#define bM4_SRAMC_CKSR_SRAMECC2ERR                (*((volatile unsigned int*)(0x42A10204UL)))
-#define bM4_SRAMC_CKSR_SRAMSYSPYERR               (*((volatile unsigned int*)(0x42A10208UL)))
-#define bM4_SRAMC_CKSR_SRAMHSPYERR                (*((volatile unsigned int*)(0x42A1020CUL)))
-#define bM4_SRAMC_CKSR_SRAMBKPYERR                (*((volatile unsigned int*)(0x42A10210UL)))
+#define bM4_SRAMC_CKSR_SRAM3_1ERR                 (*((volatile unsigned int*)(0x42A10200UL)))
+#define bM4_SRAMC_CKSR_SRAM3_2ERR                 (*((volatile unsigned int*)(0x42A10204UL)))
+#define bM4_SRAMC_CKSR_SRAM12_PYERR               (*((volatile unsigned int*)(0x42A10208UL)))
+#define bM4_SRAMC_CKSR_SRAMH_PYERR                (*((volatile unsigned int*)(0x42A1020CUL)))
+#define bM4_SRAMC_CKSR_SRAMR_PYERR                (*((volatile unsigned int*)(0x42A10210UL)))
 #define bM4_SWDT_SR_CNT0                          (*((volatile unsigned int*)(0x42928080UL)))
 #define bM4_SWDT_SR_CNT1                          (*((volatile unsigned int*)(0x42928084UL)))
 #define bM4_SWDT_SR_CNT2                          (*((volatile unsigned int*)(0x42928088UL)))
@@ -22491,22 +22351,6 @@ typedef struct
 #define bM4_SYSREG_PWR_RAMPC0_RAMPDC6             (*((volatile unsigned int*)(0x42A80298UL)))
 #define bM4_SYSREG_PWR_RAMPC0_RAMPDC7             (*((volatile unsigned int*)(0x42A8029CUL)))
 #define bM4_SYSREG_PWR_RAMPC0_RAMPDC8             (*((volatile unsigned int*)(0x42A802A0UL)))
-#define bM4_SYSREG_PWR_RAMOPM_RAMOPM0             (*((volatile unsigned int*)(0x42A80300UL)))
-#define bM4_SYSREG_PWR_RAMOPM_RAMOPM1             (*((volatile unsigned int*)(0x42A80304UL)))
-#define bM4_SYSREG_PWR_RAMOPM_RAMOPM2             (*((volatile unsigned int*)(0x42A80308UL)))
-#define bM4_SYSREG_PWR_RAMOPM_RAMOPM3             (*((volatile unsigned int*)(0x42A8030CUL)))
-#define bM4_SYSREG_PWR_RAMOPM_RAMOPM4             (*((volatile unsigned int*)(0x42A80310UL)))
-#define bM4_SYSREG_PWR_RAMOPM_RAMOPM5             (*((volatile unsigned int*)(0x42A80314UL)))
-#define bM4_SYSREG_PWR_RAMOPM_RAMOPM6             (*((volatile unsigned int*)(0x42A80318UL)))
-#define bM4_SYSREG_PWR_RAMOPM_RAMOPM7             (*((volatile unsigned int*)(0x42A8031CUL)))
-#define bM4_SYSREG_PWR_RAMOPM_RAMOPM8             (*((volatile unsigned int*)(0x42A80320UL)))
-#define bM4_SYSREG_PWR_RAMOPM_RAMOPM9             (*((volatile unsigned int*)(0x42A80324UL)))
-#define bM4_SYSREG_PWR_RAMOPM_RAMOPM10            (*((volatile unsigned int*)(0x42A80328UL)))
-#define bM4_SYSREG_PWR_RAMOPM_RAMOPM11            (*((volatile unsigned int*)(0x42A8032CUL)))
-#define bM4_SYSREG_PWR_RAMOPM_RAMOPM12            (*((volatile unsigned int*)(0x42A80330UL)))
-#define bM4_SYSREG_PWR_RAMOPM_RAMOPM13            (*((volatile unsigned int*)(0x42A80334UL)))
-#define bM4_SYSREG_PWR_RAMOPM_RAMOPM14            (*((volatile unsigned int*)(0x42A80338UL)))
-#define bM4_SYSREG_PWR_RAMOPM_RAMOPM15            (*((volatile unsigned int*)(0x42A8033CUL)))
 #define bM4_SYSREG_MPU_IPPR_AESRDP                (*((volatile unsigned int*)(0x42A80380UL)))
 #define bM4_SYSREG_MPU_IPPR_AESWRP                (*((volatile unsigned int*)(0x42A80384UL)))
 #define bM4_SYSREG_MPU_IPPR_HASHRDP               (*((volatile unsigned int*)(0x42A80388UL)))
@@ -22619,7 +22463,9 @@ typedef struct
 #define bM4_SYSREG_RMU_RSTF0_CLRF                 (*((volatile unsigned int*)(0x42A8183CUL)))
 #define bM4_SYSREG_PWR_PVDICR_PVD1NMIS            (*((volatile unsigned int*)(0x42A81C00UL)))
 #define bM4_SYSREG_PWR_PVDICR_PVD2NMIS            (*((volatile unsigned int*)(0x42A81C10UL)))
+#define bM4_SYSREG_PWR_PVDDSR_PVD1MON             (*((volatile unsigned int*)(0x42A81C20UL)))
 #define bM4_SYSREG_PWR_PVDDSR_PVD1DETFLG          (*((volatile unsigned int*)(0x42A81C24UL)))
+#define bM4_SYSREG_PWR_PVDDSR_PVD2MON             (*((volatile unsigned int*)(0x42A81C30UL)))
 #define bM4_SYSREG_PWR_PVDDSR_PVD2DETFLG          (*((volatile unsigned int*)(0x42A81C34UL)))
 #define bM4_SYSREG_CMU_PLLCFGR_MPLLM0             (*((volatile unsigned int*)(0x42A82000UL)))
 #define bM4_SYSREG_CMU_PLLCFGR_MPLLM1             (*((volatile unsigned int*)(0x42A82004UL)))
@@ -22725,7 +22571,6 @@ typedef struct
 #define bM4_SYSREG_PWR_PDWKE2_NMIWKE              (*((volatile unsigned int*)(0x42A880C8UL)))
 #define bM4_SYSREG_PWR_PDWKE2_RTCPRDWKE           (*((volatile unsigned int*)(0x42A880D0UL)))
 #define bM4_SYSREG_PWR_PDWKE2_RTCALMWKE           (*((volatile unsigned int*)(0x42A880D4UL)))
-#define bM4_SYSREG_PWR_PDWKE2_XTAL32ERWKE         (*((volatile unsigned int*)(0x42A880D8UL)))
 #define bM4_SYSREG_PWR_PDWKE2_WKTMWKE             (*((volatile unsigned int*)(0x42A880DCUL)))
 #define bM4_SYSREG_PWR_PDWKES_WK0EGS              (*((volatile unsigned int*)(0x42A880E0UL)))
 #define bM4_SYSREG_PWR_PDWKES_WK1EGS              (*((volatile unsigned int*)(0x42A880E4UL)))
@@ -22744,7 +22589,6 @@ typedef struct
 #define bM4_SYSREG_PWR_PDWKF1_RXD0WKF             (*((volatile unsigned int*)(0x42A8812CUL)))
 #define bM4_SYSREG_PWR_PDWKF1_RTCPRDWKF           (*((volatile unsigned int*)(0x42A88130UL)))
 #define bM4_SYSREG_PWR_PDWKF1_RTCALMWKF           (*((volatile unsigned int*)(0x42A88134UL)))
-#define bM4_SYSREG_PWR_PDWKF1_XTAL32ERWKF         (*((volatile unsigned int*)(0x42A88138UL)))
 #define bM4_SYSREG_PWR_PDWKF1_WKTMWKF             (*((volatile unsigned int*)(0x42A8813CUL)))
 #define bM4_SYSREG_PWR_PWCMR_ADBUFE               (*((volatile unsigned int*)(0x42A8815CUL)))
 #define bM4_SYSREG_CMU_XTALCFGR_XTALDRV0          (*((volatile unsigned int*)(0x42A88210UL)))
@@ -22775,7 +22619,7 @@ typedef struct
 #define bM4_SYSREG_CMU_XTAL32CR_XTAL32STP         (*((volatile unsigned int*)(0x42A88400UL)))
 #define bM4_SYSREG_CMU_XTAL32CFGR_XTAL32DRV0      (*((volatile unsigned int*)(0x42A88420UL)))
 #define bM4_SYSREG_CMU_XTAL32CFGR_XTAL32DRV1      (*((volatile unsigned int*)(0x42A88424UL)))
-#define bM4_SYSREG_CMU_XTAL32CFGR_XTAL32SUPDRV    (*((volatile unsigned int*)(0x42A88428UL)))
+#define bM4_SYSREG_CMU_XTAL32CFGR_XTAL32DRV2      (*((volatile unsigned int*)(0x42A88428UL)))
 #define bM4_SYSREG_CMU_XTAL32NFR_XTAL32NF0        (*((volatile unsigned int*)(0x42A884A0UL)))
 #define bM4_SYSREG_CMU_XTAL32NFR_XTAL32NF1        (*((volatile unsigned int*)(0x42A884A4UL)))
 #define bM4_SYSREG_CMU_LRCCR_LRCSTP               (*((volatile unsigned int*)(0x42A884E0UL)))
@@ -24489,8 +24333,6 @@ typedef struct
 #define bM4_TMR61_PCONR_PERCA0                    (*((volatile unsigned int*)(0x42300B18UL)))
 #define bM4_TMR61_PCONR_PERCA1                    (*((volatile unsigned int*)(0x42300B1CUL)))
 #define bM4_TMR61_PCONR_OUTENA                    (*((volatile unsigned int*)(0x42300B20UL)))
-#define bM4_TMR61_PCONR_EMBSELA0                  (*((volatile unsigned int*)(0x42300B24UL)))
-#define bM4_TMR61_PCONR_EMBSELA1                  (*((volatile unsigned int*)(0x42300B28UL)))
 #define bM4_TMR61_PCONR_EMBVALA0                  (*((volatile unsigned int*)(0x42300B2CUL)))
 #define bM4_TMR61_PCONR_EMBVALA1                  (*((volatile unsigned int*)(0x42300B30UL)))
 #define bM4_TMR61_PCONR_CAPMDB                    (*((volatile unsigned int*)(0x42300B40UL)))
@@ -24502,8 +24344,6 @@ typedef struct
 #define bM4_TMR61_PCONR_PERCB0                    (*((volatile unsigned int*)(0x42300B58UL)))
 #define bM4_TMR61_PCONR_PERCB1                    (*((volatile unsigned int*)(0x42300B5CUL)))
 #define bM4_TMR61_PCONR_OUTENB                    (*((volatile unsigned int*)(0x42300B60UL)))
-#define bM4_TMR61_PCONR_EMBSELB0                  (*((volatile unsigned int*)(0x42300B64UL)))
-#define bM4_TMR61_PCONR_EMBSELB1                  (*((volatile unsigned int*)(0x42300B68UL)))
 #define bM4_TMR61_PCONR_EMBVALB0                  (*((volatile unsigned int*)(0x42300B6CUL)))
 #define bM4_TMR61_PCONR_EMBVALB1                  (*((volatile unsigned int*)(0x42300B70UL)))
 #define bM4_TMR61_BCONR_BENA                      (*((volatile unsigned int*)(0x42300B80UL)))
@@ -24995,8 +24835,6 @@ typedef struct
 #define bM4_TMR62_PCONR_PERCA0                    (*((volatile unsigned int*)(0x42308B18UL)))
 #define bM4_TMR62_PCONR_PERCA1                    (*((volatile unsigned int*)(0x42308B1CUL)))
 #define bM4_TMR62_PCONR_OUTENA                    (*((volatile unsigned int*)(0x42308B20UL)))
-#define bM4_TMR62_PCONR_EMBSELA0                  (*((volatile unsigned int*)(0x42308B24UL)))
-#define bM4_TMR62_PCONR_EMBSELA1                  (*((volatile unsigned int*)(0x42308B28UL)))
 #define bM4_TMR62_PCONR_EMBVALA0                  (*((volatile unsigned int*)(0x42308B2CUL)))
 #define bM4_TMR62_PCONR_EMBVALA1                  (*((volatile unsigned int*)(0x42308B30UL)))
 #define bM4_TMR62_PCONR_CAPMDB                    (*((volatile unsigned int*)(0x42308B40UL)))
@@ -25008,8 +24846,6 @@ typedef struct
 #define bM4_TMR62_PCONR_PERCB0                    (*((volatile unsigned int*)(0x42308B58UL)))
 #define bM4_TMR62_PCONR_PERCB1                    (*((volatile unsigned int*)(0x42308B5CUL)))
 #define bM4_TMR62_PCONR_OUTENB                    (*((volatile unsigned int*)(0x42308B60UL)))
-#define bM4_TMR62_PCONR_EMBSELB0                  (*((volatile unsigned int*)(0x42308B64UL)))
-#define bM4_TMR62_PCONR_EMBSELB1                  (*((volatile unsigned int*)(0x42308B68UL)))
 #define bM4_TMR62_PCONR_EMBVALB0                  (*((volatile unsigned int*)(0x42308B6CUL)))
 #define bM4_TMR62_PCONR_EMBVALB1                  (*((volatile unsigned int*)(0x42308B70UL)))
 #define bM4_TMR62_BCONR_BENA                      (*((volatile unsigned int*)(0x42308B80UL)))
@@ -25501,8 +25337,6 @@ typedef struct
 #define bM4_TMR63_PCONR_PERCA0                    (*((volatile unsigned int*)(0x42310B18UL)))
 #define bM4_TMR63_PCONR_PERCA1                    (*((volatile unsigned int*)(0x42310B1CUL)))
 #define bM4_TMR63_PCONR_OUTENA                    (*((volatile unsigned int*)(0x42310B20UL)))
-#define bM4_TMR63_PCONR_EMBSELA0                  (*((volatile unsigned int*)(0x42310B24UL)))
-#define bM4_TMR63_PCONR_EMBSELA1                  (*((volatile unsigned int*)(0x42310B28UL)))
 #define bM4_TMR63_PCONR_EMBVALA0                  (*((volatile unsigned int*)(0x42310B2CUL)))
 #define bM4_TMR63_PCONR_EMBVALA1                  (*((volatile unsigned int*)(0x42310B30UL)))
 #define bM4_TMR63_PCONR_CAPMDB                    (*((volatile unsigned int*)(0x42310B40UL)))
@@ -25514,8 +25348,6 @@ typedef struct
 #define bM4_TMR63_PCONR_PERCB0                    (*((volatile unsigned int*)(0x42310B58UL)))
 #define bM4_TMR63_PCONR_PERCB1                    (*((volatile unsigned int*)(0x42310B5CUL)))
 #define bM4_TMR63_PCONR_OUTENB                    (*((volatile unsigned int*)(0x42310B60UL)))
-#define bM4_TMR63_PCONR_EMBSELB0                  (*((volatile unsigned int*)(0x42310B64UL)))
-#define bM4_TMR63_PCONR_EMBSELB1                  (*((volatile unsigned int*)(0x42310B68UL)))
 #define bM4_TMR63_PCONR_EMBVALB0                  (*((volatile unsigned int*)(0x42310B6CUL)))
 #define bM4_TMR63_PCONR_EMBVALB1                  (*((volatile unsigned int*)(0x42310B70UL)))
 #define bM4_TMR63_BCONR_BENA                      (*((volatile unsigned int*)(0x42310B80UL)))
@@ -25920,7 +25752,7 @@ typedef struct
 #define bM4_TMRA1_BCONR4_BEN                      (*((volatile unsigned int*)(0x422A1B00UL)))
 #define bM4_TMRA1_BCONR4_BSE0                     (*((volatile unsigned int*)(0x422A1B04UL)))
 #define bM4_TMRA1_BCONR4_BSE1                     (*((volatile unsigned int*)(0x422A1B08UL)))
-#define bM4_TMRA1_CCONR1_CAPMDA                   (*((volatile unsigned int*)(0x422A2000UL)))
+#define bM4_TMRA1_CCONR1_CAPMD                    (*((volatile unsigned int*)(0x422A2000UL)))
 #define bM4_TMRA1_CCONR1_HICP0                    (*((volatile unsigned int*)(0x422A2010UL)))
 #define bM4_TMRA1_CCONR1_HICP1                    (*((volatile unsigned int*)(0x422A2014UL)))
 #define bM4_TMRA1_CCONR1_HICP2                    (*((volatile unsigned int*)(0x422A2018UL)))
@@ -25929,7 +25761,7 @@ typedef struct
 #define bM4_TMRA1_CCONR1_NOFIENCP                 (*((volatile unsigned int*)(0x422A2030UL)))
 #define bM4_TMRA1_CCONR1_NOFICKCP0                (*((volatile unsigned int*)(0x422A2034UL)))
 #define bM4_TMRA1_CCONR1_NOFICKCP1                (*((volatile unsigned int*)(0x422A2038UL)))
-#define bM4_TMRA1_CCONR2_CAPMDA                   (*((volatile unsigned int*)(0x422A2080UL)))
+#define bM4_TMRA1_CCONR2_CAPMD                    (*((volatile unsigned int*)(0x422A2080UL)))
 #define bM4_TMRA1_CCONR2_HICP0                    (*((volatile unsigned int*)(0x422A2090UL)))
 #define bM4_TMRA1_CCONR2_HICP1                    (*((volatile unsigned int*)(0x422A2094UL)))
 #define bM4_TMRA1_CCONR2_HICP2                    (*((volatile unsigned int*)(0x422A2098UL)))
@@ -25938,7 +25770,7 @@ typedef struct
 #define bM4_TMRA1_CCONR2_NOFIENCP                 (*((volatile unsigned int*)(0x422A20B0UL)))
 #define bM4_TMRA1_CCONR2_NOFICKCP0                (*((volatile unsigned int*)(0x422A20B4UL)))
 #define bM4_TMRA1_CCONR2_NOFICKCP1                (*((volatile unsigned int*)(0x422A20B8UL)))
-#define bM4_TMRA1_CCONR3_CAPMDA                   (*((volatile unsigned int*)(0x422A2100UL)))
+#define bM4_TMRA1_CCONR3_CAPMD                    (*((volatile unsigned int*)(0x422A2100UL)))
 #define bM4_TMRA1_CCONR3_HICP0                    (*((volatile unsigned int*)(0x422A2110UL)))
 #define bM4_TMRA1_CCONR3_HICP1                    (*((volatile unsigned int*)(0x422A2114UL)))
 #define bM4_TMRA1_CCONR3_HICP2                    (*((volatile unsigned int*)(0x422A2118UL)))
@@ -25947,7 +25779,7 @@ typedef struct
 #define bM4_TMRA1_CCONR3_NOFIENCP                 (*((volatile unsigned int*)(0x422A2130UL)))
 #define bM4_TMRA1_CCONR3_NOFICKCP0                (*((volatile unsigned int*)(0x422A2134UL)))
 #define bM4_TMRA1_CCONR3_NOFICKCP1                (*((volatile unsigned int*)(0x422A2138UL)))
-#define bM4_TMRA1_CCONR4_CAPMDA                   (*((volatile unsigned int*)(0x422A2180UL)))
+#define bM4_TMRA1_CCONR4_CAPMD                    (*((volatile unsigned int*)(0x422A2180UL)))
 #define bM4_TMRA1_CCONR4_HICP0                    (*((volatile unsigned int*)(0x422A2190UL)))
 #define bM4_TMRA1_CCONR4_HICP1                    (*((volatile unsigned int*)(0x422A2194UL)))
 #define bM4_TMRA1_CCONR4_HICP2                    (*((volatile unsigned int*)(0x422A2198UL)))
@@ -25956,7 +25788,7 @@ typedef struct
 #define bM4_TMRA1_CCONR4_NOFIENCP                 (*((volatile unsigned int*)(0x422A21B0UL)))
 #define bM4_TMRA1_CCONR4_NOFICKCP0                (*((volatile unsigned int*)(0x422A21B4UL)))
 #define bM4_TMRA1_CCONR4_NOFICKCP1                (*((volatile unsigned int*)(0x422A21B8UL)))
-#define bM4_TMRA1_CCONR5_CAPMDA                   (*((volatile unsigned int*)(0x422A2200UL)))
+#define bM4_TMRA1_CCONR5_CAPMD                    (*((volatile unsigned int*)(0x422A2200UL)))
 #define bM4_TMRA1_CCONR5_HICP0                    (*((volatile unsigned int*)(0x422A2210UL)))
 #define bM4_TMRA1_CCONR5_HICP1                    (*((volatile unsigned int*)(0x422A2214UL)))
 #define bM4_TMRA1_CCONR5_HICP2                    (*((volatile unsigned int*)(0x422A2218UL)))
@@ -25965,7 +25797,7 @@ typedef struct
 #define bM4_TMRA1_CCONR5_NOFIENCP                 (*((volatile unsigned int*)(0x422A2230UL)))
 #define bM4_TMRA1_CCONR5_NOFICKCP0                (*((volatile unsigned int*)(0x422A2234UL)))
 #define bM4_TMRA1_CCONR5_NOFICKCP1                (*((volatile unsigned int*)(0x422A2238UL)))
-#define bM4_TMRA1_CCONR6_CAPMDA                   (*((volatile unsigned int*)(0x422A2280UL)))
+#define bM4_TMRA1_CCONR6_CAPMD                    (*((volatile unsigned int*)(0x422A2280UL)))
 #define bM4_TMRA1_CCONR6_HICP0                    (*((volatile unsigned int*)(0x422A2290UL)))
 #define bM4_TMRA1_CCONR6_HICP1                    (*((volatile unsigned int*)(0x422A2294UL)))
 #define bM4_TMRA1_CCONR6_HICP2                    (*((volatile unsigned int*)(0x422A2298UL)))
@@ -25974,7 +25806,7 @@ typedef struct
 #define bM4_TMRA1_CCONR6_NOFIENCP                 (*((volatile unsigned int*)(0x422A22B0UL)))
 #define bM4_TMRA1_CCONR6_NOFICKCP0                (*((volatile unsigned int*)(0x422A22B4UL)))
 #define bM4_TMRA1_CCONR6_NOFICKCP1                (*((volatile unsigned int*)(0x422A22B8UL)))
-#define bM4_TMRA1_CCONR7_CAPMDA                   (*((volatile unsigned int*)(0x422A2300UL)))
+#define bM4_TMRA1_CCONR7_CAPMD                    (*((volatile unsigned int*)(0x422A2300UL)))
 #define bM4_TMRA1_CCONR7_HICP0                    (*((volatile unsigned int*)(0x422A2310UL)))
 #define bM4_TMRA1_CCONR7_HICP1                    (*((volatile unsigned int*)(0x422A2314UL)))
 #define bM4_TMRA1_CCONR7_HICP2                    (*((volatile unsigned int*)(0x422A2318UL)))
@@ -25983,7 +25815,7 @@ typedef struct
 #define bM4_TMRA1_CCONR7_NOFIENCP                 (*((volatile unsigned int*)(0x422A2330UL)))
 #define bM4_TMRA1_CCONR7_NOFICKCP0                (*((volatile unsigned int*)(0x422A2334UL)))
 #define bM4_TMRA1_CCONR7_NOFICKCP1                (*((volatile unsigned int*)(0x422A2338UL)))
-#define bM4_TMRA1_CCONR8_CAPMDA                   (*((volatile unsigned int*)(0x422A2380UL)))
+#define bM4_TMRA1_CCONR8_CAPMD                    (*((volatile unsigned int*)(0x422A2380UL)))
 #define bM4_TMRA1_CCONR8_HICP0                    (*((volatile unsigned int*)(0x422A2390UL)))
 #define bM4_TMRA1_CCONR8_HICP1                    (*((volatile unsigned int*)(0x422A2394UL)))
 #define bM4_TMRA1_CCONR8_HICP2                    (*((volatile unsigned int*)(0x422A2398UL)))
@@ -26336,7 +26168,7 @@ typedef struct
 #define bM4_TMRA2_BCONR4_BEN                      (*((volatile unsigned int*)(0x422A9B00UL)))
 #define bM4_TMRA2_BCONR4_BSE0                     (*((volatile unsigned int*)(0x422A9B04UL)))
 #define bM4_TMRA2_BCONR4_BSE1                     (*((volatile unsigned int*)(0x422A9B08UL)))
-#define bM4_TMRA2_CCONR1_CAPMDA                   (*((volatile unsigned int*)(0x422AA000UL)))
+#define bM4_TMRA2_CCONR1_CAPMD                    (*((volatile unsigned int*)(0x422AA000UL)))
 #define bM4_TMRA2_CCONR1_HICP0                    (*((volatile unsigned int*)(0x422AA010UL)))
 #define bM4_TMRA2_CCONR1_HICP1                    (*((volatile unsigned int*)(0x422AA014UL)))
 #define bM4_TMRA2_CCONR1_HICP2                    (*((volatile unsigned int*)(0x422AA018UL)))
@@ -26345,7 +26177,7 @@ typedef struct
 #define bM4_TMRA2_CCONR1_NOFIENCP                 (*((volatile unsigned int*)(0x422AA030UL)))
 #define bM4_TMRA2_CCONR1_NOFICKCP0                (*((volatile unsigned int*)(0x422AA034UL)))
 #define bM4_TMRA2_CCONR1_NOFICKCP1                (*((volatile unsigned int*)(0x422AA038UL)))
-#define bM4_TMRA2_CCONR2_CAPMDA                   (*((volatile unsigned int*)(0x422AA080UL)))
+#define bM4_TMRA2_CCONR2_CAPMD                    (*((volatile unsigned int*)(0x422AA080UL)))
 #define bM4_TMRA2_CCONR2_HICP0                    (*((volatile unsigned int*)(0x422AA090UL)))
 #define bM4_TMRA2_CCONR2_HICP1                    (*((volatile unsigned int*)(0x422AA094UL)))
 #define bM4_TMRA2_CCONR2_HICP2                    (*((volatile unsigned int*)(0x422AA098UL)))
@@ -26354,7 +26186,7 @@ typedef struct
 #define bM4_TMRA2_CCONR2_NOFIENCP                 (*((volatile unsigned int*)(0x422AA0B0UL)))
 #define bM4_TMRA2_CCONR2_NOFICKCP0                (*((volatile unsigned int*)(0x422AA0B4UL)))
 #define bM4_TMRA2_CCONR2_NOFICKCP1                (*((volatile unsigned int*)(0x422AA0B8UL)))
-#define bM4_TMRA2_CCONR3_CAPMDA                   (*((volatile unsigned int*)(0x422AA100UL)))
+#define bM4_TMRA2_CCONR3_CAPMD                    (*((volatile unsigned int*)(0x422AA100UL)))
 #define bM4_TMRA2_CCONR3_HICP0                    (*((volatile unsigned int*)(0x422AA110UL)))
 #define bM4_TMRA2_CCONR3_HICP1                    (*((volatile unsigned int*)(0x422AA114UL)))
 #define bM4_TMRA2_CCONR3_HICP2                    (*((volatile unsigned int*)(0x422AA118UL)))
@@ -26363,7 +26195,7 @@ typedef struct
 #define bM4_TMRA2_CCONR3_NOFIENCP                 (*((volatile unsigned int*)(0x422AA130UL)))
 #define bM4_TMRA2_CCONR3_NOFICKCP0                (*((volatile unsigned int*)(0x422AA134UL)))
 #define bM4_TMRA2_CCONR3_NOFICKCP1                (*((volatile unsigned int*)(0x422AA138UL)))
-#define bM4_TMRA2_CCONR4_CAPMDA                   (*((volatile unsigned int*)(0x422AA180UL)))
+#define bM4_TMRA2_CCONR4_CAPMD                    (*((volatile unsigned int*)(0x422AA180UL)))
 #define bM4_TMRA2_CCONR4_HICP0                    (*((volatile unsigned int*)(0x422AA190UL)))
 #define bM4_TMRA2_CCONR4_HICP1                    (*((volatile unsigned int*)(0x422AA194UL)))
 #define bM4_TMRA2_CCONR4_HICP2                    (*((volatile unsigned int*)(0x422AA198UL)))
@@ -26372,7 +26204,7 @@ typedef struct
 #define bM4_TMRA2_CCONR4_NOFIENCP                 (*((volatile unsigned int*)(0x422AA1B0UL)))
 #define bM4_TMRA2_CCONR4_NOFICKCP0                (*((volatile unsigned int*)(0x422AA1B4UL)))
 #define bM4_TMRA2_CCONR4_NOFICKCP1                (*((volatile unsigned int*)(0x422AA1B8UL)))
-#define bM4_TMRA2_CCONR5_CAPMDA                   (*((volatile unsigned int*)(0x422AA200UL)))
+#define bM4_TMRA2_CCONR5_CAPMD                    (*((volatile unsigned int*)(0x422AA200UL)))
 #define bM4_TMRA2_CCONR5_HICP0                    (*((volatile unsigned int*)(0x422AA210UL)))
 #define bM4_TMRA2_CCONR5_HICP1                    (*((volatile unsigned int*)(0x422AA214UL)))
 #define bM4_TMRA2_CCONR5_HICP2                    (*((volatile unsigned int*)(0x422AA218UL)))
@@ -26381,7 +26213,7 @@ typedef struct
 #define bM4_TMRA2_CCONR5_NOFIENCP                 (*((volatile unsigned int*)(0x422AA230UL)))
 #define bM4_TMRA2_CCONR5_NOFICKCP0                (*((volatile unsigned int*)(0x422AA234UL)))
 #define bM4_TMRA2_CCONR5_NOFICKCP1                (*((volatile unsigned int*)(0x422AA238UL)))
-#define bM4_TMRA2_CCONR6_CAPMDA                   (*((volatile unsigned int*)(0x422AA280UL)))
+#define bM4_TMRA2_CCONR6_CAPMD                    (*((volatile unsigned int*)(0x422AA280UL)))
 #define bM4_TMRA2_CCONR6_HICP0                    (*((volatile unsigned int*)(0x422AA290UL)))
 #define bM4_TMRA2_CCONR6_HICP1                    (*((volatile unsigned int*)(0x422AA294UL)))
 #define bM4_TMRA2_CCONR6_HICP2                    (*((volatile unsigned int*)(0x422AA298UL)))
@@ -26390,7 +26222,7 @@ typedef struct
 #define bM4_TMRA2_CCONR6_NOFIENCP                 (*((volatile unsigned int*)(0x422AA2B0UL)))
 #define bM4_TMRA2_CCONR6_NOFICKCP0                (*((volatile unsigned int*)(0x422AA2B4UL)))
 #define bM4_TMRA2_CCONR6_NOFICKCP1                (*((volatile unsigned int*)(0x422AA2B8UL)))
-#define bM4_TMRA2_CCONR7_CAPMDA                   (*((volatile unsigned int*)(0x422AA300UL)))
+#define bM4_TMRA2_CCONR7_CAPMD                    (*((volatile unsigned int*)(0x422AA300UL)))
 #define bM4_TMRA2_CCONR7_HICP0                    (*((volatile unsigned int*)(0x422AA310UL)))
 #define bM4_TMRA2_CCONR7_HICP1                    (*((volatile unsigned int*)(0x422AA314UL)))
 #define bM4_TMRA2_CCONR7_HICP2                    (*((volatile unsigned int*)(0x422AA318UL)))
@@ -26399,7 +26231,7 @@ typedef struct
 #define bM4_TMRA2_CCONR7_NOFIENCP                 (*((volatile unsigned int*)(0x422AA330UL)))
 #define bM4_TMRA2_CCONR7_NOFICKCP0                (*((volatile unsigned int*)(0x422AA334UL)))
 #define bM4_TMRA2_CCONR7_NOFICKCP1                (*((volatile unsigned int*)(0x422AA338UL)))
-#define bM4_TMRA2_CCONR8_CAPMDA                   (*((volatile unsigned int*)(0x422AA380UL)))
+#define bM4_TMRA2_CCONR8_CAPMD                    (*((volatile unsigned int*)(0x422AA380UL)))
 #define bM4_TMRA2_CCONR8_HICP0                    (*((volatile unsigned int*)(0x422AA390UL)))
 #define bM4_TMRA2_CCONR8_HICP1                    (*((volatile unsigned int*)(0x422AA394UL)))
 #define bM4_TMRA2_CCONR8_HICP2                    (*((volatile unsigned int*)(0x422AA398UL)))
@@ -26752,7 +26584,7 @@ typedef struct
 #define bM4_TMRA3_BCONR4_BEN                      (*((volatile unsigned int*)(0x422B1B00UL)))
 #define bM4_TMRA3_BCONR4_BSE0                     (*((volatile unsigned int*)(0x422B1B04UL)))
 #define bM4_TMRA3_BCONR4_BSE1                     (*((volatile unsigned int*)(0x422B1B08UL)))
-#define bM4_TMRA3_CCONR1_CAPMDA                   (*((volatile unsigned int*)(0x422B2000UL)))
+#define bM4_TMRA3_CCONR1_CAPMD                    (*((volatile unsigned int*)(0x422B2000UL)))
 #define bM4_TMRA3_CCONR1_HICP0                    (*((volatile unsigned int*)(0x422B2010UL)))
 #define bM4_TMRA3_CCONR1_HICP1                    (*((volatile unsigned int*)(0x422B2014UL)))
 #define bM4_TMRA3_CCONR1_HICP2                    (*((volatile unsigned int*)(0x422B2018UL)))
@@ -26761,7 +26593,7 @@ typedef struct
 #define bM4_TMRA3_CCONR1_NOFIENCP                 (*((volatile unsigned int*)(0x422B2030UL)))
 #define bM4_TMRA3_CCONR1_NOFICKCP0                (*((volatile unsigned int*)(0x422B2034UL)))
 #define bM4_TMRA3_CCONR1_NOFICKCP1                (*((volatile unsigned int*)(0x422B2038UL)))
-#define bM4_TMRA3_CCONR2_CAPMDA                   (*((volatile unsigned int*)(0x422B2080UL)))
+#define bM4_TMRA3_CCONR2_CAPMD                    (*((volatile unsigned int*)(0x422B2080UL)))
 #define bM4_TMRA3_CCONR2_HICP0                    (*((volatile unsigned int*)(0x422B2090UL)))
 #define bM4_TMRA3_CCONR2_HICP1                    (*((volatile unsigned int*)(0x422B2094UL)))
 #define bM4_TMRA3_CCONR2_HICP2                    (*((volatile unsigned int*)(0x422B2098UL)))
@@ -26770,7 +26602,7 @@ typedef struct
 #define bM4_TMRA3_CCONR2_NOFIENCP                 (*((volatile unsigned int*)(0x422B20B0UL)))
 #define bM4_TMRA3_CCONR2_NOFICKCP0                (*((volatile unsigned int*)(0x422B20B4UL)))
 #define bM4_TMRA3_CCONR2_NOFICKCP1                (*((volatile unsigned int*)(0x422B20B8UL)))
-#define bM4_TMRA3_CCONR3_CAPMDA                   (*((volatile unsigned int*)(0x422B2100UL)))
+#define bM4_TMRA3_CCONR3_CAPMD                    (*((volatile unsigned int*)(0x422B2100UL)))
 #define bM4_TMRA3_CCONR3_HICP0                    (*((volatile unsigned int*)(0x422B2110UL)))
 #define bM4_TMRA3_CCONR3_HICP1                    (*((volatile unsigned int*)(0x422B2114UL)))
 #define bM4_TMRA3_CCONR3_HICP2                    (*((volatile unsigned int*)(0x422B2118UL)))
@@ -26779,7 +26611,7 @@ typedef struct
 #define bM4_TMRA3_CCONR3_NOFIENCP                 (*((volatile unsigned int*)(0x422B2130UL)))
 #define bM4_TMRA3_CCONR3_NOFICKCP0                (*((volatile unsigned int*)(0x422B2134UL)))
 #define bM4_TMRA3_CCONR3_NOFICKCP1                (*((volatile unsigned int*)(0x422B2138UL)))
-#define bM4_TMRA3_CCONR4_CAPMDA                   (*((volatile unsigned int*)(0x422B2180UL)))
+#define bM4_TMRA3_CCONR4_CAPMD                    (*((volatile unsigned int*)(0x422B2180UL)))
 #define bM4_TMRA3_CCONR4_HICP0                    (*((volatile unsigned int*)(0x422B2190UL)))
 #define bM4_TMRA3_CCONR4_HICP1                    (*((volatile unsigned int*)(0x422B2194UL)))
 #define bM4_TMRA3_CCONR4_HICP2                    (*((volatile unsigned int*)(0x422B2198UL)))
@@ -26788,7 +26620,7 @@ typedef struct
 #define bM4_TMRA3_CCONR4_NOFIENCP                 (*((volatile unsigned int*)(0x422B21B0UL)))
 #define bM4_TMRA3_CCONR4_NOFICKCP0                (*((volatile unsigned int*)(0x422B21B4UL)))
 #define bM4_TMRA3_CCONR4_NOFICKCP1                (*((volatile unsigned int*)(0x422B21B8UL)))
-#define bM4_TMRA3_CCONR5_CAPMDA                   (*((volatile unsigned int*)(0x422B2200UL)))
+#define bM4_TMRA3_CCONR5_CAPMD                    (*((volatile unsigned int*)(0x422B2200UL)))
 #define bM4_TMRA3_CCONR5_HICP0                    (*((volatile unsigned int*)(0x422B2210UL)))
 #define bM4_TMRA3_CCONR5_HICP1                    (*((volatile unsigned int*)(0x422B2214UL)))
 #define bM4_TMRA3_CCONR5_HICP2                    (*((volatile unsigned int*)(0x422B2218UL)))
@@ -26797,7 +26629,7 @@ typedef struct
 #define bM4_TMRA3_CCONR5_NOFIENCP                 (*((volatile unsigned int*)(0x422B2230UL)))
 #define bM4_TMRA3_CCONR5_NOFICKCP0                (*((volatile unsigned int*)(0x422B2234UL)))
 #define bM4_TMRA3_CCONR5_NOFICKCP1                (*((volatile unsigned int*)(0x422B2238UL)))
-#define bM4_TMRA3_CCONR6_CAPMDA                   (*((volatile unsigned int*)(0x422B2280UL)))
+#define bM4_TMRA3_CCONR6_CAPMD                    (*((volatile unsigned int*)(0x422B2280UL)))
 #define bM4_TMRA3_CCONR6_HICP0                    (*((volatile unsigned int*)(0x422B2290UL)))
 #define bM4_TMRA3_CCONR6_HICP1                    (*((volatile unsigned int*)(0x422B2294UL)))
 #define bM4_TMRA3_CCONR6_HICP2                    (*((volatile unsigned int*)(0x422B2298UL)))
@@ -26806,7 +26638,7 @@ typedef struct
 #define bM4_TMRA3_CCONR6_NOFIENCP                 (*((volatile unsigned int*)(0x422B22B0UL)))
 #define bM4_TMRA3_CCONR6_NOFICKCP0                (*((volatile unsigned int*)(0x422B22B4UL)))
 #define bM4_TMRA3_CCONR6_NOFICKCP1                (*((volatile unsigned int*)(0x422B22B8UL)))
-#define bM4_TMRA3_CCONR7_CAPMDA                   (*((volatile unsigned int*)(0x422B2300UL)))
+#define bM4_TMRA3_CCONR7_CAPMD                    (*((volatile unsigned int*)(0x422B2300UL)))
 #define bM4_TMRA3_CCONR7_HICP0                    (*((volatile unsigned int*)(0x422B2310UL)))
 #define bM4_TMRA3_CCONR7_HICP1                    (*((volatile unsigned int*)(0x422B2314UL)))
 #define bM4_TMRA3_CCONR7_HICP2                    (*((volatile unsigned int*)(0x422B2318UL)))
@@ -26815,7 +26647,7 @@ typedef struct
 #define bM4_TMRA3_CCONR7_NOFIENCP                 (*((volatile unsigned int*)(0x422B2330UL)))
 #define bM4_TMRA3_CCONR7_NOFICKCP0                (*((volatile unsigned int*)(0x422B2334UL)))
 #define bM4_TMRA3_CCONR7_NOFICKCP1                (*((volatile unsigned int*)(0x422B2338UL)))
-#define bM4_TMRA3_CCONR8_CAPMDA                   (*((volatile unsigned int*)(0x422B2380UL)))
+#define bM4_TMRA3_CCONR8_CAPMD                    (*((volatile unsigned int*)(0x422B2380UL)))
 #define bM4_TMRA3_CCONR8_HICP0                    (*((volatile unsigned int*)(0x422B2390UL)))
 #define bM4_TMRA3_CCONR8_HICP1                    (*((volatile unsigned int*)(0x422B2394UL)))
 #define bM4_TMRA3_CCONR8_HICP2                    (*((volatile unsigned int*)(0x422B2398UL)))
@@ -27168,7 +27000,7 @@ typedef struct
 #define bM4_TMRA4_BCONR4_BEN                      (*((volatile unsigned int*)(0x422B9B00UL)))
 #define bM4_TMRA4_BCONR4_BSE0                     (*((volatile unsigned int*)(0x422B9B04UL)))
 #define bM4_TMRA4_BCONR4_BSE1                     (*((volatile unsigned int*)(0x422B9B08UL)))
-#define bM4_TMRA4_CCONR1_CAPMDA                   (*((volatile unsigned int*)(0x422BA000UL)))
+#define bM4_TMRA4_CCONR1_CAPMD                    (*((volatile unsigned int*)(0x422BA000UL)))
 #define bM4_TMRA4_CCONR1_HICP0                    (*((volatile unsigned int*)(0x422BA010UL)))
 #define bM4_TMRA4_CCONR1_HICP1                    (*((volatile unsigned int*)(0x422BA014UL)))
 #define bM4_TMRA4_CCONR1_HICP2                    (*((volatile unsigned int*)(0x422BA018UL)))
@@ -27177,7 +27009,7 @@ typedef struct
 #define bM4_TMRA4_CCONR1_NOFIENCP                 (*((volatile unsigned int*)(0x422BA030UL)))
 #define bM4_TMRA4_CCONR1_NOFICKCP0                (*((volatile unsigned int*)(0x422BA034UL)))
 #define bM4_TMRA4_CCONR1_NOFICKCP1                (*((volatile unsigned int*)(0x422BA038UL)))
-#define bM4_TMRA4_CCONR2_CAPMDA                   (*((volatile unsigned int*)(0x422BA080UL)))
+#define bM4_TMRA4_CCONR2_CAPMD                    (*((volatile unsigned int*)(0x422BA080UL)))
 #define bM4_TMRA4_CCONR2_HICP0                    (*((volatile unsigned int*)(0x422BA090UL)))
 #define bM4_TMRA4_CCONR2_HICP1                    (*((volatile unsigned int*)(0x422BA094UL)))
 #define bM4_TMRA4_CCONR2_HICP2                    (*((volatile unsigned int*)(0x422BA098UL)))
@@ -27186,7 +27018,7 @@ typedef struct
 #define bM4_TMRA4_CCONR2_NOFIENCP                 (*((volatile unsigned int*)(0x422BA0B0UL)))
 #define bM4_TMRA4_CCONR2_NOFICKCP0                (*((volatile unsigned int*)(0x422BA0B4UL)))
 #define bM4_TMRA4_CCONR2_NOFICKCP1                (*((volatile unsigned int*)(0x422BA0B8UL)))
-#define bM4_TMRA4_CCONR3_CAPMDA                   (*((volatile unsigned int*)(0x422BA100UL)))
+#define bM4_TMRA4_CCONR3_CAPMD                    (*((volatile unsigned int*)(0x422BA100UL)))
 #define bM4_TMRA4_CCONR3_HICP0                    (*((volatile unsigned int*)(0x422BA110UL)))
 #define bM4_TMRA4_CCONR3_HICP1                    (*((volatile unsigned int*)(0x422BA114UL)))
 #define bM4_TMRA4_CCONR3_HICP2                    (*((volatile unsigned int*)(0x422BA118UL)))
@@ -27195,7 +27027,7 @@ typedef struct
 #define bM4_TMRA4_CCONR3_NOFIENCP                 (*((volatile unsigned int*)(0x422BA130UL)))
 #define bM4_TMRA4_CCONR3_NOFICKCP0                (*((volatile unsigned int*)(0x422BA134UL)))
 #define bM4_TMRA4_CCONR3_NOFICKCP1                (*((volatile unsigned int*)(0x422BA138UL)))
-#define bM4_TMRA4_CCONR4_CAPMDA                   (*((volatile unsigned int*)(0x422BA180UL)))
+#define bM4_TMRA4_CCONR4_CAPMD                    (*((volatile unsigned int*)(0x422BA180UL)))
 #define bM4_TMRA4_CCONR4_HICP0                    (*((volatile unsigned int*)(0x422BA190UL)))
 #define bM4_TMRA4_CCONR4_HICP1                    (*((volatile unsigned int*)(0x422BA194UL)))
 #define bM4_TMRA4_CCONR4_HICP2                    (*((volatile unsigned int*)(0x422BA198UL)))
@@ -27204,7 +27036,7 @@ typedef struct
 #define bM4_TMRA4_CCONR4_NOFIENCP                 (*((volatile unsigned int*)(0x422BA1B0UL)))
 #define bM4_TMRA4_CCONR4_NOFICKCP0                (*((volatile unsigned int*)(0x422BA1B4UL)))
 #define bM4_TMRA4_CCONR4_NOFICKCP1                (*((volatile unsigned int*)(0x422BA1B8UL)))
-#define bM4_TMRA4_CCONR5_CAPMDA                   (*((volatile unsigned int*)(0x422BA200UL)))
+#define bM4_TMRA4_CCONR5_CAPMD                    (*((volatile unsigned int*)(0x422BA200UL)))
 #define bM4_TMRA4_CCONR5_HICP0                    (*((volatile unsigned int*)(0x422BA210UL)))
 #define bM4_TMRA4_CCONR5_HICP1                    (*((volatile unsigned int*)(0x422BA214UL)))
 #define bM4_TMRA4_CCONR5_HICP2                    (*((volatile unsigned int*)(0x422BA218UL)))
@@ -27213,7 +27045,7 @@ typedef struct
 #define bM4_TMRA4_CCONR5_NOFIENCP                 (*((volatile unsigned int*)(0x422BA230UL)))
 #define bM4_TMRA4_CCONR5_NOFICKCP0                (*((volatile unsigned int*)(0x422BA234UL)))
 #define bM4_TMRA4_CCONR5_NOFICKCP1                (*((volatile unsigned int*)(0x422BA238UL)))
-#define bM4_TMRA4_CCONR6_CAPMDA                   (*((volatile unsigned int*)(0x422BA280UL)))
+#define bM4_TMRA4_CCONR6_CAPMD                    (*((volatile unsigned int*)(0x422BA280UL)))
 #define bM4_TMRA4_CCONR6_HICP0                    (*((volatile unsigned int*)(0x422BA290UL)))
 #define bM4_TMRA4_CCONR6_HICP1                    (*((volatile unsigned int*)(0x422BA294UL)))
 #define bM4_TMRA4_CCONR6_HICP2                    (*((volatile unsigned int*)(0x422BA298UL)))
@@ -27222,7 +27054,7 @@ typedef struct
 #define bM4_TMRA4_CCONR6_NOFIENCP                 (*((volatile unsigned int*)(0x422BA2B0UL)))
 #define bM4_TMRA4_CCONR6_NOFICKCP0                (*((volatile unsigned int*)(0x422BA2B4UL)))
 #define bM4_TMRA4_CCONR6_NOFICKCP1                (*((volatile unsigned int*)(0x422BA2B8UL)))
-#define bM4_TMRA4_CCONR7_CAPMDA                   (*((volatile unsigned int*)(0x422BA300UL)))
+#define bM4_TMRA4_CCONR7_CAPMD                    (*((volatile unsigned int*)(0x422BA300UL)))
 #define bM4_TMRA4_CCONR7_HICP0                    (*((volatile unsigned int*)(0x422BA310UL)))
 #define bM4_TMRA4_CCONR7_HICP1                    (*((volatile unsigned int*)(0x422BA314UL)))
 #define bM4_TMRA4_CCONR7_HICP2                    (*((volatile unsigned int*)(0x422BA318UL)))
@@ -27231,7 +27063,7 @@ typedef struct
 #define bM4_TMRA4_CCONR7_NOFIENCP                 (*((volatile unsigned int*)(0x422BA330UL)))
 #define bM4_TMRA4_CCONR7_NOFICKCP0                (*((volatile unsigned int*)(0x422BA334UL)))
 #define bM4_TMRA4_CCONR7_NOFICKCP1                (*((volatile unsigned int*)(0x422BA338UL)))
-#define bM4_TMRA4_CCONR8_CAPMDA                   (*((volatile unsigned int*)(0x422BA380UL)))
+#define bM4_TMRA4_CCONR8_CAPMD                    (*((volatile unsigned int*)(0x422BA380UL)))
 #define bM4_TMRA4_CCONR8_HICP0                    (*((volatile unsigned int*)(0x422BA390UL)))
 #define bM4_TMRA4_CCONR8_HICP1                    (*((volatile unsigned int*)(0x422BA394UL)))
 #define bM4_TMRA4_CCONR8_HICP2                    (*((volatile unsigned int*)(0x422BA398UL)))
@@ -27584,7 +27416,7 @@ typedef struct
 #define bM4_TMRA5_BCONR4_BEN                      (*((volatile unsigned int*)(0x422C1B00UL)))
 #define bM4_TMRA5_BCONR4_BSE0                     (*((volatile unsigned int*)(0x422C1B04UL)))
 #define bM4_TMRA5_BCONR4_BSE1                     (*((volatile unsigned int*)(0x422C1B08UL)))
-#define bM4_TMRA5_CCONR1_CAPMDA                   (*((volatile unsigned int*)(0x422C2000UL)))
+#define bM4_TMRA5_CCONR1_CAPMD                    (*((volatile unsigned int*)(0x422C2000UL)))
 #define bM4_TMRA5_CCONR1_HICP0                    (*((volatile unsigned int*)(0x422C2010UL)))
 #define bM4_TMRA5_CCONR1_HICP1                    (*((volatile unsigned int*)(0x422C2014UL)))
 #define bM4_TMRA5_CCONR1_HICP2                    (*((volatile unsigned int*)(0x422C2018UL)))
@@ -27593,7 +27425,7 @@ typedef struct
 #define bM4_TMRA5_CCONR1_NOFIENCP                 (*((volatile unsigned int*)(0x422C2030UL)))
 #define bM4_TMRA5_CCONR1_NOFICKCP0                (*((volatile unsigned int*)(0x422C2034UL)))
 #define bM4_TMRA5_CCONR1_NOFICKCP1                (*((volatile unsigned int*)(0x422C2038UL)))
-#define bM4_TMRA5_CCONR2_CAPMDA                   (*((volatile unsigned int*)(0x422C2080UL)))
+#define bM4_TMRA5_CCONR2_CAPMD                    (*((volatile unsigned int*)(0x422C2080UL)))
 #define bM4_TMRA5_CCONR2_HICP0                    (*((volatile unsigned int*)(0x422C2090UL)))
 #define bM4_TMRA5_CCONR2_HICP1                    (*((volatile unsigned int*)(0x422C2094UL)))
 #define bM4_TMRA5_CCONR2_HICP2                    (*((volatile unsigned int*)(0x422C2098UL)))
@@ -27602,7 +27434,7 @@ typedef struct
 #define bM4_TMRA5_CCONR2_NOFIENCP                 (*((volatile unsigned int*)(0x422C20B0UL)))
 #define bM4_TMRA5_CCONR2_NOFICKCP0                (*((volatile unsigned int*)(0x422C20B4UL)))
 #define bM4_TMRA5_CCONR2_NOFICKCP1                (*((volatile unsigned int*)(0x422C20B8UL)))
-#define bM4_TMRA5_CCONR3_CAPMDA                   (*((volatile unsigned int*)(0x422C2100UL)))
+#define bM4_TMRA5_CCONR3_CAPMD                    (*((volatile unsigned int*)(0x422C2100UL)))
 #define bM4_TMRA5_CCONR3_HICP0                    (*((volatile unsigned int*)(0x422C2110UL)))
 #define bM4_TMRA5_CCONR3_HICP1                    (*((volatile unsigned int*)(0x422C2114UL)))
 #define bM4_TMRA5_CCONR3_HICP2                    (*((volatile unsigned int*)(0x422C2118UL)))
@@ -27611,7 +27443,7 @@ typedef struct
 #define bM4_TMRA5_CCONR3_NOFIENCP                 (*((volatile unsigned int*)(0x422C2130UL)))
 #define bM4_TMRA5_CCONR3_NOFICKCP0                (*((volatile unsigned int*)(0x422C2134UL)))
 #define bM4_TMRA5_CCONR3_NOFICKCP1                (*((volatile unsigned int*)(0x422C2138UL)))
-#define bM4_TMRA5_CCONR4_CAPMDA                   (*((volatile unsigned int*)(0x422C2180UL)))
+#define bM4_TMRA5_CCONR4_CAPMD                    (*((volatile unsigned int*)(0x422C2180UL)))
 #define bM4_TMRA5_CCONR4_HICP0                    (*((volatile unsigned int*)(0x422C2190UL)))
 #define bM4_TMRA5_CCONR4_HICP1                    (*((volatile unsigned int*)(0x422C2194UL)))
 #define bM4_TMRA5_CCONR4_HICP2                    (*((volatile unsigned int*)(0x422C2198UL)))
@@ -27620,7 +27452,7 @@ typedef struct
 #define bM4_TMRA5_CCONR4_NOFIENCP                 (*((volatile unsigned int*)(0x422C21B0UL)))
 #define bM4_TMRA5_CCONR4_NOFICKCP0                (*((volatile unsigned int*)(0x422C21B4UL)))
 #define bM4_TMRA5_CCONR4_NOFICKCP1                (*((volatile unsigned int*)(0x422C21B8UL)))
-#define bM4_TMRA5_CCONR5_CAPMDA                   (*((volatile unsigned int*)(0x422C2200UL)))
+#define bM4_TMRA5_CCONR5_CAPMD                    (*((volatile unsigned int*)(0x422C2200UL)))
 #define bM4_TMRA5_CCONR5_HICP0                    (*((volatile unsigned int*)(0x422C2210UL)))
 #define bM4_TMRA5_CCONR5_HICP1                    (*((volatile unsigned int*)(0x422C2214UL)))
 #define bM4_TMRA5_CCONR5_HICP2                    (*((volatile unsigned int*)(0x422C2218UL)))
@@ -27629,7 +27461,7 @@ typedef struct
 #define bM4_TMRA5_CCONR5_NOFIENCP                 (*((volatile unsigned int*)(0x422C2230UL)))
 #define bM4_TMRA5_CCONR5_NOFICKCP0                (*((volatile unsigned int*)(0x422C2234UL)))
 #define bM4_TMRA5_CCONR5_NOFICKCP1                (*((volatile unsigned int*)(0x422C2238UL)))
-#define bM4_TMRA5_CCONR6_CAPMDA                   (*((volatile unsigned int*)(0x422C2280UL)))
+#define bM4_TMRA5_CCONR6_CAPMD                    (*((volatile unsigned int*)(0x422C2280UL)))
 #define bM4_TMRA5_CCONR6_HICP0                    (*((volatile unsigned int*)(0x422C2290UL)))
 #define bM4_TMRA5_CCONR6_HICP1                    (*((volatile unsigned int*)(0x422C2294UL)))
 #define bM4_TMRA5_CCONR6_HICP2                    (*((volatile unsigned int*)(0x422C2298UL)))
@@ -27638,7 +27470,7 @@ typedef struct
 #define bM4_TMRA5_CCONR6_NOFIENCP                 (*((volatile unsigned int*)(0x422C22B0UL)))
 #define bM4_TMRA5_CCONR6_NOFICKCP0                (*((volatile unsigned int*)(0x422C22B4UL)))
 #define bM4_TMRA5_CCONR6_NOFICKCP1                (*((volatile unsigned int*)(0x422C22B8UL)))
-#define bM4_TMRA5_CCONR7_CAPMDA                   (*((volatile unsigned int*)(0x422C2300UL)))
+#define bM4_TMRA5_CCONR7_CAPMD                    (*((volatile unsigned int*)(0x422C2300UL)))
 #define bM4_TMRA5_CCONR7_HICP0                    (*((volatile unsigned int*)(0x422C2310UL)))
 #define bM4_TMRA5_CCONR7_HICP1                    (*((volatile unsigned int*)(0x422C2314UL)))
 #define bM4_TMRA5_CCONR7_HICP2                    (*((volatile unsigned int*)(0x422C2318UL)))
@@ -27647,7 +27479,7 @@ typedef struct
 #define bM4_TMRA5_CCONR7_NOFIENCP                 (*((volatile unsigned int*)(0x422C2330UL)))
 #define bM4_TMRA5_CCONR7_NOFICKCP0                (*((volatile unsigned int*)(0x422C2334UL)))
 #define bM4_TMRA5_CCONR7_NOFICKCP1                (*((volatile unsigned int*)(0x422C2338UL)))
-#define bM4_TMRA5_CCONR8_CAPMDA                   (*((volatile unsigned int*)(0x422C2380UL)))
+#define bM4_TMRA5_CCONR8_CAPMD                    (*((volatile unsigned int*)(0x422C2380UL)))
 #define bM4_TMRA5_CCONR8_HICP0                    (*((volatile unsigned int*)(0x422C2390UL)))
 #define bM4_TMRA5_CCONR8_HICP1                    (*((volatile unsigned int*)(0x422C2394UL)))
 #define bM4_TMRA5_CCONR8_HICP2                    (*((volatile unsigned int*)(0x422C2398UL)))
@@ -28000,7 +27832,7 @@ typedef struct
 #define bM4_TMRA6_BCONR4_BEN                      (*((volatile unsigned int*)(0x422C9B00UL)))
 #define bM4_TMRA6_BCONR4_BSE0                     (*((volatile unsigned int*)(0x422C9B04UL)))
 #define bM4_TMRA6_BCONR4_BSE1                     (*((volatile unsigned int*)(0x422C9B08UL)))
-#define bM4_TMRA6_CCONR1_CAPMDA                   (*((volatile unsigned int*)(0x422CA000UL)))
+#define bM4_TMRA6_CCONR1_CAPMD                    (*((volatile unsigned int*)(0x422CA000UL)))
 #define bM4_TMRA6_CCONR1_HICP0                    (*((volatile unsigned int*)(0x422CA010UL)))
 #define bM4_TMRA6_CCONR1_HICP1                    (*((volatile unsigned int*)(0x422CA014UL)))
 #define bM4_TMRA6_CCONR1_HICP2                    (*((volatile unsigned int*)(0x422CA018UL)))
@@ -28009,7 +27841,7 @@ typedef struct
 #define bM4_TMRA6_CCONR1_NOFIENCP                 (*((volatile unsigned int*)(0x422CA030UL)))
 #define bM4_TMRA6_CCONR1_NOFICKCP0                (*((volatile unsigned int*)(0x422CA034UL)))
 #define bM4_TMRA6_CCONR1_NOFICKCP1                (*((volatile unsigned int*)(0x422CA038UL)))
-#define bM4_TMRA6_CCONR2_CAPMDA                   (*((volatile unsigned int*)(0x422CA080UL)))
+#define bM4_TMRA6_CCONR2_CAPMD                    (*((volatile unsigned int*)(0x422CA080UL)))
 #define bM4_TMRA6_CCONR2_HICP0                    (*((volatile unsigned int*)(0x422CA090UL)))
 #define bM4_TMRA6_CCONR2_HICP1                    (*((volatile unsigned int*)(0x422CA094UL)))
 #define bM4_TMRA6_CCONR2_HICP2                    (*((volatile unsigned int*)(0x422CA098UL)))
@@ -28018,7 +27850,7 @@ typedef struct
 #define bM4_TMRA6_CCONR2_NOFIENCP                 (*((volatile unsigned int*)(0x422CA0B0UL)))
 #define bM4_TMRA6_CCONR2_NOFICKCP0                (*((volatile unsigned int*)(0x422CA0B4UL)))
 #define bM4_TMRA6_CCONR2_NOFICKCP1                (*((volatile unsigned int*)(0x422CA0B8UL)))
-#define bM4_TMRA6_CCONR3_CAPMDA                   (*((volatile unsigned int*)(0x422CA100UL)))
+#define bM4_TMRA6_CCONR3_CAPMD                    (*((volatile unsigned int*)(0x422CA100UL)))
 #define bM4_TMRA6_CCONR3_HICP0                    (*((volatile unsigned int*)(0x422CA110UL)))
 #define bM4_TMRA6_CCONR3_HICP1                    (*((volatile unsigned int*)(0x422CA114UL)))
 #define bM4_TMRA6_CCONR3_HICP2                    (*((volatile unsigned int*)(0x422CA118UL)))
@@ -28027,7 +27859,7 @@ typedef struct
 #define bM4_TMRA6_CCONR3_NOFIENCP                 (*((volatile unsigned int*)(0x422CA130UL)))
 #define bM4_TMRA6_CCONR3_NOFICKCP0                (*((volatile unsigned int*)(0x422CA134UL)))
 #define bM4_TMRA6_CCONR3_NOFICKCP1                (*((volatile unsigned int*)(0x422CA138UL)))
-#define bM4_TMRA6_CCONR4_CAPMDA                   (*((volatile unsigned int*)(0x422CA180UL)))
+#define bM4_TMRA6_CCONR4_CAPMD                    (*((volatile unsigned int*)(0x422CA180UL)))
 #define bM4_TMRA6_CCONR4_HICP0                    (*((volatile unsigned int*)(0x422CA190UL)))
 #define bM4_TMRA6_CCONR4_HICP1                    (*((volatile unsigned int*)(0x422CA194UL)))
 #define bM4_TMRA6_CCONR4_HICP2                    (*((volatile unsigned int*)(0x422CA198UL)))
@@ -28036,7 +27868,7 @@ typedef struct
 #define bM4_TMRA6_CCONR4_NOFIENCP                 (*((volatile unsigned int*)(0x422CA1B0UL)))
 #define bM4_TMRA6_CCONR4_NOFICKCP0                (*((volatile unsigned int*)(0x422CA1B4UL)))
 #define bM4_TMRA6_CCONR4_NOFICKCP1                (*((volatile unsigned int*)(0x422CA1B8UL)))
-#define bM4_TMRA6_CCONR5_CAPMDA                   (*((volatile unsigned int*)(0x422CA200UL)))
+#define bM4_TMRA6_CCONR5_CAPMD                    (*((volatile unsigned int*)(0x422CA200UL)))
 #define bM4_TMRA6_CCONR5_HICP0                    (*((volatile unsigned int*)(0x422CA210UL)))
 #define bM4_TMRA6_CCONR5_HICP1                    (*((volatile unsigned int*)(0x422CA214UL)))
 #define bM4_TMRA6_CCONR5_HICP2                    (*((volatile unsigned int*)(0x422CA218UL)))
@@ -28045,7 +27877,7 @@ typedef struct
 #define bM4_TMRA6_CCONR5_NOFIENCP                 (*((volatile unsigned int*)(0x422CA230UL)))
 #define bM4_TMRA6_CCONR5_NOFICKCP0                (*((volatile unsigned int*)(0x422CA234UL)))
 #define bM4_TMRA6_CCONR5_NOFICKCP1                (*((volatile unsigned int*)(0x422CA238UL)))
-#define bM4_TMRA6_CCONR6_CAPMDA                   (*((volatile unsigned int*)(0x422CA280UL)))
+#define bM4_TMRA6_CCONR6_CAPMD                    (*((volatile unsigned int*)(0x422CA280UL)))
 #define bM4_TMRA6_CCONR6_HICP0                    (*((volatile unsigned int*)(0x422CA290UL)))
 #define bM4_TMRA6_CCONR6_HICP1                    (*((volatile unsigned int*)(0x422CA294UL)))
 #define bM4_TMRA6_CCONR6_HICP2                    (*((volatile unsigned int*)(0x422CA298UL)))
@@ -28054,7 +27886,7 @@ typedef struct
 #define bM4_TMRA6_CCONR6_NOFIENCP                 (*((volatile unsigned int*)(0x422CA2B0UL)))
 #define bM4_TMRA6_CCONR6_NOFICKCP0                (*((volatile unsigned int*)(0x422CA2B4UL)))
 #define bM4_TMRA6_CCONR6_NOFICKCP1                (*((volatile unsigned int*)(0x422CA2B8UL)))
-#define bM4_TMRA6_CCONR7_CAPMDA                   (*((volatile unsigned int*)(0x422CA300UL)))
+#define bM4_TMRA6_CCONR7_CAPMD                    (*((volatile unsigned int*)(0x422CA300UL)))
 #define bM4_TMRA6_CCONR7_HICP0                    (*((volatile unsigned int*)(0x422CA310UL)))
 #define bM4_TMRA6_CCONR7_HICP1                    (*((volatile unsigned int*)(0x422CA314UL)))
 #define bM4_TMRA6_CCONR7_HICP2                    (*((volatile unsigned int*)(0x422CA318UL)))
@@ -28063,7 +27895,7 @@ typedef struct
 #define bM4_TMRA6_CCONR7_NOFIENCP                 (*((volatile unsigned int*)(0x422CA330UL)))
 #define bM4_TMRA6_CCONR7_NOFICKCP0                (*((volatile unsigned int*)(0x422CA334UL)))
 #define bM4_TMRA6_CCONR7_NOFICKCP1                (*((volatile unsigned int*)(0x422CA338UL)))
-#define bM4_TMRA6_CCONR8_CAPMDA                   (*((volatile unsigned int*)(0x422CA380UL)))
+#define bM4_TMRA6_CCONR8_CAPMD                    (*((volatile unsigned int*)(0x422CA380UL)))
 #define bM4_TMRA6_CCONR8_HICP0                    (*((volatile unsigned int*)(0x422CA390UL)))
 #define bM4_TMRA6_CCONR8_HICP1                    (*((volatile unsigned int*)(0x422CA394UL)))
 #define bM4_TMRA6_CCONR8_HICP2                    (*((volatile unsigned int*)(0x422CA398UL)))
@@ -28462,6 +28294,8 @@ typedef struct
 #define bM4_USART4_CR3_BCN2                       (*((volatile unsigned int*)(0x424282DCUL)))
 #define bM4_USART4_PR_PSC0                        (*((volatile unsigned int*)(0x42428300UL)))
 #define bM4_USART4_PR_PSC1                        (*((volatile unsigned int*)(0x42428304UL)))
+#define bM4_USBFS_USBFS_GVBUSCFG_VBUSOVEN         (*((volatile unsigned int*)(0x43800018UL)))
+#define bM4_USBFS_USBFS_GVBUSCFG_VBUSVAL          (*((volatile unsigned int*)(0x4380001CUL)))
 #define bM4_USBFS_GAHBCFG_GINTMSK                 (*((volatile unsigned int*)(0x43800100UL)))
 #define bM4_USBFS_GAHBCFG_HBSTLEN0                (*((volatile unsigned int*)(0x43800104UL)))
 #define bM4_USBFS_GAHBCFG_HBSTLEN1                (*((volatile unsigned int*)(0x43800108UL)))
@@ -28495,10 +28329,10 @@ typedef struct
 #define bM4_USBFS_GINTSTS_CMOD                    (*((volatile unsigned int*)(0x43800280UL)))
 #define bM4_USBFS_GINTSTS_MMIS                    (*((volatile unsigned int*)(0x43800284UL)))
 #define bM4_USBFS_GINTSTS_SOF                     (*((volatile unsigned int*)(0x4380028CUL)))
-#define bM4_USBFS_GINTSTS_RXFLNE                  (*((volatile unsigned int*)(0x43800290UL)))
+#define bM4_USBFS_GINTSTS_RXFNE                   (*((volatile unsigned int*)(0x43800290UL)))
 #define bM4_USBFS_GINTSTS_NPTXFE                  (*((volatile unsigned int*)(0x43800294UL)))
 #define bM4_USBFS_GINTSTS_GINAKEFF                (*((volatile unsigned int*)(0x43800298UL)))
-#define bM4_USBFS_GINTSTS_GOUTNAKEFF              (*((volatile unsigned int*)(0x4380029CUL)))
+#define bM4_USBFS_GINTSTS_GONAKEFF                (*((volatile unsigned int*)(0x4380029CUL)))
 #define bM4_USBFS_GINTSTS_ESUSP                   (*((volatile unsigned int*)(0x438002A8UL)))
 #define bM4_USBFS_GINTSTS_USBSUSP                 (*((volatile unsigned int*)(0x438002ACUL)))
 #define bM4_USBFS_GINTSTS_USBRST                  (*((volatile unsigned int*)(0x438002B0UL)))
@@ -28508,7 +28342,7 @@ typedef struct
 #define bM4_USBFS_GINTSTS_IEPINT                  (*((volatile unsigned int*)(0x438002C8UL)))
 #define bM4_USBFS_GINTSTS_OEPINT                  (*((volatile unsigned int*)(0x438002CCUL)))
 #define bM4_USBFS_GINTSTS_IISOIXFR                (*((volatile unsigned int*)(0x438002D0UL)))
-#define bM4_USBFS_GINTSTS_IPXFR_INCOMPISO         (*((volatile unsigned int*)(0x438002D4UL)))
+#define bM4_USBFS_GINTSTS_IPXFR_INCOMPISOOUT      (*((volatile unsigned int*)(0x438002D4UL)))
 #define bM4_USBFS_GINTSTS_DATAFSUSP               (*((volatile unsigned int*)(0x438002D8UL)))
 #define bM4_USBFS_GINTSTS_HPRTINT                 (*((volatile unsigned int*)(0x438002E0UL)))
 #define bM4_USBFS_GINTSTS_HCINT                   (*((volatile unsigned int*)(0x438002E4UL)))
@@ -28522,7 +28356,7 @@ typedef struct
 #define bM4_USBFS_GINTMSK_RXFNEM                  (*((volatile unsigned int*)(0x43800310UL)))
 #define bM4_USBFS_GINTMSK_NPTXFEM                 (*((volatile unsigned int*)(0x43800314UL)))
 #define bM4_USBFS_GINTMSK_GINAKEFFM               (*((volatile unsigned int*)(0x43800318UL)))
-#define bM4_USBFS_GINTMSK_GOUTNAKEFFM             (*((volatile unsigned int*)(0x4380031CUL)))
+#define bM4_USBFS_GINTMSK_GONAKEFFM               (*((volatile unsigned int*)(0x4380031CUL)))
 #define bM4_USBFS_GINTMSK_ESUSPM                  (*((volatile unsigned int*)(0x43800328UL)))
 #define bM4_USBFS_GINTMSK_USBSUSPM                (*((volatile unsigned int*)(0x4380032CUL)))
 #define bM4_USBFS_GINTMSK_USBRSTM                 (*((volatile unsigned int*)(0x43800330UL)))
@@ -29861,9 +29695,6 @@ typedef struct
 #define bM4_USBFS_DCTL_SDIS                       (*((volatile unsigned int*)(0x43810084UL)))
 #define bM4_USBFS_DCTL_GINSTS                     (*((volatile unsigned int*)(0x43810088UL)))
 #define bM4_USBFS_DCTL_GONSTS                     (*((volatile unsigned int*)(0x4381008CUL)))
-#define bM4_USBFS_DCTL_TCTL0                      (*((volatile unsigned int*)(0x43810090UL)))
-#define bM4_USBFS_DCTL_TCTL1                      (*((volatile unsigned int*)(0x43810094UL)))
-#define bM4_USBFS_DCTL_TCTL2                      (*((volatile unsigned int*)(0x43810098UL)))
 #define bM4_USBFS_DCTL_SGINAK                     (*((volatile unsigned int*)(0x4381009CUL)))
 #define bM4_USBFS_DCTL_CGINAK                     (*((volatile unsigned int*)(0x438100A0UL)))
 #define bM4_USBFS_DCTL_SGONAK                     (*((volatile unsigned int*)(0x438100A4UL)))
@@ -29892,7 +29723,7 @@ typedef struct
 #define bM4_USBFS_DIEPMSK_TOM                     (*((volatile unsigned int*)(0x4381020CUL)))
 #define bM4_USBFS_DIEPMSK_ITTXFEMSK               (*((volatile unsigned int*)(0x43810210UL)))
 #define bM4_USBFS_DIEPMSK_INEPNMM                 (*((volatile unsigned int*)(0x43810214UL)))
-#define bM4_USBFS_DIEPMSK_IINEPNEM                (*((volatile unsigned int*)(0x43810218UL)))
+#define bM4_USBFS_DIEPMSK_INEPNEM                 (*((volatile unsigned int*)(0x43810218UL)))
 #define bM4_USBFS_DOEPMSK_XFRCM                   (*((volatile unsigned int*)(0x43810280UL)))
 #define bM4_USBFS_DOEPMSK_EPDM                    (*((volatile unsigned int*)(0x43810284UL)))
 #define bM4_USBFS_DOEPMSK_STUPM                   (*((volatile unsigned int*)(0x4381028CUL)))
@@ -29946,7 +29777,7 @@ typedef struct
 #define bM4_USBFS_DIEPINT0_EPDISD                 (*((volatile unsigned int*)(0x43812104UL)))
 #define bM4_USBFS_DIEPINT0_TOC                    (*((volatile unsigned int*)(0x4381210CUL)))
 #define bM4_USBFS_DIEPINT0_TTXFE                  (*((volatile unsigned int*)(0x43812110UL)))
-#define bM4_USBFS_DIEPINT0_NEPNE                  (*((volatile unsigned int*)(0x43812118UL)))
+#define bM4_USBFS_DIEPINT0_INEPNE                 (*((volatile unsigned int*)(0x43812118UL)))
 #define bM4_USBFS_DIEPINT0_TXFE                   (*((volatile unsigned int*)(0x4381211CUL)))
 #define bM4_USBFS_DIEPTSIZ0_XFRSIZ0               (*((volatile unsigned int*)(0x43812200UL)))
 #define bM4_USBFS_DIEPTSIZ0_XFRSIZ1               (*((volatile unsigned int*)(0x43812204UL)))
@@ -30004,7 +29835,7 @@ typedef struct
 #define bM4_USBFS_DIEPINT1_EPDISD                 (*((volatile unsigned int*)(0x43812504UL)))
 #define bM4_USBFS_DIEPINT1_TOC                    (*((volatile unsigned int*)(0x4381250CUL)))
 #define bM4_USBFS_DIEPINT1_TTXFE                  (*((volatile unsigned int*)(0x43812510UL)))
-#define bM4_USBFS_DIEPINT1_NEPNE                  (*((volatile unsigned int*)(0x43812518UL)))
+#define bM4_USBFS_DIEPINT1_INEPNE                 (*((volatile unsigned int*)(0x43812518UL)))
 #define bM4_USBFS_DIEPINT1_TXFE                   (*((volatile unsigned int*)(0x4381251CUL)))
 #define bM4_USBFS_DIEPTSIZ1_XFRSIZ0               (*((volatile unsigned int*)(0x43812600UL)))
 #define bM4_USBFS_DIEPTSIZ1_XFRSIZ1               (*((volatile unsigned int*)(0x43812604UL)))
@@ -30035,8 +29866,6 @@ typedef struct
 #define bM4_USBFS_DIEPTSIZ1_PKTCNT7               (*((volatile unsigned int*)(0x43812668UL)))
 #define bM4_USBFS_DIEPTSIZ1_PKTCNT8               (*((volatile unsigned int*)(0x4381266CUL)))
 #define bM4_USBFS_DIEPTSIZ1_PKTCNT9               (*((volatile unsigned int*)(0x43812670UL)))
-#define bM4_USBFS_DIEPTSIZ1_MC0                   (*((volatile unsigned int*)(0x43812674UL)))
-#define bM4_USBFS_DIEPTSIZ1_MC1                   (*((volatile unsigned int*)(0x43812678UL)))
 #define bM4_USBFS_DTXFSTS1_INEPTFSAV0             (*((volatile unsigned int*)(0x43812700UL)))
 #define bM4_USBFS_DTXFSTS1_INEPTFSAV1             (*((volatile unsigned int*)(0x43812704UL)))
 #define bM4_USBFS_DTXFSTS1_INEPTFSAV2             (*((volatile unsigned int*)(0x43812708UL)))
@@ -30084,7 +29913,7 @@ typedef struct
 #define bM4_USBFS_DIEPINT2_EPDISD                 (*((volatile unsigned int*)(0x43812904UL)))
 #define bM4_USBFS_DIEPINT2_TOC                    (*((volatile unsigned int*)(0x4381290CUL)))
 #define bM4_USBFS_DIEPINT2_TTXFE                  (*((volatile unsigned int*)(0x43812910UL)))
-#define bM4_USBFS_DIEPINT2_NEPNE                  (*((volatile unsigned int*)(0x43812918UL)))
+#define bM4_USBFS_DIEPINT2_INEPNE                 (*((volatile unsigned int*)(0x43812918UL)))
 #define bM4_USBFS_DIEPINT2_TXFE                   (*((volatile unsigned int*)(0x4381291CUL)))
 #define bM4_USBFS_DIEPTSIZ2_XFRSIZ0               (*((volatile unsigned int*)(0x43812A00UL)))
 #define bM4_USBFS_DIEPTSIZ2_XFRSIZ1               (*((volatile unsigned int*)(0x43812A04UL)))
@@ -30115,8 +29944,6 @@ typedef struct
 #define bM4_USBFS_DIEPTSIZ2_PKTCNT7               (*((volatile unsigned int*)(0x43812A68UL)))
 #define bM4_USBFS_DIEPTSIZ2_PKTCNT8               (*((volatile unsigned int*)(0x43812A6CUL)))
 #define bM4_USBFS_DIEPTSIZ2_PKTCNT9               (*((volatile unsigned int*)(0x43812A70UL)))
-#define bM4_USBFS_DIEPTSIZ2_MC0                   (*((volatile unsigned int*)(0x43812A74UL)))
-#define bM4_USBFS_DIEPTSIZ2_MC1                   (*((volatile unsigned int*)(0x43812A78UL)))
 #define bM4_USBFS_DTXFSTS2_INEPTFSAV0             (*((volatile unsigned int*)(0x43812B00UL)))
 #define bM4_USBFS_DTXFSTS2_INEPTFSAV1             (*((volatile unsigned int*)(0x43812B04UL)))
 #define bM4_USBFS_DTXFSTS2_INEPTFSAV2             (*((volatile unsigned int*)(0x43812B08UL)))
@@ -30164,7 +29991,7 @@ typedef struct
 #define bM4_USBFS_DIEPINT3_EPDISD                 (*((volatile unsigned int*)(0x43812D04UL)))
 #define bM4_USBFS_DIEPINT3_TOC                    (*((volatile unsigned int*)(0x43812D0CUL)))
 #define bM4_USBFS_DIEPINT3_TTXFE                  (*((volatile unsigned int*)(0x43812D10UL)))
-#define bM4_USBFS_DIEPINT3_NEPNE                  (*((volatile unsigned int*)(0x43812D18UL)))
+#define bM4_USBFS_DIEPINT3_INEPNE                 (*((volatile unsigned int*)(0x43812D18UL)))
 #define bM4_USBFS_DIEPINT3_TXFE                   (*((volatile unsigned int*)(0x43812D1CUL)))
 #define bM4_USBFS_DIEPTSIZ3_XFRSIZ0               (*((volatile unsigned int*)(0x43812E00UL)))
 #define bM4_USBFS_DIEPTSIZ3_XFRSIZ1               (*((volatile unsigned int*)(0x43812E04UL)))
@@ -30195,8 +30022,6 @@ typedef struct
 #define bM4_USBFS_DIEPTSIZ3_PKTCNT7               (*((volatile unsigned int*)(0x43812E68UL)))
 #define bM4_USBFS_DIEPTSIZ3_PKTCNT8               (*((volatile unsigned int*)(0x43812E6CUL)))
 #define bM4_USBFS_DIEPTSIZ3_PKTCNT9               (*((volatile unsigned int*)(0x43812E70UL)))
-#define bM4_USBFS_DIEPTSIZ3_MC0                   (*((volatile unsigned int*)(0x43812E74UL)))
-#define bM4_USBFS_DIEPTSIZ3_MC1                   (*((volatile unsigned int*)(0x43812E78UL)))
 #define bM4_USBFS_DTXFSTS3_INEPTFSAV0             (*((volatile unsigned int*)(0x43812F00UL)))
 #define bM4_USBFS_DTXFSTS3_INEPTFSAV1             (*((volatile unsigned int*)(0x43812F04UL)))
 #define bM4_USBFS_DTXFSTS3_INEPTFSAV2             (*((volatile unsigned int*)(0x43812F08UL)))
@@ -30244,7 +30069,7 @@ typedef struct
 #define bM4_USBFS_DIEPINT4_EPDISD                 (*((volatile unsigned int*)(0x43813104UL)))
 #define bM4_USBFS_DIEPINT4_TOC                    (*((volatile unsigned int*)(0x4381310CUL)))
 #define bM4_USBFS_DIEPINT4_TTXFE                  (*((volatile unsigned int*)(0x43813110UL)))
-#define bM4_USBFS_DIEPINT4_NEPNE                  (*((volatile unsigned int*)(0x43813118UL)))
+#define bM4_USBFS_DIEPINT4_INEPNE                 (*((volatile unsigned int*)(0x43813118UL)))
 #define bM4_USBFS_DIEPINT4_TXFE                   (*((volatile unsigned int*)(0x4381311CUL)))
 #define bM4_USBFS_DIEPTSIZ4_XFRSIZ0               (*((volatile unsigned int*)(0x43813200UL)))
 #define bM4_USBFS_DIEPTSIZ4_XFRSIZ1               (*((volatile unsigned int*)(0x43813204UL)))
@@ -30275,8 +30100,6 @@ typedef struct
 #define bM4_USBFS_DIEPTSIZ4_PKTCNT7               (*((volatile unsigned int*)(0x43813268UL)))
 #define bM4_USBFS_DIEPTSIZ4_PKTCNT8               (*((volatile unsigned int*)(0x4381326CUL)))
 #define bM4_USBFS_DIEPTSIZ4_PKTCNT9               (*((volatile unsigned int*)(0x43813270UL)))
-#define bM4_USBFS_DIEPTSIZ4_MC0                   (*((volatile unsigned int*)(0x43813274UL)))
-#define bM4_USBFS_DIEPTSIZ4_MC1                   (*((volatile unsigned int*)(0x43813278UL)))
 #define bM4_USBFS_DTXFSTS4_INEPTFSAV0             (*((volatile unsigned int*)(0x43813300UL)))
 #define bM4_USBFS_DTXFSTS4_INEPTFSAV1             (*((volatile unsigned int*)(0x43813304UL)))
 #define bM4_USBFS_DTXFSTS4_INEPTFSAV2             (*((volatile unsigned int*)(0x43813308UL)))
@@ -30324,7 +30147,7 @@ typedef struct
 #define bM4_USBFS_DIEPINT5_EPDISD                 (*((volatile unsigned int*)(0x43813504UL)))
 #define bM4_USBFS_DIEPINT5_TOC                    (*((volatile unsigned int*)(0x4381350CUL)))
 #define bM4_USBFS_DIEPINT5_TTXFE                  (*((volatile unsigned int*)(0x43813510UL)))
-#define bM4_USBFS_DIEPINT5_NEPNE                  (*((volatile unsigned int*)(0x43813518UL)))
+#define bM4_USBFS_DIEPINT5_INEPNE                 (*((volatile unsigned int*)(0x43813518UL)))
 #define bM4_USBFS_DIEPINT5_TXFE                   (*((volatile unsigned int*)(0x4381351CUL)))
 #define bM4_USBFS_DIEPTSIZ5_XFRSIZ0               (*((volatile unsigned int*)(0x43813600UL)))
 #define bM4_USBFS_DIEPTSIZ5_XFRSIZ1               (*((volatile unsigned int*)(0x43813604UL)))
@@ -30355,8 +30178,6 @@ typedef struct
 #define bM4_USBFS_DIEPTSIZ5_PKTCNT7               (*((volatile unsigned int*)(0x43813668UL)))
 #define bM4_USBFS_DIEPTSIZ5_PKTCNT8               (*((volatile unsigned int*)(0x4381366CUL)))
 #define bM4_USBFS_DIEPTSIZ5_PKTCNT9               (*((volatile unsigned int*)(0x43813670UL)))
-#define bM4_USBFS_DIEPTSIZ5_MC0                   (*((volatile unsigned int*)(0x43813674UL)))
-#define bM4_USBFS_DIEPTSIZ5_MC1                   (*((volatile unsigned int*)(0x43813678UL)))
 #define bM4_USBFS_DTXFSTS5_INEPTFSAV0             (*((volatile unsigned int*)(0x43813700UL)))
 #define bM4_USBFS_DTXFSTS5_INEPTFSAV1             (*((volatile unsigned int*)(0x43813704UL)))
 #define bM4_USBFS_DTXFSTS5_INEPTFSAV2             (*((volatile unsigned int*)(0x43813708UL)))
@@ -30760,5 +30581,5 @@ typedef struct
 }
 #endif
 
-#endif /* __HC32F46x_H__ */
+#endif /* __HC32F46X_H__ */
 

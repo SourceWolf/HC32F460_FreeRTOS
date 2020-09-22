@@ -517,8 +517,8 @@ __WEAKDEF void I2c3TxEnd_IrqHandler(void);
 __WEAKDEF void I2c3TxEmpty_IrqHandler(void);
 __WEAKDEF void I2c3Err_IrqHandler(void);
 
-__WEAKDEF void Lvd1_IrqHandler(void);
-__WEAKDEF void Lvd2_IrqHandler(void);
+__WEAKDEF void Pvd1_IrqHandler(void);
+__WEAKDEF void Pvd2_IrqHandler(void);
 
 __WEAKDEF void FcmErr_IrqHandler(void);
 __WEAKDEF void FcmEnd_IrqHandler(void);

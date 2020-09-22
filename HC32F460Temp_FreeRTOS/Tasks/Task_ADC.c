@@ -9,12 +9,12 @@ FRESULT fr_Adc;
 FIL DataFile;
 char buffer[200],num;
 char string[16];
-uint16_t adc_v11;
+uint16_t adc_v11,adc_ch10;
 static void Task_ADC(void* param)
 {
-	 User_DCU_Init();
+//	 User_DCU_Init();
     User_ADC_Init();
-    User_DMA_Init();
+//    User_DMA_Init();
 	xQueue_ADC = xQueueCreate(1,sizeof(uint16_t));
 //	disk_initialize(SD_Card);
 //    fr_Adc = f_mount(SD_Card,&FatFsADC);//Çý¶¯Æ÷0
@@ -23,14 +23,10 @@ static void Task_ADC(void* param)
 	{
 		SEGGER_RTT_printf(0,"%s\r\n",string);
 		ADC1_Start_convert();
-        if(flag_DCU1_INT)
-        {
-            flag_DCU1_INT = false;
-//            printf("DCU_INT occur!\r\n");
-        } 
 		Get_ADC_V11(&adc_v11);
-		insertdisplaydata((Get_DCU1_Result()-1000)/64);
-		num = sprintf(string,"ADC: %5.4f V",(Get_DCU1_Result()-1000)*1.1/adc_v11);
+        adc_ch10 = Get_AIN10Data();
+		insertdisplaydata(adc_ch10/64);
+		num = sprintf(string,"ADC: %5.4fV ",(adc_ch10*1.1)/adc_v11);
 		if(num<10)
 		{
 			for(int i = 0;i<(10-num);i++)

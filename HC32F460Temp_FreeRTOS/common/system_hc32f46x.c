@@ -53,7 +53,7 @@
  * Include files
  ******************************************************************************/
 #include "hc32_common.h"
-#include "System_Clk.h"
+
 /**
  *******************************************************************************
  ** \addtogroup Hc32f46xSystemGroup
@@ -69,6 +69,7 @@
  ******************************************************************************
  ** System Clock Frequency (Core Clock) Variable according CMSIS
  ******************************************************************************/
+uint32_t HRC_VALUE = HRC_16MHz_VALUE;
 uint32_t SystemCoreClock = MRC_VALUE;
 
 /**
@@ -81,6 +82,10 @@ uint32_t SystemCoreClock = MRC_VALUE;
  ******************************************************************************/
 void SystemInit(void)
 {
+#if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
+    SCB->CPACR |= ((3UL << 20) | (3UL << 22)); /* set CP10 and CP11 Full Access */
+#endif
+
     SystemCoreClockUpdate();
 }
 
@@ -88,6 +93,18 @@ void SystemCoreClockUpdate(void)  // Update SystemCoreClock variable
 {
     uint8_t tmp = 0u;
     uint32_t plln = 19u, pllp = 1u, pllm = 0u, pllsource = 0u;
+
+    /* Select proper HRC_VALUE according to ICG1.HRCFREQSEL bit */
+    /* ICG1.HRCFREQSEL = '0' represent HRC_VALUE = 20000000UL   */
+    /* ICG1.HRCFREQSEL = '1' represent HRC_VALUE = 16000000UL   */
+    if (1UL == (HRC_FREQ_MON() & 1UL))
+    {
+        HRC_VALUE = HRC_16MHz_VALUE;
+    }
+    else
+    {
+        HRC_VALUE = HRC_20MHz_VALUE;
+    }
 
     tmp = M4_SYSREG->CMU_CKSWR_f.CKSW;
     switch (tmp)
@@ -101,10 +118,10 @@ void SystemCoreClockUpdate(void)  // Update SystemCoreClock variable
         case 0x02:  /* use internal low speed RC */
             SystemCoreClock = LRC_VALUE;
             break;
-        case 0x03:  /* use external high speed RC */
+        case 0x03:  /* use external high speed OSC */
             SystemCoreClock = XTAL_VALUE;
             break;
-        case 0x04:  /* use external low speed RC */
+        case 0x04:  /* use external low speed OSC */
             SystemCoreClock = XTAL32_VALUE;
             break;
         case 0x05:  /* use MPLL */

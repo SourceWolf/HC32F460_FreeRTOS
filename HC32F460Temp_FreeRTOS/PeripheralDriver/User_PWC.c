@@ -71,7 +71,7 @@ void PVD_CONFIG(void)
     /* Enable output compared result. */
     stcPwcPvdCfg.stcPvd1Ctl.enPvdCmpOutEn = Enable;
     /* PVD1 Threshold Voltage 2.8V. */
-    stcPwcPvdCfg.enPvd1Level = Pvd1Level28; 
+    stcPwcPvdCfg.enPvd1Level = Pvd1Level5; 
     
     /* Config PVD2.*/    
     /* Disable filter. */
@@ -85,7 +85,7 @@ void PVD_CONFIG(void)
     /* Enable output compared result. */
     stcPwcPvdCfg.stcPvd2Ctl.enPvdCmpOutEn = Enable;
     /* PVD2 Threshold Voltage 2.3V. */
-    stcPwcPvdCfg.enPvd2Level = Pvd2Level23;
+    stcPwcPvdCfg.enPvd2Level = Pvd2Level1;
     
     PWC_PvdCfg(&stcPwcPvdCfg);
     
@@ -107,10 +107,10 @@ void PVD_CONFIG(void)
 void system_sleep(void)
 {
     stc_pwc_pwr_mode_cfg_t  stcPwcPwrMdCfg;
-    stc_pwc_wkup_edge_cfg_t stcPwcWkupEdgCfg;
+//    stc_pwc_wkup_edge_cfg_t stcPwcWkupEdgCfg;
 
     MEM_ZERO_STRUCT(stcPwcPwrMdCfg);
-    MEM_ZERO_STRUCT(stcPwcWkupEdgCfg);
+//    MEM_ZERO_STRUCT(stcPwcWkupEdgCfg);
     
     /* Config power down mode. */
     stcPwcPwrMdCfg.enPwrDownMd = PowerDownMd1;
@@ -119,7 +119,7 @@ void system_sleep(void)
     stcPwcPwrMdCfg.enRetSram = Disable;
     stcPwcPwrMdCfg.enVHrc = Disable;
     stcPwcPwrMdCfg.enVPll = Disable;
-    stcPwcPwrMdCfg.enDynVol =  Voltage09;
+    stcPwcPwrMdCfg.enRunDrvs =  RunUlowspeed;
     stcPwcPwrMdCfg.enDrvAbility = Ulowspeed;
     stcPwcPwrMdCfg.enPwrDWkupTm = Vcap0047;
 

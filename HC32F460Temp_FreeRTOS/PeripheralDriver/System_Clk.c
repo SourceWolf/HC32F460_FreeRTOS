@@ -35,7 +35,7 @@ void system_clk_init(void)
 #if (XTAL32_ENABLE == ENABLE)
     CLK_Xtal32Cmd(Disable);
     XTAL32_CFG.enFilterMode = XTAL32_NF_MODE;
-    XTAL32_CFG.enFastStartup = XTAL32_SUPDRV_ENABLE;
+//    XTAL32_CFG.enFastStartup = XTAL32_SUPDRV_ENABLE;
     XTAL32_CFG.enDrv = XTAL32_DRV;
     CLK_Xtal32Config(&XTAL32_CFG);
 #endif
@@ -84,12 +84,12 @@ void system_clk_init(void)
     EFM_Lock();
     SRAM_WT_Enable();
     SRAM_CK_Enable();
-    M4_SRAMC->WTCR_f.SRAMBKRWT = SramCycle2;
-    M4_SRAMC->WTCR_f.SRAMBKWWT = SramCycle2;
-    M4_SRAMC->WTCR_f.SRAMECCRWT = SramCycle2;
-    M4_SRAMC->WTCR_f.SRAMECCWWT = SramCycle2;
-    M4_SRAMC->WTCR_f.SRAMSYSRWT = SramCycle2;
-    M4_SRAMC->WTCR_f.SRAMSYSWWT = SramCycle2;
+    M4_SRAMC->WTCR_f.SRAM12_RWT = SramCycle2;
+    M4_SRAMC->WTCR_f.SRAM12_WWT = SramCycle2;
+    M4_SRAMC->WTCR_f.SRAM3_RWT = SramCycle2;
+    M4_SRAMC->WTCR_f.SRAM3_WWT = SramCycle2;
+    M4_SRAMC->WTCR_f.SRAMR_RWT = SramCycle2;
+    M4_SRAMC->WTCR_f.SRAMR_WWT = SramCycle2;
     SRAM_WT_Disable();
     SRAM_CK_Disable();
 //-------------Switch system clock-----------------------//

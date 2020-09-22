@@ -1,5 +1,6 @@
 User_Timer.pbi: \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver\User_Timer.c \
+  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver/User_Timer.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\common\hc32_ddl.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\common/hc32_common.h \
   C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\arm\inc\c\stdio.h \
@@ -88,6 +89,4 @@ User_Timer.pbi: \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\usb_lib\device_core\usbd_req.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\usb_lib\device_class\msc\usbd_msc_core.h \
   D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\driver\inc\hc32f46x_utility.h \
-  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\driver\inc\hc32f46x_wdt.h \
-  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver/User_Gpio.h \
-  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\PeripheralDriver/System_InterruptCFG_Def.h
+  D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\driver\inc\hc32f46x_wdt.h

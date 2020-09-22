@@ -104,23 +104,6 @@ typedef enum en_efm_read_md
 
 /**
  *******************************************************************************
- ** \brief  The flash erase program mode.
- **
- ******************************************************************************/
-typedef enum en_efm_erase_pgm_md
-{
-    ReadOnly1                   = 0u,   ///< The flash read only.
-    SingleProgram               = 1u,   ///< The flash single program.
-    SingleProgramRB             = 2u,   ///< The flash single program with read back.
-    SequenceProgram             = 3u,   ///< The flash sequence program.
-    SectorErase                 = 4u,   ///< The flash sector erase.
-    MassErase                   = 5u,   ///< The flash mass erase.
-    ReadOnly2                   = 6u,   ///< The flash read only.
-    ReadOnly3                   = 7u,   ///< The flash read only.
-}en_efm_erase_pgm_md_t;
-
-/**
- *******************************************************************************
  ** \brief  The flash interrupt select.
  **
  ******************************************************************************/
@@ -128,7 +111,7 @@ typedef enum en_efm_int_sel
 {
     PgmErsErrInt                = 0u,   ///< The flash program / erase error interrupt.
     EndPgmInt                   = 1u,   ///< The flash end of program interrupt.
-    ReadErrInt                  = 2u,   ///< The flash read collided error interrupt.
+    ColErrInt                   = 2u,   ///< The flash read collided error interrupt.
 }en_efm_int_sel_t;
 
 /**
@@ -195,8 +178,16 @@ typedef struct stc_efm_unique_id
 #define EFM_FLAG_PGSZERR                (0x00000004ul)
 #define EFM_FLAG_PGMISMTCH              (0x00000008ul)
 #define EFM_FLAG_EOP                    (0x00000010ul)
-#define EFM_FLAG_RWERR                  (0x00000020ul)
+#define EFM_FLAG_COLERR                 (0x00000020ul)
 #define EFM_FLAG_RDY                    (0x00000100ul)
+
+/* Flash operate mode */
+#define EFM_MODE_READONLY               (0ul)
+#define EFM_MODE_SINGLEPROGRAM          (1ul)
+#define EFM_MODE_SINGLEPROGRAMRB        (2ul)
+#define EFM_MODE_SEQUENCEPROGRAM        (3ul)
+#define EFM_MODE_SECTORERASE            (4ul)
+#define EFM_MODE_CHIPERASE              (5ul)
 
 /*******************************************************************************
  * Global variable definitions ('extern')
@@ -213,7 +204,7 @@ void EFM_InstructionCacheCmd(en_functional_state_t enNewState);
 void EFM_DataCacheRstCmd(en_functional_state_t enNewState);
 void EFM_SetReadMode(en_efm_read_md_t enReadMD);
 void EFM_ErasePgmCmd(en_functional_state_t enNewState);
-void EFM_SetErasePgmMode(en_efm_erase_pgm_md_t enReadMD);
+en_result_t EFM_SetErasePgmMode(uint32_t u32Mode);
 void EFM_InterruptCmd(en_efm_int_sel_t enInt, en_functional_state_t enNewState);
 en_flag_status_t EFM_GetFlagStatus(uint32_t u32flag);
 void EFM_ClearFlag(uint32_t u32flag);

@@ -8,9 +8,9 @@ void wavefileinfo_init(WaveHeader* wavehead)
 	wavehead->fmt.ChunkID = 0X20746D66;//"fmt";
 	wavehead->fmt.ChunkSize = 16;
 	wavehead->fmt.AudioFormat = 0x01;//0X01,表示PCM
-	wavehead->fmt.NumOfChannels = 1;
+	wavehead->fmt.NumOfChannels = 2;
 	wavehead->fmt.SampleRate = 8000;//8KHZ采样率
-	wavehead->fmt.ByteRate = wavehead->fmt.SampleRate*2;//16位数据；
+	wavehead->fmt.ByteRate = wavehead->fmt.SampleRate*2*wavehead->fmt.NumOfChannels;//16位数据；
 	wavehead->fmt.BlockAlign = 2;//16位为两个字节
 	wavehead->fmt.BitsPerSample = 16;//16位；
 	wavehead->data.ChunkID = 0X61746164;//"DATA";

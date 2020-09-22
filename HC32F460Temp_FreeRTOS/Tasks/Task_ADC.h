@@ -14,7 +14,7 @@ extern "C" {
 #endif
 	
 uint8_t Task_ADC_Start(void);
-	
+void Get_ADC1_Data(uint16_t *data);	
 #ifdef __cplusplus
 };
 #endif

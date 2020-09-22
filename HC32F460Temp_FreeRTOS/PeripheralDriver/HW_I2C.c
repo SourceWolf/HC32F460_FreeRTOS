@@ -1,5 +1,5 @@
 #include "HW_I2C.h"
-#define AUTOACK
+//#define AUTOACK
 void HW_I2C_Port_Init(void)
 {
 	PORT_SetFunc(I2C1_SCL_PORT, I2C1_SCL_Pin, Func_I2c1_Scl, Disable);
@@ -260,14 +260,21 @@ inline uint8_t I2C_Read_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,uint8_t
 		}
 	}
 	I2C_SendData(pstcI2Cx, (DeviceAddr<<1)|0x01);
+    u32TimeOut = TIMEOUT;
+	while(Set == I2C_GetStatus(pstcI2Cx, I2C_SR_NACKDETECTF))//等待应答
+	{
+		if(0 == (u32TimeOut--)) 
+		{
+			if(Set == I2C_GetStatus(pstcI2Cx, I2C_SR_BUSY))
+			{
+				I2C_GenerateStop(pstcI2Cx, Enable);//停止释放总线
+			}			
+			return I2C_TIMEROUT;
+		}
+	}
+    
 	for(pos = 0;pos<len;pos++)
 	{
-#ifndef AUTOACK	
-		if(pos == (len-1))
-		{
-			I2C_NackConfig(pstcI2Cx, Enable);
-		}
-#endif
 		u32TimeOut = TIMEOUT;
 		while(Reset == I2C_GetStatus(pstcI2Cx, I2C_SR_RFULLF))
 		{
@@ -276,7 +283,17 @@ inline uint8_t I2C_Read_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,uint8_t
 				I2C_GenerateStop(pstcI2Cx, Enable);//停止释放总线
 				return I2C_TIMEROUT;
 			}
-		}  
+		} 
+#ifndef AUTOACK	
+		if(pos == (len-1))
+		{
+			I2C_NackConfig(pstcI2Cx, Enable);
+		}
+        else
+		{
+			I2C_NackConfig(pstcI2Cx, Disable);//ACK
+		}
+#endif        
 		data[pos] = pstcI2Cx->DRR_f.DR;//I2C_ReadData(I2C1_UNIT);
 #ifdef AUTOACK	
 		if(pos == (len-1))
@@ -432,14 +449,20 @@ inline uint8_t I2C_Read_Buffer(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr, uint
 		}
 	}
 	I2C_SendData(pstcI2Cx, (DeviceAddr<<1)|0x01);
-	for(pos = 0;pos<len;pos++)
+    u32TimeOut = TIMEOUT;
+	while(Set == I2C_GetStatus(pstcI2Cx, I2C_SR_NACKDETECTF))//等待应答
 	{
-#ifndef AUTOACK			
-		if(pos == (len-1))
+		if(0 == (u32TimeOut--)) 
 		{
-			I2C_NackConfig(pstcI2Cx, Enable);
+			if(Set == I2C_GetStatus(pstcI2Cx, I2C_SR_BUSY))
+			{
+				I2C_GenerateStop(pstcI2Cx, Enable);//停止释放总线
+			}			
+			return I2C_TIMEROUT;
 		}
-#endif		
+	}
+	for(pos = 0;pos<len;pos++)
+	{	
 		u32TimeOut = TIMEOUT;
 		while(Reset == I2C_GetStatus(pstcI2Cx, I2C_SR_RFULLF))
 		{
@@ -448,7 +471,17 @@ inline uint8_t I2C_Read_Buffer(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr, uint
 				I2C_GenerateStop(pstcI2Cx, Enable);//停止释放总线
 				return I2C_TIMEROUT;
 			}
-		}  
+		}
+#ifndef AUTOACK			
+		if(pos == (len-1))
+		{
+			I2C_NackConfig(pstcI2Cx, Enable);
+		}
+        else
+		{
+			I2C_NackConfig(pstcI2Cx, Disable);//ACK
+		}
+#endif	        
 		data[pos] = pstcI2Cx->DRR_f.DR;//I2C_ReadData(I2C1_UNIT);
 #ifdef AUTOACK			
 		if(pos == (len-1))

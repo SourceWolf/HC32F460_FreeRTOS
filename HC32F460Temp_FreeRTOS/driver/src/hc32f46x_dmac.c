@@ -343,7 +343,7 @@
 #define IS_VALID_SNSCNTB(x)                                                    \
 (   !((x) & ~(DMA_SNSEQCTLB_SNSCNTB_Msk >> DMA_SNSEQCTLB_SNSCNTB_Pos)))
 
-/*! Parameter valid check for Dmac source no-sequence district interval. */
+/*! Parameter valid check for Dmac source no-sequence distance. */
 #define IS_VALID_SNSDIST(x)                                                    \
 (   !((x) & ~(DMA_SNSEQCTLB_SNSDIST_Msk >> DMA_SNSEQCTLB_SNSDIST_Pos)))
 
@@ -359,7 +359,7 @@
 #define IS_VALID_DNSCNTB(x)                                                    \
 (   !((x) & ~(DMA_DNSEQCTLB_DNSCNTB_Msk >> DMA_DNSEQCTLB_DNSCNTB_Pos)))
 
-/*! Parameter valid check for Dmac destination no-sequence district interval. */
+/*! Parameter valid check for Dmac destination no-sequence distance. */
 #define IS_VALID_DNSDIST(x)                                                    \
 (   !((x) & ~(DMA_DNSEQCTLB_DNSDIST_Msk >> DMA_DNSEQCTLB_DNSDIST_Pos)))
 
@@ -779,7 +779,7 @@ en_result_t DMA_ChannelCmd(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_function
 
 /**
  *******************************************************************************
- ** \brief  DMA Re_Config control configuration.
+ ** \brief  DMA repeat & non_sequence Re_Config control configuration.
  **
  ** \param  [in] pstcDmaReg             The pointer to dma register
  ** \arg    M4_DMA1                     DMAC unit 1 register
@@ -790,8 +790,6 @@ en_result_t DMA_ChannelCmd(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_function
  ** \arg    u16SrcRptBSize              The source repeat size.
  ** \arg    u16SrcRptBSize;             The source repeat size.
  ** \arg    u16DesRptBSize;             The destination repeat size.
- ** \arg    enReCfgLlp;                 Enable llp re_config function or not.
- ** \arg    enReCfgCh;                  DMA re_config channel.
  ** \arg    enSaddrMd;                  DMA re_config source address mode.
  ** \arg    enDaddrMd;                  DMA re_config destination address mode.
  ** \arg    enCntMd;                    DMA re_config count mode.
@@ -811,23 +809,43 @@ void DMA_InitReConfig(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
     DDL_ASSERT(IS_VALID_CNT_MODE(pstcDmaReCfg->enCntMd));
     DDL_ASSERT(IS_VALID_DADDR_MODE(pstcDmaReCfg->enDaddrMd));
     DDL_ASSERT(IS_VALID_SADDR_MODE(pstcDmaReCfg->enSaddrMd));
-    DDL_ASSERT(IS_FUNCTIONAL_STATE(pstcDmaReCfg->enReCfgLlp));
 
-    pstcDmaReg->RCFGCTL_f.RCFGLLP = pstcDmaReCfg->enReCfgLlp;
     pstcDmaReg->RCFGCTL_f.SARMD = pstcDmaReCfg->enSaddrMd;
     pstcDmaReg->RCFGCTL_f.DARMD = pstcDmaReCfg->enDaddrMd;
     pstcDmaReg->RCFGCTL_f.CNTMD = pstcDmaReCfg->enCntMd;
+    pstcDmaReg->RCFGCTL_f.RCFGCHS = u8Ch;
 
-    /* Set DMA source repeat size B. */
-    MODIFY_DMA_CH_REG(&pstcDmaReg->RPTB0, u8Ch, DMA_RPT_SRPT, (uint32_t)pstcDmaReCfg->u16SrcRptBSize);
-    /* Set DMA destination repeat size B. */
-    MODIFY_DMA_CH_REG(&pstcDmaReg->RPTB0, u8Ch, DMA_RPT_DRPT, (uint32_t)pstcDmaReCfg->u16DesRptBSize);
-    /* Set DMA source no_sequence B. */
-    MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTLB0, u8Ch, DMA_SNSEQCTL_SOFFSET, pstcDmaReCfg->stcSrcNseqBCfg.u32Offset);
-    MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTLB0, u8Ch, DMA_SNSEQCTL_SNSCNT, (uint32_t)pstcDmaReCfg->stcSrcNseqBCfg.u16Cnt);
-    /* Set DMA destination no_sequence B. */
-    MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTLB0, u8Ch, DMA_DNSEQCTL_DOFFSET, pstcDmaReCfg->stcDesNseqBCfg.u32Offset);
-    MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTLB0, u8Ch, DMA_DNSEQCTL_DNSCNT, (uint32_t)pstcDmaReCfg->stcDesNseqBCfg.u16Cnt);
+    if(SaddrRep == pstcDmaReCfg->enSaddrMd)
+    {
+        /* Set DMA source repeat size B. */
+        MODIFY_DMA_CH_REG(&pstcDmaReg->RPTB0, u8Ch, DMA_RPT_SRPT, (uint32_t)pstcDmaReCfg->u16SrcRptBSize);
+    }
+    else if(SaddrNseq == pstcDmaReCfg->enSaddrMd)
+    {
+        /* Set DMA source no_sequence B. */
+        MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTLB0, u8Ch, DMA_SNSEQCTL_SOFFSET, pstcDmaReCfg->stcSrcNseqBCfg.u32Offset);
+        MODIFY_DMA_CH_REG(&pstcDmaReg->SNSEQCTLB0, u8Ch, DMA_SNSEQCTL_SNSCNT, (uint32_t)pstcDmaReCfg->stcSrcNseqBCfg.u16Cnt);
+    }
+    else
+    {
+        /*  */
+    }
+
+    if(DaddrRep == pstcDmaReCfg->enDaddrMd)
+    {
+        /* Set DMA destination repeat size B. */
+        MODIFY_DMA_CH_REG(&pstcDmaReg->RPTB0, u8Ch, DMA_RPT_DRPT, (uint32_t)pstcDmaReCfg->u16DesRptBSize);
+    }
+    else if(DaddrNseq == pstcDmaReCfg->enDaddrMd)
+    {
+        /* Set DMA destination no_sequence B. */
+        MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTLB0, u8Ch, DMA_DNSEQCTL_DOFFSET, pstcDmaReCfg->stcDesNseqBCfg.u32Offset);
+        MODIFY_DMA_CH_REG(&pstcDmaReg->DNSEQCTLB0, u8Ch, DMA_DNSEQCTL_DNSCNT, (uint32_t)pstcDmaReCfg->stcDesNseqBCfg.u16Cnt);
+    }
+    else
+    {
+        /*  */
+    }
 }
 
 /**
@@ -853,6 +871,35 @@ void DMA_ReCfgCmd(M4_DMA_TypeDef* pstcDmaReg, en_functional_state_t enNewState)
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewState));
 
     pstcDmaReg->RCFGCTL_f.RCFGEN = enNewState;
+}
+
+/**
+ *******************************************************************************
+ ** \brief  Configure DMA Re_Config LLP.
+ **
+ ** \param  [in] pstcDmaReg             The pointer to dma register
+ ** \arg    M4_DMA1                     DMAC unit 1 register
+ ** \arg    M4_DMA2                     DMAC unit 2 register
+ **
+ ** \param  [in] u8Ch                   The specified dma channel.
+ **
+ ** \param  [in] enNewState             The new state of dma
+ ** \arg    Enable                      Enable dma.
+ ** \arg    Disable                     Disable dma.
+ **
+ ** \retval None
+ **
+ ** \note   None
+ **
+ ******************************************************************************/
+void DMA_ReCfgLlp(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_functional_state_t enNewState)
+{
+    DDL_ASSERT(IS_VALID_DMA_REG(pstcDmaReg));
+    DDL_ASSERT(IS_VALID_CH(u8Ch));
+    DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewState));
+
+    pstcDmaReg->RCFGCTL_f.RCFGCHS = u8Ch;
+    pstcDmaReg->RCFGCTL_f.RCFGLLP = enNewState;
 }
 
 /**
@@ -1327,7 +1374,7 @@ en_result_t DMA_SetSrcNseqCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch,
  **
  ** \param  [in] u8Ch                   The specified dma channel.
  ** \param  [in] pstcSrcNseqBCfg
- ** \arg    u32NseqDist                 The source no-sequence district interval.
+ ** \arg    u32NseqDist                 The source no-sequence distance.
  ** \arg    u16cntB                     The source no-sequence count.
  **
  ** \retval None
@@ -1569,7 +1616,7 @@ void DMA_SetTriggerSrc(const M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_event_
 void DMA_SetReConfigTriggerSrc(en_event_src_t enSrc)
 {
 
-    M4_AOS->DMATRGSELRC_f.TRGSEL = enSrc;
+    M4_AOS->DMA_TRGSELRC_f.TRGSEL = enSrc;
 
 }
 /**

@@ -320,11 +320,11 @@ typedef struct stc_can_bt
  ******************************************************************************/
 typedef struct
 {
-uint32_t DLC                     : 4;        ///< Data length code
-uint32_t RESERVED0               : 2;        ///< Ignore
-uint32_t RTR                     : 1;        ///< Remote transmission request
-uint32_t IDE                     : 1;        ///< IDentifier extension
-uint32_t RESERVED1               : 24;       ///< Ignore
+    uint32_t DLC         : 4;       ///< Data length code
+    uint32_t RESERVED0   : 2;       ///< Ignore
+    uint32_t RTR         : 1;       ///< Remote transmission request
+    uint32_t IDE         : 1;       ///< IDentifier extension
+    uint32_t RESERVED1   : 24;      ///< Ignore
 }stc_can_txcontrol_t;
 
 /**
@@ -350,7 +350,6 @@ typedef struct stc_can_txframe
         uint8_t  Data[8];                   ///< CAN data
     };
     en_can_buffer_sel_t     enBufferSel;    ///< CAN Tx buffer select
-
 }stc_can_txframe_t;
 
 /**
@@ -409,7 +408,6 @@ typedef struct stc_can_rxframe
         uint32_t RBUF32_2[2];           ///< Ignore
         uint8_t  Data[8];               ///< CAN data
     };
-
 }stc_can_rxframe_t;
 
 /**
@@ -425,7 +423,6 @@ typedef struct stc_can_init_config
     stc_can_bt_t            stcCanBt;           ///< @ref stc_can_bt_t
     stc_can_warning_limit_t stcWarningLimit;    ///< @ref stc_can_warning_limit_t
 }stc_can_init_config_t;
-
 
 /**
  *******************************************************************************

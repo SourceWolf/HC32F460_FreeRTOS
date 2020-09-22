@@ -77,7 +77,7 @@ void USER_RTC_Init(stc_rtc_cfg_t *p_stc_rtc_cfg)
     M4_RTC->CR2_f.ALMIE = p_stc_rtc_cfg->ALMIE;
     //M4_RTC->CR2_f.CRIE = //数据手册这里是Reserved
     M4_RTC->CR2_f.PRDIE = p_stc_rtc_cfg->PRDIE;
-    M4_RTC->CR2_f.WAIT = p_stc_rtc_cfg->WAIT;
+//    M4_RTC->CR2_f.WAIT = p_stc_rtc_cfg->WAIT;
 }
 void User_RTC_Init(void)
 {

@@ -37,7 +37,7 @@ uint16_t GetWakeupFlag(void)
     uint16_t temp;
     temp = M4_SYSREG->PWR_PDWKF0;
     temp += M4_SYSREG->PWR_PDWKF1<<8;
-    PWC_ClearWakeup1Flag(PWC_RTCPRD_WKUPFALG | PWC_RXD0_WKUPFLAG | PWC_RTCAL_WKUPFLAG | PWC_XTAL32ER_WKUPFALG | PWC_WKTM_WKUPFLAG);
+    PWC_ClearWakeup1Flag(PWC_RTCPRD_WKUPFALG | PWC_RXD0_WKUPFLAG | PWC_RTCAL_WKUPFLAG | PWC_WKTM_WKUPFLAG);
     PWC_ClearWakeup0Flag(PWC_PTWK0_WKUPFLAG | PWC_PTWK1_WKUPFLAG | PWC_PTWK2_WKUPFLAG | PWC_PTWK3_WKUPFLAG | PWC_PVD1_WKUPFLAG | PWC_PVD2_WKUPFLAG | PWC_NMI_WKUPFLAG);
     return temp;
 }
@@ -74,7 +74,7 @@ void System_Enter_PowerDown(void)
     stcPwcPwrMdCfg.enRetSram = Disable;
     stcPwcPwrMdCfg.enVHrc = Enable;
     stcPwcPwrMdCfg.enVPll = Enable;
-    stcPwcPwrMdCfg.enDynVol =  Voltage11;
+    stcPwcPwrMdCfg.enRunDrvs =  RunHighspeed;
     stcPwcPwrMdCfg.enDrvAbility = HighSpeed;
     stcPwcPwrMdCfg.enPwrDWkupTm = Vcap0047;
     PWC_PowerModeCfg(&stcPwcPwrMdCfg);
@@ -295,7 +295,7 @@ void System_Clk_8MHZ(void)
     CLK_MrcCmd(Enable);
     CLK_SetSysClkSource(ClkSysSrcMRC);
     PWR_mode.enDrvAbility = Ulowspeed;
-    PWR_mode.enDynVol = Voltage09;
+    PWR_mode.enRunDrvs = RunUlowspeed;
     PWC_PowerModeCfg(&PWR_mode);
 }
 void  PowertoHighspeed(void)
@@ -303,7 +303,7 @@ void  PowertoHighspeed(void)
     stc_pwc_pwr_mode_cfg_t PWR_mode;
     MEM_ZERO_STRUCT(PWR_mode);
     PWR_mode.enDrvAbility = HighSpeed;
-    PWR_mode.enDynVol = Voltage11;
+    PWR_mode.enRunDrvs = RunHighspeed;
     PWC_PowerModeCfg(&PWR_mode);
 }
 void LPM_TEST(void)

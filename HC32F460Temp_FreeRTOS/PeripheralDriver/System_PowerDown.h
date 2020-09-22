@@ -28,10 +28,24 @@
 #define KEY_WK1_EN  PWC_PDWKEN0_WKUP11
 #define KEY_WK2_EN  PWC_PDWKEN1_WKUP20
 #define KEY_WK3_EN  PWC_PDWKEN1_WKUP33
+
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void System_Enter_StopMode(void);
 void System_Enter_PowerDown(void);
 uint16_t GetWakeupFlag(void);
 void Key_Wakeup_Init(void);
 void LPM_TEST(void);
+
+#ifdef __cplusplus
+};
+#endif
+
+
+
 
 #endif

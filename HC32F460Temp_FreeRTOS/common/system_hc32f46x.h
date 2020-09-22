@@ -82,8 +82,14 @@ extern "C" {
 #define CLOCK_SETTING_NONE  0u
 #define CLOCK_SETTING_CMSIS 1u
 
-#if !defined (HRC_VALUE)
-#define HRC_VALUE ((uint32_t)16000000)  /*!< Internal high speed RC freq. */
+#define HRC_FREQ_MON()                  (*((volatile unsigned int*)(0x40010684UL)))
+
+#if !defined (HRC_16MHz_VALUE)
+    #define HRC_16MHz_VALUE             ((uint32_t)16000000UL)  /*!< Internal high speed RC freq.(16MHz) */
+#endif
+
+#if !defined (HRC_20MHz_VALUE)
+    #define HRC_20MHz_VALUE             ((uint32_t)20000000UL)  /*!< Internal high speed RC freq.(20MHz) */
 #endif
 
 #if !defined (MRC_VALUE)
@@ -114,6 +120,7 @@ extern "C" {
 /******************************************************************************/
 /* Global function prototypes ('extern', definition in C source)              */
 /******************************************************************************/
+extern uint32_t HRC_VALUE;                // HRC Clock Frequency (Core Clock)
 extern uint32_t SystemCoreClock;          // System Clock Frequency (Core Clock)
 extern void SystemInit(void);             // Initialize the system
 extern void SystemCoreClockUpdate(void);  // Update SystemCoreClock variable

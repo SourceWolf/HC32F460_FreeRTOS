@@ -100,6 +100,11 @@ typedef struct stc_sdioc_instance_data
 (   (M4_SDIOC1 == (__SDIOCx__))             ||                                 \
     (M4_SDIOC2 == (__SDIOCx__)))
 
+/*!< Parameter valid check for SDIOC mode. */
+#define IS_VALID_SDIOC_MODE(x)                                                 \
+(   (SdiocModeSD == (x))                    ||                                 \
+    (SdiocModeMMC == (x)))
+
 /*!< Parameter valid check for SDIOC Response Register. */
 #define IS_VALID_SDIOC_RESP(x)                                                 \
 (   (SdiocRegResp01 == (x))                 ||                                 \
@@ -740,6 +745,32 @@ en_result_t SDIOC_DeInit(M4_SDIOC_TypeDef *SDIOCx)
     }
 
     return enRet;
+}
+
+/**
+ * @brief  Set SDIOC mode.
+ * @param  [in] SDIOCx                  Pointer to SDIOC instance register base
+ *         This parameter can be one of the following values:
+ *           @arg M4_SDIOC1:            SDIOC unit 1 instance register base
+ *           @arg M4_SDIOC2:            SDIOC unit 2 instance register base
+ * @param  [in] enMode                  SDIOCx mode
+ *           @arg SdiocModeSD:          SD mode
+ *           @arg SdiocModeMMC:         MMC mode
+ */
+void SDIOC_SetMode(const M4_SDIOC_TypeDef *SDIOCx, en_sdioc_mode_t enMode)
+{
+    /* Check parameters */
+    DDL_ASSERT(IS_VALID_SDIOC(SDIOCx));
+    DDL_ASSERT(IS_VALID_SDIOC_MODE(enMode));
+
+    if (M4_SDIOC1 == SDIOCx)
+    {
+        M4_PERIC->SDIOC_SYCTLREG_f.SELMMC1 = (uint32_t)enMode;
+    }
+    else
+    {
+        M4_PERIC->SDIOC_SYCTLREG_f.SELMMC2 = (uint32_t)enMode;
+    }
 }
 
 /**

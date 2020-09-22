@@ -45,7 +45,7 @@
  ** A detailed description is available at
  ** @link AdcGroup Adc description @endlink
  **
- **   - 2018-11-30  1.0 First version for Device Driver Library of Adc.
+ **   - 2018-11-30  1.0 Wuze First version for Device Driver Library of Adc.
  **
  ******************************************************************************/
 
@@ -205,7 +205,7 @@
     (((x) >= EVT_TMRA1_OVF) && ((x) <= EVT_TMRA5_CMP))              ||          \
     (((x) >= EVT_TMRA6_OVF) && ((x) <= EVT_TMRA6_CMP))              ||          \
     (((x) >= EVT_USART1_EI) && ((x) <= EVT_USART4_RTO))             ||          \
-    (((x) >= EVT_SPI1_SRRI) && ((x) <= EVT_AOS_STRG))               ||          \
+    (((x) >= EVT_SPI1_SPRI) && ((x) <= EVT_AOS_STRG))               ||          \
     (((x) >= EVT_TMR41_SCMUH) && ((x) <= EVT_TMR42_SCMWL))          ||          \
     (((x) >= EVT_TMR43_SCMUH) && ((x) <= EVT_TMR43_SCMWL))          ||          \
     (((x) >= EVT_EVENT_PORT1)  && ((x) <= EVT_EVENT_PORT4))         ||          \

@@ -354,18 +354,18 @@ en_result_t SPI_Init(M4_SPI_TypeDef *SPIx, const stc_spi_init_t *pstcSpiInitCfg)
         /* Master mode */
         if (SpiModeMaster == pstcSpiInitCfg->enMasterSlaveMode)
         {
-            SPIx->CFG2_f.SCKDLE = pstcSpiInitCfg->stcDelayConfig.enSsSetupDelayOption;
-            SPIx->CFG2_f.SSDLE = pstcSpiInitCfg->stcDelayConfig.enSsHoldDelayOption;
-            SPIx->CFG2_f.NXTDLE = pstcSpiInitCfg->stcDelayConfig.enSsIntervalTimeOption;
+            SPIx->CFG2_f.MSSIE = pstcSpiInitCfg->stcDelayConfig.enSsSetupDelayOption;
+            SPIx->CFG2_f.MSSDLE = pstcSpiInitCfg->stcDelayConfig.enSsHoldDelayOption;
+            SPIx->CFG2_f.MIDIE = pstcSpiInitCfg->stcDelayConfig.enSsIntervalTimeOption;
             SPIx->CFG1_f.MSSI = pstcSpiInitCfg->stcDelayConfig.enSsSetupDelayTime;
             SPIx->CFG1_f.MSSDL = pstcSpiInitCfg->stcDelayConfig.enSsHoldDelayTime;
             SPIx->CFG1_f.MIDI = pstcSpiInitCfg->stcDelayConfig.enSsIntervalTime;
         }
         else
         {
-            SPIx->CFG2_f.SCKDLE = SpiSsSetupDelayTypicalSck1;
-            SPIx->CFG2_f.SSDLE = SpiSsHoldDelayTypicalSck1;
-            SPIx->CFG2_f.NXTDLE = SpiSsIntervalTypicalSck1PlusPck2;
+            SPIx->CFG2_f.MSSIE = SpiSsSetupDelayTypicalSck1;
+            SPIx->CFG2_f.MSSDLE = SpiSsHoldDelayTypicalSck1;
+            SPIx->CFG2_f.MIDIE = SpiSsIntervalTypicalSck1PlusPck2;
             SPIx->CFG1_f.MSSI = SpiSsSetupDelaySck1;
             SPIx->CFG1_f.MSSDL = SpiSsHoldDelaySck1;
             SPIx->CFG1_f.MIDI = SpiSsIntervalSck1PlusPck2;
