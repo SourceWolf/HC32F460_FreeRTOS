@@ -807,16 +807,6 @@
               <FilePath>.\PeripheralDriver\FPU_Enable.c</FilePath>
             </File>
             <File>
-              <FileName>Hw_Uart1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\PeripheralDriver\Hw_Uart1.c</FilePath>
-            </File>
-            <File>
-              <FileName>Hw_Uart1.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\PeripheralDriver\Hw_Uart1.h</FilePath>
-            </File>
-            <File>
               <FileName>HW_I2C.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\PeripheralDriver\HW_I2C.c</FilePath>
@@ -905,6 +895,16 @@
               <FileName>bsp_I2S_Full_Duplex.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\PeripheralDriver\bsp_I2S_Full_Duplex.h</FilePath>
+            </File>
+            <File>
+              <FileName>Uart_DMA.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\PeripheralDriver\Uart_DMA.c</FilePath>
+            </File>
+            <File>
+              <FileName>Uart_DMA.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\PeripheralDriver\Uart_DMA.h</FilePath>
             </File>
           </Files>
         </Group>

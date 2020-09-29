@@ -33,13 +33,13 @@ void Sleep_init(void)
 }
 void Task_START(void *param)
 {
-	Task_LED_Start();	
-	Task_Display_Start();
-	Task_ADC_Start(); 
-	Task_USB_Start();
-	Hw_Uart4_Init();
-	HW_I2C_Port_Init();
-	HW_I2C_Init(I2C1_UNIT,400000);
+//	Task_LED_Start();	
+//	Task_Display_Start();
+//	Task_ADC_Start(); 
+//	Task_USB_Start();
+//	Hw_Uart4_Init();
+//	HW_I2C_Port_Init();
+//	HW_I2C_Init(I2C1_UNIT,400000);
     ////
 //    Fs_Task_Start();
 //	Hw_I2C_Slave_Init(I2C1_UNIT);
@@ -52,10 +52,12 @@ void Task_START(void *param)
 //	Hw_TimerA3_Init();
 //	User_I2S3_Init();
 //	vTaskDelete(Hd_Task_Start);
-	AD7689_Init();
+//	AD7689_Init();
+    hwdmx_uartInit();
     while(1)
     {
-        AD7689_SOC();
+//        AD7689_SOC();
+        Test_UART_TX();
 //		LPM_TEST();
 //		MEM_ZERO_STRUCT(freq);
 //		sprintf(freq,"Freq = %d",GetFrequence());
@@ -68,7 +70,7 @@ void Task_START(void *param)
 //		vTaskDelay(10/portTICK_PERIOD_MS);
 //		while(PORT_GetBit(PortE, Pin01) == 1);
 //		Hw_SPI3_TEST();
-		TestEEPROM();
+//		TestEEPROM();
 //		I2C_Write_Buffer(I2C1_UNIT,0x06,a,5);
 //		vTaskDelay(10/portTICK_PERIOD_MS);
 //		I2C_Read_data(I2C1_UNIT,0x06,0x00,b,5);

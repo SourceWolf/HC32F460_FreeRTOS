@@ -12,5 +12,6 @@
 #include "AT24C02.h"
 #include "User_ADC.h"
 #include "User_Timer.h"
+#include "Uart_DMA.h"
 #endif
 

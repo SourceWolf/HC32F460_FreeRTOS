@@ -23,7 +23,7 @@ stc_clk_freq_t Clkdata;
 #ifdef APP_VERSION
 #define APP_START_ADDRESS 0x40000
 #endif 
-char buffer1[100] = "abcde";
+char buffer1[100] = "abcdefghijkl";
 stc_pll_clk_freq_t pllfreq;
 int main(void)
 {
@@ -36,26 +36,30 @@ int main(void)
 #if defined (__CC_ARM) && defined (__TARGET_FPU_VFP)
 	SCB->CPACR |= 0x00F00000;
 #endif 
-	system_clk_init();
-	Ddl_Delay1ms(2000);  
-    CLK_LrcCmd(Disable);
-    CLK_Xtal32Cmd(Disable);
-	CLK_GetClockFreq(&Clkdata);
-	SysTick_Config(Clkdata.hclkFreq/1000);
-	NVIC_EnableIRQ(SysTick_IRQn);
-	Ddl_UartInit();
-	Hw_MPU_Init();
+    CLK_SetSysClkSource(ClkSysSrcHRC);
+//	system_clk_init();
+//	Ddl_Delay1ms(2000);  
+//    CLK_LrcCmd(Disable);
+//    CLK_Xtal32Cmd(Disable);
+//	CLK_GetClockFreq(&Clkdata);
+//	SysTick_Config(Clkdata.hclkFreq/1000);
+//	NVIC_EnableIRQ(SysTick_IRQn);
+    hwdmx_uartInit();
+//	Ddl_UartInit();
+//	Hw_MPU_Init();
 	CLK_GetPllClockFreq(&pllfreq);
-	printf("system base software initialed.--------%s, %d\r\n",__FILE__, __LINE__);
+//	printf("system base software initialed.--------%s, %d\r\n",__FILE__, __LINE__);
 //    Hw_SPI3_Init();
 //    HW_I2C_Port_Init();
 //	HW_I2C_Init(I2C1_UNIT,300000);
-	User_Task_Create();
+//	User_Task_Create();
     while(1)
-    {   
+    {
+//        Test_UART_TX();        
 //        SPI_TX_8bit((uint8_t*)buffer1+10,(uint8_t*)"1234567890",10);
 //        TestEEPROM();
-//        Ddl_Delay1ms(100);
+        UART_DMA_TX_Write_Buffer((uint8_t*)buffer1,10);
+        Ddl_Delay1ms(100);
 //        LPM_TEST();
 		;
     }

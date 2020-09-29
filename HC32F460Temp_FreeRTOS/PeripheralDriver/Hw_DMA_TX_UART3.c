@@ -200,7 +200,7 @@ void UART3_TX_DMA_Init(void)
 
     
     /* Enable PTDIS(AOS) clock*/
-    PWC_Fcg0PeriphClockCmd(PWC_FCG0_PERIPH_PTDIS,Enable);//打开AOS时钟
+    PWC_Fcg0PeriphClockCmd(PWC_FCG0_PERIPH_AOS,Enable);//打开AOS时钟
     
     DMA_SetTriggerSrc(M4_DMA1,DmaCh0,DMA1_CH0_TRGSRC);
 }

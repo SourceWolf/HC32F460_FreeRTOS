@@ -11,11 +11,11 @@ void USART_RX_TimerOut_Callback(void)
     //--------------------超时，DMA地址重置-------------------------------//
 //    DMA_Cmd(UART3_DMA2_UNIT,Disable);
 //    DMA_Cmd(UART3_DMA2_UNIT,Enable); 
-    DMA_ChannelCmd(UART3_DMA2_UNIT, UART3_DMA_CH,Disable);
-    DMA_ClearIrqFlag(UART3_DMA2_UNIT,UART3_DMA_CH, TrnCpltIrq);
-    DMA_SetTransferCnt(UART3_DMA2_UNIT,UART3_DMA_CH,UART3_DMA_TRNCNT);
-    DMA_SetDesAddress(UART3_DMA2_UNIT,UART3_DMA_CH,(uint32_t)(UART_RXbuff));
-    DMA_ChannelCmd(UART3_DMA2_UNIT, UART3_DMA_CH,Enable);
+    DMA_ChannelCmd(UART3_DMA2_UNIT, UART3_DMA_RXCH,Disable);
+    DMA_ClearIrqFlag(UART3_DMA2_UNIT,UART3_DMA_RXCH, TrnCpltIrq);
+    DMA_SetTransferCnt(UART3_DMA2_UNIT,UART3_DMA_RXCH,UART3_DMA_TRNCNT);
+    DMA_SetDesAddress(UART3_DMA2_UNIT,UART3_DMA_RXCH,(uint32_t)(UART_RXbuff));
+    DMA_ChannelCmd(UART3_DMA2_UNIT, UART3_DMA_RXCH,Enable);
 }
 void USART_RX_Callback(void)
 {
@@ -36,13 +36,13 @@ void USART_RX_ERROR_Callback(void)
     {
         USART3_UNIT->CR1_f.CPE = 1;
     }
-    DMA_ChannelCmd(UART3_DMA2_UNIT, UART3_DMA_CH,Disable);
-    DMA_ClearIrqFlag(UART3_DMA2_UNIT,UART3_DMA_CH, TrnCpltIrq);
-    DMA_SetTransferCnt(UART3_DMA2_UNIT,UART3_DMA_CH,UART3_DMA_TRNCNT);
-    DMA_SetDesAddress(UART3_DMA2_UNIT,UART3_DMA_CH,(uint32_t)(UART_RXbuff));
-    DMA_ChannelCmd(UART3_DMA2_UNIT, UART3_DMA_CH,Enable);
+    DMA_ChannelCmd(UART3_DMA2_UNIT, UART3_DMA_RXCH,Disable);
+    DMA_ClearIrqFlag(UART3_DMA2_UNIT,UART3_DMA_RXCH, TrnCpltIrq);
+    DMA_SetTransferCnt(UART3_DMA2_UNIT,UART3_DMA_RXCH,UART3_DMA_TRNCNT);
+    DMA_SetDesAddress(UART3_DMA2_UNIT,UART3_DMA_RXCH,(uint32_t)(UART_RXbuff));
+    DMA_ChannelCmd(UART3_DMA2_UNIT, UART3_DMA_RXCH,Enable);
 }
-void hwdmx_uartInit(void)
+void hw_uart3Init(void)
 {
   	stc_usart_uart_init_t stcUsartConf;
     stc_irq_regi_conf_t stcIrqRegiConf;
@@ -60,10 +60,10 @@ void hwdmx_uartInit(void)
     stcUsartConf.enDetectMode = UsartStartBitFallEdge;//RX起始位为下降沿
 
     PWC_Fcg1PeriphClockCmd(USART3_CLK,Enable);
-    Port_CFG.enPinMode = Pin_Mode_Out;
-	PORT_Init(USART3_TX_PORT, USART3_TX_PIN, &Port_CFG);
-    Port_CFG.enPinMode = Pin_Mode_In;
-    PORT_Init(USART3_TX_PORT, USART3_TX_PIN, &Port_CFG);
+//    Port_CFG.enPinMode = Pin_Mode_Out;
+//	PORT_Init(USART3_TX_PORT, USART3_TX_PIN, &Port_CFG);
+//    Port_CFG.enPinMode = Pin_Mode_In;
+//    PORT_Init(USART3_TX_PORT, USART3_TX_PIN, &Port_CFG);
     
     PORT_SetFunc(USART3_RX_PORT, USART3_RX_PIN, USART3_RX_FUNC, Disable);
     PORT_SetFunc(USART3_TX_PORT, USART3_TX_PIN, USART3_TX_FUNC, Disable);
@@ -71,7 +71,7 @@ void hwdmx_uartInit(void)
 //    USART_CH->CR1_f.OVER8 = 1;//双倍波特率
     USART_UART_Init(USART3_UNIT,&stcUsartConf); //初始化串口 
 		
-    USART_SetBaudrate(USART3_UNIT, 500000);
+    USART_SetBaudrate(USART3_UNIT, USART3_BAUDRATE);
 		
     USART_FuncCmd(USART3_UNIT, UsartTx, Enable);
 	USART_FuncCmd(USART3_UNIT, UsartRx, Enable);
@@ -79,12 +79,12 @@ void hwdmx_uartInit(void)
     USART_FuncCmd(USART3_UNIT, UsartTimeOutInt, Enable);
     USART_FuncCmd(USART3_UNIT, UsartRxInt, Enable);
     
-    stcIrqRegiConf.enIntSrc = USART3_RI_NUM;
-    stcIrqRegiConf.enIRQn = USART3_RX_IRQn;
-    stcIrqRegiConf.pfnCallback = USART_RX_Callback;
-    enIrqRegistration(&stcIrqRegiConf);//配置中断向量及函数
-    NVIC_SetPriority(stcIrqRegiConf.enIRQn, DDL_IRQ_PRIORITY_02);
-	NVIC_ClearPendingIRQ(stcIrqRegiConf.enIRQn);
+//    stcIrqRegiConf.enIntSrc = USART3_RI_NUM;
+//    stcIrqRegiConf.enIRQn = USART3_RX_IRQn;
+//    stcIrqRegiConf.pfnCallback = USART_RX_Callback;
+//    enIrqRegistration(&stcIrqRegiConf);//配置中断向量及函数
+//    NVIC_SetPriority(stcIrqRegiConf.enIRQn, DDL_IRQ_PRIORITY_02);
+//	NVIC_ClearPendingIRQ(stcIrqRegiConf.enIRQn);
 //    NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);//
     
     stcIrqRegiConf.enIntSrc = USART3_EI_NUM;
@@ -100,8 +100,8 @@ void hwdmx_uartInit(void)
     stcIrqRegiConf.pfnCallback = USART_RX_TimerOut_Callback;
     enIrqRegistration(&stcIrqRegiConf);//配置中断向量及函数
     NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);
-    hw_dma_init();
-    UART_RTO_Timer_Init();
+    hw_rxdma_init();//初始化接收DMA
+    UART_RTO_Timer_Init();//初始化串口超时时钟
 }
 void Test_UART_TX(void)
 {
@@ -121,7 +121,7 @@ void UART_DMA_Callback(void)
     TIMER0_Cmd(M4_TMR02, Tim0_ChannelA, Disable);
     M4_TMR02->CNTBR_f.CNTB = 0;
 }
-void hw_dma_init(void)
+void hw_rxdma_init(void)
 {
     stc_dma_config_t stcDmaCfg;
     stc_irq_regi_conf_t stcIrqRegiConf;
@@ -142,7 +142,7 @@ void hw_dma_init(void)
     stcDmaCfg.stcDmaChCfg.enLlpEn = Disable;     
     /* Enable repeat function. */
     stcDmaCfg.stcDmaChCfg.enSrcRptEn = Disable;
-    stcDmaCfg.stcDmaChCfg.enDesRptEn = Disable;   
+    stcDmaCfg.stcDmaChCfg.enDesRptEn = Enable;   
     /* Set source & destination address mode. */
     stcDmaCfg.stcDmaChCfg.enSrcInc = AddressFix;//地址不变
     stcDmaCfg.stcDmaChCfg.enDesInc = AddressIncrease;
@@ -157,11 +157,11 @@ void hw_dma_init(void)
     /* Enable DMA1. */
     DMA_Cmd(UART3_DMA2_UNIT,Enable);   
     /* Initialize DMA. */
-    DMA_InitChannel(UART3_DMA2_UNIT, UART3_DMA_CH, &stcDmaCfg);
+    DMA_InitChannel(UART3_DMA2_UNIT, UART3_DMA_RXCH, &stcDmaCfg);
     /* Enable DMA1 channel0. */
-    DMA_ChannelCmd(UART3_DMA2_UNIT, UART3_DMA_CH,Enable);
+    DMA_ChannelCmd(UART3_DMA2_UNIT, UART3_DMA_RXCH,Enable);
     /* Clear DMA transfer complete interrupt flag. */
-    DMA_ClearIrqFlag(UART3_DMA2_UNIT, UART3_DMA_CH,TrnCpltIrq);
+    DMA_ClearIrqFlag(UART3_DMA2_UNIT, UART3_DMA_RXCH,TrnCpltIrq);
     
     stcIrqRegiConf.enIntSrc = INT_DMA2_TC0;
     stcIrqRegiConf.enIRQn = DMA2_CH0_IRQn;
@@ -174,7 +174,7 @@ void hw_dma_init(void)
     /* Enable PTDIS(AOS) clock*/
     PWC_Fcg0PeriphClockCmd(PWC_FCG0_PERIPH_AOS,Enable);
     
-    DMA_SetTriggerSrc(UART3_DMA2_UNIT,UART3_DMA_CH,UART3_DMA_Trg_Src);
+    DMA_SetTriggerSrc(UART3_DMA2_UNIT,UART3_DMA_RXCH,UART3_DMA_Trg_Src);
     
 }
 void RTO_Timer_Callback(void)
@@ -209,8 +209,8 @@ void UART_RTO_Timer_Init(void)
 	stcIrqRegiConf.pfnCallback = RTO_Timer_Callback;
 	stcIrqRegiConf.enIRQn = TIMER02_CHA_IRQn;
 	enIrqRegistration(&stcIrqRegiConf);
-	
-	NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);//使能中断
+//	
+//	NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);//使能中断
 	
 //    TIMER0_Cmd(M4_TMR02, Tim0_ChannelA, Enable);
 }
