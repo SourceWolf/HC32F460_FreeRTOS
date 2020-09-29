@@ -172,7 +172,7 @@ void hw_dma_init(void)
 
     
     /* Enable PTDIS(AOS) clock*/
-    PWC_Fcg0PeriphClockCmd(PWC_FCG0_PERIPH_PTDIS,Enable);
+    PWC_Fcg0PeriphClockCmd(PWC_FCG0_PERIPH_AOS,Enable);
     
     DMA_SetTriggerSrc(UART3_DMA2_UNIT,UART3_DMA_CH,UART3_DMA_Trg_Src);
     

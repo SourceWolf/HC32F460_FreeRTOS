@@ -52,9 +52,10 @@ void Timer02_Init(void)
 //    NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);
 
     /*config register for channel B */
-    stcTimerCfg.Tim0_CounterMode = Tim0_Sync;
+    stcTimerCfg.Tim0_CounterMode = Tim0_Async;
     stcTimerCfg.Tim0_SyncClockSource = Tim0_Pclk1;
     stcTimerCfg.Tim0_ClockDivision = Tim0_ClkDiv4;
+    stcTimerCfg.Tim0_AsyncClockSource = Tim0_LRC;
     stcTimerCfg.Tim0_CmpValue = 21;
     TIMER0_BaseInit(TMR_UNIT,Tim0_ChannelB,&stcTimerCfg);
 

@@ -50,9 +50,9 @@ void Hw_ADC_Init(void)
     stcAdcInit.enResolution = AdcResolution_12Bit;
     stcAdcInit.enAutoClear = AdcClren_Enable;
 	/* Enable PTDIS(AOS) clock*/
-    PWC_Fcg0PeriphClockCmd(PWC_FCG0_PERIPH_PTDIS,Enable);
+    PWC_Fcg0PeriphClockCmd(PWC_FCG0_PERIPH_AOS,Enable);
 //    stcAdcInit.enAverageCount = AdcAvcnt_4;
-    trigger_cfg.enInTrg0 = EVT_TMR41_SCMUH;//Timer4触发
+    trigger_cfg.enInTrg0 = EVT_TMRA1_OVF;//TimerA1 OVF溢出事件触发
 	trigger_cfg.enTrgSel = AdcTrgsel_TRGX0_TRGX1;
 	trigger_cfg.u8Sequence = ADC_SEQ_A;
 	ADC_ConfigTriggerSrc(M4_ADC1,&trigger_cfg);

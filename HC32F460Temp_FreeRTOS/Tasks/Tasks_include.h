@@ -11,5 +11,6 @@
 #include "Hw_TIMERA_Capture.h"
 #include "AT24C02.h"
 #include "User_ADC.h"
+#include "User_Timer.h"
 #endif
 

@@ -37,7 +37,7 @@ int main(void)
 	SCB->CPACR |= 0x00F00000;
 #endif 
 	system_clk_init();
-	Ddl_Delay1ms(2000);
+	Ddl_Delay1ms(2000);  
     CLK_LrcCmd(Disable);
     CLK_Xtal32Cmd(Disable);
 	CLK_GetClockFreq(&Clkdata);
