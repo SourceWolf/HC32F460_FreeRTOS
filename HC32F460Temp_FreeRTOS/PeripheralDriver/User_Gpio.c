@@ -32,6 +32,7 @@ void User_Gpio_Init(void)
     MEM_ZERO_STRUCT(key_CFG);
     MEM_ZERO_STRUCT(stcIrqRegiCfg);
 	Port_CFG.enPinMode = Pin_Mode_Out;
+
     
 	PORT_Init(LED0_PORT, LED0_Pin, &Port_CFG);
     PORT_Init(LED1_PORT, LED1_Pin, &Port_CFG);

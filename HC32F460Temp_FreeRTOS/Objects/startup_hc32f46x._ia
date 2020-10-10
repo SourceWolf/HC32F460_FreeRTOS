@@ -1,0 +1,7 @@
+--cpu Cortex-M4.fp.sp -g --apcs=interwork --pd "__MICROLIB SETA 1"
+-I.\RTE\_HC32F460
+-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include
+-IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include
+-IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include
+--pd "__UVISION_VERSION SETA 529" --pd "_RTE_ SETA 1"
+-o .\objects\startup_hc32f46x.o --depend .\objects\startup_hc32f46x.d "common\MDK\startup_hc32f46x.s"

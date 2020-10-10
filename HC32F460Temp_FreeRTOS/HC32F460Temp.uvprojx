@@ -906,6 +906,36 @@
               <FileType>5</FileType>
               <FilePath>.\PeripheralDriver\Uart_DMA.h</FilePath>
             </File>
+            <File>
+              <FileName>bsp_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\PeripheralDriver\bsp_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\PeripheralDriver\bsp_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_i2c_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\PeripheralDriver\bsp_i2c_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_i2c_dma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\PeripheralDriver\bsp_i2c_dma.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_interrupt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\PeripheralDriver\bsp_interrupt.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_interrupt.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\PeripheralDriver\bsp_interrupt.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

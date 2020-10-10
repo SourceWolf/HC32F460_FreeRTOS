@@ -18,6 +18,8 @@
 #include "Hw_SPI3.h"
 #include "Hw_I2C.h"
 #include "AT24C02.h"
+#include "bsp_i2c_dma.h"
+#include "Hw_I2C_Slave.h"
 USB_OTG_CORE_HANDLE  USB_OTG_dev;
 stc_clk_freq_t Clkdata;
 #ifdef APP_VERSION
@@ -33,35 +35,24 @@ int main(void)
 	/* Rebase the vector table base address */
 	SCB->VTOR = ((uint32_t) APP_START_ADDRESS & SCB_VTOR_TBLOFF_Msk); 
 #endif    
-#if defined (__CC_ARM) && defined (__TARGET_FPU_VFP)
-	SCB->CPACR |= 0x00F00000;
-#endif 
+    PORT_DebugPortSetting(0x1C,Disable);
     CLK_SetSysClkSource(ClkSysSrcHRC);
-//	system_clk_init();
-//	Ddl_Delay1ms(2000);  
-//    CLK_LrcCmd(Disable);
-//    CLK_Xtal32Cmd(Disable);
-//	CLK_GetClockFreq(&Clkdata);
-//	SysTick_Config(Clkdata.hclkFreq/1000);
-//	NVIC_EnableIRQ(SysTick_IRQn);
-    hwdmx_uartInit();
-//	Ddl_UartInit();
-//	Hw_MPU_Init();
-	CLK_GetPllClockFreq(&pllfreq);
-//	printf("system base software initialed.--------%s, %d\r\n",__FILE__, __LINE__);
-//    Hw_SPI3_Init();
+	system_clk_init();
+	Ddl_Delay1ms(2000);  
+    CLK_LrcCmd(Disable);
+    CLK_Xtal32Cmd(Disable);
+	CLK_GetClockFreq(&Clkdata);
+	SysTick_Config(Clkdata.hclkFreq/1000);
+	NVIC_EnableIRQ(SysTick_IRQn);
+//    Hw_I2C_Slave_Init(I2C1_UNIT);
 //    HW_I2C_Port_Init();
-//	HW_I2C_Init(I2C1_UNIT,300000);
-//	User_Task_Create();
+//	HW_I2C_Init(I2C1_UNIT,400000);
+	Ddl_UartInit();
+	CLK_GetPllClockFreq(&pllfreq);
+	printf("system base software initialed.--------%s, %d\r\n",__FILE__, __LINE__);
+	User_Task_Create();
     while(1)
     {
-//        Test_UART_TX();        
-//        SPI_TX_8bit((uint8_t*)buffer1+10,(uint8_t*)"1234567890",10);
-//        TestEEPROM();
-        UART_DMA_TX_Write_Buffer((uint8_t*)buffer1,10);
-        Ddl_Delay1ms(100);
-//        LPM_TEST();
-		;
     }
 }
 

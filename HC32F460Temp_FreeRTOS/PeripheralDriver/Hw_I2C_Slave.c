@@ -101,6 +101,7 @@ void I2C_EEI_Callback(void)
 
             /* Read DRR register to release SCL*/
             I2C_ReadData(pstcI2Cx);
+
         }
         else
         {
@@ -200,7 +201,7 @@ uint8_t Hw_I2C_Slave_Init(M4_I2C_TypeDef* I2Cx)
     I2C_SlaveAdr0Config(pstcI2Cx, Enable, Adr7bit, SLAVE_ADDRESS);
 #endif
     /* Register EEI Int to Vect.No.001 */
-    stcIrqRegiConf.enIRQn = Int001_IRQn;
+    stcIrqRegiConf.enIRQn = Int004_IRQn;
     /* Select I2C Error or Event interrupt function */
     stcIrqRegiConf.enIntSrc = INT_I2C1_EE1;
     /* Callback function */
@@ -219,7 +220,7 @@ uint8_t Hw_I2C_Slave_Init(M4_I2C_TypeDef* I2Cx)
     /* Select I2C receive full interrupt function */
     stcIrqRegiConf.enIntSrc = INT_I2C1_RXI;
     /* Callback function */
-    stcIrqRegiConf.pfnCallback = &I2C_RXI_Callback;
+    stcIrqRegiConf.pfnCallback = I2C_RXI_Callback;
     /* Registration IRQ */
     enIrqRegistration(&stcIrqRegiConf);
     /* Clear Pending */
@@ -234,7 +235,7 @@ uint8_t Hw_I2C_Slave_Init(M4_I2C_TypeDef* I2Cx)
     /* Select I2C TX buffer empty interrupt function */
     stcIrqRegiConf.enIntSrc = INT_I2C1_TEI;
     /* Callback function */
-    stcIrqRegiConf.pfnCallback = &I2C_TEI_Callback;
+    stcIrqRegiConf.pfnCallback = I2C_TEI_Callback;
     /* Registration IRQ */
     enIrqRegistration(&stcIrqRegiConf);
     /* Clear Pending */

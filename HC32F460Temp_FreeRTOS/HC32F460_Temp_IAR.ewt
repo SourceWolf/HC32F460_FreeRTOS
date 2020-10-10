@@ -2616,13 +2616,43 @@
     <group>
         <name>PeripheralDriver</name>
         <file>
+            <name>$PROJ_DIR$\PeripheralDriver\bsp_dma.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\PeripheralDriver\bsp_dma.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\PeripheralDriver\bsp_i2c_dma.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\PeripheralDriver\bsp_i2c_dma.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\PeripheralDriver\bsp_interrupt.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\PeripheralDriver\bsp_interrupt.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\PeripheralDriver\HW_I2C.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\PeripheralDriver\Hw_MPU.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\PeripheralDriver\Hw_Uart4.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\PeripheralDriver\Hw_Uart4.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\PeripheralDriver\System_Clk.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\PeripheralDriver\System_PowerDown.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\PeripheralDriver\System_PowerDown.h</name>
         </file>
         <file>
             <name>$PROJ_DIR$\PeripheralDriver\User_ADC.c</name>
@@ -2662,9 +2692,6 @@
         </file>
         <file>
             <name>$PROJ_DIR$\PeripheralDriver\User_SDIO.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\PeripheralDriver\User_SPI.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\PeripheralDriver\User_Timer.c</name>

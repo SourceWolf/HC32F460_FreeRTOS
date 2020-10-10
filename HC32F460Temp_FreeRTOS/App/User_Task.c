@@ -2,10 +2,10 @@
 #include "cmsis_os.h"
 #include "../Tasks/Tasks_include.h"
 #include "System_PowerDown.h"
-#include "Test.h"
+//#include "Test.h"
 //#include "MCP33131_SPI_TMR_DMA.h"
 #include "User_I2S.h"
-#include "AD7689.h"
+//#include "AD7689.h"
 #include "Hw_Uart4.h"
 #include "bsp_I2S_Full_Duplex.h"
 uint8_t displaydata[4][128],a[10] = {0,1,2,3,4,5,6,7,8,9},b[10];
@@ -33,13 +33,13 @@ void Sleep_init(void)
 }
 void Task_START(void *param)
 {
-//	Task_LED_Start();	
-//	Task_Display_Start();
-//	Task_ADC_Start(); 
-//	Task_USB_Start();
-//	Hw_Uart4_Init();
-//	HW_I2C_Port_Init();
-//	HW_I2C_Init(I2C1_UNIT,400000);
+	Task_LED_Start();	
+	Task_Display_Start();
+	Task_ADC_Start(); 
+	Task_USB_Start();
+	Hw_Uart4_Init();
+	HW_I2C_Port_Init();
+	bsp_I2C_DMA_Init(I2C1_UNIT,400000);
     ////
 //    Fs_Task_Start();
 //	Hw_I2C_Slave_Init(I2C1_UNIT);
@@ -53,11 +53,18 @@ void Task_START(void *param)
 //	User_I2S3_Init();
 //	vTaskDelete(Hd_Task_Start);
 //	AD7689_Init();
-    hwdmx_uartInit();
+//    hwdmx_uartInit();
     while(1)
     {
+//        I2C_Write_data(I2C1_UNIT,0x50,0x00,(const uint8_t*)a,8);
+//        vTaskDelay(10/portTICK_PERIOD_MS);
+//        I2C_Read_data(I2C1_UNIT,0x50,0x00,(uint8_t*)b,8);
+//        vTaskDelay(10/portTICK_PERIOD_MS);
+        I2C_DMA_Write_data(I2C1_UNIT,0x50,0x00,(const uint8_t*)a,8);
+        vTaskDelay(10/portTICK_PERIOD_MS);
+        I2C_DMA_Read_data(I2C1_UNIT,0x50,0x00,(uint8_t*)b,8);
 //        AD7689_SOC();
-        Test_UART_TX();
+//        Test_UART_TX();
 //		LPM_TEST();
 //		MEM_ZERO_STRUCT(freq);
 //		sprintf(freq,"Freq = %d",GetFrequence());
