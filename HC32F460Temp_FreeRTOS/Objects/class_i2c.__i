@@ -1,7 +1,0 @@
---cpp -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\common -I .\driver\src -I .\driver\inc -I .\driver -I .\usb_lib\ctl_drv -I .\usb_lib\device_class\hid -I .\usb_lib\device_core -I .\App -I .\FreeRTOS -I .\FreeRTOS\include -I .\FreeRTOS\CMSIS_RTOS -I .\FreeRTOS\portable\MemMang -I .\FreeRTOS\portable\RVDS -I .\PeripheralDriver -I .\midware\OLED -I .\midware\OLED -I .\midware\sd_card\inc -I .\midware\sd_card\src -I .\midware\sd_card -I .\midware\wm8731 -I .\midware\wm8731\inc -I .\midware\wm8731\src -I .\FreeRTOS\portable\MDK -I .\FileSystem\inc -I .\midware\NRF24L01 -I .\midware\MLX9061x -I .\RTT -I .\midware\WL2400PTC -I .\midware -I .\usb_lib\device_class\hid_custom -I .\usb_lib\device_class\hid_msc_wrapper -I .\usb_lib\device_class\msc -I .\midware\w25qxx\inc -I .\Cpp_Class -I .\midware\FFT -I .\midware\AT24C02 -I .\midware\wavefile --diag_suppress=186,66
--I.\RTE\_HC32F460
--IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\Core\Include
--IC:\Users\Michael\AppData\Local\Arm\Packs\ARM\CMSIS\5.6.0\CMSIS\DSP\Include
--IC:\Users\Michael\AppData\Local\Arm\Packs\HDSC\HC32F46x\1.0.1\Device\Include
--D__UVISION_VERSION="529" -D_RTE_ -DHC32F46x -DUSE_DEVICE_DRIVER_LIB -D__TARGET_FPU_VFP -D__FPU_PRESENT="1" -DARM_MATH_CM4 -D__CC_ARM -DARM_MATH_MATRIX_CHECK -DARM_MATH_ROUNDING -D__MPU_PRESENT="1"
--o .\objects\class_i2c.o --omf_browse .\objects\class_i2c.crf --depend .\objects\class_i2c.d "Cpp_Class\Class_I2C.cpp"

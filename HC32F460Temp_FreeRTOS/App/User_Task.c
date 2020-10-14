@@ -8,6 +8,7 @@
 //#include "AD7689.h"
 #include "Hw_Uart4.h"
 #include "bsp_I2S_Full_Duplex.h"
+#include "bsp_i2c_gpio.h"
 uint8_t displaydata[4][128],a[10] = {0,1,2,3,4,5,6,7,8,9},b[10];
 char freq[20];
 TaskHandle_t Hd_Task_Start;
@@ -38,8 +39,9 @@ void Task_START(void *param)
 	Task_ADC_Start(); 
 	Task_USB_Start();
 	Hw_Uart4_Init();
-	HW_I2C_Port_Init();
-	bsp_I2C_DMA_Init(I2C1_UNIT,400000);
+//    Gpio_I2C_Init();
+//	HW_I2C_Port_Init();
+//	HW_I2C_Init(I2C1_UNIT,100000);
     ////
 //    Fs_Task_Start();
 //	Hw_I2C_Slave_Init(I2C1_UNIT);
@@ -56,13 +58,23 @@ void Task_START(void *param)
 //    hwdmx_uartInit();
     while(1)
     {
+//        I2C_Send_Command(0x50,0x00,a,8);
+//        vTaskDelay(10/portTICK_PERIOD_MS);
+//        I2C_Read_Command(0x50,0x00,b,8);
 //        I2C_Write_data(I2C1_UNIT,0x50,0x00,(const uint8_t*)a,8);
 //        vTaskDelay(10/portTICK_PERIOD_MS);
 //        I2C_Read_data(I2C1_UNIT,0x50,0x00,(uint8_t*)b,8);
 //        vTaskDelay(10/portTICK_PERIOD_MS);
-        I2C_DMA_Write_data(I2C1_UNIT,0x50,0x00,(const uint8_t*)a,8);
-        vTaskDelay(10/portTICK_PERIOD_MS);
-        I2C_DMA_Read_data(I2C1_UNIT,0x50,0x00,(uint8_t*)b,8);
+//        I2C_Write_data(I2C1_UNIT,0x06,0x00,(const uint8_t*)a,8);
+//        vTaskDelay(10/portTICK_PERIOD_MS);
+//        I2C_Read_data(I2C1_UNIT,0x06,0x00,(uint8_t*)b,8);
+//        I2C_DMA_Write_data(I2C1_UNIT,0x50,0x00,(const uint8_t*)a,8);
+//        vTaskDelay(10/portTICK_PERIOD_MS);
+//        I2C_DMA_Read_data(I2C1_UNIT,0x50,0x00,(uint8_t*)b,8);
+//        vTaskDelay(10/portTICK_PERIOD_MS);
+//        I2C_DMA_Write_data(I2C1_UNIT,0x06,0x00,(const uint8_t*)a,8);
+//        vTaskDelay(10/portTICK_PERIOD_MS);
+//        I2C_DMA_Read_data(I2C1_UNIT,0x06,0x00,(uint8_t*)b,8);
 //        AD7689_SOC();
 //        Test_UART_TX();
 //		LPM_TEST();

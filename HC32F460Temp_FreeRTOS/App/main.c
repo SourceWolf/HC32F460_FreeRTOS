@@ -36,7 +36,7 @@ int main(void)
 	SCB->VTOR = ((uint32_t) APP_START_ADDRESS & SCB_VTOR_TBLOFF_Msk); 
 #endif    
     PORT_DebugPortSetting(0x1C,Disable);
-    CLK_SetSysClkSource(ClkSysSrcHRC);
+//    CLK_SetSysClkSource(ClkSysSrcHRC);
 	system_clk_init();
 	Ddl_Delay1ms(2000);  
     CLK_LrcCmd(Disable);

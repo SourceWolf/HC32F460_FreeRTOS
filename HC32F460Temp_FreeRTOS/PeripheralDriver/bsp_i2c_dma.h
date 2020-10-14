@@ -38,6 +38,7 @@
 #define I2C_BUSY						2
 #define I2C_TIMEROUT					3
 #define I2C_BADADDR						4
+#define I2C_BADPARA                     5//²ÎÊý´íÎó
 
 #ifdef __cplusplus
 extern "C" {

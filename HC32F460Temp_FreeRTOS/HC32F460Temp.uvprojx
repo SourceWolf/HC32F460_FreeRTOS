@@ -658,6 +658,16 @@
               <FileType>2</FileType>
               <FilePath>.\common\MDK\startup_hc32f46x.s</FilePath>
             </File>
+            <File>
+              <FileName>Hw_I2C_Slave.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\PeripheralDriver\Hw_I2C_Slave.c</FilePath>
+            </File>
+            <File>
+              <FileName>Hw_I2C_Slave.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\PeripheralDriver\Hw_I2C_Slave.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -847,16 +857,6 @@
               <FilePath>.\PeripheralDriver\hd_sdio.h</FilePath>
             </File>
             <File>
-              <FileName>Hw_I2C_Slave.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\PeripheralDriver\Hw_I2C_Slave.c</FilePath>
-            </File>
-            <File>
-              <FileName>Hw_I2C_Slave.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\PeripheralDriver\Hw_I2C_Slave.h</FilePath>
-            </File>
-            <File>
               <FileName>Hw_SPI3.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\PeripheralDriver\Hw_SPI3.c</FilePath>
@@ -935,6 +935,16 @@
               <FileName>bsp_interrupt.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\PeripheralDriver\bsp_interrupt.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_i2c_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\PeripheralDriver\bsp_i2c_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_i2c_gpio.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\PeripheralDriver\bsp_i2c_gpio.h</FilePath>
             </File>
           </Files>
         </Group>

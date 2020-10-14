@@ -5,6 +5,18 @@ void DMA_TX_TC_Callback(void)
 {
     uint32_t u32TimeOut;
     u32TimeOut = TIMEOUT;
+	while(Reset == I2C_GetStatus(pstc_int_I2Cx, I2C_SR_TENDF))//数据寄存器为空
+	{
+		if(0==(u32TimeOut--))
+		{
+			if(Set == I2C_GetStatus(pstc_int_I2Cx, I2C_SR_BUSY))
+			{
+					I2C_GenerateStop(pstc_int_I2Cx, Enable);//停止释放总线
+			}			
+			return;
+		}
+	}
+    u32TimeOut = TIMEOUT;
 	do{
 		I2C_GenerateStop(pstc_int_I2Cx, Enable);//产生停止位
 		if(0 == (u32TimeOut--)) 
@@ -77,6 +89,10 @@ inline uint8_t I2C_DMA_Write_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,ui
 {
 	uint32_t u32TimeOut;
 	uint8_t pos;
+    if(len == 0)
+    {
+        return I2C_BADPARA;
+    }
 	if(Set == I2C_GetStatus(pstcI2Cx, I2C_SR_NACKDETECTF))//启动I2C前先清除上一次读写失败的NAK标志，否则无法写数据
 	{
 		I2C_ClearStatus(pstcI2Cx,I2C_CLR_NACKFCLR);
@@ -133,7 +149,7 @@ inline uint8_t I2C_DMA_Write_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,ui
     pstc_int_I2Cx = pstcI2Cx;
     bsp_dma_SetDesAddr(I2C_DMA_UNIT, DMA_TX_CH, (uint32_t)&(pstcI2Cx->DTR));
     bsp_dma_SetSrcAddr(I2C_DMA_UNIT, DMA_TX_CH, (uint32_t)data);
-    bsp_dma_set_count(I2C_DMA_UNIT,DMA_TX_CH,len+2);//不知道为什么要+2才能发正常的数据
+    bsp_dma_set_count(I2C_DMA_UNIT,DMA_TX_CH,len);//不知道为什么要+2才能发正常的数据
     bsp_dma_ch_enable(I2C_DMA_UNIT,DMA_TX_CH,Enable);
     bsp_dma_set_TrigSrc(I2C_DMA_UNIT,DMA_TX_CH,EVT_I2C1_TXI);//先实现I2C1,其他后续再补上    
 	I2C_SendData(pstcI2Cx, addr);
@@ -166,7 +182,11 @@ inline uint8_t I2C_DMA_Write_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,ui
 inline uint8_t I2C_DMA_Read_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,uint8_t addr, uint8_t *data, uint16_t len)
 {
 	uint32_t u32TimeOut;
-	uint8_t pos;	
+	uint8_t pos;
+    if(len == 0)
+    {
+        return I2C_BADPARA;
+    }
 	pstcI2Cx->CR3_f.FACKEN = 0;//自动写ACK
 	if(Set == I2C_GetStatus(pstcI2Cx, I2C_SR_NACKDETECTF))//启动I2C前先清除上一次读写失败的NAK标志，否则无法写数据
 	{
@@ -263,14 +283,17 @@ inline uint8_t I2C_DMA_Read_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,uin
 			return I2C_TIMEROUT;
 		}
 	}
-    bsp_interrupt_callback_regist(DMA_RX_INT,Int002_IRQn,(void *)DMA_RX_TC_Callback);
-    pstc_int_I2Cx = pstcI2Cx;
-    p_int_data = (uint8_t*)data+len-1;
-    bsp_dma_SetDesAddr(I2C_DMA_UNIT, DMA_RX_CH, (uint32_t)data);
-    bsp_dma_SetSrcAddr(I2C_DMA_UNIT, DMA_RX_CH, (uint32_t)&(pstcI2Cx->DRR));
-    bsp_dma_set_count(I2C_DMA_UNIT,DMA_RX_CH,len-1);
-    bsp_dma_ch_enable(I2C_DMA_UNIT,DMA_RX_CH,Enable);
-    bsp_dma_set_TrigSrc(I2C_DMA_UNIT,DMA_RX_CH,EVT_I2C1_RXI);//先实现I2C1,其他后续再补上  
+    if(len>1)//读长大于1时启用DMA
+    {
+        bsp_interrupt_callback_regist(DMA_RX_INT,Int002_IRQn,(void *)DMA_RX_TC_Callback);
+        pstc_int_I2Cx = pstcI2Cx;
+        p_int_data = (uint8_t*)data+len-1;
+        bsp_dma_SetDesAddr(I2C_DMA_UNIT, DMA_RX_CH, (uint32_t)data);
+        bsp_dma_SetSrcAddr(I2C_DMA_UNIT, DMA_RX_CH, (uint32_t)&(pstcI2Cx->DRR));
+        bsp_dma_set_count(I2C_DMA_UNIT,DMA_RX_CH,len-1);
+        bsp_dma_ch_enable(I2C_DMA_UNIT,DMA_RX_CH,Enable);
+        bsp_dma_set_TrigSrc(I2C_DMA_UNIT,DMA_RX_CH,EVT_I2C1_RXI);//先实现I2C1,其他后续再补上 
+    }        
 	I2C_SendData(pstcI2Cx, (DeviceAddr<<1)|0x01);
     u32TimeOut = TIMEOUT;
 	while(Set == I2C_GetStatus(pstcI2Cx, I2C_SR_NACKDETECTF))//等待应答
@@ -284,47 +307,29 @@ inline uint8_t I2C_DMA_Read_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,uin
 			return I2C_TIMEROUT;
 		}
 	}
-    
-//	for(pos = 0;pos<len;pos++)
-//	{
-//		u32TimeOut = TIMEOUT;
-//		while(Reset == I2C_GetStatus(pstcI2Cx, I2C_SR_RFULLF))
-//		{
-//			if(0 == (u32TimeOut--))
-//			{
-//				I2C_GenerateStop(pstcI2Cx, Enable);//停止释放总线
-//				return I2C_TIMEROUT;
-//			}
-//		} 
-//#ifndef AUTOACK	
-//		if(pos == (len-1))
-//		{
-//			I2C_NackConfig(pstcI2Cx, Enable);
-//		}
-//        else
-//		{
-//			I2C_NackConfig(pstcI2Cx, Disable);//ACK
-//		}
-//#endif        
-//		data[pos] = pstcI2Cx->DRR_f.DR;//I2C_ReadData(I2C1_UNIT);
-//#ifdef AUTOACK	
-//		if(pos == (len-1))
-//		{
-//			I2C_NackConfig(pstcI2Cx, Enable);//NAK
-//		}
-//		else
-//		{
-//			I2C_NackConfig(pstcI2Cx, Disable);//ACK
-//		}
-//#endif		
-//	}
-//	u32TimeOut = TIMEOUT;
-//	do{
-//		I2C_GenerateStop(pstcI2Cx, Enable);//产生停止位
-//		if(0 == (u32TimeOut--)) 
-//			{
-//				return I2C_TIMEROUT;
-//			}
-//	}while(Reset == I2C_GetStatus(pstcI2Cx, I2C_SR_STOPF));//等待停止
+    if(len==1)//读长为1时，不启用DMA直接读取，回NAK
+    {
+        pstc_int_I2Cx->CR3_f.FACKEN = 1;
+        u32TimeOut = TIMEOUT;
+            while(Reset == I2C_GetStatus(pstc_int_I2Cx, I2C_SR_RFULLF))
+            {
+                if(0 == (u32TimeOut--))
+                {
+                    I2C_GenerateStop(pstc_int_I2Cx, Enable);//停止释放总线
+                    return I2C_TIMEROUT;
+                }
+            }
+
+            I2C_NackConfig(pstc_int_I2Cx, Enable);//NAK
+        *p_int_data = pstc_int_I2Cx->DRR_f.DR;   
+        u32TimeOut = TIMEOUT;
+        do{
+            I2C_GenerateStop(pstc_int_I2Cx, Enable);//产生停止位
+            if(0 == (u32TimeOut--)) 
+                {
+                    return I2C_TIMEROUT;
+                }
+        }while(Reset == I2C_GetStatus(pstc_int_I2Cx, I2C_SR_STOPF));//等待停止;
+    }
 	return I2C_RET_OK;
 }
