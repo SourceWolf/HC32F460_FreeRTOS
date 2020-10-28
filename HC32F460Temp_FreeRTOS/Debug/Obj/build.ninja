@@ -92,6 +92,7 @@ build wm8731.pbi : index wm8731.xcl
 build bsp_dma.pbi : index bsp_dma.xcl
 build bsp_i2c_dma.pbi : index bsp_i2c_dma.xcl
 build bsp_interrupt.pbi : index bsp_interrupt.xcl
+build bsp_mco.pbi : index bsp_mco.xcl
 build HW_I2C.pbi : index HW_I2C.xcl
 build Hw_MPU.pbi : index Hw_MPU.xcl
 build Hw_Uart4.pbi : index Hw_Uart4.xcl
@@ -139,11 +140,11 @@ build HC32F460_Temp_IAR_part2.pbi : link hc32f46x_i2c.pbi hc32f46x_i2s.pbi hc32f
 build HC32F460_Temp_IAR_part3.pbi : link hc32f46x_sdioc.pbi hc32f46x_spi.pbi hc32f46x_sram.pbi hc32f46x_swdt.pbi hc32f46x_timer0.pbi hc32f46x_timer4_cnt.pbi hc32f46x_timer4_emb.pbi hc32f46x_timer4_oco.pbi hc32f46x_timer4_pwm.pbi hc32f46x_timer4_sevt.pbi hc32f46x_timer6.pbi
 build HC32F460_Temp_IAR_part4.pbi : link hc32f46x_timera.pbi hc32f46x_trng.pbi hc32f46x_usart.pbi hc32f46x_utility.pbi hc32f46x_wdt.pbi diskio.pbi fattime.pbi ff.pbi cmsis_os.pbi croutine.pbi event_groups.pbi
 build HC32F460_Temp_IAR_part5.pbi : link heap_4.pbi list.pbi port.pbi queue.pbi tasks.pbi timers.pbi data_sound_441_i2s.pbi data_sound_8k_i2s.pbi OLED.pbi OLED_port.pbi sd_card.pbi
-build HC32F460_Temp_IAR_part6.pbi : link sdmmc_cmd.pbi w25qxx.pbi wm8731.pbi bsp_dma.pbi bsp_i2c_dma.pbi bsp_interrupt.pbi HW_I2C.pbi Hw_MPU.pbi Hw_Uart4.pbi System_Clk.pbi System_PowerDown.pbi
-build HC32F460_Temp_IAR_part7.pbi : link User_ADC.pbi User_CAN.pbi User_Crypto.pbi User_DCU.pbi User_DMA.pbi User_Gpio.pbi User_I2C.pbi User_I2S.pbi User_OTS.pbi User_PWC.pbi User_QSPI.pbi
-build HC32F460_Temp_IAR_part8.pbi : link User_RTC.pbi User_SDIO.pbi User_Timer.pbi User_Timer4.pbi User_Timer6.pbi User_TimerA.pbi User_TRNG.pbi User_Uart.pbi Task_ADC.pbi Task_display.pbi Task_FileSystem.pbi
-build HC32F460_Temp_IAR_part9.pbi : link Task_Key.pbi Task_LED.pbi Task_USB.pbi usbd_core.pbi usbd_ioreq.pbi usbd_req.pbi usb_core.pbi usb_dcd.pbi usb_dcd_int.pbi usb_otg.pbi usbd_msc_bot.pbi
-build HC32F460_Temp_IAR_part10.pbi : link usbd_msc_core.pbi usbd_msc_data.pbi usbd_msc_scsi.pbi
+build HC32F460_Temp_IAR_part6.pbi : link sdmmc_cmd.pbi w25qxx.pbi wm8731.pbi bsp_dma.pbi bsp_i2c_dma.pbi bsp_interrupt.pbi bsp_mco.pbi HW_I2C.pbi Hw_MPU.pbi Hw_Uart4.pbi System_Clk.pbi
+build HC32F460_Temp_IAR_part7.pbi : link System_PowerDown.pbi User_ADC.pbi User_CAN.pbi User_Crypto.pbi User_DCU.pbi User_DMA.pbi User_Gpio.pbi User_I2C.pbi User_I2S.pbi User_OTS.pbi User_PWC.pbi
+build HC32F460_Temp_IAR_part8.pbi : link User_QSPI.pbi User_RTC.pbi User_SDIO.pbi User_Timer.pbi User_Timer4.pbi User_Timer6.pbi User_TimerA.pbi User_TRNG.pbi User_Uart.pbi Task_ADC.pbi Task_display.pbi
+build HC32F460_Temp_IAR_part9.pbi : link Task_FileSystem.pbi Task_Key.pbi Task_LED.pbi Task_USB.pbi usbd_core.pbi usbd_ioreq.pbi usbd_req.pbi usb_core.pbi usb_dcd.pbi usb_dcd_int.pbi usb_otg.pbi
+build HC32F460_Temp_IAR_part10.pbi : link usbd_msc_bot.pbi usbd_msc_core.pbi usbd_msc_data.pbi usbd_msc_scsi.pbi
 build HC32F460_Temp_IAR.pbd : link HC32F460_Temp_IAR_part0.pbi HC32F460_Temp_IAR_part1.pbi HC32F460_Temp_IAR_part2.pbi HC32F460_Temp_IAR_part3.pbi HC32F460_Temp_IAR_part4.pbi HC32F460_Temp_IAR_part5.pbi HC32F460_Temp_IAR_part6.pbi HC32F460_Temp_IAR_part7.pbi HC32F460_Temp_IAR_part8.pbi HC32F460_Temp_IAR_part9.pbi HC32F460_Temp_IAR_part10.pbi
 build HC32F460_Temp_IAR.pbw : browsedata HC32F460_Temp_IAR.pbd
 

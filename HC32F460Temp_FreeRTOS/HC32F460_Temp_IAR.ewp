@@ -2410,6 +2410,12 @@
             <name>$PROJ_DIR$\PeripheralDriver\bsp_interrupt.h</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\PeripheralDriver\bsp_mco.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\PeripheralDriver\bsp_mco.h</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\PeripheralDriver\HW_I2C.c</name>
         </file>
         <file>

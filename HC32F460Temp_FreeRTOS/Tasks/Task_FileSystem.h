@@ -7,7 +7,6 @@
 #include "diskio.h"
 #include "wavefile.h"
 #include "data_sound_i2s.h"
-#include "bsp_I2S_Full_Duplex.h"
 uint8_t Fs_Task_Start(void);
 
 #endif

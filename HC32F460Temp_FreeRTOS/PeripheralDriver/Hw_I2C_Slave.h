@@ -11,7 +11,7 @@
 #define I2C_SLAVE_SDA_FUNC		Func_I2c1_Sda
 
 
-#define TEST_DATA_LEN                   256u
+#define SLAVE_DATA_LEN                   64u
 #define SLAVE_ADDRESS                   0x06u
 
 #define GENERATE_START                  0x00u

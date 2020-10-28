@@ -26,7 +26,7 @@
         <MultiCoreRunAll>1</MultiCoreRunAll>
     </Simulator>
     <DebugChecksum>
-        <Checksum>1758802904</Checksum>
+        <Checksum>1950381151</Checksum>
     </DebugChecksum>
     <CodeCoverage>
         <Enabled>0</Enabled>
@@ -88,6 +88,19 @@
         <Enabled>0</Enabled>
         <ShowSource>1</ShowSource>
     </Trace1>
+    <PlDriver>
+        <MemConfigValue>D:\00-githubFiles\HC32F460_FreeRTOS\HC32F460Temp_FreeRTOS\HDSC_HC32F46x.svd</MemConfigValue>
+    </PlDriver>
+    <Jet>
+        <JetConnSerialNo>HDSC CMSIS-DAP:</JetConnSerialNo>
+        <JetConnFoundProbes />
+        <DisableInterrupts>0</DisableInterrupts>
+        <LeaveRunning>0</LeaveRunning>
+        <MultiCoreRunAll>0</MultiCoreRunAll>
+    </Jet>
+    <ArmDriver>
+        <EnableCache>1</EnableCache>
+    </ArmDriver>
     <Trace2>
         <Enabled>0</Enabled>
         <ShowSource>0</ShowSource>

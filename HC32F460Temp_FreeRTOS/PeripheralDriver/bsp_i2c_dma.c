@@ -149,7 +149,7 @@ inline uint8_t I2C_DMA_Write_data(M4_I2C_TypeDef* pstcI2Cx,uint8_t DeviceAddr,ui
     pstc_int_I2Cx = pstcI2Cx;
     bsp_dma_SetDesAddr(I2C_DMA_UNIT, DMA_TX_CH, (uint32_t)&(pstcI2Cx->DTR));
     bsp_dma_SetSrcAddr(I2C_DMA_UNIT, DMA_TX_CH, (uint32_t)data);
-    bsp_dma_set_count(I2C_DMA_UNIT,DMA_TX_CH,len);//不知道为什么要+2才能发正常的数据
+    bsp_dma_set_count(I2C_DMA_UNIT,DMA_TX_CH,len);//
     bsp_dma_ch_enable(I2C_DMA_UNIT,DMA_TX_CH,Enable);
     bsp_dma_set_TrigSrc(I2C_DMA_UNIT,DMA_TX_CH,EVT_I2C1_TXI);//先实现I2C1,其他后续再补上    
 	I2C_SendData(pstcI2Cx, addr);

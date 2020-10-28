@@ -20,6 +20,7 @@
 #include "AT24C02.h"
 #include "bsp_i2c_dma.h"
 #include "Hw_I2C_Slave.h"
+#include "bsp_mco.h"
 USB_OTG_CORE_HANDLE  USB_OTG_dev;
 stc_clk_freq_t Clkdata;
 #ifdef APP_VERSION
@@ -34,19 +35,18 @@ int main(void)
 
 	/* Rebase the vector table base address */
 	SCB->VTOR = ((uint32_t) APP_START_ADDRESS & SCB_VTOR_TBLOFF_Msk); 
-#endif    
+#endif
     PORT_DebugPortSetting(0x1C,Disable);
-//    CLK_SetSysClkSource(ClkSysSrcHRC);
-	system_clk_init();
-	Ddl_Delay1ms(2000);  
+	mco_init();
+    CLK_HrcCmd(Enable);
+    CLK_SetSysClkSource(ClkSysSrcHRC);
+	Ddl_Delay1ms(2000); 
+    system_clk_init();    
     CLK_LrcCmd(Disable);
     CLK_Xtal32Cmd(Disable);
 	CLK_GetClockFreq(&Clkdata);
 	SysTick_Config(Clkdata.hclkFreq/1000);
 	NVIC_EnableIRQ(SysTick_IRQn);
-//    Hw_I2C_Slave_Init(I2C1_UNIT);
-//    HW_I2C_Port_Init();
-//	HW_I2C_Init(I2C1_UNIT,400000);
 	Ddl_UartInit();
 	CLK_GetPllClockFreq(&pllfreq);
 	printf("system base software initialed.--------%s, %d\r\n",__FILE__, __LINE__);

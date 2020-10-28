@@ -8,6 +8,7 @@ WaveHeader Wavedata;
 char line[512];
 TaskHandle_t H_Task_Fs;
 //QueueHandle_t H_xQueue_Recode = NULL;
+
 AudioBuff_type *pwavdata;
 #define STACKSIZE_FS	configMINIMAL_STACK_SIZE
 #define PRIORITY_TASKFS	(tskIDLE_PRIORITY+3)
@@ -20,7 +21,6 @@ static void Task_FS_Operation(void* param)
     f_mount(SD_Card,&FatFs);//Çý¶¯Æ÷0
     fr = f_open(&Myfile,"myfile.wav",FA_READ|FA_WRITE|FA_CREATE_ALWAYS);
 	fr = f_write(&Myfile,&Wavedata,sizeof(Wavedata),&bw);
-    i2s_record_duplex_init();
     
 	fr = f_write(&Myfile,&au16PixieDustSoundI2s_8,u32WavLen_8k,&bw);
 	Wavedata.data.ChunkSize = u32WavLen_8k;

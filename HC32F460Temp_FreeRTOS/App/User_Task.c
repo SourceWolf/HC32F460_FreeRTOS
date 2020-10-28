@@ -2,16 +2,15 @@
 #include "cmsis_os.h"
 #include "../Tasks/Tasks_include.h"
 #include "System_PowerDown.h"
-//#include "Test.h"
-//#include "MCP33131_SPI_TMR_DMA.h"
 #include "User_I2S.h"
-//#include "AD7689.h"
 #include "Hw_Uart4.h"
-#include "bsp_I2S_Full_Duplex.h"
 #include "bsp_i2c_gpio.h"
+#include "Hw_I2C_Slave_dma.h"
+#include "bsp_mco.h"
 uint8_t displaydata[4][128],a[10] = {0,1,2,3,4,5,6,7,8,9},b[10];
 char freq[20];
 TaskHandle_t Hd_Task_Start;
+
 void Sleep_init(void)
 {
     stc_pwc_pwr_mode_cfg_t  stcPwcPwrMdCfg;
@@ -39,64 +38,9 @@ void Task_START(void *param)
 	Task_ADC_Start(); 
 	Task_USB_Start();
 	Hw_Uart4_Init();
-//    Gpio_I2C_Init();
-//	HW_I2C_Port_Init();
-//	HW_I2C_Init(I2C1_UNIT,100000);
-    ////
-//    Fs_Task_Start();
-//	Hw_I2C_Slave_Init(I2C1_UNIT);
-//	User_ADC_Init();
-//	Fs_Task_Start();
-//	Testcpp();
-//	TimerACaptureInit();
-//	Hw_SPI3_Init();
-//    i2s_record_duplex_init();
-//	Hw_TimerA3_Init();
-//	User_I2S3_Init();
-//	vTaskDelete(Hd_Task_Start);
-//	AD7689_Init();
-//    hwdmx_uartInit();
+	vTaskDelete(Hd_Task_Start);
     while(1)
     {
-//        I2C_Send_Command(0x50,0x00,a,8);
-//        vTaskDelay(10/portTICK_PERIOD_MS);
-//        I2C_Read_Command(0x50,0x00,b,8);
-//        I2C_Write_data(I2C1_UNIT,0x50,0x00,(const uint8_t*)a,8);
-//        vTaskDelay(10/portTICK_PERIOD_MS);
-//        I2C_Read_data(I2C1_UNIT,0x50,0x00,(uint8_t*)b,8);
-//        vTaskDelay(10/portTICK_PERIOD_MS);
-//        I2C_Write_data(I2C1_UNIT,0x06,0x00,(const uint8_t*)a,8);
-//        vTaskDelay(10/portTICK_PERIOD_MS);
-//        I2C_Read_data(I2C1_UNIT,0x06,0x00,(uint8_t*)b,8);
-//        I2C_DMA_Write_data(I2C1_UNIT,0x50,0x00,(const uint8_t*)a,8);
-//        vTaskDelay(10/portTICK_PERIOD_MS);
-//        I2C_DMA_Read_data(I2C1_UNIT,0x50,0x00,(uint8_t*)b,8);
-//        vTaskDelay(10/portTICK_PERIOD_MS);
-//        I2C_DMA_Write_data(I2C1_UNIT,0x06,0x00,(const uint8_t*)a,8);
-//        vTaskDelay(10/portTICK_PERIOD_MS);
-//        I2C_DMA_Read_data(I2C1_UNIT,0x06,0x00,(uint8_t*)b,8);
-//        AD7689_SOC();
-//        Test_UART_TX();
-//		LPM_TEST();
-//		MEM_ZERO_STRUCT(freq);
-//		sprintf(freq,"Freq = %d",GetFrequence());
-//		OLED_ShowString2(0,16,(unsigned char *)freq);
-//        vTaskDelay(100/portTICK_PERIOD_MS);
-//		M4_PORT->POERE_f.POUTE01 = 1;
-//		PORT_SetBits(PortE, Pin01);
-//		vTaskDelay(10/portTICK_PERIOD_MS);
-//		PORT_ResetBits(PortE, Pin01);
-//		vTaskDelay(10/portTICK_PERIOD_MS);
-//		while(PORT_GetBit(PortE, Pin01) == 1);
-//		Hw_SPI3_TEST();
-//		TestEEPROM();
-//		I2C_Write_Buffer(I2C1_UNIT,0x06,a,5);
-//		vTaskDelay(10/portTICK_PERIOD_MS);
-//		I2C_Read_data(I2C1_UNIT,0x06,0x00,b,5);
-//		ADC1_Start_convert();
-//		AD7689_SOC();
-//		Test_UART4_TX();
-//		SPI_SendData16(SPI3_UNIT,CFG_CHANGE|INCC_GND|CHANNEL0|REF_EXT_TDIS|SEQ_DIS|NOTReadBackCFG);
 		vTaskDelay(1000/portTICK_PERIOD_MS);
     }
 }

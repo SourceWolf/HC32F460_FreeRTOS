@@ -3,8 +3,8 @@
 M4_I2C_TypeDef* pstcI2Cx = I2C1_UNIT;
 uint32_t u32DataInOffset = 0ul;
 uint32_t u32DataOutOffset = 0ul;
-uint8_t u8TxBuf[TEST_DATA_LEN];
-uint8_t u8RxBuf[TEST_DATA_LEN];
+uint8_t u8TxBuf[SLAVE_DATA_LEN];
+uint8_t u8RxBuf[SLAVE_DATA_LEN];
 /**
  *******************************************************************************
  ** \brief static function for buffer write.
@@ -16,7 +16,7 @@ uint8_t u8RxBuf[TEST_DATA_LEN];
  ******************************************************************************/
 static void BufWrite(uint8_t u8Data)
 {
-    if(u32DataInOffset >= TEST_DATA_LEN)
+    if(u32DataInOffset >= SLAVE_DATA_LEN)
     {
        u32DataInOffset = 0;
     }
@@ -36,7 +36,7 @@ static void BufWrite(uint8_t u8Data)
 static uint8_t BufRead(void)
 {
     uint8_t temp;
-    if(u32DataOutOffset >= TEST_DATA_LEN)
+    if(u32DataOutOffset >= SLAVE_DATA_LEN)
     {
         u32DataOutOffset = 0;
     }
@@ -56,17 +56,7 @@ static uint8_t BufRead(void)
  ******************************************************************************/
 void I2C_EEI_Callback(void)
 {
-//	printf("SR %x\r\n",pstcI2Cx->SR);
-    /* If start interrupt occurred */
-//	M4_USART3->DR = 0xFF;
-//	while (0ul == M4_USART3->SR_f.TC);
-//	M4_USART3->DR = pstcI2Cx->SR;
-//	while (0ul == M4_USART3->SR_f.TC);
-//	M4_USART3->DR = pstcI2Cx->SR>>8;
-//	while (0ul == M4_USART3->SR_f.TC);
-//	M4_USART3->DR = pstcI2Cx->SR>>16;
-//	while (0ul == M4_USART3->SR_f.TC);
-//	M4_USART3->DR = pstcI2Cx->SR>>24;
+    printf("%x\r\n" pstcI2Cx->)j;ajdj
     if(Set == I2C_GetStatus(pstcI2Cx, I2C_SR_SLADDR0F))
     {
         I2C_ClearStatus(pstcI2Cx, I2C_CLR_SLADDR0FCLR|I2C_CLR_STOPFCLR|I2C_CLR_NACKFCLR);
@@ -135,9 +125,33 @@ void I2C_EEI_Callback(void)
  ******************************************************************************/
 void I2C_TEI_Callback(void)
 {
+    if(Set == I2C_GetStatus(pstcI2Cx, I2C_SR_TENDF))
+    {
+        /* Dummy read for release SCL */
+        I2C_ReadData(pstcI2Cx);
+    }
+}
+/**
+ * @brief   I2C TXI(transfer buffer empty) interrupt callback function
+ * @param   None
+ * @retval  None
+ */
+static void I2C_TXI_Callback(void)
+{
     if(Set == I2C_GetStatus(pstcI2Cx, I2C_SR_TEMPTYF))
     {
-        I2C_SendData(pstcI2Cx, BufRead());
+        if(u32DataOutOffset < SLAVE_DATA_LEN)
+        {
+            I2C_SendData(pstcI2Cx, BufRead());//写数据到I2C数据寄存器
+        }
+        else
+        {
+//            u8FinishFlag = 1U;
+            /* Disable TXI interrupt */
+            I2C_IntCmd(pstcI2Cx, I2C_CR2_TEMPTYIE, Disable);
+            /* Enable TEI interrupt */
+            I2C_IntCmd(pstcI2Cx, I2C_CR2_TENDIE, Enable);
+        }
     }
 }
 
@@ -161,7 +175,7 @@ void I2C_RXI_Callback(void)
 void TXbuffer_Test_init(void)
 {
 	uint32_t i;
-	for(i=0;i<TEST_DATA_LEN;i++)
+	for(i=0;i<SLAVE_DATA_LEN;i++)
 	{
 		u8TxBuf[i] = i;
 	}
@@ -245,6 +259,20 @@ uint8_t Hw_I2C_Slave_Init(M4_I2C_TypeDef* I2Cx)
     /* Enable NVIC */
     NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);
 
+    /* Register TEI Int to Vect.No.002 */
+    stcIrqRegiConf.enIRQn = Int004_IRQn;
+    /* Select I2C TX buffer empty interrupt function */
+    stcIrqRegiConf.enIntSrc = INT_I2C1_TXI;
+    /* Callback function */
+    stcIrqRegiConf.pfnCallback = &I2C_TXI_Callback;
+    /* Registration IRQ */
+    enIrqRegistration(&stcIrqRegiConf);
+    /* Clear Pending */
+    NVIC_ClearPendingIRQ(stcIrqRegiConf.enIRQn);
+    /* Set priority */
+    NVIC_SetPriority(stcIrqRegiConf.enIRQn, DDL_IRQ_PRIORITY_15);
+    /* Enable NVIC */
+    NVIC_EnableIRQ(stcIrqRegiConf.enIRQn);
     /* Config slave address match interrupt function*/
     I2C_IntCmd(pstcI2Cx, I2C_CR2_SLADDR0EN, Enable);
 

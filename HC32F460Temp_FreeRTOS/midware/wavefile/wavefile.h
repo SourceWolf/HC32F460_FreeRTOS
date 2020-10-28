@@ -36,6 +36,10 @@ typedef struct
 //	ChunkFACT fact;
 	ChunkDATA data;
 }WaveHeader;
-
+typedef union audio_buffer
+{
+    uint8_t Data8bit[10000*2];
+    uint16_t Data16bit[10000];
+}AudioBuff_type;
 void wavefileinfo_init(WaveHeader* wavehead);
 #endif

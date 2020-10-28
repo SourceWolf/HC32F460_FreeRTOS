@@ -24,7 +24,7 @@ void bsp_dma_init(M4_DMA_TypeDef* pstcDmaReg, \
     stcDmaCfg.stcDmaChCfg.enSrcRptEn = Disable;
     stcDmaCfg.stcDmaChCfg.enDesRptEn = Disable;   
     /* Set source & destination address mode. */
-    stcDmaCfg.stcDmaChCfg.enSrcInc = enSrcMode;//µÿ÷∑≤ª±‰
+    stcDmaCfg.stcDmaChCfg.enSrcInc = enSrcMode;
     stcDmaCfg.stcDmaChCfg.enDesInc = enDesMode;
     /* Enable interrup. */
     stcDmaCfg.stcDmaChCfg.enIntEn = Enable;

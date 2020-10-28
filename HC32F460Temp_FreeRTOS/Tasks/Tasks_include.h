@@ -14,5 +14,6 @@
 #include "User_Timer.h"
 #include "Uart_DMA.h"
 #include "bsp_i2c_dma.h"
+#include "bsp_efm.h"
 #endif
 
