@@ -38,7 +38,7 @@ void User_Gpio_Init(void)
     PORT_Init(LED1_PORT, LED1_Pin, &Port_CFG);
     PORT_Init(LED2_PORT, LED2_Pin, &Port_CFG);
     PORT_Init(LED3_PORT, LED3_Pin, &Port_CFG);
-	PORT_Init(PortC, Pin15, &Port_CFG);
+//	PORT_Init(PortC, Pin15, &Port_CFG);
     Port_CFG.enPinMode = Pin_Mode_In;
     Port_CFG.enExInt = Enable;
     PORT_Init(Key0_PORT,Key0_Pin, &Port_CFG);
